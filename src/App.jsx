@@ -16,6 +16,7 @@ import CelestialMoonCanvas from './components/CelestialMoonCanvas';
 import EcosystemLauncher, { BRANCHES } from './components/EcosystemLauncher';
 import UniversalNexusConsole from './components/UniversalNexusConsole';
 import BranchPortalModal from './components/BranchPortalModal';
+import SocialWarningModal from './components/SocialWarningModal';
 import { DiscordIcon, XIcon, InstagramIcon } from './components/SocialIcons';
 import { audioManager } from './utils/audio';
 
@@ -28,6 +29,8 @@ export default function App() {
   const [commandDeckOpen, setCommandDeckOpen] = useState(false);
   const [commandDeckSector, setCommandDeckSector] = useState('studio');
   const [selectedBranchForPortal, setSelectedBranchForPortal] = useState(null);
+  const [socialWarningOpen, setSocialWarningOpen] = useState(false);
+  const [socialWarningPlatform, setSocialWarningPlatform] = useState('X');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [activeUsers, setActiveUsers] = useState(1428914);
@@ -368,31 +371,43 @@ export default function App() {
         {/* Social Links */}
         <div className="flex items-center gap-5 text-slate-400">
           <a 
-            href="#discord" 
-            onClick={(e) => { e.preventDefault(); openGatewayWithTab('invite'); }} 
+            href="https://discord.gg/wBaJuSFaPw" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="hover:text-white transition-colors p-1"
-            title="Discord Community"
+            title="Official Discord Server"
           >
-            <DiscordIcon className="w-4 h-4" />
+            <DiscordIcon className="w-4 h-4 text-slate-400 hover:text-[#5865F2]" />
           </a>
-          <a 
-            href="#twitter" 
-            onClick={(e) => { e.preventDefault(); openGatewayWithTab('invite'); }} 
-            className="hover:text-white transition-colors p-1"
-            title="Twitter / X"
+          <button 
+            onClick={() => {
+              setSocialWarningPlatform('X (Twitter)');
+              setSocialWarningOpen(true);
+            }} 
+            className="hover:text-white transition-colors p-1 cursor-pointer"
+            title="X (Twitter) Notice"
           >
-            <XIcon className="w-4 h-4" />
-          </a>
-          <a 
-            href="#instagram" 
-            onClick={(e) => { e.preventDefault(); openGatewayWithTab('invite'); }} 
-            className="hover:text-white transition-colors p-1"
-            title="Instagram"
+            <XIcon className="w-4 h-4 text-slate-400 hover:text-white" />
+          </button>
+          <button 
+            onClick={() => {
+              setSocialWarningPlatform('Instagram');
+              setSocialWarningOpen(true);
+            }} 
+            className="hover:text-white transition-colors p-1 cursor-pointer"
+            title="Instagram Notice"
           >
-            <InstagramIcon className="w-4 h-4" />
-          </a>
+            <InstagramIcon className="w-4 h-4 text-slate-400 hover:text-pink-400" />
+          </button>
         </div>
       </footer>
+
+      {/* Social Warning & Scam Advisory Modal */}
+      <SocialWarningModal
+        isOpen={socialWarningOpen}
+        onClose={() => setSocialWarningOpen(false)}
+        platform={socialWarningPlatform}
+      />
 
       {/* Modals & Subdomain Portals */}
       <BranchPortalModal
