@@ -156,10 +156,15 @@ export default function App() {
       {/* 1. REAL-TIME 3D CELESTIAL WEBGL ENGINE & COSMIC GALAXY PLATE               */}
       {/* ========================================================================= */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#030108]">
-        {/* Subtle Cosmic Spiral Galaxy Backdrop (from img 1) */}
+        {/* High-Fidelity 8K-styled Cosmic Spiral Galaxy Backdrop */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-screen scale-105"
-          style={{ backgroundImage: `url('/galaxy_backdrop.png')` }}
+          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-screen scale-[1.02]"
+          style={{ 
+            backgroundImage: `url('/galaxy_backdrop.png')`,
+            imageRendering: 'high-quality',
+            filter: 'contrast(1.2) saturate(1.1) brightness(1.1) drop-shadow(0 0 20px rgba(255,255,255,0.1))',
+            backgroundPosition: '50% 50%' 
+          }}
         />
 
         <CelestialMoonCanvas mousePos={mousePos} />

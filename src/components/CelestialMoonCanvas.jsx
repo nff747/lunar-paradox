@@ -41,7 +41,7 @@ export default function CelestialMoonCanvas({ mousePos = { x: 0.5, y: 0.5 } }) {
     moonTexture.colorSpace = THREE.SRGBColorSpace;
 
     // 3. Moon Mesh (3D Sphere)
-    const baseMoonY = 0.92;
+    const baseMoonY = 0.0;
     const moonRadius = 1.72;
     const moonGeo = new THREE.SphereGeometry(moonRadius, 64, 64);
     const moonMat = new THREE.MeshStandardMaterial({
@@ -178,23 +178,6 @@ export default function CelestialMoonCanvas({ mousePos = { x: 0.5, y: 0.5 } }) {
       corona.rotation.y += 0.0016;
       starField.rotation.y += 0.00015;
       starField.rotation.x += 0.0001;
-
-      // Mouse parallax dampening
-      const currentMouse = mousePosRef.current;
-      moon.rotation.x += (targetRotX - moon.rotation.x) * 0.05;
-      moon.position.x += ((currentMouse.x - 0.5) * 0.35 - moon.position.x) * 0.05;
-      moon.position.y += ((baseMoonY - (currentMouse.y - 0.5) * 0.35) - moon.position.y) * 0.05;
-
-      corona.position.copy(moon.position);
-      haloSprite.position.copy(moon.position);
-
-      // Dynamic light tracking
-      targetLightX = 4.5 + (currentMouse.x - 0.5) * 3.5;
-      targetLightY = 3.0 - (currentMouse.y - 0.5) * 3.5;
-      targetRotX = (currentMouse.y - 0.5) * 0.25;
-
-      keyLight.position.x += (targetLightX - keyLight.position.x) * 0.05;
-      keyLight.position.y += (targetLightY - keyLight.position.y) * 0.05;
 
       renderer.render(scene, camera);
     };
