@@ -204,6 +204,16 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
+.liquid-glass {
+  background: rgba(20, 20, 25, 0.72);
+  backdrop-filter: blur(40px) saturate(190%);
+  -webkit-backdrop-filter: blur(40px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 30px 90px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
 .apple-glass-subtle {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
