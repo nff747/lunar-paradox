@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d8b4fe' stroke-width='2'%3E%3Cpath d='M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z'/%3E%3C/svg%3E" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="darkreader-lock" />
+    <script>
+      // Clean up rogue service workers and caches from previous projects on port 3000
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          for (var r of registrations) {
+            r.unregister();
+          }
+        });
+      }
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (var name of names) {
+            caches.delete(name);
+          }
+        });
+      }
+    </script>
+    <title>LUNAR PARADOX — Step into the other side of light</title>
+    <meta name="description" content="Harness the void. Unlock unprecedented creative dimensions. The digital vanguard for the next generation." />
+    <!-- Google Fonts: Unbounded, Outfit, Plus Jakarta Sans, Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        color-scheme: dark !important;
+      }
+      img, video, picture, canvas {
+        filter: none !important;
+        -webkit-filter: none !important;
+      }
+      .font-display {
+        font-family: 'Unbounded', sans-serif;
+      }
+      .font-heading {
+        font-family: 'Outfit', sans-serif;
+      }
+      .font-body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .font-mono-accent {
+        font-family: 'Space Grotesk', monospace;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-CL_o8noV.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CZrdwMEp.css">
+  </head>
+  <body class="bg-[#030108] text-white selection:bg-purple-500/30 selection:text-purple-200">
+    <div id="root"></div>
+  </body>
+</html>
