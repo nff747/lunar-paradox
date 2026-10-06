@@ -8,6 +8,7 @@ import {
   Activity, 
   ExternalLink,
   ChevronRight,
+  ChevronDown,
   Terminal
 } from 'lucide-react';
 
@@ -108,33 +109,18 @@ export default function EcosystemLauncher({ onSelectBranch, onOpenCommandOS }) {
 
   return (
     <div className="relative" ref={containerRef}>
-      {/* 9-Dot Launcher Button (Google / Apple Style) */}
+      {/* Ecosystem Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`group relative p-2 md:px-3 md:py-1.5 rounded-full flex items-center gap-2 transition-all duration-200 border cursor-pointer ${
+        className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors border text-xs font-medium cursor-pointer ${
           isOpen
-            ? 'bg-white/15 border-white/40 text-white shadow-[0_0_20px_rgba(255,255,255,0.2)]'
-            : 'bg-white/[0.04] hover:bg-white/[0.09] border-white/10 hover:border-white/25 text-slate-300 hover:text-white'
+            ? 'bg-zinc-800 text-white border-zinc-700'
+            : 'bg-zinc-900/60 hover:bg-zinc-800/80 text-zinc-300 hover:text-white border-zinc-800 hover:border-zinc-700'
         }`}
-        title="Lunar Paradox Ecosystem (Branches)"
-        aria-label="Ecosystem Branches"
+        title="Lunar Paradox Ecosystem"
       >
-        {/* 3x3 Grid Dots */}
-        <div className="w-4 h-4 grid grid-cols-3 gap-[2.5px] items-center justify-center">
-          {[...Array(9)].map((_, i) => (
-            <span
-              key={i}
-              className={`w-[3px] h-[3px] rounded-full transition-all duration-300 ${
-                isOpen 
-                  ? 'bg-white scale-110 shadow-[0_0_4px_white]' 
-                  : 'bg-slate-300 group-hover:bg-white'
-              }`}
-            />
-          ))}
-        </div>
-        <span className="hidden xl:inline text-xs font-heading font-medium tracking-wide">
-          Ecosystem
-        </span>
+        <span>Ecosystem</span>
+        <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 transition-transform ${isOpen ? 'rotate-180 text-white' : ''}`} />
       </button>
 
       {/* Floating Apple VisionOS Glass Popover */}

@@ -1,15 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Search, 
-  Sparkles, 
-  Sliders, 
-  FlaskConical, 
-  ShieldCheck, 
   CornerDownLeft,
   X,
-  Compass,
-  Zap,
-  Activity
+  ArrowUpRight
 } from 'lucide-react';
 import { BRANCHES } from './EcosystemLauncher';
 
@@ -24,7 +18,7 @@ export default function UniversalNexusConsole({
   const inputRef = useRef(null);
   const consoleRef = useRef(null);
 
-  // Global '/' shortcut to focus search, just like Google & GitHub
+  // Global '/' shortcut to focus search, just like Linear & GitHub
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === '/' && document.activeElement !== inputRef.current) {
@@ -47,49 +41,45 @@ export default function UniversalNexusConsole({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Filtered ecosystem actions
+  // Professional Ecosystem Index
   const getFilteredResults = () => {
     if (!query.trim()) {
       return [
         {
           id: 'b-studio',
-          type: 'branch',
+          category: 'Platforms',
           title: 'Lunar Studio',
           subdomain: 'studio.lunarparadox.com',
-          subtitle: 'Launch real-time 3D spatial scenes & generative engine',
-          icon: Sparkles,
+          desc: 'Spatial 3D experiences, generative web systems, and creative engineering.',
           branchId: 'studio',
-          tag: 'Subdomain',
+          badge: 'Platform',
         },
         {
           id: 'b-forge',
-          type: 'branch',
+          category: 'Developer Tools',
           title: 'Lunar Forge',
           subdomain: 'forge.lunarparadox.com',
-          subtitle: 'Free color theory, WCAG contrast & token laboratory',
-          icon: Sliders,
+          desc: 'Color harmony matrix, WCAG 2.1 accessibility auditing, and token laboratory.',
           branchId: 'forge',
-          tag: 'Free Branch',
+          badge: 'Tools',
         },
         {
           id: 'b-labs',
-          type: 'branch',
+          category: 'Research',
           title: 'Lunar Labs',
           subdomain: 'labs.lunarparadox.com',
-          subtitle: 'Frontier neural models & experimental intelligence',
-          icon: FlaskConical,
+          desc: 'Frontier AI models, neural interfaces, and autonomous agent systems.',
           branchId: 'labs',
-          tag: 'R&D',
+          badge: 'R&D',
         },
         {
           id: 'b-vault',
-          type: 'branch',
+          category: 'Archive',
           title: 'Lunar Vault',
           subdomain: 'vault.lunarparadox.com',
-          subtitle: 'Cryptographic asset registry & genesis collection',
-          icon: ShieldCheck,
+          desc: 'Production case studies, verified benchmarks, and flagship releases.',
           branchId: 'vault',
-          tag: 'Registry',
+          badge: 'Registry',
         },
       ];
     }
@@ -97,86 +87,65 @@ export default function UniversalNexusConsole({
     const q = query.toLowerCase();
     const results = [];
 
-    // Match branches
     BRANCHES.forEach(b => {
       if (b.name.toLowerCase().includes(q) || b.subdomain.toLowerCase().includes(q) || b.desc.toLowerCase().includes(q)) {
         results.push({
           id: `branch-${b.id}`,
-          type: 'branch',
+          category: 'Platforms',
           title: b.name,
           subdomain: b.subdomain,
-          subtitle: b.desc,
-          icon: b.icon,
+          desc: b.desc,
           branchId: b.id,
-          tag: 'Subdomain',
+          badge: 'Platform',
         });
       }
     });
 
-    // Special quick actions
-    if ('contrast color palette forge token lab'.split(' ').some(k => q.includes(k))) {
+    if ('contrast color palette forge token wcag'.split(' ').some(k => q.includes(k))) {
       results.push({
-        id: 'action-contrast',
-        type: 'action',
-        title: 'Launch Color & Contrast Matrix',
+        id: 'tool-contrast',
+        category: 'Developer Tools',
+        title: 'Color & Contrast Validator',
         subdomain: 'forge.lunarparadox.com/contrast',
-        subtitle: 'Test APCA & WCAG AAA contrast ratio on dark OLED displays',
-        icon: Sliders,
+        desc: 'Audit APCA and WCAG AAA contrast ratios for OLED dark surfaces.',
         branchId: 'forge',
-        tag: 'Tool',
+        badge: 'Utility',
       });
     }
 
-    if ('quote budget pricing agency studio 3d estimate'.split(' ').some(k => q.includes(k))) {
+    if ('quote budget estimate pricing cost scope'.split(' ').some(k => q.includes(k))) {
       results.push({
-        id: 'action-quote',
-        type: 'action',
-        title: 'Compute Studio Production Scope',
-        subdomain: 'studio.lunarparadox.com/quote',
-        subtitle: 'Interactive real-time production & engineering cost estimator',
-        icon: Sparkles,
+        id: 'tool-quote',
+        category: 'Services',
+        title: 'Project Scope & Budget Estimator',
+        subdomain: 'studio.lunarparadox.com/estimator',
+        desc: 'Calculate enterprise timelines and architecture investments.',
         branchId: 'studio',
-        tag: 'Estimator',
+        badge: 'Estimator',
       });
     }
 
-    if ('status latency uptime nodes health ping telemetry'.split(' ').some(k => q.includes(k))) {
+    if ('status latency uptime health ping'.split(' ').some(k => q.includes(k))) {
       results.push({
-        id: 'action-status',
-        type: 'action',
-        title: 'Network Telemetry: 42 Nodes Synchronized',
+        id: 'tool-status',
+        category: 'Infrastructure',
+        title: 'Global Edge Status',
         subdomain: 'status.lunarparadox.com',
-        subtitle: 'Dimension 00 consensus 98.4% // Edge latency 12ms',
-        icon: Activity,
+        desc: 'Global node uptime: 99.98% across all regions.',
         branchId: 'status',
-        tag: 'Telemetry',
+        badge: 'Status',
       });
     }
 
-    if ('login pass invite access key gateway auth'.split(' ').some(k => q.includes(k))) {
-      results.push({
-        id: 'action-gateway',
-        type: 'gateway',
-        title: 'Authentication & Invitation Gateway',
-        subdomain: 'auth.lunarparadox.com',
-        subtitle: 'Enter invitation key or wire direct client request',
-        icon: Zap,
-        action: () => onOpenGateway('invite'),
-        tag: 'Auth',
-      });
-    }
-
-    // Fallback neural matrix query
     if (results.length === 0) {
       results.push({
-        id: 'query-matrix',
-        type: 'matrix',
-        title: `Query Neural Matrix for "${query}"`,
-        subdomain: 'labs.lunarparadox.com/neural',
-        subtitle: 'Execute zero-shot synthesis across Lunar Paradox knowledge graph',
-        icon: Compass,
-        branchId: 'labs',
-        tag: 'AI Synthesis',
+        id: 'query-search',
+        category: 'Search',
+        title: `Search documentation for "${query}"`,
+        subdomain: 'docs.lunarparadox.com',
+        desc: 'Search API specifications, architecture guides, and components.',
+        branchId: 'docs',
+        badge: 'Docs',
       });
     }
 
@@ -185,7 +154,7 @@ export default function UniversalNexusConsole({
 
   const results = getFilteredResults();
 
-  // Keyboard navigation inside results
+  // Keyboard navigation
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -196,11 +165,7 @@ export default function UniversalNexusConsole({
     } else if (e.key === 'Enter') {
       e.preventDefault();
       const selected = results[selectedIndex];
-      if (selected) {
-        handleExecuteResult(selected);
-      } else {
-        handleFeelingParadoxical();
-      }
+      if (selected) handleExecuteResult(selected);
     } else if (e.key === 'Escape') {
       inputRef.current?.blur();
       setIsFocused(false);
@@ -209,46 +174,31 @@ export default function UniversalNexusConsole({
 
   const handleExecuteResult = (item) => {
     setIsFocused(false);
-    if (item.action) {
-      item.action();
-    } else if (item.branchId) {
+    if (item.branchId) {
       const branch = BRANCHES.find(b => b.id === item.branchId) || BRANCHES[0];
       onSelectBranch(branch);
     }
   };
 
-  // "I'm Feeling Paradoxical" (Google's "I'm Feeling Lucky" homage)
-  const handleFeelingParadoxical = () => {
-    setIsFocused(false);
-    const randomBranch = BRANCHES[Math.floor(Math.random() * 4)];
-    onSelectBranch(randomBranch);
-  };
-
   return (
-    <div className="w-full max-w-2xl mx-auto flex flex-col items-center relative z-40 px-2" ref={consoleRef}>
+    <div className="w-full max-w-xl mx-auto flex flex-col items-center relative z-40 px-3" ref={consoleRef}>
       
       {/* ========================================================================= */}
-      {/* 1. THE STEM OMNIBAR (APPLE VISIONOS CONTAINER)                            */}
+      {/* PROFESSIONAL MINIMALIST SEARCH BAR (LINEAR / APPLE STYLE)                 */}
       {/* ========================================================================= */}
       <div 
-        className={`relative w-full rounded-2xl md:rounded-3xl transition-all duration-300 ${
+        className={`w-full transition-all duration-200 ${
           isFocused
-            ? 'bg-[#0b0a12] border-sky-400/50 shadow-[0_0_50px_rgba(56,189,248,0.25),0_20px_50px_rgba(0,0,0,0.95)]'
-            : 'bg-[#100f18]/80 hover:bg-[#13121f]/95 border-white/[0.14] hover:border-white/[0.25] shadow-[0_10px_35px_rgba(0,0,0,0.7)]'
-        } border`}
+            ? 'rounded-t-xl bg-[#0e1015] border-x border-t border-zinc-700 shadow-2xl'
+            : 'rounded-xl bg-[#0c0d11]/90 hover:bg-[#111317] border border-zinc-800 hover:border-zinc-700 shadow-lg'
+        }`}
       >
-        <div className="flex items-center px-4 md:px-5 py-3 md:py-3.5 gap-3">
+        <div className="flex items-center px-4 py-3 gap-3">
           
-          {/* Leading Icon */}
-          <div className="text-slate-400 shrink-0">
-            {isFocused ? (
-              <Sparkles className="w-4 h-4 text-sky-400 animate-pulse" />
-            ) : (
-              <Search className="w-4 h-4 text-slate-400" />
-            )}
-          </div>
+          {/* Minimalist Search Icon */}
+          <Search className="w-4 h-4 text-zinc-500 shrink-0" />
 
-          {/* Search Input */}
+          {/* Clean Input */}
           <input
             ref={inputRef}
             type="text"
@@ -259,29 +209,26 @@ export default function UniversalNexusConsole({
             }}
             onFocus={() => setIsFocused(true)}
             onKeyDown={handleKeyDown}
-            placeholder="Search ecosystem, launch branches, or type a command... (Press /)"
-            className="w-full bg-transparent text-sm md:text-base text-white placeholder-slate-500 font-body outline-none tracking-wide"
+            placeholder="Search ecosystem, platforms, or tools... (Press /)"
+            className="w-full bg-transparent text-sm text-zinc-100 placeholder-zinc-500 font-normal outline-none tracking-normal"
           />
 
-          {/* Clear button if text entered */}
+          {/* Clear button */}
           {query && (
             <button
               onClick={() => {
                 setQuery('');
                 inputRef.current?.focus();
               }}
-              className="p-1 text-slate-400 hover:text-white rounded-full hover:bg-white/10 transition-colors"
+              className="p-1 text-zinc-500 hover:text-zinc-200 rounded transition-colors"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           )}
 
-          {/* Shortcut Keys Badge */}
-          <div className="hidden sm:flex items-center gap-1.5 shrink-0">
-            <kbd className="px-2 py-0.5 text-[10px] font-mono text-slate-400 bg-white/[0.06] border border-white/10 rounded-md">
-              /
-            </kbd>
-            <kbd className="px-2 py-0.5 text-[10px] font-mono text-slate-400 bg-white/[0.06] border border-white/10 rounded-md">
+          {/* Clean Keyboard Shortcut */}
+          <div className="hidden sm:flex items-center gap-1 shrink-0">
+            <kbd className="px-1.5 py-0.5 text-[10px] font-mono text-zinc-400 bg-zinc-800/80 border border-zinc-700/60 rounded">
               ⌘K
             </kbd>
           </div>
@@ -289,89 +236,55 @@ export default function UniversalNexusConsole({
         </div>
 
         {/* ========================================================================= */}
-        {/* 2. AUTOCOMPLETE RESULTS (INTEGRATED INSIDE THE BOX, 100% OPAQUE)          */}
+        {/* CLEAN INTEGRATED RESULTS (ZERO BLEED-THROUGH, PURE SOLID ZINC TONES)      */}
         {/* ========================================================================= */}
         {isFocused && (
-          <div className="border-t border-white/[0.08] p-2.5 bg-[#0b0a12] rounded-b-2xl md:rounded-b-3xl">
+          <div className="border-t border-zinc-800 bg-[#0e1015] rounded-b-xl overflow-hidden">
             
-            <div className="px-3 py-1.5 text-[10px] font-mono text-[#86868b] uppercase tracking-wider flex items-center justify-between">
-              <span>{query ? 'Matching Ecosystem Nodes' : 'Ecosystem Branches & Quick Launch'}</span>
-              <span className="hidden sm:inline">Use ↑↓ keys • ↵ to select</span>
+            <div className="px-4 py-2 text-[10px] font-mono text-zinc-500 uppercase tracking-wider flex items-center justify-between border-b border-zinc-800/60">
+              <span>{query ? 'Results' : 'Suggested Platforms'}</span>
+              <span>↑↓ Navigate • ↵ Select • Esc Close</span>
             </div>
 
-            <div className="flex flex-col gap-1 mt-1 max-h-56 sm:max-h-64 overflow-y-auto">
+            <div className="flex flex-col py-1 max-h-60 overflow-y-auto">
               {results.map((item, idx) => {
-                const Icon = item.icon;
                 const isSelected = idx === selectedIndex;
                 return (
                   <div
                     key={item.id}
                     onMouseDown={() => handleExecuteResult(item)}
                     onMouseEnter={() => setSelectedIndex(idx)}
-                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl cursor-pointer transition-all duration-150 ${
+                    className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
                       isSelected
-                        ? 'bg-white/[0.12] border border-white/[0.2] text-white shadow-[0_0_15px_rgba(255,255,255,0.06)]'
-                        : 'text-slate-300 hover:bg-white/[0.06] border border-transparent'
+                        ? 'bg-zinc-800/80 text-white'
+                        : 'text-zinc-300 hover:bg-zinc-800/40'
                     }`}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                        isSelected ? 'bg-sky-500/25 text-sky-300' : 'bg-white/[0.06] text-slate-400'
-                      }`}>
-                        <Icon className="w-3.5 h-3.5" />
+                    <div className="min-w-0 pr-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-medium text-zinc-100">
+                          {item.title}
+                        </span>
+                        <span className="text-[11px] font-mono text-zinc-500">
+                          {item.subdomain}
+                        </span>
                       </div>
-                      <div className="truncate">
-                        <div className="text-xs font-heading font-semibold text-white flex items-center gap-2">
-                          <span>{item.title}</span>
-                          <span className="text-[10px] font-mono text-slate-400 font-normal">
-                            ({item.subdomain})
-                          </span>
-                        </div>
-                        <div className="text-[11px] text-slate-400 truncate">
-                          {item.subtitle}
-                        </div>
+                      <div className="text-[11px] text-zinc-400 truncate mt-0.5">
+                        {item.desc}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 shrink-0 ml-3">
-                      <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.06] text-slate-400 border border-white/[0.08]">
-                        {item.tag}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700/50">
+                        {item.badge}
                       </span>
                       {isSelected && (
-                        <CornerDownLeft className="w-3 h-3 text-sky-400 animate-pulse" />
+                        <CornerDownLeft className="w-3.5 h-3.5 text-zinc-400" />
                       )}
                     </div>
                   </div>
                 );
               })}
-            </div>
-
-            {/* Bottom Actions inside Autocomplete Box */}
-            <div className="mt-2.5 pt-2.5 border-t border-white/[0.08] flex items-center justify-between px-2 text-[10px] font-mono">
-              <div className="flex items-center gap-2">
-                <button
-                  onMouseDown={() => {
-                    const match = results[0];
-                    if (match) handleExecuteResult(match);
-                  }}
-                  className="px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.15] text-white flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <Search className="w-3 h-3 text-slate-400" />
-                  <span>Execute Search</span>
-                </button>
-                <button
-                  onMouseDown={handleFeelingParadoxical}
-                  className="px-3 py-1 rounded-full bg-sky-500/15 hover:bg-sky-500/25 text-sky-300 flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <Sparkles className="w-3 h-3 text-sky-400" />
-                  <span>Feeling Paradoxical</span>
-                </button>
-              </div>
-
-              <div className="text-[#86868b] flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-white/10 text-[9px]">ESC</kbd>
-                <span>to close</span>
-              </div>
             </div>
 
           </div>
@@ -380,54 +293,22 @@ export default function UniversalNexusConsole({
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. GOOGLE-STYLE DUAL ACTION BUTTONS (ONLY VISIBLE WHEN NOT SEARCHING)     */}
+      {/* CLEAN SUBDOMAIN SHORTCUTS (NO PILL OVERLOAD, MINIMALIST TEXT LINKS)        */}
       {/* ========================================================================= */}
       {!isFocused && (
-        <>
-          <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
-            
-            {/* Button 1: Nexus Search */}
+        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-3 text-xs text-zinc-400">
+          <span className="text-zinc-600 font-mono text-[11px]">Branches:</span>
+          {BRANCHES.slice(0, 4).map((b) => (
             <button
-              onClick={() => {
-                inputRef.current?.focus();
-                setIsFocused(true);
-              }}
-              className="px-5 py-2.5 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 hover:border-white/25 text-xs font-heading font-medium text-slate-200 hover:text-white transition-all cursor-pointer shadow-[0_2px_10px_rgba(0,0,0,0.4)] flex items-center gap-2"
+              key={b.id}
+              onClick={() => onSelectBranch(b)}
+              className="text-zinc-400 hover:text-white transition-colors cursor-pointer flex items-center gap-1 font-medium text-xs"
             >
-              <Search className="w-3.5 h-3.5 text-slate-400" />
-              <span>Nexus Search</span>
+              <span>{b.name.replace('Lunar ', '')}</span>
+              <span className="text-[10px] text-zinc-600 font-mono">↗</span>
             </button>
-
-            {/* Button 2: I'm Feeling Paradoxical ✦ */}
-            <button
-              onClick={handleFeelingParadoxical}
-              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-sky-500/15 to-purple-500/15 hover:from-sky-500/25 hover:to-purple-500/25 border border-sky-400/20 hover:border-sky-400/40 text-xs font-heading font-medium text-sky-200 hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(56,189,248,0.1)] flex items-center gap-2"
-            >
-              <Sparkles className="w-3.5 h-3.5 text-sky-300 animate-spin" style={{ animationDuration: '6s' }} />
-              <span>I'm Feeling Paradoxical ✦</span>
-            </button>
-
-          </div>
-
-          {/* 4. QUICK SUBDOMAIN BRANCH PILLS */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-4 pt-1">
-            <span className="text-[10px] font-mono text-slate-400 font-medium uppercase mr-1 tracking-wider">
-              Direct Branches:
-            </span>
-            
-            {BRANCHES.slice(0, 4).map((b) => (
-              <button
-                key={b.id}
-                onClick={() => onSelectBranch(b)}
-                className="px-3 py-1 rounded-full bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.07] hover:border-white/[0.2] text-[11px] font-body text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-white" />
-                <span>{b.name.replace('Lunar ', '')}</span>
-                <span className="text-[9px] text-slate-400 font-mono">↗</span>
-              </button>
-            ))}
-          </div>
-        </>
+          ))}
+        </div>
       )}
 
     </div>

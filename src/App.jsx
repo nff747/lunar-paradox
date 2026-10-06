@@ -153,45 +153,44 @@ export default function App() {
     <div className="relative min-h-screen w-full bg-[#030108] text-slate-100 overflow-x-hidden md:overflow-hidden font-body flex flex-col justify-between select-none">
       
       {/* ========================================================================= */}
-      {/* 1. REAL-TIME 3D CELESTIAL WEBGL ENGINE (THREE.JS 60FPS ANIMATED MOON)      */}
+      {/* 1. REAL-TIME 3D CELESTIAL WEBGL ENGINE & COSMIC GALAXY PLATE               */}
       {/* ========================================================================= */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#030108]">
+        {/* Subtle Cosmic Spiral Galaxy Backdrop (from img 1) */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-screen scale-105"
+          style={{ backgroundImage: `url('/galaxy_backdrop.png')` }}
+        />
+
         <CelestialMoonCanvas mousePos={mousePos} />
         
-        {/* Subtle cinematic edge vignette - Center is 100% luminous & unobstructed */}
+        {/* Deep space radial vignette */}
         <div 
           className="absolute inset-0 pointer-events-none" 
           style={{ 
-            background: 'radial-gradient(circle at 50% 50%, transparent 0%, transparent 60%, rgba(3,1,8,0.65) 85%, #030108 100%)' 
+            background: 'radial-gradient(circle at 50% 50%, transparent 25%, rgba(3,1,8,0.7) 65%, #030108 100%)' 
           }} 
         />
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. HEADER NAVIGATION                                                      */}
+      {/* 2. HEADER NAVIGATION                                                      */}
       {/* ========================================================================= */}
       <header className="relative z-30 w-full px-6 md:px-12 pt-6 md:pt-7 pb-2 flex items-center justify-between gap-4">
-        {/* Brand with Telemetry Badge */}
+        {/* Brand */}
         <div className="cursor-pointer group flex items-center gap-3 shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-[0.16em] font-display text-white drop-shadow-[0_0_25px_rgba(255,255,255,0.45)]">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-[0.14em] font-display text-white">
               LUNAR PARADOX
             </h1>
-            <p className="text-[11px] md:text-sm text-slate-300 font-body font-normal tracking-wide mt-0.5">
-              Step into the other side of light
+            <p className="text-[11px] text-zinc-400 font-body tracking-wide mt-0.5">
+              Autonomous Design & Spatial Engineering
             </p>
-          </div>
-          
-          <div className="hidden 2xl:flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-950/40 border border-purple-500/30 text-[10px] font-mono-accent text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-            <span>NODE // ACTIVE</span>
-            <span className="text-purple-400/40">|</span>
-            <span>CYCLE: 89.4%</span>
           </div>
         </div>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-xs md:text-sm tracking-widest font-heading font-semibold text-slate-300">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-medium tracking-wide text-zinc-300">
           <button 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
             className="hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-white/40 pb-0.5 text-white"
@@ -320,52 +319,42 @@ export default function App() {
       )}
 
       {/* ========================================================================= */}
-      {/* 4. THE STEM CORE: CELESTIAL VOID & UNIVERSAL NEXUS CONSOLE                */}
+      {/* 3. THE STEM CORE: CELESTIAL VOID & PROFESSIONAL SEARCH CONSOLE            */}
       {/* ========================================================================= */}
-      <main className="relative z-20 flex-1 flex flex-col justify-end items-center px-4 md:px-12 max-w-7xl mx-auto w-full pb-6 md:pb-10">
+      <main className="relative z-20 flex-1 flex flex-col justify-end items-center px-4 md:px-12 max-w-7xl mx-auto w-full pb-8 md:pb-12">
         
-        {/* Open celestial void showcasing radiant 3D animated Three.js moon */}
-        <div className="flex-1 w-full min-h-[300px] md:min-h-[380px] pointer-events-none" />
+        {/* Open celestial void showcasing radiant 3D animated Three.js moon & galaxy */}
+        <div className="flex-1 w-full min-h-[320px] md:min-h-[400px] pointer-events-none" />
 
-        {/* Minimalist Apple Pro Telemetry Strip */}
-        <div className="flex items-center gap-3 sm:gap-6 text-[10px] sm:text-xs font-mono text-[#86868b] tracking-wider uppercase mb-5 text-center px-4 py-1.5 rounded-full bg-[#121216]/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
-          <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#30d158] animate-pulse" />
-            <span className="text-white font-medium">{activeUsers.toLocaleString()}</span> ENTITIES IN VOID
-          </span>
-          <span className="text-white/20">•</span>
-          <span className="hidden sm:inline text-[#86868b]">
-            DIMENSION 00 // ACTIVE
-          </span>
-          <span className="hidden sm:inline text-white/20">•</span>
-          <span className="text-[#86868b]">
-            <span className="text-white font-medium">98.4%</span> CONSENSUS
-          </span>
-        </div>
-
-        {/* GOOGLE-STYLE CENTRAL STEM SEARCH & ACTION MATRIX */}
+        {/* MINIMALIST PROFESSIONAL SEARCH CONSOLE (LINEAR / APPLE STYLE) */}
         <UniversalNexusConsole
           onSelectBranch={(branch) => setSelectedBranchForPortal(branch)}
           onEnterParadox={() => handleEnterParadox('studio')}
           onOpenGateway={(tab) => openGatewayWithTab(tab)}
         />
 
-        {/* Subtext Protocol Info */}
-        <div className="flex items-center gap-2 mt-4 text-[9px] md:text-[10px] font-mono text-[#86868b] tracking-widest text-center">
-          <span className="w-1 h-1 rounded-full bg-white/40" />
-          <span>STEM PLATFORM // DIRECT SUBDOMAIN MESH v2.6 // PRESS ⌘K ANYWHERE</span>
-        </div>
-
       </main>
 
       {/* ========================================================================= */}
-      {/* 5. FOOTER                                                                 */}
+      {/* 4. FOOTER (CLEAN, PROFESSIONAL, VERIFIED CHANNELS & LEGAL)                */}
       {/* ========================================================================= */}
-      <footer className="relative z-30 w-full px-6 md:px-14 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <footer className="relative z-30 w-full px-6 md:px-14 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
         <div className="flex items-center gap-3">
-          <span>© 2026 Lunar Paradox</span>
-          <span className="text-white/20">•</span>
-          <span className="text-[10px] font-mono text-slate-500">Node: US-EAST-01 (Active)</span>
+          <span>© 2026 Lunar Paradox, Inc.</span>
+          <span className="text-zinc-700">•</span>
+          <button 
+            onClick={() => alert("Lunar Paradox Terms of Service:\n\n1. Platform Usage: By accessing lunarparadox.com and associated subdomains, you agree to comply with our platform terms.\n2. Intellectual Property: 3D models, shader code, and design tokens are proprietary assets of Lunar Paradox.\n3. Enterprise Governance: Direct wire requests are subject to mutual service agreement.")}
+            className="hover:text-zinc-300 transition-colors cursor-pointer"
+          >
+            Terms
+          </button>
+          <span className="text-zinc-700">•</span>
+          <button 
+            onClick={() => alert("Lunar Paradox Privacy Policy:\n\n1. Zero Tracking: We do not track or sell user personal information.\n2. Local Audio & UI: Settings are persisted locally on your device.\n3. Security: All client submissions are protected by TLS 1.3 encryption.")}
+            className="hover:text-zinc-300 transition-colors cursor-pointer"
+          >
+            Privacy
+          </button>
         </div>
 
         {/* Social Links */}
