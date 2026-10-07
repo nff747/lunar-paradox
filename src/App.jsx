@@ -44,6 +44,71 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Discord-style Desktop App lockdown (No Right Click / Inspect, No Zoom, No Double-Tap Zoom)
+  useEffect(() => {
+    // 1. Prevent Right-Click Context Menu (Inspect Element)
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+      return false;
+    };
+
+    // 2. Prevent Mouse Wheel / Trackpad Pinch Zoom
+    const handleWheel = (e) => {
+      if (e.ctrlKey || e.metaKey) {
+        e.preventDefault();
+      }
+    };
+
+    // 3. Prevent Trackpad Gesture Pinch Zoom (Safari / WebKit)
+    const handleGesture = (e) => {
+      e.preventDefault();
+    };
+
+    // 4. Prevent Double-Tap Zoom on Touch Devices & Trackpads
+    let lastTouchEnd = 0;
+    const handleTouchEnd = (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    };
+
+    // 5. Prevent DevTools & Browser Zoom Keyboard Shortcuts (F12, Ctrl/Cmd + Shift + I/J/C, Ctrl/Cmd + U, Ctrl/Cmd + +/-/0/=)
+    const handleKeyDownLock = (e) => {
+      // Zoom shortcuts: Ctrl/Cmd + Plus, Minus, Equal, Zero
+      if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '0', '_'].includes(e.key)) {
+        e.preventDefault();
+      }
+      // Inspect / View Source shortcuts: F12, Ctrl+Shift+I/J/C, Ctrl+U
+      if (
+        e.key === 'F12' ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].includes(e.key)) ||
+        ((e.ctrlKey || e.metaKey) && ['u', 'U'].includes(e.key))
+      ) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('contextmenu', handleContextMenu, { capture: true });
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('gesturestart', handleGesture);
+    window.addEventListener('gesturechange', handleGesture);
+    window.addEventListener('gestureend', handleGesture);
+    window.addEventListener('touchend', handleTouchEnd, { passive: false });
+    window.addEventListener('keydown', handleKeyDownLock);
+
+    return () => {
+      window.removeEventListener('contextmenu', handleContextMenu, { capture: true });
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('gesturestart', handleGesture);
+      window.removeEventListener('gesturechange', handleGesture);
+      window.removeEventListener('gestureend', handleGesture);
+      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('keydown', handleKeyDownLock);
+    };
+  }, []);
+
   const toggleSound = () => {
     const active = audioManager.toggleMute();
     setIsAudioActive(active);
@@ -72,14 +137,14 @@ export default function App() {
     <div className="relative min-h-screen w-full bg-[#030108] text-slate-100 overflow-x-hidden md:overflow-hidden font-body flex flex-col justify-between select-none">
       
       {/* ========================================================================= */}
-      {/* 1. REAL-TIME 3D CELESTIAL WEBGL ENGINE & HIGH-RES NO-COPYRIGHT GALAXY      */}
+      {/* 1. REAL-TIME 3D CELESTIAL WEBGL ENGINE & COSMIC GALAXY PLATE               */}
       {/* ========================================================================= */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#030108]">
-        {/* High-Resolution Pristine Copyright-Free Recreation of Reference Galaxy */}
+        {/* Subtle Cosmic Spiral Galaxy Backdrop */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-45 mix-blend-screen scale-105"
+          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-screen scale-105"
           style={{ 
-            backgroundImage: `url('/galaxy_backdrop_hd.jpg')`,
+            backgroundImage: `url('/galaxy_backdrop.png')`,
             backgroundPosition: '50% 50%',
             filter: 'contrast(1.2) brightness(1.1) saturate(1.1)'
           }}
@@ -107,9 +172,6 @@ export default function App() {
             <h1 className="text-xl sm:text-2xl font-bold tracking-[0.14em] font-display text-white">
               LUNAR PARADOX
             </h1>
-            <p className="text-[11px] text-zinc-400 font-body tracking-wide mt-0.5">
-              Autonomous Design & Spatial Engineering
-            </p>
           </div>
         </div>
 
@@ -315,7 +377,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Legal Modal (No browser alerts) */}
+      {/* Legal Modal (Proper Terms & Privacy) */}
       <LegalModal
         isOpen={legalModalOpen}
         onClose={() => setLegalModalOpen(false)}

@@ -24,23 +24,38 @@ export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' })
 
   if (!isOpen) return null;
 
-  const handleVerifyInvite = (e) => {
+  const handleVerifyInvite = async (e) => {
     e.preventDefault();
     if (!inviteCode.trim()) return;
 
-    // Trigger audio celebration
-    audioManager.playUnlockSound();
+    try {
+      const res = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ passcode: inviteCode })
+      });
+      const data = await res.json();
 
-    // Trigger cosmic confetti
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#c084fc', '#ffffff', '#e9d5ff', '#818cf8', '#38bdf8'],
-    });
-
-    setIsUnlocked(true);
-    setUnlockMessage(`INVITATION VALIDATED: Welcome to Lunar Paradox, Operative.`);
+      if (res.ok && data.success) {
+        audioManager.playUnlockSound();
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#c084fc', '#ffffff', '#e9d5ff', '#818cf8', '#38bdf8'],
+        });
+        setIsUnlocked(true);
+        setUnlockMessage(`ACCESS GRANTED: ${data.tier} (${data.sessionToken})`);
+        if (data.sessionToken) setTicketId(data.sessionToken);
+      } else {
+        alert(data.error || 'Invalid passcode. Valid codes include: GENESIS-2026, PARADOX-VIP, STUDIO-DIRECT');
+      }
+    } catch (err) {
+      console.error('Auth request failed:', err);
+      // Fallback
+      setIsUnlocked(true);
+      setUnlockMessage('PROVISIONAL ACCESS: Operative Authenticated');
+    }
   };
 
   const handleClientSubmit = async (e) => {
@@ -49,17 +64,22 @@ export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' })
     audioManager.playChime();
 
     try {
-      const res = await fetch('/api/lead', {
+      const res = await fetch('/api/inquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(clientForm)
+        body: JSON.stringify({
+          name: clientForm.name,
+          contact: clientForm.contact,
+          sector: clientForm.service,
+          budget: clientForm.budget,
+          scope: clientForm.details,
+        })
       });
       if (res.ok) {
         const json = await res.json();
-        if (json.ticketId) setTicketId(json.ticketId);
+        if (json.wireId) setTicketId(json.wireId);
       }
     } catch (err) {
-      // In local dev without Cloudflare Worker proxy, fallback gracefully
       console.log('Lead queued locally:', clientForm);
     } finally {
       setIsSubmitting(false);
