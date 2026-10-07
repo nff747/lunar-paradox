@@ -75,13 +75,13 @@ export default function App() {
       {/* 1. REAL-TIME 3D CELESTIAL WEBGL ENGINE & HIGH-RES NO-COPYRIGHT GALAXY      */}
       {/* ========================================================================= */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#030108]">
-        {/* High-Resolution Pristine Copyright-Free Cosmic Spiral Galaxy Plate */}
+        {/* High-Resolution Pristine Copyright-Free Recreation of Reference Galaxy */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-screen scale-105"
+          className="absolute inset-0 bg-cover bg-center opacity-45 mix-blend-screen scale-105"
           style={{ 
-            backgroundImage: `url('/cosmic_galaxy_hd.jpg')`,
+            backgroundImage: `url('/galaxy_backdrop_hd.jpg')`,
             backgroundPosition: '50% 50%',
-            filter: 'contrast(1.15) brightness(1.05)'
+            filter: 'contrast(1.2) brightness(1.1) saturate(1.1)'
           }}
         />
 

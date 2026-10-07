@@ -99,35 +99,7 @@ export default function CelestialMoonCanvas() {
     haloSprite.position.y = baseMoonY;
     scene.add(haloSprite);
 
-    // 6. 3D Particle Starfield & Cosmic Dust
-    const starsCount = 1200;
-    const starsGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(starsCount * 3);
-    const colors = new Float32Array(starsCount * 3);
-
-    for (let i = 0; i < starsCount * 3; i += 3) {
-      positions[i] = (Math.random() - 0.5) * 45;
-      positions[i + 1] = (Math.random() - 0.5) * 35;
-      positions[i + 2] = -5 + (Math.random() - 0.5) * 30;
-
-      const shade = 0.75 + Math.random() * 0.25;
-      colors[i] = shade;
-      colors[i + 1] = shade * (0.9 + Math.random() * 0.1);
-      colors[i + 2] = 1.0;
-    }
-    starsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    starsGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const starsMat = new THREE.PointsMaterial({
-      size: 0.07,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.75,
-    });
-    const starField = new THREE.Points(starsGeo, starsMat);
-    scene.add(starField);
-
-    // 7. Celestial Lighting (Signature Cyan Rim + Key Light)
+    // 6. Celestial Lighting (Signature Cyan Rim + Key Light)
     const ambientLight = new THREE.AmbientLight(0x404565, 1.5);
     scene.add(ambientLight);
 
@@ -140,7 +112,7 @@ export default function CelestialMoonCanvas() {
     rimLight.position.set(-5.0, -2.5, -2.0);
     scene.add(rimLight);
 
-    // 8. Animation & Resize Handling
+    // 7. Animation & Resize Handling
     const handleResize = () => {
       if (!mount) return;
       const width = mount.clientWidth;
@@ -164,11 +136,9 @@ export default function CelestialMoonCanvas() {
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      // Real-time 60fps celestial spin (zero mouse movement)
+      // Smooth real-time axial spin
       moon.rotation.y += 0.0016;
       corona.rotation.y += 0.0016;
-      starField.rotation.y += 0.00015;
-      starField.rotation.x += 0.0001;
 
       renderer.render(scene, camera);
     };
@@ -182,8 +152,6 @@ export default function CelestialMoonCanvas() {
       moonMat.dispose();
       coronaGeo.dispose();
       coronaMat.dispose();
-      starsGeo.dispose();
-      starsMat.dispose();
       if (mount && renderer.domElement) {
         mount.removeChild(renderer.domElement);
       }
