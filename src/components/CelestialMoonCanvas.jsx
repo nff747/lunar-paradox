@@ -34,9 +34,9 @@ export default function CelestialMoonCanvas() {
     const moonTexture = textureLoader.load('/textures/moon_1024.jpg');
     moonTexture.colorSpace = THREE.SRGBColorSpace;
 
-    // 3. Moon Mesh (3D Sphere) — calibrated to fully cover video moon
-    const baseMoonY = 0.55;
-    const moonRadius = 2.02;
+    // 3. Moon Mesh (3D Sphere) — shrunk slightly to float elegantly in the galaxy core
+    const baseMoonY = 0.0;
+    const moonRadius = 1.48; // Elegantly proportioned
     const moonGeo = new THREE.SphereGeometry(moonRadius, 64, 64);
     const moonMat = new THREE.MeshStandardMaterial({
       map: moonTexture,
@@ -49,8 +49,8 @@ export default function CelestialMoonCanvas() {
     moon.position.y = baseMoonY;
     scene.add(moon);
 
-    // 4. Subtle Rim Shader (blends seamlessly with video's natural glow)
-    const coronaGeo = new THREE.SphereGeometry(moonRadius * 1.015, 48, 48);
+    // 4. Atmospheric Corona Glow Shader (Fresnel Rim)
+    const coronaGeo = new THREE.SphereGeometry(moonRadius * 1.055, 48, 48);
     const coronaMat = new THREE.ShaderMaterial({
       vertexShader: `
         varying vec3 vNormal;
@@ -62,8 +62,8 @@ export default function CelestialMoonCanvas() {
       fragmentShader: `
         varying vec3 vNormal;
         void main() {
-          float intensity = pow(0.55 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.5);
-          gl_FragColor = vec4(0.75, 0.82, 0.95, 1.0) * intensity * 0.45;
+          float intensity = pow(0.68 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+          gl_FragColor = vec4(0.82, 0.90, 1.0, 1.0) * intensity * 1.3;
         }
       `,
       blending: THREE.AdditiveBlending,
@@ -74,19 +74,73 @@ export default function CelestialMoonCanvas() {
     corona.position.y = baseMoonY;
     scene.add(corona);
 
-    // 6. Lighting (warm, cinematic)
-    const ambientLight = new THREE.AmbientLight(0x404050, 1.2);
+    // 5. Outer Ethereal Halo (Billboard Sprite)
+    const haloCanvas = document.createElement('canvas');
+    haloCanvas.width = 256;
+    haloCanvas.height = 256;
+    const hCtx = haloCanvas.getContext('2d');
+    const hGrad = hCtx.createRadialGradient(128, 128, 30, 128, 128, 128);
+    hGrad.addColorStop(0, 'rgba(215, 230, 255, 0.55)');
+    hGrad.addColorStop(0.35, 'rgba(165, 195, 255, 0.18)');
+    hGrad.addColorStop(0.7, 'rgba(130, 150, 245, 0.04)');
+    hGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    hCtx.fillStyle = hGrad;
+    hCtx.fillRect(0, 0, 256, 256);
+
+    const haloTexture = new THREE.CanvasTexture(haloCanvas);
+    const haloMaterial = new THREE.SpriteMaterial({
+      map: haloTexture,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      opacity: 0.75,
+    });
+    const haloSprite = new THREE.Sprite(haloMaterial);
+    haloSprite.scale.set(5.8, 5.8, 1.0);
+    haloSprite.position.y = baseMoonY;
+    scene.add(haloSprite);
+
+    // 6. 3D Particle Starfield & Cosmic Dust
+    const starsCount = 1200;
+    const starsGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(starsCount * 3);
+    const colors = new Float32Array(starsCount * 3);
+
+    for (let i = 0; i < starsCount * 3; i += 3) {
+      positions[i] = (Math.random() - 0.5) * 45;
+      positions[i + 1] = (Math.random() - 0.5) * 35;
+      positions[i + 2] = -5 + (Math.random() - 0.5) * 30;
+
+      const shade = 0.75 + Math.random() * 0.25;
+      colors[i] = shade;
+      colors[i + 1] = shade * (0.9 + Math.random() * 0.1);
+      colors[i + 2] = 1.0;
+    }
+    starsGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    starsGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const starsMat = new THREE.PointsMaterial({
+      size: 0.07,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.75,
+    });
+    const starField = new THREE.Points(starsGeo, starsMat);
+    scene.add(starField);
+
+    // 7. Celestial Lighting (Signature Cyan Rim + Key Light)
+    const ambientLight = new THREE.AmbientLight(0x404565, 1.5);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xfff8f0, 3.0);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
     keyLight.position.set(4.5, 3.0, 5.0);
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x8090a0, 1.2);
+    // Signature cyan rim light on the lower left
+    const rimLight = new THREE.DirectionalLight(0x80d8ff, 2.2);
     rimLight.position.set(-5.0, -2.5, -2.0);
     scene.add(rimLight);
 
-    // 7. Animation & Resize Handling
+    // 8. Animation & Resize Handling
     const handleResize = () => {
       if (!mount) return;
       const width = mount.clientWidth;
@@ -109,8 +163,13 @@ export default function CelestialMoonCanvas() {
     let animationFrameId;
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+
+      // Real-time 60fps celestial spin (zero mouse movement)
       moon.rotation.y += 0.0016;
       corona.rotation.y += 0.0016;
+      starField.rotation.y += 0.00015;
+      starField.rotation.x += 0.0001;
+
       renderer.render(scene, camera);
     };
     animate();
@@ -123,6 +182,8 @@ export default function CelestialMoonCanvas() {
       moonMat.dispose();
       coronaGeo.dispose();
       coronaMat.dispose();
+      starsGeo.dispose();
+      starsMat.dispose();
       if (mount && renderer.domElement) {
         mount.removeChild(renderer.domElement);
       }

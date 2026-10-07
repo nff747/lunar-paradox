@@ -69,188 +69,188 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#030108] text-[#f5f5f7] overflow-x-hidden md:overflow-hidden font-body flex flex-col justify-between select-none">
+    <div className="relative min-h-screen w-full bg-[#030108] text-slate-100 overflow-x-hidden md:overflow-hidden font-body flex flex-col justify-between select-none">
       
       {/* ========================================================================= */}
-      {/* 1. CINEMATIC VIDEO BACKGROUND + 3D CELESTIAL WEBGL MOON OVERLAY           */}
+      {/* 1. REAL-TIME 3D CELESTIAL WEBGL ENGINE & HIGH-RES NO-COPYRIGHT GALAXY      */}
       {/* ========================================================================= */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#030108]">
-        {/* Zoomed-Out Space Video Background */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover scale-[1.0] md:scale-[0.98] opacity-75"
-          style={{ filter: 'brightness(0.92) contrast(1.12)' }}
-        >
-          <source src="/lunar_bg_desktop_ultra.webm" type="video/webm" />
-          <source src="/lunar_bg_1080p.mp4" type="video/mp4" />
-        </video>
+        {/* High-Resolution Pristine Copyright-Free Cosmic Spiral Galaxy Plate */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-screen scale-105"
+          style={{ 
+            backgroundImage: `url('/cosmic_galaxy_hd.jpg')`,
+            backgroundPosition: '50% 50%',
+            filter: 'contrast(1.15) brightness(1.05)'
+          }}
+        />
 
-        {/* Real-time 3D Three.js Moon Canvas (centered to cover video moon, softened halo) */}
+        {/* 3D Moon Canvas — Elegantly Shrunk to Float in Galaxy Center */}
         <CelestialMoonCanvas />
         
-        {/* Vignette blending edges into deep space */}
+        {/* Deep space radial vignette */}
         <div 
           className="absolute inset-0 pointer-events-none" 
           style={{ 
-            background: 'radial-gradient(circle at 50% 50%, transparent 35%, rgba(3,1,8,0.55) 75%, #030108 100%)' 
+            background: 'radial-gradient(circle at 50% 50%, transparent 28%, rgba(3,1,8,0.65) 68%, #030108 100%)' 
           }} 
         />
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. APPLE-GRADE LIQUID GLASS TOP BAR                                       */}
+      {/* 2. HEADER NAVIGATION                                                      */}
       {/* ========================================================================= */}
-      <header className="relative z-30 w-full max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-        
+      <header className="relative z-30 w-full px-6 md:px-12 pt-6 md:pt-7 pb-2 flex items-center justify-between gap-4">
         {/* Brand */}
-        <div 
-          className="cursor-pointer flex items-center gap-3 shrink-0" 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          <span className="text-base font-semibold tracking-[0.14em] text-white font-display">
-            LUNAR PARADOX
-          </span>
-          <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-[#636366]" />
-          <span className="hidden sm:inline-block text-xs text-[#86868b] tracking-wide font-normal">
-            Autonomous Spatial Systems
-          </span>
+        <div className="cursor-pointer group flex items-center gap-3 shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold tracking-[0.14em] font-display text-white">
+              LUNAR PARADOX
+            </h1>
+            <p className="text-[11px] text-zinc-400 font-body tracking-wide mt-0.5">
+              Autonomous Design & Spatial Engineering
+            </p>
+          </div>
         </div>
 
-        {/* Center Navigation Capsule (Apple Liquid Glass) */}
-        <nav className="hidden lg:flex items-center gap-1 liquid-glass px-2 py-1.5 rounded-full text-xs font-medium text-[#a1a1a6]">
+        {/* Desktop Nav Links */}
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-medium tracking-wide text-zinc-300">
           <button 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-            className="px-4 py-1 rounded-full text-white transition-colors cursor-pointer"
+            className="hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-white/40 pb-0.5 text-white"
           >
-            Home
+            HOME
           </button>
           <button 
             onClick={() => setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'studio'))} 
-            className="px-4 py-1 rounded-full hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer"
+            className="hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-white/40 pb-0.5 flex items-center gap-1"
           >
-            Studio
+            <span>STUDIO</span>
+            <span className="text-[10px] text-slate-500 font-mono">↗</span>
           </button>
           <button 
             onClick={() => setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'forge'))} 
-            className="px-4 py-1 rounded-full hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer"
+            className="hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-white/40 pb-0.5 flex items-center gap-1.5"
           >
-            Forge
+            <span>FORGE</span>
+            <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-mono-accent border border-purple-500/30">FREE</span>
+            <span className="text-[10px] text-slate-500 font-mono">↗</span>
           </button>
           <button 
             onClick={() => setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'labs'))} 
-            className="px-4 py-1 rounded-full hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer"
+            className="hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-white/40 pb-0.5 flex items-center gap-1"
           >
-            Labs
+            <span>LABS</span>
+            <span className="text-[10px] text-slate-500 font-mono">↗</span>
           </button>
           <button 
             onClick={() => setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'vault'))} 
-            className="px-4 py-1 rounded-full hover:text-white hover:bg-white/[0.08] transition-all cursor-pointer"
+            className="hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-white/40 pb-0.5 flex items-center gap-1"
           >
-            Vault
+            <span>VAULT</span>
+            <span className="text-[10px] text-slate-500 font-mono">↗</span>
           </button>
-        </nav>
 
-        {/* Right Actions */}
-        <div className="flex items-center gap-2.5">
+          {/* Ecosystem Launcher */}
           <EcosystemLauncher 
             onSelectBranch={(b) => setSelectedBranchForPortal(b)}
             onOpenCommandOS={() => setCommandDeckOpen(true)}
           />
 
-          {/* Sound Toggle (Apple minimalist icon button) */}
+          {/* Sound Toggle */}
           <button
             onClick={toggleSound}
-            className="p-2.5 rounded-full liquid-glass text-[#86868b] hover:text-white transition-all cursor-pointer"
-            title={isAudioActive ? 'Mute Audio' : 'Play Ambient Audio'}
+            className={`btn-2026-hud px-3 py-1.5 rounded-full cursor-pointer flex items-center gap-2 text-xs font-mono transition-all ${
+              isAudioActive 
+                ? 'border-white/30 text-white bg-white/[0.1]' 
+                : 'text-[#86868b]'
+            }`}
+            title="Toggle Ambient Audio"
           >
-            {isAudioActive ? <Volume2 className="w-3.5 h-3.5 text-white" /> : <VolumeX className="w-3.5 h-3.5" />}
+            {isAudioActive ? (
+              <div className="flex items-end gap-[2px] h-3.5 px-0.5">
+                <span className="w-[2px] bg-white rounded-full bar-1" />
+                <span className="w-[2px] bg-white rounded-full bar-2" />
+                <span className="w-[2px] bg-white rounded-full bar-3" />
+                <span className="w-[2px] bg-white rounded-full bar-4" />
+              </div>
+            ) : (
+              <VolumeX className="w-3.5 h-3.5 text-[#86868b]" />
+            )}
+            <span className="text-[10px] tracking-wider">{isAudioActive ? 'AUDIO ON' : 'AUDIO OFF'}</span>
           </button>
 
-          {/* Login Pill */}
+          {/* Login / Gateway Link */}
           <button 
             onClick={() => openGatewayWithTab('invite')}
-            className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-full bg-white text-black text-xs font-semibold hover:bg-white/90 transition-all cursor-pointer"
+            className="btn-2026-hud px-4 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-medium cursor-pointer text-[#f5f5f7] hover:text-white"
           >
-            <LogIn className="w-3.5 h-3.5 text-black" />
-            <span>Login</span>
+            <LogIn className="w-3.5 h-3.5 text-[#86868b]" />
+            <span>LOGIN</span>
+          </button>
+        </nav>
+
+        {/* Mobile Nav Buttons */}
+        <div className="flex lg:hidden items-center gap-2.5 shrink-0">
+          <EcosystemLauncher 
+            onSelectBranch={(b) => setSelectedBranchForPortal(b)}
+            onOpenCommandOS={() => setCommandDeckOpen(true)}
+          />
+
+          <button
+            onClick={toggleSound}
+            className={`btn-2026-hud p-2.5 rounded-full text-xs cursor-pointer ${
+              isAudioActive ? 'border-purple-400/60 text-purple-200' : ''
+            }`}
+          >
+            {isAudioActive ? <Volume2 className="w-4 h-4 text-purple-300" /> : <VolumeX className="w-4 h-4" />}
           </button>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2.5 rounded-full liquid-glass text-white cursor-pointer"
+            className="btn-2026-hud p-2.5 rounded-full text-white cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
           </button>
         </div>
       </header>
 
-      {/* Mobile Drawer Menu (Liquid Glass) */}
+      {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-4 top-24 z-40 p-5 liquid-glass rounded-2xl flex flex-col gap-3 text-sm">
-          <button 
-            onClick={() => setMobileMenuOpen(false)} 
-            className="text-left py-2 text-white font-medium"
-          >
-            Home (Stem Platform)
+        <div className="lg:hidden fixed inset-x-0 top-20 z-40 p-4 bg-black/95 backdrop-blur-2xl border-b border-purple-500/30 flex flex-col gap-2 text-xs font-mono-accent">
+          <button onClick={() => { setMobileMenuOpen(false); }} className="text-left py-2 text-slate-300 hover:text-white">HOME (STEM PLATFORM)</button>
+          <button onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'studio')); }} className="text-left py-2 text-slate-200 hover:text-white flex items-center justify-between">
+            <span>01 STUDIO (studio.lunarparadox.com)</span>
+            <span className="text-[10px] text-amber-300 font-bold">AGENCY ↗</span>
           </button>
-          <button 
-            onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'studio')); }} 
-            className="text-left py-2 text-[#a1a1a6] hover:text-white flex items-center justify-between"
-          >
-            <span>Studio</span>
-            <span className="text-xs text-[#86868b] font-mono">studio.lunarparadox.com</span>
+          <button onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'forge')); }} className="text-left py-2 text-slate-200 hover:text-white flex items-center justify-between">
+            <span>02 FORGE (forge.lunarparadox.com)</span>
+            <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">FREE TOOLS ↗</span>
           </button>
-          <button 
-            onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'forge')); }} 
-            className="text-left py-2 text-[#a1a1a6] hover:text-white flex items-center justify-between"
-          >
-            <span>Forge</span>
-            <span className="text-xs text-[#86868b] font-mono">forge.lunarparadox.com</span>
+          <button onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'labs')); }} className="text-left py-2 text-slate-200 hover:text-white flex items-center justify-between">
+            <span>03 LABS (labs.lunarparadox.com)</span>
+            <span className="text-[10px] text-emerald-400">R&D BETA ↗</span>
           </button>
-          <button 
-            onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'labs')); }} 
-            className="text-left py-2 text-[#a1a1a6] hover:text-white flex items-center justify-between"
-          >
-            <span>Labs</span>
-            <span className="text-xs text-[#86868b] font-mono">labs.lunarparadox.com</span>
+          <button onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'vault')); }} className="text-left py-2 text-slate-200 hover:text-white flex items-center justify-between">
+            <span>04 VAULT (vault.lunarparadox.com)</span>
+            <span className="text-[10px] text-sky-400">REGISTRY ↗</span>
           </button>
-          <button 
-            onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'vault')); }} 
-            className="text-left py-2 text-[#a1a1a6] hover:text-white flex items-center justify-between"
-          >
-            <span>Vault</span>
-            <span className="text-xs text-[#86868b] font-mono">vault.lunarparadox.com</span>
-          </button>
-          <div className="pt-3 border-t border-white/[0.08] flex items-center justify-between">
-            <button 
-              onClick={() => openGatewayWithTab('invite')} 
-              className="text-xs text-[#86868b] hover:text-white py-1"
-            >
-              Access Passcode
-            </button>
-            <button 
-              onClick={() => openGatewayWithTab('client')} 
-              className="text-xs text-white font-medium py-1"
-            >
-              Direct Wire
-            </button>
+          <div className="pt-2 border-t border-white/10 flex items-center justify-between">
+            <button onClick={() => openGatewayWithTab('invite')} className="text-left py-1 text-slate-400 hover:text-white">ACCESS PASSCODE</button>
+            <button onClick={() => openGatewayWithTab('client')} className="text-left py-1 text-purple-300 font-semibold">DIRECT WIRE</button>
           </div>
         </div>
       )}
 
       {/* ========================================================================= */}
-      {/* 3. THE STEM CORE: CELESTIAL VOID & APPLE SPOTLIGHT SEARCH CONSOLE          */}
+      {/* 3. THE STEM CORE: CELESTIAL VOID & PROFESSIONAL SEARCH CONSOLE            */}
       {/* ========================================================================= */}
-      <main className="relative z-20 flex-1 flex flex-col justify-end items-center px-4 pb-14 md:pb-18 max-w-4xl mx-auto w-full">
+      <main className="relative z-20 flex-1 flex flex-col justify-end items-center px-4 md:px-12 max-w-7xl mx-auto w-full pb-8 md:pb-12">
         
-        {/* Open celestial area where 3D moon sits centered over the video background */}
-        <div className="flex-1 w-full min-h-[300px] md:min-h-[380px] pointer-events-none" />
+        {/* Open celestial void showcasing radiant 3D animated Three.js moon & galaxy */}
+        <div className="flex-1 w-full min-h-[320px] md:min-h-[400px] pointer-events-none" />
 
-        {/* APPLE SPOTLIGHT / PERPLEXITY HYBRID SEARCH CONSOLE */}
+        {/* MINIMALIST PROFESSIONAL SEARCH CONSOLE (LINEAR / APPLE STYLE) */}
         <UniversalNexusConsole
           onSelectBranch={(branch) => setSelectedBranchForPortal(branch)}
           onEnterParadox={() => handleEnterParadox('studio')}
@@ -260,29 +260,29 @@ export default function App() {
       </main>
 
       {/* ========================================================================= */}
-      {/* 4. FOOTER (CLEAN APPLE MONOCHROME GLASS)                                  */}
+      {/* 4. FOOTER (CLEAN, PROFESSIONAL, VERIFIED CHANNELS & LEGAL)                */}
       {/* ========================================================================= */}
-      <footer className="relative z-30 w-full max-w-7xl mx-auto px-6 md:px-12 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#86868b]">
+      <footer className="relative z-30 w-full px-6 md:px-14 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
         <div className="flex items-center gap-3">
           <span>© 2026 Lunar Paradox, Inc.</span>
-          <span className="text-[#3a3a3c]">•</span>
+          <span className="text-zinc-700">•</span>
           <button 
             onClick={() => openLegal('terms')}
-            className="hover:text-white transition-colors cursor-pointer"
+            className="hover:text-zinc-300 transition-colors cursor-pointer"
           >
             Terms
           </button>
-          <span className="text-[#3a3a3c]">•</span>
+          <span className="text-zinc-700">•</span>
           <button 
             onClick={() => openLegal('privacy')}
-            className="hover:text-white transition-colors cursor-pointer"
+            className="hover:text-zinc-300 transition-colors cursor-pointer"
           >
             Privacy
           </button>
         </div>
 
         {/* Social Links */}
-        <div className="flex items-center gap-4 text-[#86868b]">
+        <div className="flex items-center gap-5 text-slate-400">
           <a 
             href="https://discord.gg/wBaJuSFaPw" 
             target="_blank"
@@ -290,7 +290,7 @@ export default function App() {
             className="hover:text-white transition-colors p-1"
             title="Official Discord Server"
           >
-            <DiscordIcon className="w-4 h-4 text-[#86868b] hover:text-[#5865F2]" />
+            <DiscordIcon className="w-4 h-4 text-slate-400 hover:text-[#5865F2]" />
           </a>
           <button 
             onClick={() => {
@@ -300,7 +300,7 @@ export default function App() {
             className="hover:text-white transition-colors p-1 cursor-pointer"
             title="X (Twitter) Notice"
           >
-            <XIcon className="w-4 h-4 text-[#86868b] hover:text-white" />
+            <XIcon className="w-4 h-4 text-slate-400 hover:text-white" />
           </button>
           <button 
             onClick={() => {
@@ -310,24 +310,26 @@ export default function App() {
             className="hover:text-white transition-colors p-1 cursor-pointer"
             title="Instagram Notice"
           >
-            <InstagramIcon className="w-4 h-4 text-[#86868b] hover:text-white" />
+            <InstagramIcon className="w-4 h-4 text-slate-400 hover:text-pink-400" />
           </button>
         </div>
       </footer>
 
-      {/* Modals & Subdomain Portals */}
+      {/* Legal Modal (No browser alerts) */}
       <LegalModal
         isOpen={legalModalOpen}
         onClose={() => setLegalModalOpen(false)}
         type={legalModalType}
       />
 
+      {/* Social Warning & Scam Advisory Modal */}
       <SocialWarningModal
         isOpen={socialWarningOpen}
         onClose={() => setSocialWarningOpen(false)}
         platform={socialWarningPlatform}
       />
 
+      {/* Modals & Subdomain Portals */}
       <BranchPortalModal
         branch={selectedBranchForPortal}
         isOpen={!!selectedBranchForPortal}
