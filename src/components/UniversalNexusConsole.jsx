@@ -10,7 +10,8 @@ import { BRANCHES } from './EcosystemLauncher';
 export default function UniversalNexusConsole({ 
   onSelectBranch, 
   onEnterParadox, 
-  onOpenGateway 
+  onOpenGateway,
+  onOpenContrastLab
 }) {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
@@ -174,6 +175,10 @@ export default function UniversalNexusConsole({
 
   const handleExecuteResult = (item) => {
     setIsFocused(false);
+    if (item.id === 'tool-contrast' && onOpenContrastLab) {
+      onOpenContrastLab();
+      return;
+    }
     if (item.branchId) {
       const branch = BRANCHES.find(b => b.id === item.branchId) || BRANCHES[0];
       onSelectBranch(branch);

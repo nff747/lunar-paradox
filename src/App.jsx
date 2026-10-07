@@ -15,6 +15,7 @@ import UniversalNexusConsole from './components/UniversalNexusConsole';
 import BranchPortalModal from './components/BranchPortalModal';
 import SocialWarningModal from './components/SocialWarningModal';
 import LegalModal from './components/LegalModal';
+import ForgeContrastLabModal from './components/ForgeContrastLabModal';
 import { DiscordIcon, XIcon, InstagramIcon } from './components/SocialIcons';
 import { audioManager } from './utils/audio';
 
@@ -26,6 +27,7 @@ export default function App() {
   const [commandDeckOpen, setCommandDeckOpen] = useState(false);
   const [commandDeckSector, setCommandDeckSector] = useState('studio');
   const [selectedBranchForPortal, setSelectedBranchForPortal] = useState(null);
+  const [contrastLabOpen, setContrastLabOpen] = useState(false);
   const [socialWarningOpen, setSocialWarningOpen] = useState(false);
   const [socialWarningPlatform, setSocialWarningPlatform] = useState('X');
   const [legalModalOpen, setLegalModalOpen] = useState(false);
@@ -191,8 +193,9 @@ export default function App() {
             <span className="text-[10px] text-slate-500 font-mono">↗</span>
           </button>
           <button 
-            onClick={() => setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'forge'))} 
+            onClick={() => setContrastLabOpen(true)} 
             className="hover:text-white transition-colors cursor-pointer border-b border-transparent hover:border-white/40 pb-0.5 flex items-center gap-1.5"
+            title="Open Free OLED & Spatial Contrast Laboratory"
           >
             <span>FORGE</span>
             <span className="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-mono-accent border border-purple-500/30">FREE</span>
@@ -285,7 +288,7 @@ export default function App() {
             <span>01 STUDIO (studio.lunarparadox.com)</span>
             <span className="text-[10px] text-amber-300 font-bold">AGENCY ↗</span>
           </button>
-          <button onClick={() => { setMobileMenuOpen(false); setSelectedBranchForPortal(BRANCHES.find(b => b.id === 'forge')); }} className="text-left py-2 text-slate-200 hover:text-white flex items-center justify-between">
+          <button onClick={() => { setMobileMenuOpen(false); setContrastLabOpen(true); }} className="text-left py-2 text-slate-200 hover:text-white flex items-center justify-between">
             <span>02 FORGE (forge.lunarparadox.com)</span>
             <span className="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">FREE TOOLS ↗</span>
           </button>
@@ -314,9 +317,16 @@ export default function App() {
 
         {/* MINIMALIST PROFESSIONAL SEARCH CONSOLE (LINEAR / APPLE STYLE) */}
         <UniversalNexusConsole
-          onSelectBranch={(branch) => setSelectedBranchForPortal(branch)}
+          onSelectBranch={(branch) => {
+            if (branch.id === 'forge') {
+              setContrastLabOpen(true);
+            } else {
+              setSelectedBranchForPortal(branch);
+            }
+          }}
           onEnterParadox={() => handleEnterParadox('studio')}
           onOpenGateway={(tab) => openGatewayWithTab(tab)}
+          onOpenContrastLab={() => setContrastLabOpen(true)}
         />
 
       </main>
@@ -377,6 +387,12 @@ export default function App() {
         </div>
       </footer>
 
+      {/* Free Developer Tool: OLED & Spatial Contrast Laboratory */}
+      <ForgeContrastLabModal
+        isOpen={contrastLabOpen}
+        onClose={() => setContrastLabOpen(false)}
+      />
+
       {/* Legal Modal (Proper Terms & Privacy) */}
       <LegalModal
         isOpen={legalModalOpen}
@@ -397,6 +413,7 @@ export default function App() {
         isOpen={!!selectedBranchForPortal}
         onClose={() => setSelectedBranchForPortal(null)}
         onLaunchSandbox={(sectorId) => handleEnterParadox(sectorId)}
+        onLaunchContrastLab={() => setContrastLabOpen(true)}
       />
 
       <CommandDeckOS

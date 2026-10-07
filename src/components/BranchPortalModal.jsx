@@ -15,7 +15,8 @@ export default function BranchPortalModal({
   branch, 
   isOpen, 
   onClose, 
-  onLaunchSandbox 
+  onLaunchSandbox,
+  onLaunchContrastLab
 }) {
   if (!isOpen || !branch) return null;
 
@@ -102,20 +103,29 @@ export default function BranchPortalModal({
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center gap-3">
           
-          {/* Primary: Open Subdomain */}
-          <a
-            href={`https://${branch.subdomain}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => {
-              // In local development, prevent actual navigation if subdomains aren't DNS configured yet
-              // But open or provide feedback
-            }}
-            className="w-full sm:flex-1 py-3 px-5 rounded-full bg-white text-black hover:bg-slate-200 font-heading font-semibold text-xs tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(255,255,255,0.35)]"
-          >
-            <span>LAUNCH SUBDOMAIN</span>
-            <ArrowUpRight className="w-4 h-4 text-black" />
-          </a>
+          {/* Primary Action */}
+          {branch.id === 'forge' && onLaunchContrastLab ? (
+            <button
+              onClick={() => {
+                onClose();
+                onLaunchContrastLab();
+              }}
+              className="w-full sm:flex-1 py-3 px-5 rounded-full bg-white text-black hover:bg-slate-200 font-heading font-semibold text-xs tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(255,255,255,0.35)]"
+            >
+              <Sparkles className="w-4 h-4 text-black" />
+              <span>LAUNCH CONTRAST LAB (FREE)</span>
+            </button>
+          ) : (
+            <a
+              href={`https://${branch.subdomain}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:flex-1 py-3 px-5 rounded-full bg-white text-black hover:bg-slate-200 font-heading font-semibold text-xs tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(255,255,255,0.35)]"
+            >
+              <span>LAUNCH SUBDOMAIN</span>
+              <ArrowUpRight className="w-4 h-4 text-black" />
+            </a>
+          )}
 
           {/* Secondary: Explore Local Sandbox */}
           <button
