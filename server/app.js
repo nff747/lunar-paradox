@@ -127,6 +127,42 @@ router.post('/auth/verify', (req, res) => {
 // ---------------------------------------------------------------------------
 // 3. Direct Wire Enterprise Inquiries
 // ---------------------------------------------------------------------------
+const sendDiscordLeadAlert = async (inquiry) => {
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  try {
+    const embed = {
+      title: '🛰️ [DIRECT WIRE] New Enterprise Inquiry',
+      description: `Cryptographic Wire **\`${inquiry.wireId}\`** received on **lunarparadox.com**.`,
+      color: 0x80d8ff,
+      fields: [
+        { name: '👤 Client Name', value: inquiry.name, inline: true },
+        { name: '📬 Contact', value: inquiry.contact, inline: true },
+        { name: '🏛️ Sector', value: inquiry.sector, inline: true },
+        { name: '💎 Estimated Budget', value: inquiry.budget, inline: true },
+        { name: '📐 Project Scope', value: inquiry.scope, inline: false },
+        { name: '📝 Notes', value: inquiry.notes || 'None provided', inline: false }
+      ],
+      footer: {
+        text: `Lunar Paradox Registry • ${inquiry.receivedAt}`
+      }
+    };
+
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: 'Lunar Paradox Wire',
+        avatar_url: 'https://lunarparadox.com/favicon.png',
+        embeds: [embed]
+      })
+    });
+  } catch (err) {
+    console.error('Discord Webhook alert error:', err.message);
+  }
+};
+
 router.post('/inquiries', (req, res) => {
   const { name, contact, sector, budget, scope, notes } = req.body;
 
@@ -150,6 +186,7 @@ router.post('/inquiries', (req, res) => {
   };
 
   saveInquiry(newInquiry);
+  sendDiscordLeadAlert(newInquiry).catch(() => {});
 
   return res.status(201).json({
     success: true,

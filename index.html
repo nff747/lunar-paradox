@@ -4,30 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta name="darkreader-lock" />
-    <script>
-      // Clean up rogue service workers and caches from previous projects on port 3000
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for (var r of registrations) {
-            r.unregister();
-          }
-        });
-      }
-      if ('caches' in window) {
-        caches.keys().then(function(names) {
-          for (var name of names) {
-            caches.delete(name);
-          }
-        });
-      }
-    </script>
-    <title>LUNAR PARADOX — Step into the other side of light</title>
-    <meta name="description" content="Harness the void. Unlock unprecedented creative dimensions. The digital vanguard for the next generation." />
+    <meta name="theme-color" content="#030108" />
+
+    <!-- Primary Title & Description -->
+    <title>LUNAR PARADOX — Autonomous Design &amp; Spatial Engineering</title>
+    <meta name="title" content="LUNAR PARADOX — Autonomous Design &amp; Spatial Engineering" />
+    <meta name="description" content="Spatial 3D experiences, generative web systems, color science matrices, and autonomous design engineering." />
+    <link rel="canonical" href="https://lunarparadox.com" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <!-- Open Graph / Facebook / Discord / LinkedIn / iMessage -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lunarparadox.com" />
+    <meta property="og:site_name" content="Lunar Paradox" />
+    <meta property="og:title" content="LUNAR PARADOX — Autonomous Design &amp; Spatial Engineering" />
+    <meta property="og:description" content="Spatial 3D experiences, generative web systems, color science matrices, and autonomous design engineering." />
+    <meta property="og:image" content="https://lunarparadox.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Lunar Paradox — Celestial Moon and Ecosystem Nexus" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://lunarparadox.com" />
+    <meta name="twitter:title" content="LUNAR PARADOX — Autonomous Design &amp; Spatial Engineering" />
+    <meta name="twitter:description" content="Spatial 3D experiences, generative web systems, color science matrices, and autonomous design engineering." />
+    <meta name="twitter:image" content="https://lunarparadox.com/og-image.png" />
+
     <!-- Google Fonts: Unbounded, Outfit, Plus Jakarta Sans, Space Grotesk -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <style>
       :root {
         color-scheme: dark !important;

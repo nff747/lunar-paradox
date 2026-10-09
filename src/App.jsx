@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { 
   Volume2, 
   VolumeX, 
   LogIn, 
-  Menu,
-  X
+  Menu, 
+  X 
 } from 'lucide-react';
-import GatewayModal from './components/GatewayModal';
-import ExploreModal from './components/ExploreModal';
-import CommandDeckOS from './components/CommandDeckOS';
 import CelestialMoonCanvas from './components/CelestialMoonCanvas';
 import EcosystemLauncher, { BRANCHES } from './components/EcosystemLauncher';
 import UniversalNexusConsole from './components/UniversalNexusConsole';
-import BranchPortalModal from './components/BranchPortalModal';
-import SocialWarningModal from './components/SocialWarningModal';
-import LegalModal from './components/LegalModal';
-import ForgeContrastLabModal from './components/ForgeContrastLabModal';
 import { DiscordIcon, XIcon, InstagramIcon } from './components/SocialIcons';
 import { audioManager } from './utils/audio';
+
+// Lazy-loaded heavy modal overlays for high-performance code-splitting
+const GatewayModal = lazy(() => import('./components/GatewayModal'));
+const ExploreModal = lazy(() => import('./components/ExploreModal'));
+const CommandDeckOS = lazy(() => import('./components/CommandDeckOS'));
+const BranchPortalModal = lazy(() => import('./components/BranchPortalModal'));
+const SocialWarningModal = lazy(() => import('./components/SocialWarningModal'));
+const LegalModal = lazy(() => import('./components/LegalModal'));
+const ForgeContrastLabModal = lazy(() => import('./components/ForgeContrastLabModal'));
 
 export default function App() {
   const [isAudioActive, setIsAudioActive] = useState(false);
@@ -44,6 +46,28 @@ export default function App() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // Subdomain & deep route auto-detection (e.g. forge.lunarparadox.com -> opens Contrast Lab)
+  useEffect(() => {
+    try {
+      const hostname = window.location.hostname.toLowerCase();
+      const pathname = window.location.pathname.toLowerCase();
+      if (hostname.startsWith('forge.') || pathname.startsWith('/forge')) {
+        setContrastLabOpen(true);
+      } else if (hostname.startsWith('studio.') || pathname.startsWith('/studio')) {
+        const branch = BRANCHES.find(b => b.id === 'studio');
+        if (branch) setSelectedBranchForPortal(branch);
+      } else if (hostname.startsWith('labs.') || pathname.startsWith('/labs')) {
+        const branch = BRANCHES.find(b => b.id === 'labs');
+        if (branch) setSelectedBranchForPortal(branch);
+      } else if (hostname.startsWith('vault.') || pathname.startsWith('/vault')) {
+        const branch = BRANCHES.find(b => b.id === 'vault');
+        if (branch) setSelectedBranchForPortal(branch);
+      }
+    } catch (e) {
+      // safe fallback
+    }
   }, []);
 
   // Discord-style Desktop App lockdown (No Right Click / Inspect, No Zoom, No Double-Tap Zoom)
@@ -387,52 +411,69 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Free Developer Tool: OLED & Spatial Contrast Laboratory */}
-      <ForgeContrastLabModal
-        isOpen={contrastLabOpen}
-        onClose={() => setContrastLabOpen(false)}
-      />
+      {/* Lazy-Loaded High-Performance Modals */}
+      <Suspense fallback={null}>
+        {/* Free Developer Tool: OLED & Spatial Contrast Laboratory */}
+        {contrastLabOpen && (
+          <ForgeContrastLabModal
+            isOpen={contrastLabOpen}
+            onClose={() => setContrastLabOpen(false)}
+          />
+        )}
 
-      {/* Legal Modal (Proper Terms & Privacy) */}
-      <LegalModal
-        isOpen={legalModalOpen}
-        onClose={() => setLegalModalOpen(false)}
-        type={legalModalType}
-      />
+        {/* Legal Modal (Proper Terms & Privacy) */}
+        {legalModalOpen && (
+          <LegalModal
+            isOpen={legalModalOpen}
+            onClose={() => setLegalModalOpen(false)}
+            type={legalModalType}
+          />
+        )}
 
-      {/* Social Warning & Scam Advisory Modal */}
-      <SocialWarningModal
-        isOpen={socialWarningOpen}
-        onClose={() => setSocialWarningOpen(false)}
-        platform={socialWarningPlatform}
-      />
+        {/* Social Warning & Scam Advisory Modal */}
+        {socialWarningOpen && (
+          <SocialWarningModal
+            isOpen={socialWarningOpen}
+            onClose={() => setSocialWarningOpen(false)}
+            platform={socialWarningPlatform}
+          />
+        )}
 
-      {/* Modals & Subdomain Portals */}
-      <BranchPortalModal
-        branch={selectedBranchForPortal}
-        isOpen={!!selectedBranchForPortal}
-        onClose={() => setSelectedBranchForPortal(null)}
-        onLaunchSandbox={(sectorId) => handleEnterParadox(sectorId)}
-        onLaunchContrastLab={() => setContrastLabOpen(true)}
-      />
+        {/* Modals & Subdomain Portals */}
+        {selectedBranchForPortal && (
+          <BranchPortalModal
+            branch={selectedBranchForPortal}
+            isOpen={!!selectedBranchForPortal}
+            onClose={() => setSelectedBranchForPortal(null)}
+            onLaunchSandbox={(sectorId) => handleEnterParadox(sectorId)}
+            onLaunchContrastLab={() => setContrastLabOpen(true)}
+          />
+        )}
 
-      <CommandDeckOS
-        isOpen={commandDeckOpen}
-        onClose={() => setCommandDeckOpen(false)}
-        initialSector={commandDeckSector}
-      />
+        {commandDeckOpen && (
+          <CommandDeckOS
+            isOpen={commandDeckOpen}
+            onClose={() => setCommandDeckOpen(false)}
+            initialSector={commandDeckSector}
+          />
+        )}
 
-      <GatewayModal 
-        isOpen={gatewayOpen} 
-        onClose={() => setGatewayOpen(false)} 
-        initialTab={gatewayInitialTab}
-      />
+        {gatewayOpen && (
+          <GatewayModal 
+            isOpen={gatewayOpen} 
+            onClose={() => setGatewayOpen(false)} 
+            initialTab={gatewayInitialTab}
+          />
+        )}
 
-      <ExploreModal
-        isOpen={exploreOpen}
-        onClose={() => setExploreOpen(false)}
-        onOpenGateway={(tab) => openGatewayWithTab(tab)}
-      />
+        {exploreOpen && (
+          <ExploreModal
+            isOpen={exploreOpen}
+            onClose={() => setExploreOpen(false)}
+            onOpenGateway={(tab) => openGatewayWithTab(tab)}
+          />
+        )}
+      </Suspense>
 
     </div>
   );
