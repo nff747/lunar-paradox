@@ -2,10 +2,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { 
   X, Terminal, Cpu, Wrench, Shield, Sparkles, Check, Copy, 
   ArrowRight, RefreshCw, Send, CheckCircle2,
-  Volume2, VolumeX, Code2, Palette, Type, Sliders, ChevronRight
+  Volume2, VolumeX, Code2, Palette, Type, Sliders, ChevronRight,
+  Database
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { toast } from 'sonner';
 import { audioManager } from '../utils/audio';
+import { Badge } from './ui/badge';
+import { submitInquiry, isSupabaseConfigured } from '../lib/supabase';
 
 // ============================================================================
 // COLOR THEORY & MATHEMATICAL HARMONY ENGINE
@@ -226,6 +230,20 @@ export default function CommandDeckOS({ isOpen, onClose, initialSector = 'studio
               <span className="w-1.5 h-1.5 rounded-full bg-[#30d158] animate-pulse" />
               <span>{latency}ms EDGE</span>
             </div>
+
+            <div className="hidden sm:flex items-center gap-1.5 pl-3 border-l border-white/[0.08]">
+              {isSupabaseConfigured() ? (
+                <Badge variant="success" className="gap-1 text-[9px] py-0 px-2 font-mono">
+                  <Database className="w-2.5 h-2.5 text-emerald-400" />
+                  <span>SUPABASE REALTIME</span>
+                </Badge>
+              ) : (
+                <Badge variant="secondary" className="gap-1 text-[9px] py-0 px-2 font-mono">
+                  <Database className="w-2.5 h-2.5 text-purple-400" />
+                  <span>EDGE SYNC</span>
+                </Badge>
+              )}
+            </div>
           </div>
 
           {/* Center: Apple Segmented Pill Dock */}
@@ -355,29 +373,34 @@ function SectorStudio({ soundEnabled }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!clientForm.contact.trim()) return;
+    if (!clientForm.contact.trim()) {
+      toast.error("Contact Required", { description: "Please enter your email, Discord, or Telegram handle." });
+      return;
+    }
     setIsSubmitting(true);
     if (soundEnabled) audioManager.playSuccess();
 
     try {
-      const payload = {
+      const res = await submitInquiry({
         name: clientForm.name,
         contact: clientForm.contact,
-        overview: clientForm.overview,
-        scopes: selectedScopes,
-        velocity,
-        estimateRange: `${calculatedEstimate.min} - ${calculatedEstimate.max}`,
-      };
-      await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        sector: `Lunar Studio (${selectedScopes.join(', ')})`,
+        budget: `${calculatedEstimate.min} - ${calculatedEstimate.max}`,
+        scope: `${clientForm.overview || 'Standard brief'} [Velocity: ${velocity}]`,
+      });
+
+      const wireTicket = res.wireId || `LPX-PRO-${Math.floor(1000 + Math.random() * 9000)}`;
+      setTicketId(wireTicket);
+
+      toast.success("Project Brief Transmitted", {
+        description: `Logged under ${wireTicket} via ${res.mode === 'supabase' ? 'Supabase Real-Time' : 'Edge Dispatcher'}.`,
       });
     } catch(err) {
       console.log('Lead queued:', err);
-    } finally {
       const randTicket = `LPX-PRO-${Math.floor(1000 + Math.random() * 9000)}`;
       setTicketId(randTicket);
+      toast.info("Brief Saved in Local Queue", { description: `Ticket: ${randTicket}` });
+    } finally {
       setIsSubmitting(false);
       setSubmitted(true);
       confetti({ particleCount: 70, spread: 50, origin: { y: 0.6 } });

@@ -4,13 +4,17 @@ import {
   VolumeX, 
   LogIn, 
   Menu, 
-  X 
+  X,
+  Database
 } from 'lucide-react';
 import CelestialMoonCanvas from './components/CelestialMoonCanvas';
 import EcosystemLauncher, { BRANCHES } from './components/EcosystemLauncher';
 import UniversalNexusConsole from './components/UniversalNexusConsole';
 import { DiscordIcon, XIcon, InstagramIcon } from './components/SocialIcons';
 import { audioManager } from './utils/audio';
+import { Toaster } from './components/ui/sonner';
+import { Badge } from './components/ui/badge';
+import { isSupabaseConfigured } from './lib/supabase';
 
 // Lazy-loaded heavy modal overlays for high-performance code-splitting
 const GatewayModal = lazy(() => import('./components/GatewayModal'));
@@ -269,6 +273,25 @@ export default function App() {
             <span className="text-[10px] tracking-wider">{isAudioActive ? 'AUDIO ON' : 'AUDIO OFF'}</span>
           </button>
 
+          {/* Supabase Status Pill */}
+          <div 
+            onClick={() => openGatewayWithTab('client')}
+            className="cursor-pointer"
+            title={isSupabaseConfigured() ? "Supabase Realtime Cloud Connected" : "Operating in Edge Fallback Mode (Click to test intake)"}
+          >
+            {isSupabaseConfigured() ? (
+              <Badge variant="success" className="gap-1.5 py-1 px-3 text-[11px] font-mono cursor-pointer hover:bg-emerald-500/30 transition-all">
+                <Database className="w-3 h-3 text-emerald-400" />
+                <span>SUPABASE LIVE</span>
+              </Badge>
+            ) : (
+              <Badge variant="secondary" className="gap-1.5 py-1 px-3 text-[11px] font-mono cursor-pointer hover:bg-white/10 transition-all">
+                <Database className="w-3 h-3 text-purple-400" />
+                <span>EDGE SYNC</span>
+              </Badge>
+            )}
+          </div>
+
           {/* Login / Gateway Link */}
           <button 
             onClick={() => openGatewayWithTab('invite')}
@@ -474,6 +497,9 @@ export default function App() {
           />
         )}
       </Suspense>
+
+      {/* Global shadcn/ui Sonner Toast Provider */}
+      <Toaster />
 
     </div>
   );

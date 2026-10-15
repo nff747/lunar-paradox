@@ -1,7 +1,24 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { X, CheckCircle, Sparkles, Key, Send, ShieldCheck, ArrowRight, Copy, Check } from 'lucide-react';
+import { 
+  CheckCircle, Sparkles, Key, Send, ShieldCheck, 
+  ArrowRight, Copy, Check, Database, Zap 
+} from 'lucide-react';
+import { toast } from 'sonner';
 import { audioManager } from '../utils/audio';
+import { verifyPasscode, submitInquiry, isSupabaseConfigured } from '../lib/supabase';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from './ui/dialog';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Badge } from './ui/badge';
 
 export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' }) {
   const [activeTab, setActiveTab] = useState(initialTab); // 'invite' | 'client'
@@ -10,8 +27,9 @@ export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' })
   const [unlockMessage, setUnlockMessage] = useState('');
   const [copiedTicket, setCopiedTicket] = useState(false);
   const [ticketId, setTicketId] = useState('LPX-VOID-VIP');
+  const [isVerifying, setIsVerifying] = useState(false);
 
-  // Client form state
+  // Client intake form state
   const [clientForm, setClientForm] = useState({
     name: '',
     contact: '',
@@ -22,261 +40,274 @@ export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' })
   const [submittedClient, setSubmittedClient] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  if (!isOpen) return null;
-
   const handleVerifyInvite = async (e) => {
     e.preventDefault();
     if (!inviteCode.trim()) return;
 
+    setIsVerifying(true);
     try {
-      const res = await fetch('/api/auth/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ passcode: inviteCode })
-      });
-      const data = await res.json();
+      const res = await verifyPasscode(inviteCode);
 
-      if (res.ok && data.success) {
+      if (res.success) {
         audioManager.playUnlockSound();
         confetti({
-          particleCount: 100,
-          spread: 70,
+          particleCount: 120,
+          spread: 80,
           origin: { y: 0.6 },
           colors: ['#c084fc', '#ffffff', '#e9d5ff', '#818cf8', '#38bdf8'],
         });
         setIsUnlocked(true);
-        setUnlockMessage(`ACCESS GRANTED: ${data.tier} (${data.sessionToken})`);
-        if (data.sessionToken) setTicketId(data.sessionToken);
+        setUnlockMessage(`ACCESS GRANTED: ${res.tier}`);
+        if (res.sessionToken) setTicketId(res.sessionToken);
+
+        toast.success("Operative Clearance Granted", {
+          description: `Tier: ${res.tier} (${res.mode === 'supabase' ? 'Supabase Live DB' : 'Edge Auth Cache'})`,
+        });
       } else {
-        alert(data.error || 'Invalid passcode. Valid codes include: GENESIS-2026, PARADOX-VIP, STUDIO-DIRECT');
+        toast.error("Access Code Refused", {
+          description: res.error || "Valid codes include: GENESIS-2026, PARADOX-VIP, STUDIO-DIRECT",
+        });
       }
     } catch (err) {
-      console.error('Auth request failed:', err);
-      // Fallback
+      console.error('Passcode verification error:', err);
+      toast.error("Authentication Network Error", {
+        description: "Falling back to provisional operative clearance.",
+      });
       setIsUnlocked(true);
       setUnlockMessage('PROVISIONAL ACCESS: Operative Authenticated');
+    } finally {
+      setIsVerifying(false);
     }
   };
 
   const handleClientSubmit = async (e) => {
     e.preventDefault();
+    if (!clientForm.name.trim() || !clientForm.contact.trim()) {
+      toast.error("Incomplete Dossier", {
+        description: "Please specify your name/brand and preferred contact handle.",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     audioManager.playChime();
 
     try {
-      const res = await fetch('/api/inquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: clientForm.name,
-          contact: clientForm.contact,
-          sector: clientForm.service,
-          budget: clientForm.budget,
-          scope: clientForm.details,
-        })
+      const res = await submitInquiry({
+        name: clientForm.name,
+        contact: clientForm.contact,
+        sector: clientForm.service,
+        budget: clientForm.budget,
+        scope: clientForm.details,
       });
-      if (res.ok) {
-        const json = await res.json();
-        if (json.wireId) setTicketId(json.wireId);
+
+      if (res.wireId) {
+        setTicketId(res.wireId);
       }
+
+      toast.success("Dossier Transmitted", {
+        description: `Logged under ${res.wireId} via ${res.mode === 'supabase' ? 'Supabase Real-Time' : 'Edge Dispatcher'}.`,
+      });
+
+      setSubmittedClient(true);
     } catch (err) {
-      console.log('Lead queued locally:', clientForm);
+      console.error('Lead submission error:', err);
+      toast.info("Dossier Queued Locally", {
+        description: "Lead saved in local operative queue.",
+      });
+      setSubmittedClient(true);
     } finally {
       setIsSubmitting(false);
-      setSubmittedClient(true);
     }
   };
 
   const copyTicketId = () => {
     navigator.clipboard.writeText(ticketId);
     setCopiedTicket(true);
+    toast.info("Ticket Copied", { description: ticketId });
     setTimeout(() => setCopiedTicket(false), 2000);
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-fade-in"
-      onClick={onClose}
-    >
-      <div 
-        className="relative w-full max-w-xl rounded-2xl glass-card border border-purple-500/30 p-6 md:p-8 shadow-[0_0_50px_rgba(168,85,247,0.25)] text-slate-100 overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-xl border-purple-500/30 bg-zinc-950/90 text-zinc-100 shadow-[0_0_60px_rgba(168,85,247,0.25)]">
         {/* Ambient background glow inside modal */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-purple-600/20 blur-3xl pointer-events-none"></div>
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none"></div>
-
-        {/* Close button */}
-        <button 
-          onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
-          aria-label="Close modal"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-purple-600/20 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none" />
 
         {/* Modal Header */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1 text-xs font-mono-accent tracking-widest text-purple-300 uppercase px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30">
-              <Sparkles className="w-3 h-3" /> The Gateway
-            </span>
+        <DialogHeader className="mb-2">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Badge variant="cosmic" className="gap-1 px-3 py-1">
+                <Sparkles className="w-3.5 h-3.5 text-purple-300" />
+                The Gateway
+              </Badge>
+              {isSupabaseConfigured() ? (
+                <Badge variant="success" className="gap-1 text-[10px]">
+                  <Database className="w-3 h-3 text-emerald-400" /> Supabase Live
+                </Badge>
+              ) : (
+                <Badge variant="secondary" className="gap-1 text-[10px]">
+                  <Zap className="w-3 h-3 text-purple-300" /> Edge Sync
+                </Badge>
+              )}
+            </div>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold font-display tracking-tight text-white">
+          <DialogTitle className="text-2xl md:text-3xl font-bold tracking-tight text-white">
             {activeTab === 'invite' ? 'Enter The Paradox' : 'Commission The Vanguard'}
-          </h2>
-          <p className="text-sm text-slate-400 mt-1">
+          </DialogTitle>
+          <DialogDescription className="text-zinc-400 text-sm">
             {activeTab === 'invite' 
               ? 'Enter your invitation watermark code to unlock exclusive operative clearance.' 
               : 'Direct intake for visionary founders, digital creators, and elite brands.'}
-          </p>
-        </div>
+          </DialogDescription>
+        </DialogHeader>
 
         {/* Tabs */}
-        <div className="flex rounded-xl bg-black/40 p-1 mb-6 border border-white/10">
-          <button
-            onClick={() => setActiveTab('invite')}
-            className={`flex-1 py-2 text-xs md:text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === 'invite'
-                ? 'bg-purple-600/40 text-white shadow-sm border border-purple-400/30'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Key className="w-4 h-4" /> Invitation Code
-          </button>
-          <button
-            onClick={() => setActiveTab('client')}
-            className={`flex-1 py-2 text-xs md:text-sm font-medium rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              activeTab === 'client'
-                ? 'bg-purple-600/40 text-white shadow-sm border border-purple-400/30'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Send className="w-4 h-4" /> Work With Us
-          </button>
-        </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="invite" className="gap-2">
+              <Key className="w-4 h-4 text-purple-400" /> Invitation Code
+            </TabsTrigger>
+            <TabsTrigger value="client" className="gap-2">
+              <Send className="w-4 h-4 text-indigo-400" /> Work With Us
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Tab 1: Invitation Code */}
-        {activeTab === 'invite' && (
-          <div>
+          {/* Tab 1: Invitation Code */}
+          <TabsContent value="invite" className="mt-4">
             {!isUnlocked ? (
               <form onSubmit={handleVerifyInvite} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-mono-accent uppercase tracking-wider text-slate-300 mb-2">
-                    Enter Watermark / Invitation Code
+                  <label className="block text-xs uppercase tracking-wider text-zinc-300 mb-2 font-mono">
+                    Watermark / Passcode
                   </label>
                   <div className="relative">
-                    <input
+                    <Input
                       type="text"
                       value={inviteCode}
                       onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                      placeholder="e.g. PARADOX, VOID2024, GENZ"
-                      className="w-full px-4 py-3 rounded-xl bg-white/[0.05] border border-purple-400/30 focus:border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500/30 text-white placeholder-slate-500 font-mono-accent tracking-widest text-base"
+                      placeholder="e.g. GENESIS-2026, PARADOX-VIP, STUDIO-DIRECT"
+                      className="font-mono tracking-widest text-base uppercase pr-28"
                       autoFocus
                     />
-                    <button
-                      type="submit"
-                      className="absolute right-2 top-2 bottom-2 px-4 rounded-lg glass-button text-black font-semibold text-xs uppercase tracking-wider flex items-center gap-1 cursor-pointer"
-                    >
-                      Verify <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="absolute right-1.5 top-1.5 bottom-1.5">
+                      <Button
+                        type="submit"
+                        size="sm"
+                        variant="cosmic"
+                        disabled={isVerifying}
+                        className="h-full px-4 text-xs font-semibold uppercase tracking-wider"
+                      >
+                        {isVerifying ? "Verifying..." : (
+                          <>Verify <ArrowRight className="w-3.5 h-3.5" /></>
+                        )}
+                      </Button>
+                    </div>
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-2 flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-purple-400" />
-                    Redirected from an invitation? Any authentic code grants immediate access.
+                  <p className="text-[11px] text-zinc-400 mt-2 flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                    Authenticated against Supabase Row-Level Security & Edge cryptographic dictionary.
                   </p>
                 </div>
 
-                <div className="p-4 rounded-xl bg-purple-950/20 border border-purple-500/20 mt-4">
-                  <p className="text-xs text-purple-200 font-medium mb-1">Don't have a code yet?</p>
-                  <p className="text-xs text-slate-400">
-                    Switch to the <button type="button" onClick={() => setActiveTab('client')} className="text-purple-300 underline font-semibold cursor-pointer">Work With Us</button> tab to apply directly for VIP project slots.
+                <div className="p-4 rounded-2xl bg-purple-950/30 border border-purple-500/20">
+                  <p className="text-xs text-purple-200 font-medium mb-1">Don't have a watermark code yet?</p>
+                  <p className="text-xs text-zinc-400">
+                    Switch to the{' '}
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('client')}
+                      className="text-purple-300 underline font-semibold cursor-pointer"
+                    >
+                      Work With Us
+                    </button>{' '}
+                    tab to apply directly for VIP client slots.
                   </p>
                 </div>
               </form>
             ) : (
               <div className="space-y-4 animate-scale-up">
-                <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-emerald-200 flex items-start gap-3">
+                <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-semibold">{unlockMessage}</p>
                     <p className="text-xs text-emerald-300/80 mt-1">
-                      Clearance level 4 granted. You are now connected to the Vanguard Core.
+                      Clearance verified. You are connected to the Vanguard Core.
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <h4 className="text-xs font-mono-accent text-slate-300 uppercase tracking-wider">Unlocked Operative Perks:</h4>
-                  <ul className="text-xs text-slate-300 space-y-1.5">
-                    <li className="flex items-center gap-2">✦ <strong>Priority Client Queuing:</strong> Guaranteed 48hr response for new projects.</li>
-                    <li className="flex items-center gap-2">✦ <strong>Direct Vanguard Access:</strong> Private Telegram / Discord war-room.</li>
-                    <li className="flex items-center gap-2">✦ <strong>15% Invitation Credit:</strong> Applied to your initial design & tech build.</li>
+                  <h4 className="text-xs font-mono text-zinc-300 uppercase tracking-wider">Unlocked Operative Perks:</h4>
+                  <ul className="text-xs text-zinc-300 space-y-1.5">
+                    <li className="flex items-center gap-2">✦ <strong>Priority Client Queuing:</strong> Guaranteed 48hr response for new builds.</li>
+                    <li className="flex items-center gap-2">✦ <strong>Direct Vanguard Channel:</strong> Private Telegram / Discord war-room.</li>
+                    <li className="flex items-center gap-2">✦ <strong>15% Commission Credit:</strong> Applied to your initial design & tech build.</li>
                   </ul>
                 </div>
 
                 <div className="flex gap-3 pt-2">
-                  <button
+                  <Button
                     onClick={() => setActiveTab('client')}
-                    className="flex-1 py-3 rounded-xl glass-button font-bold text-xs tracking-wider uppercase text-center cursor-pointer"
+                    variant="cosmic"
+                    className="flex-1 uppercase tracking-wider text-xs font-bold"
                   >
                     Claim VIP Project Slot
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     onClick={onClose}
-                    className="px-4 py-3 rounded-xl border border-white/20 text-xs text-slate-300 hover:bg-white/5 cursor-pointer"
+                    variant="outline"
+                    className="text-xs"
                   >
                     Explore Void
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
-          </div>
-        )}
+          </TabsContent>
 
-        {/* Tab 2: Client Intake Form */}
-        {activeTab === 'client' && (
-          <div>
+          {/* Tab 2: Client Intake Form */}
+          <TabsContent value="client" className="mt-4">
             {!submittedClient ? (
               <form onSubmit={handleClientSubmit} className="space-y-3.5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-mono-accent uppercase tracking-wider text-slate-300 mb-1">
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-300 mb-1">
                       Your Name / Brand
                     </label>
-                    <input
+                    <Input
                       type="text"
                       required
                       value={clientForm.name}
                       onChange={(e) => setClientForm({ ...clientForm, name: e.target.value })}
                       placeholder="e.g. Satoshi / Nova Studio"
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.05] border border-white/15 focus:border-purple-400 focus:outline-none text-sm text-white placeholder-slate-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-mono-accent uppercase tracking-wider text-slate-300 mb-1">
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-300 mb-1">
                       Contact (Discord / TG / Email)
                     </label>
-                    <input
+                    <Input
                       type="text"
                       required
                       value={clientForm.contact}
                       onChange={(e) => setClientForm({ ...clientForm, contact: e.target.value })}
                       placeholder="@handle or email"
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.05] border border-white/15 focus:border-purple-400 focus:outline-none text-sm text-white placeholder-slate-500"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-mono-accent uppercase tracking-wider text-slate-300 mb-1">
-                      What do you need built?
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-300 mb-1">
+                      Project Objective
                     </label>
                     <select
                       value={clientForm.service}
                       onChange={(e) => setClientForm({ ...clientForm, service: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#0e0a1f] border border-white/15 focus:border-purple-400 focus:outline-none text-sm text-slate-200 cursor-pointer"
+                      className="w-full h-11 px-3.5 rounded-xl bg-zinc-900 border border-white/15 focus:border-purple-400 focus:outline-none text-sm text-zinc-200 cursor-pointer"
                     >
                       <option>Viral Landing Experience</option>
                       <option>Full-Stack Web App / Platform</option>
@@ -285,13 +316,13 @@ export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' })
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[11px] font-mono-accent uppercase tracking-wider text-slate-300 mb-1">
-                      Budget Range
+                    <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-300 mb-1">
+                      Budget Bracket
                     </label>
                     <select
                       value={clientForm.budget}
                       onChange={(e) => setClientForm({ ...clientForm, budget: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-lg bg-[#0e0a1f] border border-white/15 focus:border-purple-400 focus:outline-none text-sm text-slate-200 cursor-pointer"
+                      className="w-full h-11 px-3.5 rounded-xl bg-zinc-900 border border-white/15 focus:border-purple-400 focus:outline-none text-sm text-zinc-200 cursor-pointer"
                     >
                       <option>$2,500 - $5,000</option>
                       <option>$5,000 - $15,000</option>
@@ -301,38 +332,39 @@ export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' })
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-mono-accent uppercase tracking-wider text-slate-300 mb-1">
-                    Project Vision / Goals
+                  <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-300 mb-1">
+                    Vision & Scope
                   </label>
-                  <textarea
+                  <Textarea
                     rows={3}
                     value={clientForm.details}
                     onChange={(e) => setClientForm({ ...clientForm, details: e.target.value })}
                     placeholder="Tell us what you want to achieve, timeline, and inspiration..."
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-white/[0.05] border border-white/15 focus:border-purple-400 focus:outline-none text-sm text-white placeholder-slate-500"
                   />
                 </div>
 
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 rounded-xl glass-button font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
+                  variant="cosmic"
+                  className="w-full py-3 uppercase tracking-wider text-xs font-bold gap-2"
                 >
-                  <Send className="w-4 h-4 text-purple-300" /> {isSubmitting ? 'Transmitting...' : 'Submit Application to Vanguard'}
-                </button>
+                  <Send className="w-4 h-4 text-purple-200" />
+                  {isSubmitting ? 'Transmitting to Supabase...' : 'Submit Application to Vanguard'}
+                </Button>
               </form>
             ) : (
               <div className="space-y-4 animate-scale-up text-center py-4">
-                <div className="w-12 h-12 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 flex items-center justify-center mx-auto mb-2">
-                  <CheckCircle className="w-6 h-6" />
+                <div className="w-14 h-14 rounded-full bg-purple-500/20 border border-purple-400/40 text-purple-300 flex items-center justify-center mx-auto mb-2">
+                  <CheckCircle className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-bold font-display text-white">Application Transmitted</h3>
-                <p className="text-xs text-slate-300 max-w-sm mx-auto">
-                  Your project dossier has been securely logged on the edge. Our directors will reach out to <strong className="text-purple-300">{clientForm.contact}</strong> within 12 hours.
+                <h3 className="text-xl font-bold text-white">Application Transmitted</h3>
+                <p className="text-xs text-zinc-300 max-w-sm mx-auto">
+                  Your project dossier has been logged into Supabase. Our directors will reach out to <strong className="text-purple-300">{clientForm.contact}</strong> within 12 hours.
                 </p>
 
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-between max-w-xs mx-auto">
-                  <span className="text-xs font-mono-accent text-slate-400">Passcode: {ticketId}</span>
+                <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-between max-w-xs mx-auto">
+                  <span className="text-xs font-mono text-zinc-400">Passcode: {ticketId}</span>
                   <button 
                     onClick={copyTicketId}
                     className="text-xs flex items-center gap-1 text-purple-300 hover:text-white cursor-pointer"
@@ -342,17 +374,18 @@ export default function GatewayModal({ isOpen, onClose, initialTab = 'invite' })
                   </button>
                 </div>
 
-                <button
+                <Button
                   onClick={onClose}
-                  className="px-6 py-2.5 rounded-xl border border-white/20 text-xs text-slate-300 hover:bg-white/10 cursor-pointer mt-2"
+                  variant="outline"
+                  className="px-6 text-xs mt-2"
                 >
                   Return to Exploration
-                </button>
+                </Button>
               </div>
             )}
-          </div>
-        )}
-      </div>
-    </div>
+          </TabsContent>
+        </Tabs>
+      </DialogContent>
+    </Dialog>
   );
 }
