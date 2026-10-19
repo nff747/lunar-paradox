@@ -1,17 +1,23 @@
-# Backup Archives & Zip Bloat
+# Version control ignore for Lunar Paradox
+
+# Historical raw recovery archives (preserve on local disk, do not track in Git)
 *.tar.gz
+*.tar
 *.zip
 
-# Local SQLite Data & Private Keys
+# Sensitive local runtime data and cryptographic keys
+offline-platforms/.lunar-data/
 .lunar-data/
-*.sqlite3
 *.key
+*.sqlite3
 
-# Python Cache & Bytecode
+# Node / Python environments and caches
+node_modules/
 __pycache__/
-*.pyc
+*.py[cod]
+.pytest_cache/
 
-# OS & Editor
+# OS / Editor temporary artifacts
 .DS_Store
 Thumbs.db
 .vscode/
