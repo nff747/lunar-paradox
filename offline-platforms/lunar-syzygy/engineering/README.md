@@ -1,0 +1,1 @@
+Engineering source for the generated material atlases. These scripts are not needed to run the project. They use Node, ImageMagick and the original workspace paths; see the source arguments before regenerating. The live editable scene is ../scene-source.html and its assets/vendor folders. The delivered index.html is the bundled runtime.

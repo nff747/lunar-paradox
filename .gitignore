@@ -1,0 +1,18 @@
+# Backup Archives & Zip Bloat
+*.tar.gz
+*.zip
+
+# Local SQLite Data & Private Keys
+.lunar-data/
+*.sqlite3
+*.key
+
+# Python Cache & Bytecode
+__pycache__/
+*.pyc
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

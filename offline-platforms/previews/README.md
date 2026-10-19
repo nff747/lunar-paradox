@@ -1,0 +1,1 @@
+Current review images: experience repair, 18 October 2026. These are representative desktop screenshots, not a proof of photographic matching, animation quality or universal performance. Read CURRENT-VALIDATION.md and EXPERIENCE-AUDIT.md. Earlier review files are preserved in the workspace repair backup and previous-delivery archives.

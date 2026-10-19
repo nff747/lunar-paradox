@@ -1,0 +1,33 @@
+{
+  "primaryComparisons": 10000,
+  "additionalValidationComparisons": 30000,
+  "bootstrapComparisons": 10000,
+  "totalFinalComparisons": 50000,
+  "founderCapacityTests": "passed",
+  "numericAndCashConservationChecks": "passed",
+  "confirmedAvailableCash": 0,
+  "bootstrapZeroCashCoveredCasesMax": 0,
+  "canvasSyntax": "passed; native canvas rendering not verified",
+  "htmlExplorer": "browser rendering and controls checked; no sampled console errors",
+  "hashes": {
+    "simulate.py": "84d7e339b93d8411e2eecef8200e22327fe53669546c1c8b6d9117fff1ba1b97",
+    "run-output.json": "7a2b9d430ae537e3544ca631439eac564a4cbfca699e79742be3e4b80e33bf1a",
+    "results.json": "996942163a9380515e713e3e57d288a50f2c133bd5e234cb6fb0897bb3e4e019",
+    "all-runs.json": "4821e18fee80783a543ae7cd119dad79ab1575b33b5d18ab3da05d8c1f0c2722",
+    "strategies.csv": "dd421e186313a1c3fdf317641ab63147ec9e59fc4c9704f4186a7cdc0e07f144",
+    "all-runs.csv": "58482ecf41733583818a4c99d44ce9c2e6e594460fd33c6296ebc4581baeb1e5",
+    "stress_assumptions.py": "602665b2c23dba521a88267bbab831b5699793e05362f4df059115655e8734eb",
+    "assumption-stress-output.json": "216baea3251370e3749547829c4f79d392f448015af979e0cbfc5987f54f5357",
+    "assumption-stress.json": "d53ce010ff741bf3f08acaa337e30d0bbab04fec1fba99b4fc8230deeb24bb23",
+    "test_model.py": "eaf495a2ce522ce3e8dfcd6e3bb57d5af2f1e392956bd2984dca9c9891950aa0",
+    "build_report.py": "b1af08bfeba4dccc0b0d271b0002a5682bbb54153f0f9423ed52ae27727f375a",
+    "explorer-data.json": "20d88cb509149334640530143ff47393653e69fefa06502db4765c347f90e2f7",
+    "make_views.py": "b4b2edb686a7c00106a95112308600c34b8ad13798eff090fa1e51cd35956d32",
+    "all-runs.json.gz": "11860024efcf642232f957263da0a30c885e1e52f6af8bdac7e17b2c586cc262",
+    "bootstrap.py": "5c04c2ec6aedd2ea648a94fcd2423ed59d7e9b3c6bdad8092a31df3b3566373a",
+    "bootstrap-output.json": "b343dfca41372ac61090d779eeb6340ba6faa221b0ef592c9aca1c72f5829898",
+    "bootstrap-results.json": "54060cbe1e5e88a452832d89d69500278e35d29361178c572c48e89d513e8460",
+    "bootstrap-strategies.csv": "44ae05d060a4f6d491497208bcb263fb5d3f8a83bc90476750e4c804d5c977a6"
+  },
+  "illustrativeFullyBookedHourlyFloorBeforeTax": 153.84615384615384
+}

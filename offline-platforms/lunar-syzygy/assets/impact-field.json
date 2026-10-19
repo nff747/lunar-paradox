@@ -1,0 +1,29 @@
+{
+  "schema": "lunar-impact-field.v1",
+  "authoredCraterCount": 24,
+  "width": 2048,
+  "height": 1024,
+  "encoding": "16-bit unsigned height = (R*256+G)/65535; physicalHeight=(encoded-0.5)*0.08",
+  "colorSpace": "linear / NoColorSpace",
+  "imageRows": "north to south",
+  "directionToUv": "u=fract(atan2(z,-x)/2PI), v=asin(y)/PI+0.5",
+  "filter": "linear; S repeat, T clamp; no mipmap",
+  "range": {
+    "min": -0.015552831008937642,
+    "max": 0.0062699977760574946
+  },
+  "definitionSha256": "87ccd1a9217af7395cf375f105cde5c41d11c955eb669dbf54be4c57049b422a",
+  "pngSha256": "2bcf3dfb51db74cc32f2e957e3423df695c85deb0f1982b76870833d44ddc977",
+  "validation": {
+    "sphere": {
+      "count": 100000,
+      "max": 0.0003493220262270969,
+      "rms": 0.000009072990637864804
+    },
+    "craterFocused": {
+      "count": 48000,
+      "max": 0.0003626790382295223,
+      "rms": 0.00004500418944840785
+    }
+  }
+}
