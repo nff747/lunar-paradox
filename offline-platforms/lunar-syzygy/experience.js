@@ -21,6 +21,7 @@
   function navigate(route){if(!routes.has(route))return;focusNext=true;if(getRoute()===route)renderRoute();else location.hash='/'+route;}
   function setHold(active){window.dispatchEvent(new CustomEvent('lunar:hold',{detail:{active}}));}
   function renderRoute(){
+    if(window.lunarRouter?.checkCrossPlatformRedirect?.('syzygy'))return;
     if(window.lunarCompany?.isCompanyHash()){setHold(false);current='realms';host.hidden=true;document.body.dataset.route='realms';document.dispatchEvent(new CustomEvent('lunar:route',{detail:{route:'realms',scene:'syzygy'}}));return;}
     const previous=current,focusWasInside=host.contains(document.activeElement);setHold(false);current=getRoute();if(current!==previous&&focusWasInside)focusNext=true;document.body.dataset.route=current;host.hidden=current==='realms';
     host.className='sx-route sx-'+current;

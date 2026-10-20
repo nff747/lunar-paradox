@@ -49,4 +49,14 @@ copyDir(path.join(PLATFORMS, 'lunar-syzygy'), path.join(DIST, 'studio'));
 
 // 5. Create platforms alias directory
 fs.mkdirSync(path.join(DIST, 'platforms'), { recursive: true });
+
+// 6. Copy SEO assets (robots.txt, sitemap.xml)
+['robots.txt', 'sitemap.xml'].forEach(file => {
+  const src = path.join(ROOT, file);
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, path.join(DIST, file));
+    console.log(`Copied ${file} to dist/`);
+  }
+});
+
 console.log('[Lunar Paradox] Build completed successfully.');

@@ -1,7 +1,7 @@
 /* Company destinations and a local publishing workflow. The scene renderer remains independent. */
 (()=>{'use strict';
 const scene=document.body.dataset.scene,kind=scene==='gravity'?'experiments':'products';
-const landing=scene==='syzygy'?'realms':scene==='gravity'?'labs':'products';
+const landing=scene==='syzygy'?'realms':scene==='gravity'?'explore':'explore';
 const local=['localhost','127.0.0.1',''].includes(location.hostname),key='lunar-company-content:v1';
 const empty=()=>structuredClone(window.LUNAR_PUBLISHED_CONTENT||{revision:0,experiments:[],products:[],contactEmail:''});
 let content=empty(),server=false,editing=null,collection=kind,notice='',busy=false,filter='',request=0;
@@ -10,7 +10,7 @@ const safe=v=>{try{const u=new URL(v);return u.protocol==='https:'&&!!u.hostname
 const route=()=>location.hash.replace(/^#\/?/,'').split('?')[0];
 const owns=()=>/^(home|studio|commission|estimate|applications|labs|products|manage|experiment\/[-\w]+|product\/[-\w]+)$/.test(route());
 window.lunarCompany={isCompanyHash:owns,get brandHref(){return href('syzygy','realms');}};
-function href(target,hash){if(target===scene)return '#/'+hash;if(location.protocol==='file:'){const source=location.pathname.includes('/dist/');return new URL((source?'../../lunar-'+target+'/dist/':'../lunar-'+target+'/')+'index.html#/'+hash,location.href).href;}const h=location.hostname;if(h.endsWith('lunarparadox.com')){if(target==='gravity')return 'https://labs.lunarparadox.com/#/'+hash;if(target==='astrolabe')return 'https://products.lunarparadox.com/#/'+hash;if(target==='syzygy')return 'https://lunarparadox.com/#/'+hash;}return '/platforms/'+target+'/index.html#/'+hash;}
+function href(target,hash){if(window.lunarRouter)return window.lunarRouter.resolvePlatformUrl(target,hash,scene);if(target===scene)return '#/'+hash;if(location.protocol==='file:'){const source=location.pathname.includes('/dist/');return new URL((source?'../../lunar-'+target+'/dist/':'../lunar-'+target+'/')+'index.html#/'+hash,location.href).href;}const h=location.hostname;if(h.endsWith('lunarparadox.com')){if(target==='gravity')return 'https://labs.lunarparadox.com/#/'+hash;if(target==='astrolabe')return 'https://products.lunarparadox.com/#/'+hash;if(target==='syzygy')return 'https://lunarparadox.com/#/'+hash;}const path=location.pathname;if(path.includes('/labs')||path.includes('/products')||path.includes('/studio')||path==='/'||path===''){if(target==='gravity')return '/labs/#/'+hash;if(target==='astrolabe')return '/products/#/'+hash;if(target==='syzygy')return '/#/'+hash;}return '/platforms/'+target+'/index.html#/'+hash;}
 const link=(target,hash,text,cls='lc-link')=>`<a class="${cls}" href="${esc(href(target,hash))}">${text}</a>`;
 function download(name,value){const url=URL.createObjectURL(new Blob([typeof value==='string'?value:JSON.stringify(value,null,2)],{type:typeof value==='string'?'text/plain;charset=utf-8':'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
 function validate(value){if(!value||!Number.isInteger(value.revision)||value.revision<0||!Array.isArray(value.experiments)||!Array.isArray(value.products)||typeof value.contactEmail!=='string')throw Error('Invalid publisher document.');for(const k of ['experiments','products']){if(value[k].length>100)throw Error('At most 100 records per collection.');const ids=new Set();for(const r of value[k]){const limits={id:80,title:120,summary:300,body:6000,category:60,image:500,actionUrl:500,actionLabel:60,stage:40,status:20};if(Object.keys(r).length!==Object.keys(limits).length||Object.entries(limits).some(([n,max])=>typeof r[n]!=='string'||r[n].length>max)||!/^[-\w]+$/.test(r.id)||ids.has(r.id)||!['draft','published','archived'].includes(r.status))throw Error('Invalid record.');ids.add(r.id);if(r.status==='published'&&(!r.title.trim()||!r.summary.trim()||!r.body.trim()))throw Error('Publishing requires a title, summary and content.');if((r.image&&!safe(r.image))||(r.actionUrl&&!safe(r.actionUrl)))throw Error('Links must be complete HTTPS URLs.');if(!!r.actionUrl!==!!r.actionLabel)throw Error('An action needs its label and URL.');}}if(value.contactEmail&&(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.contactEmail)||value.contactEmail.length>254))throw Error('Enter a valid contact email.');return value;}
@@ -71,8 +71,8 @@ function enter(){
  groups.forEach((el,i)=>play(el,[{opacity:0,transform:'translate3d(0,18px,0)'},{opacity:1,transform:'translate3d(0,0,0)'}],{duration:520,delay:Math.min(i*65,300),easing:'cubic-bezier(.16,1,.3,1)',fill:'backwards'}));
 }
 async function navigate(){
+ if(window.lunarRouter?.checkCrossPlatformRedirect?.(scene))return;
  const ticket=++journey, destination=route();stopMotion();
- if(scene==='syzygy'&&destination==='mission')history.replaceState(null,'','#/home');
  if(destination!==shownRoute&&!host.hidden&&!motion.matches){
   const exit=play(host,[{opacity:1,transform:'translate3d(0,0,0)'},{opacity:0,transform:'translate3d(0,-8px,0)'}],{duration:140,easing:'ease-in',fill:'forwards'});
   if(exit)await exit.finished.catch(()=>{});
@@ -83,7 +83,7 @@ async function navigate(){
  stopMotion();setTravel(0);render(true);shownRoute=route();enter();
 }
 motion.addEventListener('change',()=>{stopMotion();setTravel(0);document.body.style.removeProperty('--hold-reveal');});
-window.addEventListener('hashchange',navigate);document.body.classList.add('company-ready');const brand=document.querySelector('header .brand');if(brand&&scene!=='syzygy'){brand.removeAttribute('data-route');brand.setAttribute('aria-label','Lunar Paradox home');brand.href=href('syzygy','realms');}if(scene==='syzygy'&&route()==='mission')history.replaceState(null,'','#/home');if(!location.hash)history.replaceState(null,'','#/'+landing);render();load(route()==='manage'&&local).then(()=>{if(!host.contains(document.activeElement))render();});
+window.addEventListener('hashchange',navigate);document.body.classList.add('company-ready');const brand=document.querySelector('header .brand');if(brand&&scene!=='syzygy'){brand.removeAttribute('data-route');brand.setAttribute('aria-label','Lunar Paradox home');brand.href=href('syzygy','realms');}if(!location.hash)history.replaceState(null,'','#/'+landing);if(!window.lunarRouter?.checkCrossPlatformRedirect?.(scene)){render();load(route()==='manage'&&local).then(()=>{if(!host.contains(document.activeElement))render();});}
 window.addEventListener('lunar:spatial',e=>{
  if(scene!=='syzygy')return;
  const p=Math.max(0,Math.min(1,Number(e.detail?.charge)||0));
