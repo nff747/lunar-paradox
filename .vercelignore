@@ -1,0 +1,17 @@
+# Vercel Deployment Ignore
+*.tar.gz
+*.tar
+*.zip
+.git/
+.github/
+.lunar-data/
+offline-platforms/.lunar-data/
+*.sqlite3
+*.key
+business-simulation/
+company-plan/
+backup-*/
+offline-platforms-before-*/
+previous-workspace-*
+*.py[cod]
+__pycache__/

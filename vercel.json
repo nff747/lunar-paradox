@@ -1,0 +1,75 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/offline-platforms/lunar-syzygy/index.html"
+    },
+    {
+      "source": "/studio",
+      "destination": "/offline-platforms/lunar-syzygy/index.html"
+    },
+    {
+      "source": "/labs",
+      "destination": "/offline-platforms/lunar-gravity/index.html"
+    },
+    {
+      "source": "/gravity",
+      "destination": "/offline-platforms/lunar-gravity/index.html"
+    },
+    {
+      "source": "/products",
+      "destination": "/offline-platforms/lunar-astrolabe/index.html"
+    },
+    {
+      "source": "/astrolabe",
+      "destination": "/offline-platforms/lunar-astrolabe/index.html"
+    },
+    {
+      "source": "/lunar-syzygy/(.*)",
+      "destination": "/offline-platforms/lunar-syzygy/$1"
+    },
+    {
+      "source": "/lunar-gravity/(.*)",
+      "destination": "/offline-platforms/lunar-gravity/$1"
+    },
+    {
+      "source": "/lunar-astrolabe/(.*)",
+      "destination": "/offline-platforms/lunar-astrolabe/$1"
+    }
+  ]
+}
