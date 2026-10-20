@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://www.coderabbit.ai/integrations/schema.v2.json
+language: "en-US"
+early_access: false
+reviews:
+  profile: "assertive"
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  path_filters:
+    - "!*.tar.gz"
+    - "!*.zip"
+    - "!dist/**"
+    - "!offline-platforms/lunar-gravity.zip"
+    - "!offline-platforms/lunar-syzygy.zip"
+    - "!offline-platforms/lunar-astrolabe.zip"
+  path_instructions:
+    - path: "offline-platforms/**/*.js"
+      instructions: |
+        Verify:
+        1. WebGL resource lifecycle: check for WebGL context leaks, missing buffer/geometry/texture/shader disposal.
+        2. Unhandled promise rejections and silent network failure in fetch or storage APIs.
+        3. LocalStorage quota overflows or unparsed JSON crashes.
+        4. Cross-platform URL handling between subdomains (labs, products, studio) and path routes.
+    - path: "offline-platforms/**/*.py"
+      instructions: |
+        Verify:
+        1. Strict input validation and sanitization for all parameters.
+        2. Prevention of path traversal in file serving or SQLite database handling.
+        3. Concurrency safety in ThreadingHTTPServer.

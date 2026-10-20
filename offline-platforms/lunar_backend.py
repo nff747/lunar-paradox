@@ -103,13 +103,19 @@ class Store:
     def __init__(self, path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.parent.chmod(0o700)
+        try:
+            self.path.parent.chmod(0o700)
+        except (PermissionError, OSError):
+            pass
         owner_file=self.path.parent/'commission-owner.key'
         try:
             fd=os.open(owner_file,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
             with os.fdopen(fd,'w') as stream:stream.write(secrets.token_urlsafe(32))
         except FileExistsError:pass
-        owner_file.chmod(0o600)
+        try:
+            owner_file.chmod(0o600)
+        except (PermissionError, OSError):
+            pass
         self.owner_key=owner_file.read_text().strip()
         with self.connect() as db:
             db.execute('CREATE TABLE IF NOT EXISTS company_content (id INTEGER PRIMARY KEY CHECK(id=1), revision INTEGER NOT NULL, document TEXT NOT NULL)')
@@ -122,7 +128,10 @@ class Store:
             if 'deleted' not in {row[1] for row in db.execute('PRAGMA table_info(snapshots)')}:
                 db.execute('ALTER TABLE snapshots ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0')
 
-        self.path.chmod(0o600)
+        try:
+            self.path.chmod(0o600)
+        except (PermissionError, OSError):
+            pass
 
     def content(self, public=False):
         with self.connect() as db:
