@@ -1,9 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null,
-  "buildCommand": null,
-  "outputDirectory": ".",
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "headers": [
     {
@@ -28,7 +25,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)",
+      "source": "/(.*)\\.(css|js|ttf|woff2|png|jpg|webp)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -38,14 +35,6 @@
     }
   ],
   "rewrites": [
-    {
-      "source": "/",
-      "destination": "/offline-platforms/lunar-syzygy/index.html"
-    },
-    {
-      "source": "/studio",
-      "destination": "/offline-platforms/lunar-syzygy/index.html"
-    },
     {
       "source": "/labs",
       "destination": "/offline-platforms/lunar-gravity/index.html"
@@ -63,16 +52,8 @@
       "destination": "/offline-platforms/lunar-astrolabe/index.html"
     },
     {
-      "source": "/lunar-syzygy/(.*)",
-      "destination": "/offline-platforms/lunar-syzygy/$1"
-    },
-    {
-      "source": "/lunar-gravity/(.*)",
-      "destination": "/offline-platforms/lunar-gravity/$1"
-    },
-    {
-      "source": "/lunar-astrolabe/(.*)",
-      "destination": "/offline-platforms/lunar-astrolabe/$1"
+      "source": "/studio",
+      "destination": "/index.html"
     }
   ]
 }
