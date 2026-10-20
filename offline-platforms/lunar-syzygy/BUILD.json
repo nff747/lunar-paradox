@@ -1,0 +1,8 @@
+{
+  "format": "standalone-live-webgl",
+  "sourceSha256": "61b3cecab71e777c0a25491779f934e33eed8a4ee7f31df5d911b7ae2b4b641f",
+  "htmlSha256": "c39a4f64c22552e1c85cc12861a9afedcc0a64516084027431b6db19e9a81a85",
+  "embeddedTextureAndFontCount": 15,
+  "bundledEngine": "Three.js r170",
+  "compiledAt": "2026-10-19T00:33:02.877Z"
+}

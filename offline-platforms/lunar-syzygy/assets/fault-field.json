@@ -1,0 +1,23 @@
+{
+  "schema": "lunar-fault-field.v1",
+  "width": 4096,
+  "height": 2048,
+  "channels": {
+    "red": "embedded angular mineral fracture mask",
+    "green": "sparse branch junction energy sites",
+    "blue": "unused"
+  },
+  "generator": "Original seeded fractureBranch Canvas2D geometry recorded as SVG paths/radial gradients; rasterized offline by ImageMagick",
+  "seed": 194357,
+  "paths": 44456,
+  "hotnodes": 70,
+  "nonzeroRed": 212594,
+  "nonzeroGreen": 3077,
+  "maxRed": 254,
+  "maxGreen": 121,
+  "redSum": 11915471,
+  "greenSum": 56628,
+  "sourceSha256": "f4aa4393e6ac2fd2d87fe6ace50d0089a524097fca73e55ae483673e0d09058e",
+  "pngSha256": "41f1245dc6130da1c12788856874ea24aeb75640f363acda13b7a4c5b5410068",
+  "note": "Path topology, per-segment color, width, PRNG calls and gradient geometry preserved. SVG raster antialiasing can differ slightly from browser Canvas2D."
+}

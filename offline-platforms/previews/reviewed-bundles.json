@@ -1,0 +1,23 @@
+[
+  {
+    "scene": "syzygy",
+    "sourceSha256": "61b3cecab71e777c0a25491779f934e33eed8a4ee7f31df5d911b7ae2b4b641f",
+    "bundledSha256": "c39a4f64c22552e1c85cc12861a9afedcc0a64516084027431b6db19e9a81a85",
+    "browser": "bundled engine rendered over local HTTP; no sampled warning/error logs",
+    "limits": "not direct file execution, physical-phone testing or sustained cross-device benchmarking"
+  },
+  {
+    "scene": "gravity",
+    "sourceSha256": "7ced8f7f62f3f7ca46a6006e5125bcb19028b4f54204cb5dbdbd62b2657d4be3",
+    "bundledSha256": "43e54cbad7d73b8ccb4be1dd3b6776494115d73f54e9eb3e84db061f0ad6a22d",
+    "browser": "bundled engine rendered over local HTTP; no sampled warning/error logs",
+    "limits": "not direct file execution, physical-phone testing or sustained cross-device benchmarking"
+  },
+  {
+    "scene": "astrolabe",
+    "sourceSha256": "0abb10930b1e854e4221d1c19f79576759748989190164ec25351705a601c262",
+    "bundledSha256": "abf870e465545b93989916b51a2764dd3b188850fb7a3f622dff4c00ac13f9c2",
+    "browser": "bundled engine rendered over local HTTP; no sampled warning/error logs",
+    "limits": "not direct file execution, physical-phone testing or sustained cross-device benchmarking"
+  }
+]

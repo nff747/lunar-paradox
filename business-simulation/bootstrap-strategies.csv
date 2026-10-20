@@ -1,0 +1,101 @@
+id,offer,plan,illustrativePrice,baseScopeHours,salesHoursWeekly,deliveryHoursWeekly,medianSurplus,p10Surplus,p90Surplus,medianFundingNeeded,p90FundingNeeded,zeroCashCoveredCases,medianCompleted,anyEarnedCashCases,score,rank
+B02-03,Automation pilot,Small paid entry,4875,36,16,18,-21540,-31125,-12273,23934,31161,0,4.0,98,-41913.0,1
+B08-03,Performance optimization,Small paid entry,2925,20,16,18,-22908,-30321,-14001,23820,31635,0,6.5,98,-42432.0,2
+B09-03,Technical design sprint,Small paid entry,3900,32,16,18,-22652,-30216,-14786,24481,32100,0,4.5,98,-42484.0,3
+B01-03,Technical audit,Small paid entry,2275,16,16,18,-23125,-31456,-15692,24773,31521,0,8.0,100,-43051.0,4
+B04-03,WebGL rescue,Small paid entry,3250,24,16,18,-23162,-31180,-14793,24731,32750,0,6.0,98,-43546.0,5
+B06-03,Integration sprint,Small paid entry,2600,20,16,18,-24363,-30952,-16445,25173,32120,0,6.5,98,-43717.5,6
+B01-07,Technical audit,Sales intensive,3500,16,22,12,-25653,-30806,-18648,27357,31028,0,4.0,100,-43743.5,7
+B08-07,Performance optimization,Sales intensive,4500,20,22,12,-24901,-31500,-18366,27063,31501,0,3.0,99,-43951.0,8
+B05-03,Feasibility assessment,Small paid entry,2925,24,16,18,-24446,-31662,-16914,25858,33075,0,6.0,98,-44591.5,9
+B06-07,Integration sprint,Sales intensive,4000,20,22,12,-26134,-32000,-20325,28056,32001,0,3.0,99,-45067.5,10
+B07-03,Embedded engineering week,Small paid entry,2925,32,16,18,-25948,-31662,-20070,27338,33075,0,5.0,98,-45342.5,11
+B10-03,Maintenance incident,Small paid entry,1625,12,16,18,-26052,-31960,-20529,27174,32754,0,8.5,100,-45383.0,12
+B04-07,WebGL rescue,Sales intensive,5000,24,22,12,-26218,-31293,-21062,28500,33500,0,3.0,97,-45505.5,13
+B10-07,Maintenance incident,Sales intensive,2500,12,22,12,-27286,-32250,-21565,28527,32290,0,5.0,100,-45913.0,14
+B05-07,Feasibility assessment,Sales intensive,4500,24,22,12,-27196,-31763,-22556,29250,33750,0,3.0,97,-46354.5,15
+B09-07,Technical design sprint,Sales intensive,6000,32,22,12,-27201,-33000,-21281,30000,33000,0,2.0,96,-46600.5,16
+B02-07,Automation pilot,Sales intensive,7500,36,22,12,-28500,-32250,-21023,28500,32625,0,2.0,94,-46687.5,17
+B08-10,Performance optimization,Narrow repeatable sprint,4950,20,16,18,-26345,-33525,-16191,28638,33773,0,2.5,94,-46821.5,18
+B08-02,Performance optimization,Agency partners,4050,20,12,22,-27800,-32745,-19779,28480,33307,0,4.0,98,-46926.0,19
+B08-01,Performance optimization,Direct founder outreach,4500,20,14,20,-27135,-33750,-18322,29272,33975,0,3.0,94,-47430.0,20
+B06-10,Integration sprint,Narrow repeatable sprint,4400,20,16,18,-27418,-33800,-18392,29456,34020,0,2.5,94,-47619.0,21
+B08-06,Performance optimization,Expert rescue positioning,5175,20,14,20,-25859,-33412,-15669,28272,36000,0,2.5,92,-47635.5,22
+B06-02,Integration sprint,Agency partners,3600,20,12,22,-28711,-33107,-21581,29315,33606,0,4.0,98,-47712.0,23
+B01-02,Technical audit,Agency partners,3150,16,12,22,-28509,-33346,-20432,29754,33795,0,4.0,98,-47825.0,24
+B04-02,WebGL rescue,Agency partners,4500,24,12,22,-28412,-33008,-19847,29461,34425,0,3.0,96,-47922.5,25
+B01-06,Technical audit,Expert rescue positioning,4025,16,14,20,-28023,-33988,-17750,28098,33988,0,3.0,94,-47999.5,26
+B06-01,Integration sprint,Direct founder outreach,4000,20,14,20,-28120,-34000,-20286,30020,34200,0,3.0,94,-48160.0,27
+B01-10,Technical audit,Narrow repeatable sprint,3850,16,16,18,-28332,-34075,-17124,30225,34075,0,3.0,96,-48241.0,28
+B09-02,Technical design sprint,Agency partners,5400,32,12,22,-28440,-34110,-20339,29655,34110,0,3.0,93,-48330.0,29
+B06-06,Integration sprint,Expert rescue positioning,4600,20,14,20,-26986,-33700,-17928,29131,36000,0,2.5,92,-48343.0,30
+B07-07,Embedded engineering week,Sales intensive,4500,32,22,12,-29389,-33750,-24945,31500,33750,0,2.0,96,-48444.5,31
+B10-02,Maintenance incident,Agency partners,2250,12,12,22,-29168,-33683,-23883,30287,34152,0,5.0,98,-48501.5,32
+B05-02,Feasibility assessment,Agency partners,4050,24,12,22,-29171,-33307,-21462,30115,34582,0,3.0,96,-48530.0,33
+B10-10,Maintenance incident,Narrow repeatable sprint,2750,12,16,18,-29174,-33331,-21213,30509,34625,0,4.0,97,-48565.0,34
+B04-10,WebGL rescue,Narrow repeatable sprint,5500,24,16,18,-27777,-33525,-16932,27907,36000,0,2.0,90,-48651.0,35
+B01-01,Technical audit,Direct founder outreach,3500,16,14,20,-29000,-34250,-20367,30750,34250,0,3.0,97,-48750.0,36
+B02-02,Automation pilot,Agency partners,6750,36,12,22,-27986,-33638,-20154,28912,36000,0,2.0,91,-48812.0,37
+B09-06,Technical design sprint,Expert rescue positioning,6900,32,14,20,-25870,-36000,-15668,29100,36000,0,2.0,87,-48935.0,38
+B10-06,Maintenance incident,Expert rescue positioning,2875,12,14,20,-28833,-34562,-21717,30260,34562,0,3.0,96,-48978.5,39
+B04-01,WebGL rescue,Direct founder outreach,5000,24,14,20,-28556,-33500,-19110,29861,36000,0,2.0,92,-49028.0,40
+B10-01,Maintenance incident,Direct founder outreach,2500,12,14,20,-29821,-33715,-22377,31000,34750,0,4.0,97,-49143.0,41
+B05-10,Feasibility assessment,Narrow repeatable sprint,4950,24,16,18,-28599,-33772,-18839,28716,36000,0,2.0,90,-49185.5,42
+B03-07,Agency delivery day,Sales intensive,1200,8,22,12,-31209,-33638,-26443,31822,33748,0,6.0,100,-49297.5,43
+B01-09,Technical audit,Partner premium,4200,16,14,20,-29638,-34530,-22822,31073,34530,0,2.5,95,-49349.0,44
+B08-04,Performance optimization,Premium fixed scope,6075,20,16,18,-27023,-36000,-17912,29925,36000,0,2.0,84,-49511.5,45
+B07-02,Embedded engineering week,Agency partners,4050,32,12,22,-29876,-34582,-23250,31216,34582,0,3.0,93,-49520.0,46
+B05-01,Feasibility assessment,Direct founder outreach,4500,24,14,20,-29300,-33750,-20799,30475,36000,0,2.0,92,-49525.0,47
+B09-01,Technical design sprint,Direct founder outreach,6000,32,14,20,-27221,-36000,-20860,30000,36000,0,2.0,88,-49610.5,48
+B07-01,Embedded engineering week,Direct founder outreach,4500,32,14,20,-29377,-33975,-22803,31500,36000,0,2.0,90,-49676.0,49
+B02-06,Automation pilot,Expert rescue positioning,8625,36,14,20,-27375,-36000,-14156,27375,36000,0,2.0,83,-49687.5,50
+B04-06,WebGL rescue,Expert rescue positioning,5750,24,14,20,-27387,-36000,-16074,27472,36000,0,2.0,89,-49693.5,51
+B03-03,Agency delivery day,Small paid entry,780,8,16,18,-30994,-34113,-27685,31720,34464,0,8.0,100,-49785.5,52
+B02-10,Automation pilot,Narrow repeatable sprint,8250,36,16,18,-27750,-36000,-15518,27750,36000,0,2.0,86,-49875.0,53
+B10-04,Maintenance incident,Premium fixed scope,3375,12,16,18,-29440,-34481,-22825,30980,36000,0,2.0,90,-49960.5,54
+B09-04,Technical design sprint,Premium fixed scope,8100,32,16,18,-27965,-36000,-19841,31950,36000,0,1.0,78,-49982.5,55
+B06-04,Integration sprint,Premium fixed scope,5400,20,16,18,-28021,-36000,-19922,30600,36000,0,2.0,84,-50010.5,56
+B05-06,Feasibility assessment,Expert rescue positioning,5175,24,14,20,-28249,-36000,-18067,28325,36000,0,2.0,89,-50124.5,57
+B07-06,Embedded engineering week,Expert rescue positioning,5175,32,14,20,-28345,-36000,-20751,30825,36000,0,2.0,87,-50172.5,58
+B02-01,Automation pilot,Direct founder outreach,7500,36,14,20,-28500,-36000,-17411,28573,36000,0,2.0,83,-50250.0,59
+B07-10,Embedded engineering week,Narrow repeatable sprint,4950,32,16,18,-28699,-36000,-21292,31050,36000,0,2.0,88,-50349.5,60
+B01-04,Technical audit,Premium fixed scope,4725,16,16,18,-28966,-36000,-19623,31275,36000,0,2.0,85,-50483.0,61
+B04-04,WebGL rescue,Premium fixed scope,6750,24,16,18,-29250,-36000,-19272,29301,36000,0,2.0,79,-50625.0,62
+B10-09,Maintenance incident,Partner premium,3000,12,14,20,-31415,-34950,-24332,32433,34950,0,3.0,96,-50657.5,63
+B09-10,Technical design sprint,Narrow repeatable sprint,6600,32,16,18,-29400,-36000,-16390,29400,36000,0,2.0,87,-50700.0,64
+B08-09,Performance optimization,Partner premium,5400,20,14,20,-29642,-36000,-21303,30330,36000,0,2.0,89,-50821.0,65
+B02-09,Automation pilot,Partner premium,9000,36,14,20,-29700,-36000,-20570,29700,36000,0,1.5,80,-50850.0,66
+B04-09,WebGL rescue,Partner premium,6000,24,14,20,-29700,-36000,-21678,31050,36000,0,2.0,85,-50850.0,67
+B05-04,Feasibility assessment,Premium fixed scope,6075,24,16,18,-29925,-36000,-20945,29971,36000,0,2.0,79,-50962.5,68
+B07-04,Embedded engineering week,Premium fixed scope,6075,32,16,18,-29930,-36000,-23595,30089,36000,0,1.5,78,-50965.0,69
+B09-05,Technical design sprint,Referral requests,6000,32,10,24,-30160,-36000,-21292,33000,36000,0,1.0,73,-51080.0,70
+B09-08,Technical design sprint,Delivery intensive,6000,32,10,24,-30160,-36000,-21292,33000,36000,0,1.0,73,-51080.0,71
+B05-09,Feasibility assessment,Partner premium,5400,24,14,20,-30330,-36000,-23110,31545,36000,0,2.0,85,-51165.0,72
+B06-09,Integration sprint,Partner premium,4800,20,14,20,-30349,-36000,-22936,30960,36000,0,2.0,89,-51174.5,73
+B02-05,Automation pilot,Referral requests,7500,36,10,24,-30526,-36000,-21051,32250,36000,0,1.0,68,-51263.0,74
+B02-08,Automation pilot,Delivery intensive,7500,36,10,24,-30526,-36000,-21051,32250,36000,0,1.0,68,-51263.0,75
+B02-04,Automation pilot,Premium fixed scope,10125,36,16,18,-30938,-36000,-16397,30938,36000,0,1.0,73,-51469.0,76
+B09-09,Technical design sprint,Partner premium,7200,32,14,20,-30960,-36000,-21601,30960,36000,0,2.0,84,-51480.0,77
+B04-05,WebGL rescue,Referral requests,5000,24,10,24,-31062,-36000,-23587,31166,36000,0,1.0,75,-51531.0,78
+B04-08,WebGL rescue,Delivery intensive,5000,24,10,24,-31062,-36000,-23587,31166,36000,0,1.0,75,-51531.0,79
+B03-02,Agency delivery day,Agency partners,1080,8,12,22,-32903,-35088,-30184,33447,35113,0,5.5,98,-51552.0,80
+B10-05,Maintenance incident,Referral requests,2500,12,10,24,-32268,-34875,-27326,33500,36000,0,2.0,90,-51571.5,81
+B10-08,Maintenance incident,Delivery intensive,2500,12,10,24,-32268,-34875,-27326,33500,36000,0,2.0,90,-51571.5,82
+B03-10,Agency delivery day,Narrow repeatable sprint,1320,8,16,18,-32754,-35340,-28872,33379,35340,0,3.5,97,-51717.0,83
+B08-05,Performance optimization,Referral requests,4500,20,10,24,-31504,-36000,-22864,31546,36000,0,1.5,83,-51752.0,84
+B08-08,Performance optimization,Delivery intensive,4500,20,10,24,-31504,-36000,-22864,31546,36000,0,1.5,83,-51752.0,85
+B07-09,Embedded engineering week,Partner premium,5400,32,14,20,-31545,-36000,-25180,32220,36000,0,2.0,84,-51772.5,86
+B05-05,Feasibility assessment,Referral requests,4500,24,10,24,-31556,-36000,-24829,31649,36000,0,1.0,75,-51778.0,87
+B05-08,Feasibility assessment,Delivery intensive,4500,24,10,24,-31556,-36000,-24829,31649,36000,0,1.0,75,-51778.0,88
+B07-05,Embedded engineering week,Referral requests,4500,32,10,24,-31581,-36000,-24969,32724,36000,0,1.0,74,-51790.5,89
+B07-08,Embedded engineering week,Delivery intensive,4500,32,10,24,-31581,-36000,-24969,32724,36000,0,1.0,74,-51790.5,90
+B03-01,Agency delivery day,Direct founder outreach,1200,8,14,20,-33016,-35400,-30003,33600,35400,0,4.0,97,-51908.0,91
+B03-06,Agency delivery day,Expert rescue positioning,1380,8,14,20,-33240,-35310,-29033,33269,35310,0,3.0,96,-51930.0,92
+B06-05,Integration sprint,Referral requests,4000,20,10,24,-32003,-36000,-24324,32041,36000,0,1.5,83,-52001.5,93
+B06-08,Integration sprint,Delivery intensive,4000,20,10,24,-32003,-36000,-24324,32041,36000,0,1.5,83,-52001.5,94
+B01-05,Technical audit,Referral requests,3500,16,10,24,-32500,-36000,-25647,32500,36000,0,2.0,88,-52250.0,95
+B01-08,Technical audit,Delivery intensive,3500,16,10,24,-32500,-36000,-25647,32500,36000,0,2.0,88,-52250.0,96
+B03-09,Agency delivery day,Partner premium,1440,8,14,20,-33786,-35496,-30695,34287,35496,0,3.0,96,-52389.0,97
+B03-04,Agency delivery day,Premium fixed scope,1620,8,16,18,-33575,-36000,-29676,33588,36000,0,2.0,89,-52787.5,98
+B03-05,Agency delivery day,Referral requests,1200,8,10,24,-34241,-36000,-32373,34800,36000,0,2.0,89,-53120.5,99
+B03-08,Agency delivery day,Delivery intensive,1200,8,10,24,-34241,-36000,-32373,34800,36000,0,2.0,89,-53120.5,100

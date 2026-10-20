@@ -1,2 +1,27 @@
+# Version control ignore for Lunar Paradox
+
+# Historical raw recovery archives (preserve on local disk, do not track in Git)
+*.tar.gz
+*.tar
+*.zip
+
+# Sensitive local runtime data and cryptographic keys
+offline-platforms/.lunar-data/
+.lunar-data/
+*.key
+*.sqlite3
+
+# Node / Python environments and caches
 node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# OS / Editor temporary artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build output
 dist/

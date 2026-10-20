@@ -1,0 +1,30 @@
+LUNAR PARADOX — Ouroboros Astrolabe — interactive spatial environment
+
+Three.js r170 — MIT license, included at vendor/THREE-LICENSE.txt.
+https://threejs.org/
+
+Lunar surface color: NASA Scientific Visualization Studio, CGI Moon Kit,
+2019 LROC color map, 4096 x 2048. Converted from TIFF to JPEG for runtime use.
+Lunar elevation: NASA Scientific Visualization Studio, CGI Moon Kit,
+LOLA elevation map, 1024 x 512.
+Credit: NASA's Scientific Visualization Studio; Ernie Wright (USRA),
+Noah Petro (NASA/GSFC). Source: https://svs.gsfc.nasa.gov/4720/
+
+The scenes are artistic simulations. HUD coordinates, waveforms and radar
+represent scene state, not live astronomical instruments. Frame rates are
+measured by the rendering loop and vary by device and browser.
+
+User-supplied reference screenshots guide composition; they are not used
+as full-frame backgrounds or substitutes for the live 3D scene.
+
+Barlow Condensed and Space Grotesk — SIL Open Font License.
+Local font files and license texts are included under assets/fonts/.
+
+Additional height detail: NASA SVS CGI Moon Kit LOLA ldem_16_uint.tif,
+5760 x 2880; normalized to a 4096 x 2048 local height texture.
+Procedural crater and fracture atlases are generated data, not source photos.
+
+Fine stone normal detail: Poly Haven, Rock 05, by Rob Tuytel.
+CC0 1.0. Source: https://polyhaven.com/a/rock_05
+The photogrammetry normal map only modulates surface normals on the live
+3D lunar mesh; it is not a scene background. NASA lunar albedo is retained.

@@ -1,0 +1,43 @@
+{
+  "platforms": [
+    {
+      "platform": "syzygy",
+      "standaloneBuildHash": "verified",
+      "sourceAndAssets": "verified",
+      "localBackend": "sqlite ready",
+      "servedAssetCount": 52
+    },
+    {
+      "platform": "gravity",
+      "standaloneBuildHash": "verified",
+      "sourceAndAssets": "verified",
+      "localBackend": "sqlite ready",
+      "servedAssetCount": 44
+    },
+    {
+      "platform": "astrolabe",
+      "standaloneBuildHash": "verified",
+      "sourceAndAssets": "verified",
+      "localBackend": "sqlite ready",
+      "servedAssetCount": 39
+    }
+  ],
+  "independentZipCRCsAndContents": "verified",
+  "fullZipCRCAndContents": "verified",
+  "tarContents": "verified",
+  "companyInfrastructure": {
+    "publicCollections": "empty",
+    "publisher": "draft/preview/publish/archive; public snapshot export",
+    "briefs": "local text download and SQLite copy; no external delivery",
+    "existingSavedData": {
+      "settings": {
+        "records": 0,
+        "preserved": true
+      },
+      "snapshots": {
+        "records": 0,
+        "preserved": true
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "asset": "Rock 05",
+  "author": "Rob Tuytel",
+  "provider": "Poly Haven",
+  "page": "https://polyhaven.com/a/rock_05",
+  "license": "CC0",
+  "licensePage": "https://polyhaven.com/license",
+  "maps": [
+    {
+      "file": "basalt-color-4k.jpg",
+      "kind": "Diffuse",
+      "resolution": "4k",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rock_05/rock_05_diff_4k.jpg",
+      "bytes": 10739079,
+      "sha256": "ef6c94d522b1ab05be074b188bf709198acce88fdb5f6f3348224170bffc5d64"
+    },
+    {
+      "file": "basalt-normal-4k.jpg",
+      "kind": "nor_gl",
+      "resolution": "4k",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rock_05/rock_05_nor_gl_4k.jpg",
+      "bytes": 8995380,
+      "sha256": "364a3074fc45c2e86a3da0bea42f688af1d783b8c35f203aa2c6378e9d785979"
+    },
+    {
+      "file": "basalt-arm-2k.jpg",
+      "kind": "arm",
+      "resolution": "2k",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/rock_05/rock_05_arm_2k.jpg",
+      "bytes": 637374,
+      "sha256": "c6142387369f777129d979d0501ce2be0cf88f51699e49e67231f1cd4cca1a9e"
+    },
+    {
+      "file": "basalt-height-4k.jpg",
+      "kind": "Displacement",
+      "resolution": "4k",
+      "source": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/rock_05/rock_05_disp_4k.jpg",
+      "bytes": 1162905,
+      "sha256": "1e52d5851d89fadc34bfd3d3059bef5145dbb84c7f95bdf5bb84ea21b3938ad5"
+    }
+  ]
+}

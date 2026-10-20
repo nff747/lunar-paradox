@@ -1,0 +1,1020 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lunar Paradox — Mandala plan</title><style>body{margin:0;background:#f6f6f3;color:#252823;font:15px/1.6 system-ui}main{max-width:1250px;margin:auto;padding:28px}h1{font-size:24px}h2{font-size:19px}button,input{font:inherit}button{cursor:pointer}.facts{display:flex;gap:30px;flex-wrap:wrap;margin:20px 0}.facts strong{display:block;font-size:20px}.note{background:#e8ebe3;padding:16px}.tabs{display:flex;gap:12px;margin:22px 0}.tabs button{padding:10px 15px;border:1px solid #b9bfb3;background:#fff}.tabs button[aria-pressed=true]{background:#344b34;color:#fff}.scroll{overflow:auto}.mandala{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;background:#555e50;padding:5px;min-width:790px}.block{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#b7bdb1}.cell{min-height:88px;padding:7px;border:0;background:#fff;color:#252823;font-size:12px;line-height:1.3}.center{font-weight:650;background:#e4e9dc}.goal{background:#344b34;color:#fff;font-weight:650}.cell[aria-pressed=true]{background:#edf1e7;outline:2px solid #344b34;outline-offset:-3px}.complete{text-decoration:line-through}.lower{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;margin-top:24px}.detail{border:1px solid #b7bdb1;padding:18px}.budget label{display:block;margin:10px 0}.budget input[type=number]{padding:7px;width:130px}small{color:#555}a{color:#344b34}@media print{.tabs,.budget{display:none}.mandala{min-width:0}.cell{min-height:65px;font-size:10px}main{padding:5px}.lower{break-inside:avoid}}</style><main><h1>Lunar Paradox: current and future Mandala charts</h1><p>18 October 2026. Current cash: $0. Existing hardware and skills; no clients reported. Following is unmeasured. All targets are proposed, not achieved results.</p><div class="facts"><div>Monthly combined baseline<strong>$12,000</strong></div><div>Baseline-only 90-day gap<strong>$36,000</strong></div><div>Proposed buyer conversations / 90 days<strong>20–30</strong></div><div>Proposed paid pilots / 90 days<strong>2</strong></div></div><p class="note">Priority now: earn from one bounded service, deliver reliably and address the cash gap. No new paid agents, advertising, hires or Labs purchases without funded need. The simulation did not prove a self-funding business at the current baseline.</p><nav class="tabs" aria-label="Planning horizon"><button id="current">Current: next 90 days</button><button id="future">Future: evidence and funding gates</button></nav><h2 id="title"></h2><p id="horizon"></p><p>The central 3×3 names eight priorities. Each outer 3×3 expands one priority into eight actions. Select any action for how, evidence and timing. Scroll horizontally on narrow screens.</p><div class="scroll"><div class="mandala" id="chart"></div></div><div class="lower"><section class="detail" id="detail" aria-live="polite"></section><section class="budget"><h2>Uncovered cash: adjustable illustration</h2><p>Actual starting cash is $0. Enter costs and earned receipts; do not count restricted or unearned client money.</p><label>Illustrative monthly baseline, USD <input id="burn" type="number" min="0" value="12000"></label><label>Baseline months <input id="months" type="number" min="1" max="12" value="3"></label><label>Additional costs / provisions, USD <input id="extra" type="number" min="0" value="0"></label><label>Actually available earned receipts, USD <input id="receipts" type="number" min="0" value="0"></label><p>Illustrative cash requirement: <strong id="gap"></strong></p><small>Additional costs are unknown and default to zero; this does not mean delivery or taxes are free.</small><label>Illustrative contribution after delivery costs: <strong id="margin-label"></strong><input id="margin" type="range" min="30" max="90" value="70" style="width:100%"></label><p id="revenue"></p></section></div><h2>First seven days</h2><p>Map bills and deadlines; choose one buyer/problem/outcome; prepare a genuine demonstration; research ten suitable prospects; start specific conversations; cost the scope; review the evidence. No outreach is sent by this plan.</p><p>Proposed 40-hour week: 14 sales, 16 delivery, 4 administration/cash, 4 useful content, 2 supervision. Rebalance around real commitments. Choose three priority actions each week; do not attempt all 128 at once.</p><p>Completion marks are self-reported and local to this browser. They are not independently verified. Future dates are conditional; funding and delivery gates override the calendar.</p><a href="PLAN.md">Read the full written plan</a></main><script>const D={
+  "date": "2026-10-18",
+  "facts": {
+    "availableCash": 0,
+    "baselineMonthly": 12000,
+    "clients": "none reported",
+    "following": "not yet measured",
+    "resources": "existing hardware, founder skills and a few interns"
+  },
+  "current": {
+    "title": "Earn, deliver, establish runway",
+    "horizon": "Next 90 days; proposed targets, not achieved results",
+    "pillars": [
+      {
+        "name": "Cash & runway",
+        "goal": "Know what must be earned before each bill falls due.",
+        "actions": [
+          {
+            "title": "List due bills",
+            "how": "Separate business costs, personal living costs and delivery obligations; record due dates.",
+            "proof": "A dated obligations ledger; no assumed cash.",
+            "when": "Days 1\u20132",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "13-week cash view",
+            "how": "Forecast weekly receipts and payments; update from actual bank movements.",
+            "proof": "A rolling cash sheet with a visible shortfall.",
+            "when": "Day 2; update weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Protect deposits",
+            "how": "Reserve unearned client money for its agreed delivery and refund obligations.",
+            "proof": "Available cash excludes restricted or unearned money.",
+            "when": "Every payment",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Pause new spend",
+            "how": "No new paid agents, subscriptions, advertising, hiring or Labs purchases without funded need.",
+            "proof": "New discretionary commitments stay at zero.",
+            "when": "Immediately",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Check urgent gap",
+            "how": "Match cash due in the next 7/30 days against genuinely collectible earned receipts.",
+            "proof": "Uncovered bills identified before their due date.",
+            "when": "Daily initially",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Discuss timing early",
+            "how": "Where needed, discuss legitimate payment timing with counterparties; do not assume concessions.",
+            "proof": "Any changed terms recorded and actually agreed.",
+            "when": "Before obligations fall due",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Cost each job",
+            "how": "Include delivery time, cloud, support, rework and payment costs before quoting.",
+            "proof": "A costed scope and achievable delivery plan.",
+            "when": "Before every proposal",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Build first buffer",
+            "how": "Retain earned surplus after obligations; first protect the next month of actual baseline costs.",
+            "proof": "Cash reserve measured against the current burn.",
+            "when": "After earned receipts",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "One paid offer",
+        "goal": "Sell one bounded outcome you can deliver using existing resources.",
+        "actions": [
+          {
+            "title": "Choose buyer",
+            "how": "Pick one reachable buyer group with a costly, concrete technical problem.",
+            "proof": "One buyer profile supported by conversations.",
+            "when": "Week 1",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Choose outcome",
+            "how": "Select an automation pilot, performance fix or technical design service that matches real skills.",
+            "proof": "One clearly described deliverable.",
+            "when": "Week 1",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Bound the scope",
+            "how": "Specify inputs, exclusions, deliverables, review rounds and acceptance criteria.",
+            "proof": "A one-page scope.",
+            "when": "Week 1",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Use current hardware",
+            "how": "Choose work deliverable without purchasing equipment; client supplies required paid accounts.",
+            "proof": "No unfunded delivery dependency.",
+            "when": "Before offering",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Price from evidence",
+            "how": "Check value, actual effort and buyer response; model prices are not market validation.",
+            "proof": "Recorded pricing assumptions and feedback.",
+            "when": "Each proposal",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Offer paid discovery",
+            "how": "Where uncertainty is high, sell a useful standalone investigation before a larger build.",
+            "proof": "A defined discovery result, not a vague consultation.",
+            "when": "When scope is uncertain",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Sell a small pilot",
+            "how": "Offer a narrow first engagement with clear milestones and payment terms.",
+            "proof": "Proposed target: two paid pilots by day 90.",
+            "when": "Days 15\u201390",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Keep only what works",
+            "how": "Revise or stop an offer that fails buyer or delivery tests instead of expanding its scope.",
+            "proof": "A weekly keep/change/stop decision.",
+            "when": "Every week",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Client pipeline",
+        "goal": "Turn relevant conversations into appropriately scoped paid engagements.",
+        "actions": [
+          {
+            "title": "Build prospect list",
+            "how": "Identify relevant businesses and agency partners from public information; record why each fits.",
+            "proof": "Proposed target: 30 researched prospects.",
+            "when": "First two weeks",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Ask for introductions",
+            "how": "Request relevant introductions from genuine existing contacts without inventing relationships.",
+            "proof": "Introductions and replies recorded.",
+            "when": "Weeks 1\u20134",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Personal outreach",
+            "how": "Prepare specific, respectful messages about the recipient\u2019s problem; send manually and follow applicable rules.",
+            "proof": "Proposed cadence: 10 relevant contacts per week.",
+            "when": "Weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Agency conversations",
+            "how": "Explore overflow or specialist delivery work with agencies that already serve suitable clients.",
+            "proof": "A real discussion about scope and payment.",
+            "when": "Weeks 2\u20136",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Listen before pitch",
+            "how": "Ask about the current workflow, consequence, budget, authority and decision timing.",
+            "proof": "Proposed target: 20\u201330 buyer conversations by day 90.",
+            "when": "Days 1\u201390",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Qualify the fit",
+            "how": "Check capability, urgency, realistic budget, ownership and delivery dependencies.",
+            "proof": "Qualified opportunity record; no invented lead score.",
+            "when": "Every enquiry",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Send scoped proposal",
+            "how": "Translate the agreed problem into deliverables, exclusions, terms and a costed estimate.",
+            "proof": "Proposed target: five qualified proposals by day 90.",
+            "when": "After discovery",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Follow up cleanly",
+            "how": "Track next agreed action; close stale opportunities instead of counting them as revenue.",
+            "proof": "Pipeline has an owner, next step and date.",
+            "when": "Twice weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Useful following",
+        "goal": "Build a relevant audience that can explain, try or commission your work.",
+        "actions": [
+          {
+            "title": "Pick one channel",
+            "how": "Start where the chosen buyer or technical community participates; record the actual following baseline.",
+            "proof": "One primary channel and dated baseline; unknown counts stay unknown.",
+            "when": "Week 1",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Publish build notes",
+            "how": "Explain a real problem, approach, result and limitation from your own work.",
+            "proof": "Proposed target: one useful post per week.",
+            "when": "Weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Show working demos",
+            "how": "Share a genuine demonstration; label internal or self-initiated work honestly.",
+            "proof": "A working demo and clear provenance.",
+            "when": "Weeks 2\u20136",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Teach something useful",
+            "how": "Publish a practical explanation or reusable insight relevant to the chosen audience.",
+            "proof": "Reader questions or useful feedback.",
+            "when": "Twice monthly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Invite relevant feedback",
+            "how": "Ask what would make the work useful, not merely whether the visuals look impressive.",
+            "proof": "Feedback tied to a buyer or user problem.",
+            "when": "Every release",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Offer voluntary updates",
+            "how": "Prepare explicit opt-in updates only once consent, delivery and unsubscribe actually work.",
+            "proof": "No mailing list is claimed operational before setup.",
+            "when": "After the mechanism works",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Track qualified interest",
+            "how": "Count relevant replies, demo engagement and enquiries separately from followers or impressions.",
+            "proof": "Weekly counts with source links.",
+            "when": "Weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Convert attention",
+            "how": "Give posts and demos one relevant next action: discuss a project, try a real experiment or follow progress.",
+            "proof": "A functioning destination; no empty funnel.",
+            "when": "Every public item",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Reliable delivery",
+        "goal": "Finish small work well enough to earn trust and repeat business.",
+        "actions": [
+          {
+            "title": "Capacity calendar",
+            "how": "Budget a 40-hour week across sales, delivery, admin, content and supervision.",
+            "proof": "No sold workload exceeds actual available hours.",
+            "when": "Before accepting work",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Acceptance checklist",
+            "how": "Agree what completion means with the client before implementation.",
+            "proof": "Written, testable acceptance criteria.",
+            "when": "At kickoff",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Weekly milestones",
+            "how": "Break delivery into inspectable outcomes and share progress against scope.",
+            "proof": "A working increment and next milestone.",
+            "when": "Each delivery week",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Track actual effort",
+            "how": "Measure delivery, rework, meetings and support time against the estimate.",
+            "proof": "Actual hours per deliverable.",
+            "when": "Daily",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Test before handover",
+            "how": "Verify the agreed critical workflows and failure states in supported environments.",
+            "proof": "A relevant test record and known limitations.",
+            "when": "Before acceptance",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Control changes",
+            "how": "Quote extra scope separately; do not absorb unlimited additions into the original fee.",
+            "proof": "Accepted change records.",
+            "when": "Whenever scope changes",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Handover clearly",
+            "how": "Provide usable instructions, access ownership and agreed support boundaries.",
+            "proof": "Client can operate the delivered work.",
+            "when": "At delivery",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Ask for repeat work",
+            "how": "After successful delivery, discuss a genuinely useful next step or bounded maintenance.",
+            "proof": "Consent-based feedback or follow-on scope.",
+            "when": "After acceptance",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Trust & website",
+        "goal": "Use Syzygy, Gravity and Astrolabe to clarify the company rather than obscure it.",
+        "actions": [
+          {
+            "title": "State the offer",
+            "how": "Syzygy explains what can be commissioned and who the service fits.",
+            "proof": "A visitor can describe the offer in plain language.",
+            "when": "Weeks 1\u20132",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Separate controls",
+            "how": "HOLD controls the fracture only; ENTER opens the company journey.",
+            "proof": "Both interactions tested independently.",
+            "when": "Before demonstrations",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Keep roles clear",
+            "how": "Syzygy is Brand/Studio, Gravity is Labs, Astrolabe is Products; keep navigation consistent.",
+            "proof": "Three independent experiences with clear links.",
+            "when": "Every release",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Honest evidence",
+            "how": "Show only genuine internal work and approved client evidence.",
+            "proof": "No fabricated clients, results or product availability.",
+            "when": "Every publication",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Apply then review",
+            "how": "Explain the application, decision and next-step expectations without implying a booking.",
+            "proof": "Applicant understands what happens next.",
+            "when": "Before public launch",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Estimate after fit",
+            "how": "Accepted applications unlock real configured options and an indicative estimate.",
+            "proof": "No fictitious rates or guaranteed final quote.",
+            "when": "After acceptance",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Finish public delivery",
+            "how": "Before internet use, configure real notifications, identity, abuse protection and privacy arrangements.",
+            "proof": "End-to-end hosted workflow verified.",
+            "when": "Before public submissions",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Readable fallback",
+            "how": "Keep core content, contact and navigation usable with keyboard, reduced motion and lightweight viewing.",
+            "proof": "Checks on actual intended devices.",
+            "when": "Before client reliance",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Revenue follow-up",
+        "goal": "Collect earned money and learn whether the offer is economically repeatable.",
+        "actions": [
+          {
+            "title": "Invoice on milestones",
+            "how": "Issue agreed invoices promptly when the relevant milestone is achieved.",
+            "proof": "Invoice and delivery records match.",
+            "when": "Each milestone",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Track payment dates",
+            "how": "Separate invoices, collected cash, earned revenue and unearned deposits.",
+            "proof": "No booked revenue treated as cash.",
+            "when": "Weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Confirm collections",
+            "how": "Follow up on overdue invoices using the agreed terms and actual status.",
+            "proof": "A current receivables list.",
+            "when": "Weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Know job margin",
+            "how": "Compare collected earned fees with actual incremental delivery costs and time.",
+            "proof": "Per-project economics after handover.",
+            "when": "Every project",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Offer bounded support",
+            "how": "Sell support only where there is continuing value and capacity, with usage limits.",
+            "proof": "A support agreement with clear boundaries.",
+            "when": "After suitable delivery",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Seek referrals",
+            "how": "Ask satisfied clients whether they can introduce a suitable buyer.",
+            "proof": "A voluntary introduction, not a promised pipeline.",
+            "when": "After successful work",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Review price fit",
+            "how": "Use real delivery and buyer data to raise, narrow or retire an offer.",
+            "proof": "A documented pricing decision.",
+            "when": "Monthly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Do not scale losses",
+            "how": "Stop adding work that consistently consumes more cash or capacity than it earns.",
+            "proof": "Corrective action before expanding.",
+            "when": "At each review",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Weekly decisions",
+        "goal": "Manage from evidence instead of optimistic forecasts or vanity metrics.",
+        "actions": [
+          {
+            "title": "Monday priorities",
+            "how": "Choose one sales outcome, one delivery outcome and one cash risk to address.",
+            "proof": "Three named priorities and owners.",
+            "when": "Every Monday",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Daily next action",
+            "how": "Work the highest-value next action rather than repeatedly redesigning the website.",
+            "proof": "A completed sales or delivery action.",
+            "when": "Each working day",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Friday scorecard",
+            "how": "Review qualified conversations, proposals, earned collections, hours and cash gap.",
+            "proof": "A dated scorecard, even when results are poor.",
+            "when": "Every Friday",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Day-14 offer check",
+            "how": "If conversations are not clarifying demand, change buyer access or the offer before building more.",
+            "proof": "Evidence-based revision.",
+            "when": "Day 14",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Day-30 decision",
+            "how": "Compare receipts and near-term obligations; change the plan if the gap remains unaddressed.",
+            "proof": "A realistic next-month cash plan.",
+            "when": "Day 30",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Day-60 delivery check",
+            "how": "Compare pilot outcomes, margins and willingness to repeat or refer.",
+            "proof": "Proof that the service can be repeated.",
+            "when": "Day 60",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Day-90 gate",
+            "how": "Choose a repeatable offer or explicitly reset the strategy; do not call activity traction.",
+            "proof": "A documented continue/change/stop decision.",
+            "when": "Day 90",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Refresh simulations",
+            "how": "Replace assumed prices, close rates and hours with observations; keep uncertainty visible.",
+            "proof": "A model using actual measured inputs.",
+            "when": "Monthly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      }
+    ]
+  },
+  "future": {
+    "title": "Build a funded technology company",
+    "horizon": "After evidence and funding gates; indicative 3\u201324+ months, not promised dates",
+    "pillars": [
+      {
+        "name": "Repeatable Studio",
+        "goal": "Create dependable earned revenue before expanding the cost base.",
+        "actions": [
+          {
+            "title": "Prove one offer",
+            "how": "Repeat a well-defined service for independent paying buyers.",
+            "proof": "Proposed gate: three successful paid deliveries.",
+            "when": "After paid validation",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Standardize delivery",
+            "how": "Reuse checklists and internal components while respecting client IP.",
+            "proof": "Lower measured rework and delivery variance.",
+            "when": "After repeated work",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Build recurring value",
+            "how": "Offer bounded ongoing operation or support for systems that genuinely need it.",
+            "proof": "Recurring contribution after support costs.",
+            "when": "When value is ongoing",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Diversify clients",
+            "how": "Avoid funding the whole company from a single fragile relationship.",
+            "proof": "A reviewed concentration risk.",
+            "when": "Before increasing fixed costs",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Price capacity",
+            "how": "Reprice using actual utilization, support burden, costs and buyer value.",
+            "proof": "Healthy contribution at attainable workload.",
+            "when": "Quarterly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Use flexible specialists",
+            "how": "Add verified contractors only against funded, scoped work.",
+            "proof": "Cost and responsibility agreed before commitment.",
+            "when": "When capacity is proven short",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Protect reserves",
+            "how": "Keep delivery obligations, tax provision and operating runway separate from discretionary funds.",
+            "proof": "Three baseline months protected before discretionary growth.",
+            "when": "Before expansion",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Reduce founder bottleneck",
+            "how": "Document the service so someone else can deliver reviewed portions safely.",
+            "proof": "Independent work passes the agreed checks.",
+            "when": "Before larger volume",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Trusted brand",
+        "goal": "Become known for useful outcomes, not only striking visuals.",
+        "actions": [
+          {
+            "title": "Publish case studies",
+            "how": "Explain the real problem, deliverable, constraints and outcome with permission.",
+            "proof": "Approved evidence and accurate attribution.",
+            "when": "After successful deliveries",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Publish expertise",
+            "how": "Share technically useful material based on actual work.",
+            "proof": "A consistent, relevant publishing record.",
+            "when": "Ongoing",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Build a demo library",
+            "how": "Keep a small set of working, maintained examples linked to actual capabilities.",
+            "proof": "No abandoned demos presented as live products.",
+            "when": "After proven capacity",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Earn referrals",
+            "how": "Make successful work easy for clients to describe and recommend.",
+            "proof": "Voluntary qualified introductions.",
+            "when": "After client value",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Nurture opted-in users",
+            "how": "Send relevant updates with real consent and a functioning unsubscribe.",
+            "proof": "Engaged recipients, not purchased lists.",
+            "when": "After delivery infrastructure",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Partner credibly",
+            "how": "Work with complementary agencies, communities and specialists on clear terms.",
+            "proof": "Documented collaborations and referrals.",
+            "when": "After mutual fit",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Measure trust signals",
+            "how": "Track repeat enquiries, referral sources and useful engagement.",
+            "proof": "A consistent attribution record.",
+            "when": "Monthly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Maintain honesty",
+            "how": "Separate concepts, experiments, internal demos, client work and released products.",
+            "proof": "Every public claim has evidence.",
+            "when": "Always",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Products",
+        "goal": "Turn repeated demand into a product with paying users and supportable economics.",
+        "actions": [
+          {
+            "title": "Find repeated need",
+            "how": "Look for a shared problem across independent conversations and engagements.",
+            "proof": "Proposed gate: three independent buyers confirm the need.",
+            "when": "After service evidence",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Validate payment",
+            "how": "Test willingness to pay before committing to a substantial build.",
+            "proof": "A paid pilot or clearly documented commercial commitment.",
+            "when": "Before major development",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Define the user",
+            "how": "Specify who benefits, what task improves and why alternatives are insufficient.",
+            "proof": "A clear product use case.",
+            "when": "Before development",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Budget the stage",
+            "how": "Cost development, infrastructure, security, onboarding and support.",
+            "proof": "The next stage is fully funded.",
+            "when": "Before each stage",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Ship one usable slice",
+            "how": "Release a narrow end-to-end capability rather than a large speculative platform.",
+            "proof": "Real users complete the intended task.",
+            "when": "After funding",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Price actual usage",
+            "how": "Choose subscriptions, usage or licences around value and variable costs.",
+            "proof": "Measured contribution per customer.",
+            "when": "During paid trials",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Track retention",
+            "how": "Measure return use, support demand, cancellations and reasons.",
+            "proof": "Evidence beyond signup counts.",
+            "when": "After launch",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Scale or stop",
+            "how": "Expand only when acquisition and ongoing delivery economics are credible.",
+            "proof": "A clear continue/change/stop decision.",
+            "when": "At staged reviews",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Labs funding",
+        "goal": "Fund bounded research without putting delivery or living obligations at risk.",
+        "actions": [
+          {
+            "title": "Choose one thesis",
+            "how": "Select a question with a specific experiment and useful possible result.",
+            "proof": "One written thesis and test.",
+            "when": "Before funding requests",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Price the experiment",
+            "how": "Quote hardware, cloud, labour, data and contingency for a bounded stage.",
+            "proof": "A real budget; no invented massive funding target.",
+            "when": "Before committing",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Use surplus safely",
+            "how": "Allocate earned discretionary surplus only after obligations and reserves are protected.",
+            "proof": "A documented, affordable transfer.",
+            "when": "When surplus exists",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Seek sponsored R&D",
+            "how": "Offer a defined investigation to a sponsor with agreed deliverables and IP terms.",
+            "proof": "A signed and funded research stage.",
+            "when": "When sponsor value is clear",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Check funding fit",
+            "how": "Evaluate grants or partnerships against actual eligibility and restrictions.",
+            "proof": "Verified fit, deadlines and permitted use.",
+            "when": "Before applying",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Separate restricted cash",
+            "how": "Ring-fence sponsor or grant funds and comply with their agreed purposes.",
+            "proof": "Research ledger reconciles to obligations.",
+            "when": "After receipt",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Buy at a gate",
+            "how": "Purchase hardware or cloud only when required for a funded milestone.",
+            "proof": "Evidence for buy versus existing resources.",
+            "when": "Before each purchase",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Stage external capital",
+            "how": "Consider investment only with a defensible research case and reviewed terms.",
+            "proof": "A funded plan with ownership trade-offs understood.",
+            "when": "If justified",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Research practice",
+        "goal": "Make Labs a credible experimental organization with reproducible learning.",
+        "actions": [
+          {
+            "title": "Set a falsifiable test",
+            "how": "State what observation would support or reject the thesis.",
+            "proof": "Predefined success and stop conditions.",
+            "when": "Before each experiment",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Record methods",
+            "how": "Version code, settings, datasets and constraints appropriately.",
+            "proof": "A repeatable experiment record.",
+            "when": "During research",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Respect data rights",
+            "how": "Use data and software with appropriate permission and controls.",
+            "proof": "Recorded provenance and access boundaries.",
+            "when": "Before use",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Publish real findings",
+            "how": "Include failures and limitations rather than only impressive demonstrations.",
+            "proof": "Evidence-backed research notes.",
+            "when": "At milestones",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Manage compute",
+            "how": "Set workload budgets and limits; measure cost per useful result.",
+            "proof": "Actual usage and spending records.",
+            "when": "Every run",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Review independently",
+            "how": "Seek relevant technical criticism and reproduce important results.",
+            "proof": "Issues and follow-up checks recorded.",
+            "when": "Before strong claims",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Transfer useful work",
+            "how": "Promote an experiment into a product or Studio method only when the use case is validated.",
+            "proof": "An explicit handover and maintenance owner.",
+            "when": "At a transfer gate",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Archive honestly",
+            "how": "Stop, document and preserve unproductive or superseded work.",
+            "proof": "Clear archive status and lessons.",
+            "when": "At stop decisions",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "People & systems",
+        "goal": "Grow delivery capability without growing uncontrolled payroll or agent costs.",
+        "actions": [
+          {
+            "title": "Hire against demand",
+            "how": "Add a role because funded work and capacity data justify it.",
+            "proof": "A role budget and measurable need.",
+            "when": "Before recruitment",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Plan fully loaded cost",
+            "how": "Include pay, supervision, tools and applicable obligations in the hiring budget.",
+            "proof": "A reviewed affordability calculation.",
+            "when": "Before commitment",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Clarify contributor roles",
+            "how": "Document responsibilities, access and work ownership appropriately.",
+            "proof": "Clear agreements and review boundaries.",
+            "when": "Before work begins",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Train with review",
+            "how": "Give interns bounded tasks and feedback; do not substitute them for unsupervised senior delivery.",
+            "proof": "Reviewed work and learning evidence.",
+            "when": "Ongoing",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Budget agents",
+            "how": "Add agents only where measured useful output exceeds tool and review cost.",
+            "proof": "Cost per accepted outcome, not agent count.",
+            "when": "Before scaling automation",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Least necessary access",
+            "how": "Give people and tools only the access their work requires.",
+            "proof": "An access inventory and removal process.",
+            "when": "At onboarding and review",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Back up operations",
+            "how": "Test restore, handover and recovery for company-critical systems.",
+            "proof": "A successful recovery exercise.",
+            "when": "Before reliance",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Delegate progressively",
+            "how": "Transfer repeatable responsibilities with explicit authority and accountability.",
+            "proof": "Founder workload falls without quality loss.",
+            "when": "After process maturity",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Financial resilience",
+        "goal": "Support growth from durable economics and protected cash.",
+        "actions": [
+          {
+            "title": "Separate money flows",
+            "how": "Distinguish business expenses, personal withdrawals, taxes, financing and profit appropriately.",
+            "proof": "Accounts that explain real cash movement.",
+            "when": "Before scaling",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Update cash weekly",
+            "how": "Maintain a 13-week view and longer-range scenarios using actual receipts.",
+            "proof": "No unseen funding cliff.",
+            "when": "Weekly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Build a growth reserve",
+            "how": "Target three to six months of the new actual operating burn, beyond delivery obligations.",
+            "proof": "Reserve recomputed after hiring or infrastructure changes.",
+            "when": "Before adding fixed costs",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Track contribution",
+            "how": "Measure service, product and research economics separately.",
+            "proof": "No hidden cross-subsidy or double counting.",
+            "when": "Monthly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Review concentration",
+            "how": "Stress-test loss of a major client, platform, supplier or product channel.",
+            "proof": "A realistic continuity response.",
+            "when": "Quarterly",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Control commitments",
+            "how": "Approve recurring subscriptions, staff and compute within a visible budget.",
+            "proof": "No unmanaged automatic cost growth.",
+            "when": "Before commitments",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Match funding to use",
+            "how": "Use earned cash, sponsorship or investment according to the risk and restrictions of the work.",
+            "proof": "Funding source matches purpose and duration.",
+            "when": "At each funding decision",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Review professionally",
+            "how": "Get appropriate accounting and legal advice for actual structure, contracts and cross-border operations.",
+            "proof": "Decisions based on real circumstances.",
+            "when": "Before consequential changes",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      },
+      {
+        "name": "Global operations",
+        "goal": "Serve international buyers while keeping responsibilities and delivery clear.",
+        "actions": [
+          {
+            "title": "Choose legal structure",
+            "how": "Select the initial structure based on actual management, ownership and professional review.",
+            "proof": "A defensible structure, not a tax-haven guess.",
+            "when": "Before it is needed",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Clear contracts",
+            "how": "Define scope, ownership, support, acceptance and payment for the actual engagement.",
+            "proof": "Terms understood by both parties.",
+            "when": "Before delivery",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Practical payments",
+            "how": "Use supported payment methods and document fees, currencies and settlement timing.",
+            "proof": "A verified collection workflow.",
+            "when": "Before accepting payment",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Data boundaries",
+            "how": "Identify where client data is stored and who can access it.",
+            "proof": "Documented controls and client requirements.",
+            "when": "Before handling data",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Time-zone delivery",
+            "how": "Set working hours, response expectations and handover practices.",
+            "proof": "A predictable delivery rhythm.",
+            "when": "At kickoff",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Supplier resilience",
+            "how": "Avoid making delivery depend on one unavailable model, cloud or proprietary tool.",
+            "proof": "Fallbacks tested where needed.",
+            "when": "Before critical reliance",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Maintain service quality",
+            "how": "Expand regions only where communication, support and obligations remain manageable.",
+            "proof": "Quality holds as reach grows.",
+            "when": "At expansion reviews",
+            "owner": "Founder; intern help only within demonstrated capability"
+          },
+          {
+            "title": "Add entities when needed",
+            "how": "Create further entities only for justified operations, obligations or funding requirements.",
+            "proof": "Professional review of a real need.",
+            "when": "When justified",
+            "owner": "Founder; intern help only within demonstrated capability"
+          }
+        ]
+      }
+    ]
+  }
+};
+const $=s=>document.getElementById(s),positions=[0,1,2,3,5,6,7,8],money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);let phase='current',selected={pillar:0,action:0},done={};try{done=JSON.parse(localStorage.getItem('lunar-mandala-self-report')||'{}')}catch{}
+function chart(){const plan=D[phase];$('title').textContent=plan.title;$('horizon').textContent=plan.horizon;for(const k of ['current','future'])$(k).setAttribute('aria-pressed',String(k===phase));$('chart').innerHTML=Array.from({length:9},(_,b)=>`<div class="block">${Array.from({length:9},(_,c)=>{const hub=b===4,center=c===4,p=hub?(center?-1:positions.indexOf(c)):positions.indexOf(b),a=center?-1:positions.indexOf(c),g=plan.pillars[Math.max(0,p)],item=hub?null:center?null:g.actions[a],key=phase+'-'+p+'-'+a,active=!hub&&selected.pillar===p&&selected.action===a;return `<button class="cell ${hub&&center?'goal':hub||center?'center':''} ${!hub&&!center&&done[key]?'complete':''}" data-p="${p}" data-a="${hub?-1:a}" aria-pressed="${active}">${hub?(center?plan.title:g.name):center?g.name:item.title}</button>`}).join('')}</div>`).join('');detail();}
+function detail(){if(selected.pillar<0){$('detail').innerHTML=`<h2>${D[phase].title}</h2><p>${D[phase].horizon}</p><ol>${D[phase].pillars.map(g=>`<li>${g.name}: ${g.goal}</li>`).join('')}</ol>`;return;}const g=D[phase].pillars[selected.pillar],a=selected.action>=0?g.actions[selected.action]:null,key=phase+'-'+selected.pillar+'-'+selected.action;$('detail').innerHTML=a?`<small>${g.name}</small><h2>${a.title}</h2><p><strong>How:</strong> ${a.how}</p><p><strong>Evidence:</strong> ${a.proof}</p><p><strong>When:</strong> ${a.when}</p><p><strong>Owner:</strong> ${a.owner}</p><label><input id="done" type="checkbox" ${done[key]?'checked':''}> Mark complete — self-reported</label>`:`<h2>${g.name}</h2><p>${g.goal}</p><ol>${g.actions.map(a=>`<li>${a.title}</li>`).join('')}</ol>`;if(a)$('done').onchange=e=>{done[key]=e.target.checked;try{localStorage.setItem('lunar-mandala-self-report',JSON.stringify(done))}catch{}chart();};}
+$('chart').onclick=e=>{const b=e.target.closest('[data-p]');if(b){selected={pillar:Number(b.dataset.p),action:Number(b.dataset.a)};chart();}};for(const k of ['current','future'])$(k).onclick=()=>{phase=k;selected={pillar:0,action:0};chart();};
+function budget(){const burn=Math.max(0,Number($('burn').value)||0),months=Math.max(1,Math.min(12,Number($('months').value)||1)),extra=Math.max(0,Number($('extra').value)||0),receipts=Math.max(0,Number($('receipts').value)||0),margin=Number($('margin').value);$('gap').textContent=money(Math.max(0,burn*months+extra-receipts));$('margin-label').textContent=margin+'%';$('revenue').textContent=`At that assumed contribution, covering the illustrative ${money(burn)} baseline requires ${money(burn/(margin/100))}/month collected earned revenue, before taxes and further reserves. Actual contribution is unverified.`;}for(const k of ['burn','months','extra','receipts','margin'])$(k).oninput=budget;chart();budget();
+</script></html>

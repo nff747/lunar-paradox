@@ -1,0 +1,23 @@
+{
+  "charts": 2,
+  "cellsPerChart": 81,
+  "actionCellsTotal": 128,
+  "fundingDefault": 36000,
+  "testFundingCase": 40000,
+  "canvasSyntax": "passed; native host rendering not verified",
+  "htmlControls": "current/future, action details, centre overview, budget changes and self-reported persistence verified",
+  "sampledConsoleErrors": 0,
+  "completionStatus": "all delivered actions proposed; QA completion undone",
+  "pngs": "visually inspected",
+  "websiteChanges": "none",
+  "sha256": {
+    "plan.json": "3d01f529dc94a1e700bb58c8a81c5d1e29eab1a5c962860997396d9815faddd9",
+    "PLAN.md": "3036cc42ea4c7870a41b2dacd36333243c9bbaf562d26ac8f004d82328ed9ea5",
+    "index.html": "b2552880b32aa0468c4fa10f0d907971cbe14f3d6388872f5393995ab9c62f86",
+    "current-mandala.png": "f9aa322a3d5051dc25872691e60bb728b42bfb1677984982f7d6bc289975a550",
+    "current-mandala.svg": "76e4df01d6f2d1a3e52532b50352aaeef2fa3625e9a4814dcb268d0fd7b02fab",
+    "future-mandala.png": "1d8247e669307f439effa3f86d2595fea4df886fe1f68aab1b89f19f4576c5e9",
+    "future-mandala.svg": "99a165575b4ebdc1f5b4fc62afb86822edf7decee94994d9465a9e312643c3ea",
+    "actions.csv": "646e4d44f660351643e15cafde750fca4a4e6d37a3c66895fa88dcf12c40a617"
+  }
+}
