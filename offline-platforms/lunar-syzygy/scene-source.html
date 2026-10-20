@@ -14,7 +14,7 @@ body[data-route=realms] .viewport,body[data-route=realms] .viewport:active{curso
 <div class="ratio">16:9</div><main><h1 class="type"><span class="front">TWO REALMS</span><span class="back"><span>ONE</span><span>AXIS</span></span></h1><div id="viewport" class="viewport" role="img" aria-label="A cratered moon fractured by a jagged gravitational canyon: white gold solar light on the left, dark obsidian and violet tectonic faults on the right, with floating crystalline fragments"></div></main>
 <div class="frame" aria-hidden="true"><i class="edge left"></i><i class="edge right"></i><i class="cross left"></i><i class="cross right"></i><i class="cross bottom"></i></div>
 <div class="readout top" title="Live camera position in scene units">VIEW // CAMERA<br>X <strong id="coord-x">+0.0000</strong><br>Y <strong id="coord-y">+0.0000</strong></div><div class="readout bottom" title="Camera field of view and fracture opening">FOV // DEG <strong id="coord-a">+0.00000</strong><br>OPEN // % <strong id="coord-b">+0.00000</strong></div>
-<div class="gate-position"><button class="gate" id="trigger" aria-pressed="false"><span>HOLD TO TRIGGER PARADOX</span><i class="orb" aria-hidden="true" style="position:relative"><svg viewBox="0 0 40 40" style="position:absolute;inset:-12%;width:124%;height:124%;transform:rotate(-90deg)"><circle id="charge-ring" cx="20" cy="20" r="18" fill="none" stroke="#f5e6c8" stroke-width="1.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg></i></button></div><span class="gate-note" id="gate-note">HOLD POINTER OR SPACE TO WIDEN THE RIFT</span>
+<div class="gate-position"><button class="gate" id="trigger" aria-pressed="false"><span>HOLD TO TRIGGER PARADOX</span><i class="orb" aria-hidden="true" style="position:relative"><svg viewBox="0 0 40 40" style="position:absolute;inset:-12%;width:124%;height:124%;transform:rotate(-90deg)"><circle id="charge-ring" cx="20" cy="20" r="18" fill="none" stroke="#f5e6c8" stroke-width="1.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg></i></button><button class="gate rejoin-gate" id="rejoin-trigger" hidden style="margin-left:12px;background:linear-gradient(145deg,#3c234a99,#1e122bbf);border-color:#bb98db;"><span>REJOIN FRACTURE ↺</span></button></div><span class="gate-note" id="gate-note">HOLD POINTER OR SPACE TO WIDEN THE RIFT</span>
 <div class="status"><span><i></i><span id="gpu-status">INITIALIZING</span></span><span>FPS <b id="fps">—</b></span><button id="motion" aria-pressed="false">PAUSE Ⅱ</button></div><div class="loading" id="loading">RESOLVING THE SYZYGY</div><div class="failure" id="failure" role="alert"></div>
 <aside class="panel" id="panel" hidden><button class="close" aria-label="Close panel">×</button><div id="panel-content"></div></aside>
 <script type="module">
@@ -27,6 +27,22 @@ const startupMarks={};function startupMark(name){startupMarks[name]=Number(perfo
 // This is a real-time scene, not a screenshot layer. Circular crater relief,
 // optical scattering, HDR bloom, branching faults and fracture walls are all live.
 const $=s=>document.querySelector(s), reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let isLatchedOpen=false;
+function triggerRejoin(){
+  isLatchedOpen=false;
+  release();
+  charge=0;
+  fractureState.drive=0;
+  $('#rejoin-trigger').hidden=true;
+  $('#gate-note').textContent='FRACTURE SEALED · HOLD TRIGGER OR SPACE TO RUPTURE';
+}
+$('#rejoin-trigger').onclick=()=>triggerRejoin();
+window.addEventListener('keydown',e=>{
+  if((e.code==='KeyR'||e.code==='Escape') && isLatchedOpen){
+    e.preventDefault();
+    triggerRejoin();
+  }
+});
 let paused=reduced,holding=false,paradox=0,charge=0,time=0,last=performance.now(),fpsTime=last,frames=0,totalFrames=0,rendered=false,masterVolume=.35,simulationSpeed=1;
 // Normalized specimen mechanics: length U, time s, mass M. This is an actively
 // driven cohesive illustration, not a lunar-scale finite-element breakup model.
@@ -71,9 +87,44 @@ const impactCode=`uniform sampler2D uImpactMap;float impactHeight(vec3 p){vec3 d
 const u={uTime:{value:0},uParadox:{value:0},uStrain:{value:0},uDamage:{value:0},uBurstAge:{value:0},uSolarLocal:{value:new THREE.Vector3(-1,.32,.17).normalize()},uColdLocal:{value:new THREE.Vector3(.65,.92,.30).normalize()},uSolarView:{value:new THREE.Vector3(-1,.32,.17).normalize()},uColdView:{value:new THREE.Vector3(.65,.92,.30).normalize()},uMoon:{value:moonMap},uDetail:{value:detailMap},uCrater:{value:craterMap},uFault:{value:fractureTexture},uImpacts:{value:impacts},uImpactMap:{value:impactMap}};
 // Both halves share one fracture field. At zero stress their boundaries coincide.
 const displacement=`uniform float uDamage;${fractureFieldGLSL}
-float localOpening(vec3 p){float threshold=.10+.34*abs(p.y/1.5)+.08*noise(vec3(p.yz*5.,7.));return uParadox*smoothstep(threshold-.08,threshold+.08,uDamage);}
-vec3 fractureNormal(vec3 n,vec3 p,float side){float opening=localOpening(p),a=-side*opening*.078,tilt=side*opening*.028;n.xz=mat2(cos(a),sin(a),-sin(a),cos(a))*n.xz;n.xy=mat2(cos(tilt),sin(tilt),-sin(tilt),cos(tilt))*n.xy;return n;}
-vec3 fracture(vec3 p,float side){float opening=localOpening(p),a=-side*opening*.078;float x=p.x*cos(a)-p.z*sin(a);p.z=p.x*sin(a)+p.z*cos(a);p.x=x;float tilt=side*opening*.028;float tilted=p.x*cos(tilt)-p.y*sin(tilt);p.y=p.x*sin(tilt)+p.y*cos(tilt);p.x=tilted+side*opening*.14;p.y+=side*opening*.025;p.z-=side*opening*.12;return p;}`;
+float localOpening(vec3 p){float threshold=.08+.30*abs(p.y/1.5)+.06*noise(vec3(p.yz*5.,7.));return uParadox*smoothstep(threshold-.08,threshold+.08,uDamage);}
+vec3 fractureNormal(vec3 n,vec3 p,float side){
+  float opening=localOpening(p);
+  // Asymmetric yaw and roll angles for Body A (side < 0) vs Body B (side > 0)
+  float yawAngle = side < 0. ? -opening * 0.092 : opening * 0.068;
+  float rollAngle = side < 0. ? opening * 0.034 : -opening * 0.021;
+  float pitchAngle = side * opening * 0.015;
+  n.xz=mat2(cos(yawAngle),sin(yawAngle),-sin(yawAngle),cos(yawAngle))*n.xz;
+  n.xy=mat2(cos(rollAngle),sin(rollAngle),-sin(rollAngle),cos(rollAngle))*n.xy;
+  n.yz=mat2(cos(pitchAngle),sin(pitchAngle),-sin(pitchAngle),cos(pitchAngle))*n.yz;
+  return n;
+}
+vec3 fracture(vec3 p,float side){
+  float opening=localOpening(p);
+  float yawAngle = side < 0. ? -opening * 0.092 : opening * 0.068;
+  float rollAngle = side < 0. ? opening * 0.034 : -opening * 0.021;
+  float pitchAngle = side * opening * 0.015;
+  // Non-coincident virtual pivots: Body A offsets forward, Body B offsets backward
+  vec3 pivot = side < 0. ? vec3(-0.18, 0.05, 0.12) : vec3(0.14, -0.04, -0.09);
+  vec3 q = p - pivot;
+  // Yaw
+  float x1 = q.x*cos(yawAngle) - q.z*sin(yawAngle);
+  q.z = q.x*sin(yawAngle) + q.z*cos(yawAngle);
+  q.x = x1;
+  // Roll
+  float x2 = q.x*cos(rollAngle) - q.y*sin(rollAngle);
+  q.y = q.x*sin(rollAngle) + q.y*cos(rollAngle);
+  q.x = x2;
+  // Pitch
+  float y1 = q.y*cos(pitchAngle) - q.z*sin(pitchAngle);
+  q.z = q.y*sin(pitchAngle) + q.z*cos(pitchAngle);
+  q.y = y1;
+  q += pivot;
+  // Translational tectonic separation along divergent non-planar vectors
+  vec3 translation = side < 0. ? vec3(-opening * 0.22, opening * 0.045, -opening * 0.14)
+                               : vec3( opening * 0.18, -opening * 0.032, -opening * 0.09);
+  return q + translation;
+};
 const vertex=`uniform sampler2D uCrater,uDetail,uFault;uniform float uTime,uParadox,uSide;varying vec2 vUv;varying vec3 vN,vP,vV;${noiseCode}${impactCode}${displacement}void main(){vUv=uv;vP=position;vN=normalMatrix*fractureNormal(normal,position,uSide);float h=texture2D(uCrater,uv).r;vec3 p=position+normal*((h-.52)*.026+(texture2D(uDetail,uv).r-.5)*.014+impactHeight(position)-texture2D(uFault,uv).r*.0016*step(0.,uSide));p=fracture(p,uSide);vec4 mv=modelViewMatrix*vec4(p,1.);vV=-mv.xyz;gl_Position=projectionMatrix*mv;}`;
 const fragment=`uniform sampler2D uMoon,uDetail,uCrater,uFault;uniform float uTime,uParadox,uStrain,uSide;uniform vec3 uSolarLocal,uColdLocal,uSolarView,uColdView;varying vec2 vUv;varying vec3 vN,vP,vV;${noiseCode}${impactCode}${fractureFieldGLSL}
 float height(vec2 p){float side=step(0.,uSide);return texture2D(uCrater,p).r*mix(.026,.016,side)+texture2D(uDetail,p).r*mix(.014,.010,side)-texture2D(uFault,p).r*.0013*side;}
@@ -107,10 +158,17 @@ const moon=new THREE.Group();moon.scale.set(.90,.96,.92);moon.position.y=.045;sc
 // Complementary irregular cuts partition an initially spherical body.
 const cutMoon=buildFracturedMoon();
 for(const {side,geometry} of cutMoon.shells){moon.add(new THREE.Mesh(geometry,new THREE.ShaderMaterial({uniforms:{...u,uSide:{value:side}},vertexShader:vertex,fragmentShader:fragment})));}
-// The cut faces share their exact outer ring with the spherical shells. Their
-// boundary receives the same crater displacement as the exterior surface.
 for(const {side,geometry} of cutMoon.walls){
 moon.add(new THREE.Mesh(geometry,new THREE.ShaderMaterial({uniforms:{...u,uSide:{value:side}},side:THREE.DoubleSide,vertexShader:`uniform float uTime,uParadox,uSide;uniform sampler2D uCrater,uDetail,uFault;attribute float aRim;varying float vRim;varying vec3 vP,vN,vView;${noiseCode}${impactCode}${displacement}void main(){vP=position;vRim=aRim;vec3 direction=normalize(position+vec3(.00000001,0.,0.));vec2 atlasUv=vec2(fract(atan(direction.z,-direction.x)/6.28318530718),asin(clamp(direction.y,-1.,1.))/3.14159265359+.5);float h=(texture2D(uCrater,atlasUv).r-.52)*.026+(texture2D(uDetail,atlasUv).r-.5)*.014+impactHeight(position)-texture2D(uFault,atlasUv).r*.0016*step(0.,uSide);vec3 p=position+direction*h*smoothstep(.85,1.,aRim);p=fracture(p,uSide);vN=normalMatrix*normal;vec4 mv=modelViewMatrix*vec4(p,1.);vView=-mv.xyz;gl_Position=projectionMatrix*mv;}`,fragmentShader:`uniform float uSide,uTime,uParadox;varying float vRim;varying vec3 vP,vN,vView;${noiseCode}void main(){if(uParadox<.001)discard;vec3 N=normalize(cross(dFdx(-vView),dFdy(-vView)));float lambert=max(dot(N,normalize(vec3(-.9,.3,.4))),0.);float foliation=fbm(vec3(vP.y*15.+vP.z*8.,vP.z*19.,vP.x*11.));float strata=smoothstep(.49,.61,foliation);float grain=fbm(vP*86.);float radial=clamp(vRim,0.,1.),edge=pow(radial,36.),cavity=.06+.94*pow(radial,3.5),chips=noise(vP*63.);float sunFace=smoothstep(.18,.76,noise(vP*26.+foliation*4.));vec3 mineral=mix(vec3(.065,.055,.039),vec3(.027,.027,.033),step(0.,uSide));vec3 col=mineral*(.055+lambert*1.65)*(.32+grain*.9)*cavity;col*=1.-strata*.74;float inclusions=smoothstep(.54,.73,fbm(vP*37.));col+=vec3(.065,.058,.041)*inclusions*lambert*cavity;col*=.63+.58*chips;col+=mix(vec3(2.2,1.35,.48),vec3(.043,.017,.081),step(0.,uSide))*edge*(.10+uParadox*.38)*(.12+sunFace*.88);gl_FragColor=vec4(col,1.);}`})));}
+// 6 Detachable Perimeter Slabs
+const slabMeshes=[];
+if(cutMoon.slabs){
+  for(const slab of cutMoon.slabs){
+    const mesh=new THREE.Mesh(slab.geometry,new THREE.ShaderMaterial({uniforms:{...u,uSide:{value:slab.side}},vertexShader:vertex,fragmentShader:fragment}));
+    moon.add(mesh);
+    slabMeshes.push({mesh,slab});
+  }
+}
 function addLightPlane(w,h,x,y,z,frag,uniforms={}){const feathered=frag.replace(/}\s*$/,`float planeEdge=min(min(vUv.x,vUv.y),min(1.-vUv.x,1.-vUv.y));float planeFade=smoothstep(0.,.13,planeEdge);gl_FragColor.rgb*=planeFade;gl_FragColor.a*=planeFade;}`);const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.ShaderMaterial({uniforms:{...u,...uniforms},vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,fragmentShader:feathered,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));mesh.position.set(x,y,z);scene.add(mesh);return mesh;}
 const corona=addLightPlane(5.4,5.4,0,0,-.03,`uniform float uTime,uParadox;varying vec2 vUv;${noiseCode}void main(){vec2 p=(vUv-.5)*5.4;float side=step(0.,p.x),tintSide=smoothstep(-.18,.18,p.x);p.x-=mix(-1.,1.,side)*uParadox*.145;float r=length(p),a=atan(p.y,p.x),d=max(r-1.50,0.);vec2 direction=p/max(r,.001);float drift=uTime*.025;
 // Domain-warped angular fields bend the scattering filaments as they expand.
@@ -248,7 +306,33 @@ function animate(now){
 if(contextLost)return;requestAnimationFrame(animate);const elapsed=Math.max(0,(now-last)/1000),dt=Math.min(elapsed,1),simulationDelta=dt*simulationSpeed;last=now;if(document.hidden)return;if(!paused)time+=simulationDelta;if(audioGain&&audioContext)audioGain.gain.setTargetAtTime(.07*masterVolume,audioContext.currentTime,.1);
 // The gate ramps strain. The critically damped cohesive DOF, rather than a
 // cosmetic interpolation of meshes, determines actual opening and its energy.
-charge=THREE.MathUtils.clamp(charge+(holding?elapsed/1.2:-elapsed/.85),0,1);const previousOpening=paradox;advanceFracture(elapsed);
+// Latched State Machine: Reaching 1.0 latches the corridor open until explicit Rejoin
+if(holding && charge >= 0.999) isLatchedOpen = true;
+if(isLatchedOpen) {
+  charge = 1.0;
+  $('#rejoin-trigger').hidden = false;
+  $('#trigger').setAttribute('aria-pressed', 'true');
+} else {
+  $('#rejoin-trigger').hidden = true;
+  charge = THREE.MathUtils.clamp(charge + (holding ? elapsed / 1.2 : -elapsed / 0.85), 0, 1);
+}
+const previousOpening=paradox;advanceFracture(elapsed);
+// Animate detachable perimeter slabs with secondary tumble vectors
+for(const {mesh, slab} of slabMeshes){
+  const t = paradox;
+  const tumble = Math.pow(t, 1.8);
+  mesh.position.set(
+    slab.offset[0] * tumble * 1.8,
+    slab.offset[1] * tumble * 1.5,
+    slab.offset[2] * tumble * 2.2
+  );
+  mesh.rotation.set(
+    slab.side * tumble * 0.18,
+    slab.offset[0] * tumble * 0.25,
+    slab.offset[1] * tumble * 0.15
+  );
+  mesh.visible = true;
+}
 u.uTime.value=time;u.uParadox.value=paradox;u.uStrain.value=charge;u.uDamage.value=fractureState.damage;softPointer.lerp(pointer,1-Math.exp(-dt*1.6));pointerImpulse.multiplyScalar(Math.exp(-dt*5.));orbitX=THREE.MathUtils.damp(orbitX,targetOrbitX,7,dt);orbitY=THREE.MathUtils.damp(orbitY,targetOrbitY,7,dt);if(heroCameraLocked()){orbitX=orbitY=targetOrbitX=targetOrbitY=0;zoom=1;moon.rotation.set(0,0,0);}else{moon.rotation.y=orbitY+softPointer.x*.045+Math.sin(time*.075)*.018;moon.rotation.x=orbitX+softPointer.y*.028+Math.sin(time*.061)*.008;}updateRouteCamera(dt);stars.rotation.z=time*.00025;inverseMoonRotation.copy(moon.quaternion).invert();u.uSolarLocal.value.set(-1,.32,.17).normalize().applyQuaternion(inverseMoonRotation);u.uColdLocal.value.set(.65,.92,.30).normalize().applyQuaternion(inverseMoonRotation);
 if(fractureState.damage>.01&&paradox>.025&&!burstActive){burstActive=true;burstAge=0;fractureState.events++;playMaterialEvent('fracture',new THREE.Vector3(0,0,1.2),Math.max(.2,fractureState.fractureWork),.2);for(const p of pieces){p.position.copy(p.origin);p.velocity.copy(p.impulse);p.cycle=-1;p.active=false;}}
 if(previousOpening>.015&&paradox<=.015&&!holding)playMaterialEvent('closure',new THREE.Vector3(0,0,1.2),.24,.2);
@@ -283,4 +367,10 @@ if(now-lastStateSent>=1000){lastStateSent=now;const physics=debug.getPhysicsSnap
 if(now-fpsTime>850){const fps=Math.round(frames*1000/(now-fpsTime));frames=0;fpsTime=now;$('#fps').textContent=fps;$('#coord-x').textContent=camera.position.x.toFixed(4);$('#coord-y').textContent=camera.position.y.toFixed(4);$('#coord-a').textContent=camera.fov.toFixed(2);$('#coord-b').textContent=(paradox*100).toFixed(1);Object.assign(document.body.dataset,{fps:String(fps),drawCalls:String(renderer.info.render.calls),triangles:String(renderer.info.render.triangles),paused:String(paused),pixelRatio:String(renderer.getPixelRatio()),renderedFrames:String(totalFrames)});Object.assign(debug,{fps,paradox,renderedFrames:totalFrames});if($('#data-fps'))$('#data-fps').textContent=fps+' FPS';if($('#data-rift'))$('#data-rift').textContent=(paradox*100).toFixed(1)+' %';if($('#data-tris'))$('#data-tris').textContent=renderer.info.render.triangles.toLocaleString()+' TRI';if($('#data-scale'))$('#data-scale').textContent=renderer.getPixelRatio().toFixed(2)+'×';}}
 requestAnimationFrame(animate);
 }catch(e){fail(e);}
-</script><script src="./published-content.js"></script><script src="./commissions.js"></script><script src="./company.js"></script><script src="./experience.js"></script><script src="./session-client.js"></script></body></html>
+</script><script src="./published-content.js"></script><script src="./commissions.js"></script><script src="./company.js"></script><script src="./experience.js"></script><script src="./session-client.js"></script>
+<aside class="brand-defense" style="position:absolute;bottom:0.8%;left:3.2%;z-index:8;font:7.5px/1.3 monospace;color:#6b6775;pointer-events:none;max-width:320px;">
+  <span>LUNAR PARADOX VERIFIED STUDIO · UK</span><br>
+  <span style="opacity:0.65;">OFFICIAL: lunarparadox.com · UNAFFILIATED WITH CASINO/APP CLONES</span>
+</aside>
+
+</body></html>
