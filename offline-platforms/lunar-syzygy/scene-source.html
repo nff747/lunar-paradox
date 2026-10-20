@@ -12,6 +12,25 @@ body[data-route=realms] .viewport,body[data-route=realms] .viewport:active{curso
 <a class="skip" href="#trigger">Skip to simulation</a><div class="cosmos" aria-hidden="true"></div>
 <header><a class="brand" href="#/realms" aria-label="Lunar Paradox home"><div class="wordmark"><span>LUNAR</span><span>PARADOX</span></div></a><div class="top-rule" aria-hidden="true"></div><nav aria-label="Lunar Paradox"><button class="active" data-route="realms"><em>01 /</em> REALMS</button><button data-route="mission"><em>02 /</em> MISSION</button><button data-route="data"><em>03 /</em> DATA</button><button class="enter" id="enter" data-route="simulation">ENTER</button><button class="audio" id="audio" aria-label="Enable ambient sound" aria-pressed="false"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M3 11h6l7-6v20l-7-6H3zM20 9v2a7 7 0 0 1 0 8v2c5-3 5-9 0-12m4-5v2a13 13 0 0 1 0 18v2c9-6 9-16 0-22"/></svg></button></nav></header>
 <div class="ratio" style="display:none">16:9</div><main><h1 class="type"><span class="front">TWO REALMS</span><span class="back"><span>ONE</span><span>AXIS</span></span></h1><div id="viewport" class="viewport" role="img" aria-label="A cratered moon fractured by a jagged gravitational canyon: white gold solar light on the left, dark obsidian and violet tectonic faults on the right, with floating crystalline fragments"></div></main>
+
+<div id="realm-selector" class="realm-selector" style="position:absolute;bottom:13%;left:50%;transform:translateX(-50%);z-index:9;display:none;gap:16px;pointer-events:auto;">
+  <a href="../lunar-gravity/index.html" class="realm-card" style="display:block;padding:12px 18px;background:#0c1218dd;border:1px solid #758c9966;border-radius:4px;backdrop-filter:blur(12px);text-decoration:none;color:#fff;min-width:170px;">
+    <div style="font:10px monospace;color:#8ba5b3;letter-spacing:0.08em;">01 / LABS</div>
+    <div style="font-weight:700;font-size:14px;margin:3px 0 2px 0;">GRAVITY</div>
+    <div style="font-size:10px;color:#abb8bf;">Inverted Mercury &amp; Wave Mechanics</div>
+  </a>
+  <a href="#/studio" class="realm-card" style="display:block;padding:12px 18px;background:#18101edd;border:1px solid #b77bee66;border-radius:4px;backdrop-filter:blur(12px);text-decoration:none;color:#fff;min-width:170px;">
+    <div style="font:10px monospace;color:#cca6f2;letter-spacing:0.08em;">02 / STUDIO</div>
+    <div style="font-weight:700;font-size:14px;margin:3px 0 2px 0;">SYZYGY</div>
+    <div style="font-size:10px;color:#d5c9e2;">Technical Direction &amp; WebGL Runtimes</div>
+  </a>
+  <a href="../lunar-astrolabe/index.html" class="realm-card" style="display:block;padding:12px 18px;background:#16140edd;border:1px solid #d4a95566;border-radius:4px;backdrop-filter:blur(12px);text-decoration:none;color:#fff;min-width:170px;">
+    <div style="font:10px monospace;color:#f0c978;letter-spacing:0.08em;">03 / PRODUCTS</div>
+    <div style="font-weight:700;font-size:14px;margin:3px 0 2px 0;">ASTROLABE</div>
+    <div style="font-size:10px;color:#ded1b6;">Celestial Shaders &amp; Optics</div>
+  </a>
+</div>
+
 <div class="frame" aria-hidden="true"><i class="edge left"></i><i class="edge right"></i><i class="cross left"></i><i class="cross right"></i><i class="cross bottom"></i></div>
 <div class="readout top" title="Live camera position in scene units">VIEW // CAMERA<br>X <strong id="coord-x">+0.0000</strong><br>Y <strong id="coord-y">+0.0000</strong></div><div class="readout bottom" title="Camera field of view and fracture opening">FOV // DEG <strong id="coord-a">+0.00000</strong><br>OPEN // % <strong id="coord-b">+0.00000</strong></div>
 <div class="gate-position"><button class="gate" id="trigger" aria-pressed="false"><span>HOLD TO TRIGGER PARADOX</span><i class="orb" aria-hidden="true" style="position:relative"><svg viewBox="0 0 40 40" style="position:absolute;inset:-12%;width:124%;height:124%;transform:rotate(-90deg)"><circle id="charge-ring" cx="20" cy="20" r="18" fill="none" stroke="#f5e6c8" stroke-width="1.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg></i></button><button class="gate rejoin-gate" id="rejoin-trigger" hidden style="margin-left:12px;background:linear-gradient(145deg,#3c234a99,#1e122bbf);border-color:#bb98db;"><span>REJOIN FRACTURE ↺</span></button></div><span class="gate-note" id="gate-note">HOLD POINTER OR SPACE TO WIDEN THE RIFT</span>
@@ -369,6 +388,8 @@ for(const {oscillator,freq,panner,side,position} of audioOscillators){oscillator
 if(!rendered)startupMark('firstRenderStarted');render();publishSpatial(now);totalFrames++;frames++;if(!rendered){rendered=true;startupMark('firstFrame');fpsTime=now;frames=0;debug.ready=true;$('#loading').hidden=true;$('#gpu-status').textContent='LIVE WEBGL';}
 gate.style.setProperty('--progress',`${paradox*100}%`);$('#charge-ring').setAttribute('stroke-dashoffset',String(1.-paradox));document.body.dataset.paradox=paradox.toFixed(3);document.body.dataset.chargeSeconds=(charge*1.2).toFixed(3);
 const triggerSpan = $('#trigger span');
+const realmSelector = $('#realm-selector');
+if(realmSelector) realmSelector.style.display = (isLatchedOpen || paradox > 0.85) ? 'flex' : 'none';
 if(isLatchedOpen){
   if(triggerSpan) triggerSpan.textContent = 'FRACTURE OPENED · EXPLORING';
   $('#gate-note').textContent = 'CANONICAL CORRIDOR UNLOCKED · PRESS REJOIN OR [R] TO SEAL';
