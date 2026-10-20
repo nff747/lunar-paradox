@@ -10,6 +10,8 @@ routes = [
     # Syzygy
     "https://lunarparadox.com/#/home",
     "https://lunarparadox.com/#/studio",
+    "https://lunarparadox.com/#/security",
+    "https://lunarparadox.com/#/pricing",
     "https://lunarparadox.com/#/commission",
     "https://lunarparadox.com/#/estimate",
     "https://lunarparadox.com/#/realms",

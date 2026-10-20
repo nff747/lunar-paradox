@@ -61,6 +61,7 @@ function mount(){
 }
 function restore(settings){window.dispatchEvent(new CustomEvent('lunar:restore',{detail:{settings:{scene:'gravity',...settings}}}));}
 function render(focus=true){
+ if(window.lunarRouter?.checkCrossPlatformRedirect?.('gravity'))return;
  if(window.lunarCompany?.isCompanyHash()){route='explore';document.getElementById('gravity-experience').hidden=true;document.body.dataset.route='explore';window.__lunarDebug.setSimulation(false);return;}
  const requested=location.hash.replace(/^#\/?/,'').split('?')[0];route=routes.has(requested)?requested:'explore';if(!routes.has(requested))history.replaceState(null,'','#/explore');
  const main=document.getElementById('gravity-experience');if(!main)return;main.hidden=route==='explore';document.body.dataset.route=route;

@@ -1,6 +1,63 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "lunarparradox.com"
+        }
+      ],
+      "destination": "https://lunarparadox.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.lunarparradox.com"
+        }
+      ],
+      "destination": "https://lunarparadox.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparradox.com"
+        }
+      ],
+      "destination": "https://labs.lunarparadox.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparradox.com"
+        }
+      ],
+      "destination": "https://products.lunarparadox.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparradox.com"
+        }
+      ],
+      "destination": "https://studio.lunarparadox.com/$1",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
@@ -70,6 +127,27 @@
     }
   ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=()"
+        }
+      ]
+    },
     {
       "source": "/(.*)\\.(jpg|jpeg|png|webp|svg|gif|ttf|woff|woff2|mp3|ogg|wav)",
       "headers": [

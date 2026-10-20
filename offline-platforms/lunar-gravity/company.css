@@ -48,3 +48,39 @@ body.company-ready:not(.company-open) .type .back{opacity:calc(1 - var(--hold-re
 #lunar-company .lc-catalogue-intro h1{font-size:32px!important;line-height:1.1;margin:0 0 8px;letter-spacing:-.025em}
 .lc-catalogue-intro .lc-eyebrow{margin-bottom:12px;font-size:9px}.lc-catalogue-status{font:12px/1.7 monospace;color:#b5b4ba;margin:0 0 12px}.lc-catalogue-intro .lc-link{font-size:12px}
 @media(max-width:650px){.lc-catalogue-intro{bottom:20px;padding:18px 22px;max-width:260px}#lunar-company .lc-catalogue-intro h1{font-size:28px!important}.lc-page-labs .lc-collection,.lc-page-products .lc-collection{margin-top:35px}}
+
+/* Brand Verification, Anti-Clone Defense, & 4-Tier Pricing Grid */
+.lc-page-security, .lc-page-pricing {
+  background: linear-gradient(90deg, #080b11fa 0%, #080b11f5 58%, #080b1166 100%) !important;
+  pointer-events: auto !important;
+}
+.lc-pricing-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)) !important;
+  gap: 22px !important;
+}
+.lc-price-tag {
+  font: 700 24px/1.2 LunarInter, Arial, sans-serif !important;
+  color: var(--lc-accent) !important;
+  margin: 10px 0 14px !important;
+}
+.lc-price-tag small {
+  font: 400 11px/1.2 monospace !important;
+  color: #a6a6ad !important;
+  margin-left: 6px !important;
+}
+.lc-features, .lc-security-list {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 16px 0 !important;
+  font: 12px/1.7 monospace !important;
+  color: #cbc7d2 !important;
+}
+.lc-features li, .lc-security-list li {
+  padding: 5px 0 !important;
+  border-bottom: 1px dashed #ffffff18 !important;
+}
+.lc-features li::before {
+  content: "→ ";
+  color: var(--lc-accent);
+}
+

@@ -1,0 +1,28 @@
+{
+  "version": "3.2.0",
+  "updated": "2026-10-20T00:00:00Z",
+  "canonical_root": "https://lunarparadox.com",
+  "platforms": {
+    "syzygy": {
+      "title": "Syzygy",
+      "entry_point": "/platforms/syzygy/index.html",
+      "index_sha256": "265ad3eb2596fa3784a23d3b91aa309900572d8998ef70d2c4ee529b4df3a157",
+      "byte_size": 12728533,
+      "license": "Proprietary / Authorized Lunar Paradox Distribution"
+    },
+    "gravity": {
+      "title": "Gravity Anomaly",
+      "entry_point": "/platforms/gravity/index.html",
+      "index_sha256": "0424f78aace09ba16731103cbf8d93573f68c248c323647a447ea71fb0c070f0",
+      "byte_size": 39837289,
+      "license": "Proprietary / Authorized Lunar Paradox Distribution"
+    },
+    "astrolabe": {
+      "title": "Ouroboros Astrolabe",
+      "entry_point": "/platforms/astrolabe/index.html",
+      "index_sha256": "7a9d5888deb5b44ff9c6934389295b9bfd956015df36e970ff1b18f3f4410833",
+      "byte_size": 22492412,
+      "license": "Proprietary / Authorized Lunar Paradox Distribution"
+    }
+  }
+}

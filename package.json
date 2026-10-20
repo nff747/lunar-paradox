@@ -4,6 +4,7 @@
   "private": true,
   "description": "Lunar Paradox - Syzygy, Labs (Gravity), and Products (Astrolabe)",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "test": "node --experimental-vm-modules scripts/static_audit.js && node scripts/asset_audit.js"
   }
 }

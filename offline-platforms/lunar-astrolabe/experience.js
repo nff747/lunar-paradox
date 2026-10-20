@@ -70,6 +70,14 @@
     return `<div class="route-ready" data-readout="storage-mode">LOCAL OBSERVATION STORAGE</div><p class="route-section-title">CURRENT OBSERVATION</p>${fields([['SEQUENCE / CHAPTER','time-phase'],['TIME SCALE','speed'],['VIEW / AZIMUTH','azimuth']])}<label class="route-field" for="observation-name">OBSERVATION NAME</label><input id="observation-name" type="text" maxlength="80" placeholder="Shadow alignment / study 01" autocomplete="off"><div class="route-grid" style="margin-top:10px">${button('archive-save','SAVE OBSERVATION','class="route-primary"')}${button('export','EXPORT STATE')}</div><p class="route-section-title"><span>SAVED VIEWS</span><span data-session-count>—</span></p><div data-session-list><p class="archive-empty">Reading the local observation log…</p></div><div data-undo ${removedId?'':'hidden'}>${button('undo','UNDO LAST REMOVAL','class="route-wide"')}</div><p class="route-caption">Saved on this device. Restore an observation or export its coordinates and sequence state.</p><p>${button('graphics','VIEW / SOUND','class="route-mini-link"')}</p>`;
   }
   function render(name,focus=false){
+    if(window.lunarRouter?.checkCrossPlatformRedirect?.('astrolabe'))return;
+    if(window.lunarCompany?.isCompanyHash()){
+      route='explore';
+      desk.hidden=true;
+      document.body.dataset.route='explore';
+      document.body.classList.remove('product-route','simulation','data-focus','menu-open');
+      return;
+    }
     route=name;document.body.dataset.route=name;document.body.classList.toggle('product-route',name!=='explore');
     document.body.classList.remove('simulation','data-focus','menu-open');
     const menu=$('#menu');if(menu){menu.removeAttribute('aria-expanded');menu.setAttribute('aria-label',name==='explore'?'Open instrument controls':'Return to explore');}
@@ -77,7 +85,7 @@
     desk.hidden=name==='explore';
     const enter=$('#enterSimulation');if(enter)enter.textContent=name==='simulation'?'RETURN TO EXPLORE':'ENTER SIMULATION';
     if(name!=='explore'){
-      const [eyebrow,title,intro]=headings[name];
+      const [eyebrow,title,intro]=headings[name]||['00 / OBSERVATORY','Ouroboros Astrolabe','Celestial observations.'];
       desk.innerHTML=`<div class="route-topline"><span>OUROBOROS / OBSERVATORY 003</span><a class="route-return" href="#/explore" data-route="explore">↗ RETURN TO ORBIT</a></div><p class="route-eyebrow">${eyebrow}</p><h1 tabindex="-1">${title}</h1><p class="route-intro">${intro}</p>${content(name)}<p class="route-notice" data-notice role="status" aria-live="polite"></p>`;
       if(focus)desk.querySelector('h1')?.focus({preventScroll:true});
       desk.scrollTop=0;
@@ -91,6 +99,7 @@
   window.addEventListener('hashchange',()=>render(fromHash(),true));
   document.addEventListener('click',event=>{
     const link=event.target.closest?.('a[data-route],button[data-route]');if(!link)return;
+    if(link.classList.contains('brand'))return;
     const next=link.dataset.route;if(!routes.has(next))return;event.preventDefault();
     if(location.hash==='#/'+next)render(next,true);else location.hash='/'+next;
   });
