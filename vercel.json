@@ -36,104 +36,104 @@
   ],
   "rewrites": [
     {
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "source": "/",
+      "destination": "/offline-platforms/lunar-gravity/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "/offline-platforms/lunar-gravity/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/",
+      "destination": "/offline-platforms/lunar-astrolabe/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "/offline-platforms/lunar-astrolabe/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "/:path*"
+    },
+    {
       "source": "/labs",
       "destination": "/offline-platforms/lunar-gravity/index.html"
     },
     {
-      "source": "/labs/:match*",
-      "destination": "/offline-platforms/lunar-gravity/:match*"
+      "source": "/labs/:path*",
+      "destination": "/offline-platforms/lunar-gravity/:path*"
     },
     {
       "source": "/gravity",
       "destination": "/offline-platforms/lunar-gravity/index.html"
     },
     {
-      "source": "/gravity/:match*",
-      "destination": "/offline-platforms/lunar-gravity/:match*"
+      "source": "/gravity/:path*",
+      "destination": "/offline-platforms/lunar-gravity/:path*"
     },
     {
       "source": "/products",
       "destination": "/offline-platforms/lunar-astrolabe/index.html"
     },
     {
-      "source": "/products/:match*",
-      "destination": "/offline-platforms/lunar-astrolabe/:match*"
+      "source": "/products/:path*",
+      "destination": "/offline-platforms/lunar-astrolabe/:path*"
     },
     {
       "source": "/astrolabe",
       "destination": "/offline-platforms/lunar-astrolabe/index.html"
     },
     {
-      "source": "/astrolabe/:match*",
-      "destination": "/offline-platforms/lunar-astrolabe/:match*"
+      "source": "/astrolabe/:path*",
+      "destination": "/offline-platforms/lunar-astrolabe/:path*"
     },
     {
       "source": "/studio",
       "destination": "/index.html"
     },
     {
-      "source": "/studio/:match*",
+      "source": "/studio/:path*",
       "destination": "/index.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "labs.lunarparadox.com"
-        }
-      ],
-      "source": "/",
-      "destination": "/offline-platforms/lunar-gravity/index.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "labs.lunarparadox.com"
-        }
-      ],
-      "source": "/:match*",
-      "destination": "/offline-platforms/lunar-gravity/:match*"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "products.lunarparadox.com"
-        }
-      ],
-      "source": "/",
-      "destination": "/offline-platforms/lunar-astrolabe/index.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "products.lunarparadox.com"
-        }
-      ],
-      "source": "/:match*",
-      "destination": "/offline-platforms/lunar-astrolabe/:match*"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/:match*",
-      "destination": "/:match*"
     }
   ]
 }
