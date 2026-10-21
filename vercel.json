@@ -40,19 +40,99 @@
       "destination": "/offline-platforms/lunar-gravity/index.html"
     },
     {
+      "source": "/labs/(.*)",
+      "destination": "/offline-platforms/lunar-gravity/$1"
+    },
+    {
       "source": "/gravity",
       "destination": "/offline-platforms/lunar-gravity/index.html"
+    },
+    {
+      "source": "/gravity/(.*)",
+      "destination": "/offline-platforms/lunar-gravity/$1"
     },
     {
       "source": "/products",
       "destination": "/offline-platforms/lunar-astrolabe/index.html"
     },
     {
+      "source": "/products/(.*)",
+      "destination": "/offline-platforms/lunar-astrolabe/$1"
+    },
+    {
       "source": "/astrolabe",
       "destination": "/offline-platforms/lunar-astrolabe/index.html"
     },
     {
+      "source": "/astrolabe/(.*)",
+      "destination": "/offline-platforms/lunar-astrolabe/$1"
+    },
+    {
       "source": "/studio",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/studio/(.*)",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "destination": "/offline-platforms/lunar-gravity/$1"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "destination": "/offline-platforms/lunar-gravity/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "destination": "/offline-platforms/lunar-astrolabe/$1"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "destination": "/offline-platforms/lunar-astrolabe/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "destination": "/$1"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
       "destination": "/index.html"
     }
   ]
