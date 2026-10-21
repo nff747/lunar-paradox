@@ -34,67 +34,42 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "https://lunarparadox.com/labs/:path*",
+      "permanent": false
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "https://lunarparadox.com/products/:path*",
+      "permanent": false
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "https://lunarparadox.com/studio/:path*",
+      "permanent": false
+    }
+  ],
   "rewrites": [
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "labs.lunarparadox.com"
-        }
-      ],
-      "source": "/",
-      "destination": "/offline-platforms/lunar-gravity/index.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "labs.lunarparadox.com"
-        }
-      ],
-      "source": "/:path*",
-      "destination": "/offline-platforms/lunar-gravity/:path*"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "products.lunarparadox.com"
-        }
-      ],
-      "source": "/",
-      "destination": "/offline-platforms/lunar-astrolabe/index.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "products.lunarparadox.com"
-        }
-      ],
-      "source": "/:path*",
-      "destination": "/offline-platforms/lunar-astrolabe/:path*"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/:path*",
-      "destination": "/:path*"
-    },
     {
       "source": "/labs",
       "destination": "/offline-platforms/lunar-gravity/index.html"
