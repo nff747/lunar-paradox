@@ -105,8 +105,9 @@
       if (targetPlatform === 'syzygy') return `/#/${hash}`;
     }
 
-    // 4. Fallback for standalone local server platform routing
-    return `/platforms/${targetPlatform}/index.html#/${hash}`;
+    // 4. Fallback for standalone platform routing
+    const targetSubdomain = PLATFORMS[targetPlatform]?.subdomain || 'lunarparadox.com';
+    return `https://${targetSubdomain}/#/${hash}`;
   }
 
   function checkCrossPlatformRedirect(currentScene) {

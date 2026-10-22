@@ -50,11 +50,6 @@
     if (prefix === 'experiment') return 'gravity';
     if (prefix === 'product') return 'astrolabe';
 
-    // Universal company routes supported by all platforms
-    if (['security', 'pricing'].includes(prefix)) {
-      return currentScene || 'syzygy';
-    }
-
     // Direct company route matches
     if (PLATFORMS.gravity.companyRoutes.has(prefix)) return 'gravity';
     if (PLATFORMS.astrolabe.companyRoutes.has(prefix)) return 'astrolabe';
@@ -110,8 +105,9 @@
       if (targetPlatform === 'syzygy') return `/#/${hash}`;
     }
 
-    // 4. Fallback for standalone local server platform routing
-    return `/platforms/${targetPlatform}/index.html#/${hash}`;
+    // 4. Fallback for standalone platform routing
+    const targetSubdomain = PLATFORMS[targetPlatform]?.subdomain || 'lunarparadox.com';
+    return `https://${targetSubdomain}/#/${hash}`;
   }
 
   function checkCrossPlatformRedirect(currentScene) {

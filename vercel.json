@@ -65,6 +65,21 @@
       "source": "/astrolabe",
       "destination": "/products",
       "permanent": true
+    },
+    {
+      "source": "/platforms/gravity/:path*",
+      "destination": "https://labs.lunarparadox.com",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/astrolabe/:path*",
+      "destination": "https://products.lunarparadox.com",
+      "permanent": true
+    },
+    {
+      "source": "/platforms/syzygy/:path*",
+      "destination": "https://lunarparadox.com",
+      "permanent": true
     }
   ],
   "rewrites": [
