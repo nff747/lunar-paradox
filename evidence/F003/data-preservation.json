@@ -1,0 +1,13 @@
+{
+  "scope": "Private backup integrity and current logical record/key preservation; no user records or secret hashes disclosed",
+  "results": [
+    {
+      "filename": "sessions.sqlite3",
+      "baselineMatchesCurrent": true
+    },
+    {
+      "filename": "commission-owner.key",
+      "baselineMatchesCurrent": true
+    }
+  ]
+}

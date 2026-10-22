@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-21T01:17:53.321Z",
+  "scope": "Production geometry, state, input handlers, scene syntax and catalogue filtering; not visual/device/backend acceptance",
+  "exitCode": 0,
+  "tests": 27,
+  "passed": 27,
+  "failed": 0,
+  "files": [
+    "tests/company-copy.test.mjs",
+    "tests/fracture-geometry.test.mjs",
+    "tests/fracture-pose.test.mjs",
+    "tests/rupture-state.test.mjs",
+    "tests/scene-syntax.test.mjs",
+    "tests/syzygy-inputs.test.mjs"
+  ]
+}

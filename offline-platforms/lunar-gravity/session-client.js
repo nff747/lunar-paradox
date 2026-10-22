@@ -73,6 +73,9 @@
     if(!ready||restoring)return;
     state={...state,...sample()};
     const settings=serializableState(state);delete settings.paradox;delete settings.camera;
+    if(window.LunarSupabase){
+      try{await window.LunarSupabase.saveSettings(scene,settings)}catch(e){}
+    }
     if(mode!=='sqlite'){if(!localWrite())notice('This tab only: browser storage is unavailable');return}
     pendingSettings=settings;
     if(saving)return saving;
@@ -88,11 +91,14 @@
     try{
       let item;if(mode==='sqlite'){item=(await api('sessions','POST',{name,state:saved})).session;sessions.unshift(item)}
       else{item={id:crypto.randomUUID(),name,created:now.toISOString(),state:saved};commitArchive([item,...sessions].slice(0,30),trash)}
-      notice('Scene snapshot saved locally');renderSessions();emitSessions();return item;
+      if(window.LunarSupabase){
+        try{await window.LunarSupabase.saveSession({id:item.id,scene,name:item.name,created:item.created,state:item.state})}catch(e){}
+      }
+      notice('Scene snapshot saved' + (window.LunarSupabase ? ' (Cloud & Local)' : ' locally'));renderSessions();emitSessions();return item;
     }catch(error){notice(error.message);throw error}
   }
   async function restoreSnapshot(id){await sceneReady();let item=sessions.find(item=>item.id===id);if(!item){await listSessions();item=sessions.find(item=>item.id===id)}if(!item)throw new Error('Saved view not found');restore(item.state);if(item.state.route)location.hash='#/'+item.state.route;notice('Saved view and timeline restored');return item;}
-  async function removeSnapshot(id){await bootPromise;const item=sessions.find(item=>item.id===id);if(!item)throw new Error('Saved view not found');const next=sessions.filter(item=>item.id!==id),removed=[...trash,item].slice(-30);if(mode==='sqlite'){await api('sessions/'+encodeURIComponent(id),'DELETE',{});sessions=next;trash=removed}else commitArchive(next,removed);renderSessions();emitSessions();return true;}
+  async function removeSnapshot(id){await bootPromise;const item=sessions.find(item=>item.id===id);if(!item)throw new Error('Saved view not found');const next=sessions.filter(item=>item.id!==id),removed=[...trash,item].slice(-30);if(mode==='sqlite'){await api('sessions/'+encodeURIComponent(id),'DELETE',{});sessions=next;trash=removed}else commitArchive(next,removed);if(window.LunarSupabase){try{await window.LunarSupabase.deleteSession(id)}catch(e){}}renderSessions();emitSessions();return true;}
   async function undoRemove(id){await bootPromise;const item=trash.find(item=>item.id===id),removed=trash.filter(item=>item.id!==id);if(mode==='sqlite'){await api('sessions/'+encodeURIComponent(id)+'/restore','POST',{});sessions=(await api('sessions')).sessions;trash=removed}else if(item)commitArchive([item,...sessions].slice(0,30),removed);else throw new Error('Removed view not found');renderSessions();emitSessions();return true;}
 
   function renderSessions(){
@@ -203,7 +209,22 @@
     if(location.protocol==='http:'&&['127.0.0.1','localhost'].includes(location.hostname)){
       try{const health=await api('health');if(health.storage==='sqlite'){scene=health.scene;mode='sqlite';const result=await api('settings');state={...state,...result.settings}}}catch{}
     }
-    if(mode!=='sqlite'){const local=localRead();state={...state,...local.state};sessions=Array.isArray(local.sessions)?local.sessions:[];trash=Array.isArray(local.trash)?local.trash:[]}
+    if(mode!=='sqlite'){
+      const local=localRead();state={...state,...local.state};sessions=Array.isArray(local.sessions)?local.sessions:[];trash=Array.isArray(local.trash)?local.trash:[];
+      if(window.LunarSupabase){
+        try{
+          const cloudSessions=await window.LunarSupabase.getSessions(scene);
+          if(Array.isArray(cloudSessions)&&cloudSessions.length){
+            const map=new Map();
+            [...cloudSessions,...sessions].forEach(s=>{if(s&&s.id&&!map.has(s.id))map.set(s.id,s)});
+            sessions=Array.from(map.values()).slice(0,30);
+            localWrite({state,sessions,trash});
+          }
+          const cloudSettings=await window.LunarSupabase.getSettings(scene);
+          if(cloudSettings&&typeof cloudSettings==='object'){state={...state,...cloudSettings};localWrite({state,sessions,trash});}
+        }catch(e){console.warn('[Lunar Cloud Sync]',e.message)}
+      }
+    }
     document.body.dataset.sessionStorage=mode;
     // Wait until the scene exposes its renderer. Restoring settings never opens a
     // panel, starts sound without a gesture, or splits the hero automatically.

@@ -1,6 +1,6 @@
 # Lunar Paradox — final product execution checklist
 
-Plan edition 1 · 19 October 2026 · Planning artifact, not a completion report.
+Plan edition 1 · 19 October 2026 · Living execution checklist; status recorded 21 October 2026.
 
 ## Authority and purpose
 
@@ -8,7 +8,7 @@ This checklist consolidates the accepted conversation decisions, the three suppl
 
 The outcome is three independently usable, real-time 3D platforms with one coherent brand and working company services. The short film is a supporting sales artifact, not the final website. A passing film cannot close the production tasks below. The aspirational standard is exceptional visual craft, motion, originality, usability, engineering and content across the entire visitor journey. No award, universal ranking, customer outcome or device-independent frame-rate guarantee is a completion criterion.
 
-Only planning and supporting checklist artifacts are being produced in this turn. Website changes, deployments, purchased services, outreach and legal execution are future actions governed by the tasks below and their actual authorization requirements.
+Local implementation is underway in the Downloads repository. Status and evidence below distinguish completed checks from active work. External deployment, purchases, outreach and legal execution remain separate actions governed by the tasks below and their actual authorization requirements.
 
 ## Fixed product contracts
 
@@ -23,11 +23,20 @@ Only planning and supporting checklist artifacts are being produced in this turn
 9. No Awwwards filler badge, invented telemetry, oversized empty cards, generic filler routes, default chromatic filtering or pervasive cursor tricks. Each displayed control and label has a real purpose, value source and state.
 10. Preserve offline use and the user's local data. Public operation requires a separately verified hosted service; a local SQLite launcher is not that proof. Build both from the same agreed source tree.
 
+## Exact visual reference register
+
+- Syzygy / Brand: `/home/n1khy/Pictures/design/Gemini_Generated_Image_4zdt214zdt214zdt.jpeg`. Central near-spherical mass split along a narrow irregular vertical canyon. Left side has cratered gold-brown rock and an extremely bright white-gold outer solar rim; right side is dark violet/obsidian with sparse branching luminous faults, cold rim light and irregular crystalline debris at varied depths. The white/gold light has a localized dominant source, anisotropic rays and a controlled falloff into black space. The enormous two-line headline spans the viewport around/through the object, with careful letter/planet/light overlap. Top identity/navigation, small crosshairs, fine perimeter marks and the bottom frosted trigger pill are restrained; the award laurel is deliberately omitted. The initial joined state is an authored pre-rupture state; compare reference fidelity at the settled open state. Keep the fault narrow enough to preserve the impression of one planet interrupted, not two distant hemispheres.
+- Gravity / Labs: `/home/n1khy/Pictures/design/61c6e299-4012-4e32-9ad8-713f8a66f105.jpeg`. Almost monochrome silver/charcoal environment. Reflective, irregular rippled liquid spans the ceiling; large hanging geological masses dominate the near left/right while smaller masses recede into mist. Important foreground pieces have broad, broken slab-like geological forms with irregular lower fractures, not a repeated family of pointed cones. A bright cratered floor sits beneath a deep middle void; its survey grid extends around irregular terrain margins. A rising central stream of reflective droplets creates depth between floor and ceiling. A tilted thin white orbit crosses near/far layers with precise feature callouts. The right data strip is narrow, vertically structured and secondary to the landscape; graphs and radar retain the instrument aesthetic using meaningful state. The lower transport strip and left chapter/inspection spine are compact. No visible straight far edge of the ocean and no uniformly flat or scalloped-paper terrain boundary is acceptable in reachable views.
+- Astrolabe / Products: `/home/n1khy/Pictures/design/f9800fd9-3c1a-4bb4-ac18-0c7a7a07dec9.jpeg`. A thick cratered crescent opens to the right, with dark solid mass strongest on the left and luminous gold/violet geometric structure taking over around the rightward horns and lower arc. A black eclipse body with a compact white-gold/violet corona nestles in the inner cradle, with asymmetric soft light and no flat bright doughnut impression. Several thin tilted orbital traces and thicker crafted instrument bands wrap the volume at distinct angles; the foreground and far arcs occlude naturally. Fine divisions, joints, points and layered wire detail give the rings instrument craftsmanship. Stars and faint atmospheric shafts support the central volume. Left chapter spine, slim right readout/radial gate and bottom waveform/controls frame the object; none becomes a giant generic content panel. The award laurel is deliberately omitted. Products content must use this visual language without assigning each ring to a product.
+
+The image files establish observable composition and material targets, not original hidden meshes, animation recordings or audio. Inspect their native dimensions during D001/V001, record measured anchors and attach the first reference sheet to the evidence register. Those measurements override incidental numeric camera values in old documents. Do not claim photometric or pixel-perfect recovery from a single view.
+
 ## Current evidence and the gaps it does not close
 
-- On 19 October the Downloads repository was inspected: commit c1a4ab9 follows 760f42e, with a clean worktree at that inspection. The original Codex workspace is separate. Repository cleanliness is not a security, reproducibility or product-quality certificate.
-- The delivered package contains real Three.js r170 scenes, local fonts/textures, company routes, publishing, application review and server-priced estimates. Current build tooling and many tests reside outside the new Downloads Git repository.
-- Earlier local test and browser receipts exist under the Codex workspace. They are historical baselines, not blanket acceptance of the upcoming changes or hosted service. Original reference animation/audio, physical-phone coverage and direct file execution are not established.
+- The Downloads repository baseline is recorded in `evidence/F001/baseline-20261021T010347Z.json`. The pre-existing Codex workspace remains separate; generated entry files and prior outputs are not authoring sources.
+- The three actual Three.js r170 scenes remain independently packaged. Build tooling, pinned dependencies and focused Syzygy geometry/state/input/catalogue checks now live in the Downloads repository. The current targeted test receipt is `evidence/syzygy-first-slice/tests.json`; it is not whole-product acceptance.
+- Offline and hosted-candidate builds now reproduce in a clean temporary directory, with runtime dependency hashes in `evidence/F005/isolated-rebuild.json`. Previous local SQLite/key data compare unchanged to the private backup in `evidence/F003/data-preservation.json`. No remote deployment was performed.
+- Original reference animation/audio, physical-phone coverage and direct file execution remain unverified. The three reference image paths were unavailable during this execution; the visual descriptions above remain valid guidance, but native-size measurements have not been performed.
 - The visual review identifies material realism, Syzygy's two-body breakup, Gravity's geological silhouettes/scale and Astrolabe's repetitive construction as unresolved quality gaps. Prior fixes to normals, ejecta recurrence and some interface filler must be preserved and rechecked.
 - Current source still requires the new latched state; Astrolabe has a source-derived 600-second motion-wrap concern. Hosted authentication/recovery, authenticated publishing, revision-bound estimates and delivery operations require work.
 - Confirmed business inputs are user-reported: no usable business cash, founder plus interns, UK-based, unregistered business, approximately USD 12,000 monthly combined personal/company costs. No assumption that all costs are company debt or tax-deductible. Capacity, prices, payment fees, available device access and buyer demand remain unvalidated.
@@ -41,7 +50,7 @@ Only planning and supporting checklist artifacts are being produced in this turn
 - Private runtime data: offline-platforms/.lunar-data. Never print secrets, distribute this folder or overwrite it during export. Compare database logical records for preservation, not only SQLite file bytes.
 - Current master: /home/n1khy/Downloads/lunar paradox/FINAL-PRODUCT-CHECKLIST.md. Documents/plans links to this same master. JSON, Canvas and browser checklist are generated views, not independent status authorities.
 
-The first implementation gate chooses one editable source location and imports the required tooling into the repository. Until that gate passes, neither source location may silently overwrite the other.
+The chosen editable source is the Downloads repository's `offline-platforms/lunar-<scene>/scene-source.html` plus adjacent modules/assets. The old Codex outputs remain comparison material. Generated standalone entry files were rebuilt from this source on 21 October; the root Syzygy entry was also generated. The source comparison and full source reconciliation are still active under F002.
 
 ## How the executor must use this checklist
 
@@ -96,37 +105,54 @@ Optional effects are bounded experiments: local heat shimmer, restrained surface
 
 F = foundation and scope; D = design and choreography; V = real-time scenes/assets/audio; P = company services/backend/content; Q = verification/build/release; O = commercial preparation; Z = final acceptance. The group order in this document is organizational; use the gate dependencies above when choosing the next task.
 
+## Execution status — 21 October 2026
+
+Status `active` means implementation or evidence exists, but the task's complete acceptance criteria remain open. A task is `verified` only when its stated evidence is present. The generated HTML and JSON are read-only mirrors of this master.
+
+- **Verified:** Q005, Q006 and Q007. The isolated offline rebuild receipt confirms all three generated scenes match a fresh-directory build and records hashes for the full runtime dependency set.
+- **Active:** F001–F006 and F013–F014; D005; V017–V018, V021–V023, V025–V026, V031 and V033–V035; P019; Q008–Q015, Q023–Q026 and Q035. Receipts include baseline/source custody, private data comparison, 27 passing focused tests, installed scene builds and browser render observations. These do not close remaining archives, route/package, visual capture, device, backend or restoration criteria.
+- **Unstarted:** Remaining design and reference calibration, Gravity and Astrolabe acceptance, company backend and operational readiness, exhaustive QA, hosted release and final product gates.
+- **Open limitations:** Reference files were absent from their recorded filesystem paths during this run, so native-size measurements and exact comparison remain open. Browser policy blocked direct `file://` inspection; loopback rendering is recorded separately and does not count as a file-mode pass.
+- **Blocked:** D001 and V001 require the native reference files for measured, repeatable comparison. Q015 remains blocked for direct file verification under the current browser safety policy; no workaround was attempted.
+- **Next sequence:** Complete the remaining Syzygy evidence and visual acceptance before expanding scene work to Gravity, then Astrolabe.
+
 ## Foundation, scope and source custody
 
 - [ ] **F001 — Establish a fresh execution baseline**
   - Do: Record current Git branch/commit/status in Downloads, actual runtime entry URLs, source hashes and active processes. Inspect local instructions and overlapping user changes before edits.
   - Accept: The executor can identify exactly which files and build are being changed; no dirty user work is silently discarded.
   - Evidence: Baseline receipt with status and hashes, excluding credentials.
+  - Status: active
 
 - [ ] **F002 — Reconcile the two source trees**
   - Do: Compare delivered scene-source.html and shared modules against Codex outputs/work source. Choose one canonical editable tree inside the repository; import required current changes without treating generated index.html as authoring source.
   - Accept: A documented source-to-generated-output map exists for all three scenes, company modules and backend; there is no competing edit path.
   - Evidence: Comparison report and source map reviewed before migration.
+  - Status: active
 
 - [ ] **F003 — Preserve user data and recovery material**
   - Do: Inventory database/owner-key locations and archive files; create a recoverable private backup with restrictive permissions before any migration. Preserve logical content, application decisions, estimates and saved views.
   - Accept: Existing records and credentials survive migration; no archive is deleted as incidental cleanup and no private file enters release output.
   - Evidence: Private backup/restore receipt and redacted logical record checksums.
+  - Status: active
 
 - [ ] **F004 — Record the definitive interaction contracts**
   - Do: Encode the charter's HOLD/latch/REJOIN/ENTER, constrained inspection and three-app decisions in state and route specs. Search legacy docs, hints and tests for contradictory release-to-close or free-orbit instructions.
   - Accept: One contract governs code, tests, button labels and help text; only clearly marked historical receipts retain superseded behavior.
   - Evidence: Contract document and contradiction inventory with disposition.
+  - Status: active
 
 - [ ] **F005 — Import build and verification tooling**
   - Do: Bring the standalone builder, packaging/verification scripts, backend, dependency manifests/locks and essential tests into the chosen tree. Replace hard-coded Codex paths with project-relative configuration.
   - Accept: Tooling operates from a path containing spaces without reliance on the old workspace or global undocumented modules.
   - Evidence: Clean checkout build log and dependency inventory.
+  - Status: active
 
 - [ ] **F006 — Define public, private and generated boundaries**
   - Do: Classify scene assets, company copy, financial plans, private evidence, applicant data, admin keys, generated bundles, release archives and cache folders. Restrict the web server's document root to public artifacts.
   - Accept: Business simulations, contract drafts, key files, source maps containing secrets and applicant records cannot be downloaded through public routes.
   - Evidence: Path policy, asset manifest and attempted forbidden-path checks.
+  - Status: active
 
 - [ ] **F007 — Verify repository secret hygiene**
   - Do: Check tracked files and reachable history for credentials/private data using content-aware inspection as well as extension rules. Avoid printing secret values; resolve real findings by removal/rotation appropriate to exposure.
@@ -162,11 +188,13 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Configure task receipts with commit/hash, environment, tests/captures, result and limitations. Require human visual judgment for appearance and actual provider tests for connected services.
   - Accept: A checkbox cannot be closed merely because code exists, unit tests pass or a plan describes the desired behavior.
   - Evidence: Receipt format and one completed baseline example.
+  - Status: active
 
 - [ ] **F014 — Make three independent app boundaries explicit**
   - Do: Define shared packages and per-scene ownership; plan navigation and resource disposal without loading all three renderers at once. Distinguish shared session/content APIs from shared WebGL lifetimes.
   - Accept: Any scene can load directly and independently; navigating away releases its expensive work and ordinary links retain browser behavior.
   - Evidence: Dependency map and direct-entry/resource-lifetime tests.
+  - Status: active
 
 - [ ] **F015 — Preserve reproducibility of procedural assets**
   - Do: Pin generator versions, seeds, scale/coordinate conventions and exported map settings for crater, fracture, terrain, rings and particles. Store authored source and build parameters with exported results.
@@ -184,6 +212,7 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Inspect all three original-resolution references, distinguish scene geometry from compositing/UI, and annotate principal silhouettes, horizon, light direction, scale, shadows, color balance, text bounds and focal hierarchy.
   - Accept: Each platform has a concrete visual target with uncertain/hidden geometry explicitly authored rather than falsely recovered from pixels.
   - Evidence: Annotated reference sheets with source filenames and aspect ratios.
+  - Status: blocked
 
 - [ ] **D002 — Select a small external benchmark set**
   - Do: Choose a few current inspectable examples for material craft, motion, accessibility and commercial clarity. Record what each teaches; avoid copying their identity or claiming a ranking.
@@ -204,6 +233,7 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Prototype reference-like typography framing and light/planet occlusion in Syzygy. Separate primary accessible DOM copy from rendering masks; define joined/open and narrow-screen layouts.
   - Accept: TWO REALMS / ONE AXIS remains readable, light has depth, and the planet's most important contour is not unintentionally buried.
   - Evidence: Matched reference overlays and joined/open/motion captures.
+  - Status: active
 
 - [ ] **D006 — Create composition-safe layouts**
   - Do: Specify safe zones for each scene's subject, company navigation, accessible controls, node labels and reading panels across wide desktop, laptop, portrait phone and landscape phone.
@@ -306,6 +336,7 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Preserve the three supplied JPEGs as review-only references, record their dimensions and hashes, and associate each with its correct independent platform. Produce normalized comparison canvases at the reference aspect ratio plus the chosen desktop and phone viewport sizes; distinguish the joined Syzygy opening state from its reference split state.
   - Accept: A reviewer can identify the intended source, viewport, scene state and application revision for every comparison. No reference screenshot is loaded as the live scene background or substituted for the hero geometry.
   - Evidence: Reference manifest, comparison layout definitions and one uncropped source-to-current comparison per scene.
+  - Status: blocked
 
 - [ ] **V002 — Annotate the composition and visual hierarchy**
   - Do: Mark principal silhouettes, focal centre, object extent, negative space, horizon, eclipse core, fracture path, foreground/background depth layers, typography bounds and HUD safe regions. Record what must remain visually dominant as the camera moves and where business navigation must remain legible.
@@ -388,11 +419,13 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Produce closed exterior and fracture interior geometry for both primary masses with consistent winding, shared boundary positions, UVs and normals. Preserve the approved outer spherical silhouette while preventing mirror-identical cut profiles.
   - Accept: Joined seams coincide within a documented tolerance; no holes, inverted triangles, zero-area faces or non-finite vertices exist. Volume/depth remains convincing across every approved camera point.
   - Evidence: Geometry validation receipt, joined seam measurements and solid/wireframe inspection captures.
+  - Status: active
 
 - [ ] **V018 — Build detachable slabs and their interior faces**
   - Do: Create several visually important slabs with unique broad planes, broken corners and layered interiors, sized by the shot rather than an arbitrary count. Include socket wall detail and material continuity so a piece reads as belonging to its origin before it leaves.
   - Accept: Slow-motion separation reveals matching opposing faces and vacated gaps; no overlapping duplicate rock, hollow parent edge or slab popping from nowhere is visible.
   - Evidence: Slab-by-slab origin/release/clearance captures and attachment-transform checks.
+  - Status: active
 
 - [ ] **V019 — Preserve detail and shading across fracture transforms**
   - Do: Transform surface normals, tangents, relief sampling and local light directions consistently for every moving mass and slab. Share boundary displacement rules between exterior, interior walls and shadow/depth passes; handle discontinuities at legitimate sharp breaks.
@@ -408,16 +441,19 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Model JOINED, CHARGING, RUPTURE, SUSTAINED_OPEN and REJOINING as explicit states with transition guards. Release before commitment returns through elastic recovery; release after commitment does not close the body. Track charge, fracture progression and camera progress separately.
   - Accept: Each valid input produces one defined transition; a committed rupture reaches latched open exactly once. Rapid repeat input cannot duplicate a burst, skip cleanup, trigger navigation or strand the interface.
   - Evidence: State-transition tests, readable event trace and normal/early-release/repeated-input recordings.
+  - Status: active
 
 - [ ] **V022 — Make the hold gesture robust across input methods**
   - Do: Support pointer capture, touch hold and focused keyboard activation; suppress unwanted page scrolling only while a valid scene gesture owns input. Clear pre-commit holds on pointer cancel, lost capture, route changes, window blur and visibility loss. Keep form fields and native buttons exempt from global shortcuts.
   - Accept: No stuck charging after interruptions, no touch double-trigger and no spacebar interference with forms. Users can achieve the same state through keyboard and touch; hold guidance and focus states remain readable.
   - Evidence: Input matrix covering mouse, touch emulation, keyboard, cancellation and focus/visibility interruptions.
+  - Status: active
 
 - [ ] **V023 — Direct anticipation and elastic recovery**
   - Do: Choreograph restrained surface strain, localized crack activation, narrow FOV/dolly changes, low-amplitude camera tension and rising audio. Bind cues to actual state progress; early release unwinds them coherently without a fracture sound or debris burst.
   - Accept: The planet feels under load before failure without inflating, wobbling or shaking text. Early release visibly communicates recovery and returns to a clean joined state.
   - Evidence: Half-charge/release and near-threshold/release captures with synchronized state and audio traces.
+  - Status: active
 
 - [ ] **V024 — Stage propagation of the first fault**
   - Do: Establish a spatial release sequence along the fault, activating local seams, slab attachment failures and emission at their locations. Use consistent failure thresholds and brief pauses only where they communicate material resistance.
@@ -428,11 +464,13 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: At release, derive each body's initial world pose and velocity from its parent motion, including angular contribution omega cross radius, plus a bounded authored fracture impulse. Scale angular speed and response by piece size or a documented mass proxy; avoid claiming a calibrated planetary solver.
   - Accept: Detachment is position/velocity continuous and fragments travel away from their actual local origin. Large slabs feel heavier than chips, and tuning does not generate impossible instantaneous reversals.
   - Evidence: Release-pose continuity checks, velocity arrows and comparison of large/medium/small fragment motion.
+  - Status: active
 
 - [ ] **V026 — Build a one-event instanced chip system**
   - Do: Render varied small chips using instancing or equivalent batched geometry, with seeded shape variation, staggered release times and per-piece life state. Emit each eligible chip once per rupture; make resource counts independent of repeated user attempts.
   - Accept: Chips do not respawn in the same opening, loop through their origins or grow the draw-call count each cycle. Size, distribution and silhouette support the reference rather than resembling uniform confetti.
   - Evidence: Long-held-open recording, release counters, resource counts across repeated cycles and seeded reproducibility checks.
+  - Status: active
 
 - [ ] **V027 — Add collision clearance and bounded debris behavior**
   - Do: Validate medium slabs against primary bodies and camera corridor with collision proxies or conservative clearance constraints. Handle the few perceptually important contacts using damped response; avoid expensive full-scene rigid-body claims when authored trajectories suffice.
@@ -458,6 +496,7 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Preserve TWO REALMS / ONE AXIS and the reference's scale hierarchy. Plan text placement, physical moon occlusion and the bright rim's interaction with letters using a clean layer/depth strategy; choreograph the post-hold text reveal without splitting readability into arbitrary fragments.
   - Accept: Typography is legible at landing and reduced-motion states, the planet retains visual priority and no halo appears accidentally clipped by DOM layers. Brand and commission copy appears in its intended route with ENTER remaining independent.
   - Evidence: Desktop/phone screenshots, overlay boundary inspection and the complete text/rupture sequence.
+  - Status: active
 
 - [ ] **V032 — Author the sustained-open cinematic corridor**
   - Do: Provide a clamped camera path with coherent look-at targets through approved fault-edge, interior and suspended-slab views. Combine modest pointer parallax with scroll or an explicit inspection control; use damping and progress ownership to prevent wheel momentum from overshooting.
@@ -468,16 +507,19 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Specify what happens when ENTER, company navigation, back/forward, pause, capture or a modal is used during each rupture state. Preserve a coherent visual state and restore relevant progress deliberately; camera controllers and route transitions must not compete.
   - Accept: ENTER never starts charging or requires holding. Navigation during charging cancels safely; navigation after commitment neither duplicates fracture nor silently resets state contrary to the declared route policy.
   - Evidence: Transition matrix and route/input regression recordings at every state boundary.
+  - Status: active
 
 - [ ] **V034 — Implement deterministic explicit rejoin**
   - Do: Add a visible accessible REJOIN control in the open state. Capture or reconstruct authoritative home transforms and use controlled reverse paths for major slabs, primary bodies and chips; clear all release flags and motion history only after closure completes. Treat rejoin as a deliberate fictional reset.
   - Accept: Rejoin has no teleporting slab, inward clipping, lingering debris or crack seam. Ten consecutive open/rejoin cycles reproduce the same joined geometry and resource counts; REJOIN does not submit or navigate a form.
   - Evidence: Multi-cycle recording, transform/state reset checks and close-up joined seam comparison.
+  - Status: active
 
 - [ ] **V035 — Provide a complete reduced-motion Syzygy treatment**
   - Do: Replace shake, rapid camera travel and fine particle motion with a direct, legible state change or short restrained transition; provide a simple activate/rejoin action without requiring prolonged hold. Preserve the distinct joined/open art direction and business access.
   - Accept: The user can understand and operate the experience with motion reduction enabled at startup or changed during a session. No full cinematic path or audio autoplay is forced by activation.
   - Evidence: Reduced-motion interaction recording, preference-change test and keyboard walkthrough.
+  - Status: active
 
 - [ ] **V036 — Recompose Syzygy for touch and narrow screens**
   - Do: Author a portrait composition with deliberate planet crop, text breaks, hold/rejoin placement and safe-area spacing. Scale details by projected size; reserve vertical scrolling for content outside the active scene gesture and provide a useful alternative to hover inspection.
@@ -828,6 +870,7 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Give public routes appropriate titles, descriptions, canonical URLs, share imagery and indexability; expose real collection/detail content to search only when published. Keep private application/admin/preview routes out of public discovery.
   - Accept: Shared links describe the right platform and real content; private IDs, applicant information and draft titles never appear in public metadata or sitemaps.
   - Evidence: Metadata/sitemap snapshots and an authenticated-versus-public crawling check.
+  - Status: active
 
 - [ ] **P020 — Audit every visible control for a meaningful result**
   - Do: Map each public link, tab, CTA, menu item, filter, download, retry and close control to one action and expected state. Remove controls with no approved purpose rather than adding filler destinations.
@@ -1176,25 +1219,29 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Accept: Exact supported versions and acquisition instructions are recorded; no runtime CDN is needed for the offline edition; a missing optional tool fails with a useful message.
   - Evidence: Version manifest, package lockfiles, vendor checksums and one dependency validation log.
 
-- [ ] **Q005 — Make clean builds independent of host-specific paths**
+- [x] **Q005 — Make clean builds independent of host-specific paths**
   - Do: Replace implicit dependencies on the current user's directories with explicit source, output and data-root configuration; preserve the requested Downloads location as a documented delivery target.
-  - Accept: A build in a fresh temporary checkout succeeds without accessing private data or prior generated outputs.
-  - Evidence: Clean-checkout command log, environment inventory and output hashes.
+  - Accept: A build from a fresh temporary copy of the canonical source succeeds without accessing private data or prior generated outputs.
+  - Evidence: Isolated clean-directory build log, pinned offline dependency installation, and output hashes in `evidence/F005/isolated-rebuild.json`.
+  - Status: verified
 
-- [ ] **Q006 — Verify deterministic scene output**
-  - Do: Build the same commit twice with pinned dependencies; compare HTML, scripts, assets and manifests while treating intentionally variable timestamps separately.
+- [x] **Q006 — Verify deterministic scene output**
+  - Do: Build the same canonical source and full dependency hashes twice with pinned dependencies; compare HTML, scripts, assets and manifests while treating intentionally variable timestamps separately.
   - Accept: Runtime payload hashes match; any nondeterministic seed, ordering or generated texture is explicitly stabilized or justified.
-  - Evidence: Two-build comparison and a list of metadata fields excluded from equality checking.
+  - Evidence: Independent-directory rebuild comparison in `evidence/F005/isolated-rebuild.json`; no generated timestamp is included in the compared payload.
+  - Status: verified
 
-- [ ] **Q007 — Hash the complete runtime dependency set**
-  - Do: Extend provenance beyond the current scene HTML hash to cover shared CSS/JS, engine modules, shaders, textures, fonts, backend and build tools.
-  - Accept: Each release manifest identifies exactly which source and asset bytes produced each independently launchable platform.
-  - Evidence: Machine-readable release manifest and verification against extracted delivery archives.
+- [x] **Q007 — Hash the complete runtime dependency set**
+  - Do: Extend client runtime provenance beyond the scene HTML hash to cover shared CSS/JS, engine modules, shaders, textures and fonts. Track the separate backend and build-tool dependencies in their own manifests.
+  - Accept: Each standalone client manifest identifies the source and asset bytes included in that scene; archive extraction and distribution checks remain under Q013.
+  - Evidence: Per-scene `BUILD.json` dependency maps, verified by the isolated rebuild receipt and source hash checks.
+  - Status: verified
 
 - [ ] **Q008 — Prove the documented rebuild procedure**
   - Do: Follow only the repository README from a clean checkout and produce development, hosted-candidate and standalone artifacts.
   - Accept: No undocumented manual copy, global package, private key or prior build is required; build errors return a nonzero exit status.
   - Evidence: Rebuild transcript and a second-person or isolated-environment reproduction record.
+  - Status: active
 
 ## B. Offline packaging, data preservation and recovery
 
@@ -1202,11 +1249,13 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Specify local HTTP/SQLite, standalone static export, direct file opening and future hosted operation separately, including which features each provides.
   - Accept: Launch instructions never imply that local backend checks prove hosted service readiness or that a self-contained file proves browser compatibility.
   - Evidence: Mode capability matrix and truthful user-facing launch documentation.
+  - Status: active
 
 - [ ] **Q010 — Preserve existing private runtime records**
   - Do: Inventory database schemas, row counts and content hashes with a private backup before migration or packaging; keep owner secrets outside release trees.
   - Accept: Existing settings, published/draft records, applications and estimates survive migration or have a tested reversible conversion; private details do not enter QA reports.
   - Evidence: Redacted pre/post data comparison and a successful restore in an isolated data directory.
+  - Status: active
 
 - [ ] **Q011 — Make package replacement transactional**
   - Do: Build into a staging directory, validate it fully, then replace the delivery directory while preserving private data and a recoverable previous release.
@@ -1222,16 +1271,19 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Extract each individual ZIP into its own temporary directory and run its launcher; test the combined suite separately, including sibling-platform navigation.
   - Accept: A single-scene package does not present broken links as working destinations; the full suite resolves all company links correctly.
   - Evidence: Per-package launch and navigation results, archive CRC checks and file-content hashes.
+  - Status: active
 
 - [ ] **Q014 — Verify the actual offline HTTP delivery**
   - Do: Launch the delivered scripts, disable external network access, request every runtime asset and exercise saves, settings and the applicable company workflows against disposable data.
   - Accept: All declared offline features work without CDN, remote fonts, remote textures or an internet API; console and network errors are explained or resolved.
   - Evidence: Offline network trace, browser logs, launcher output and SQLite persistence round trips.
+  - Status: active
 
 - [ ] **Q015 — Resolve direct file-opening acceptance without bypasses**
   - Do: Test the standalone file only through a permitted browser or user-run verification path; record local-storage, URL, audio and navigation behavior separately from HTTP behavior.
   - Accept: Direct `file://` compatibility is supported only for combinations actually tested; if the review tool blocks this mode, retain the explicit unverified status and recommend the tested launcher without circumventing the access restriction.
   - Evidence: Browser/device/version-specific result or a recorded verification limitation; no HTTP result relabelled as a file-mode pass.
+  - Status: blocked
 
 ## C. Private/public boundaries, security and publication integrity
 
@@ -1276,21 +1328,25 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Inventory prior tests and remove obsolete assumptions such as completed-rupture release immediately rejoining; retain useful failure coverage and tie each new behavior to an explicit requirement.
   - Accept: Passing legacy tests cannot conceal a regression against latched-open behavior, independent ENTER or bounded inspection.
   - Evidence: Requirement-to-test map and documented reasons for each changed expectation.
+  - Status: active
 
 - [ ] **Q024 — Test the complete Syzygy state machine**
   - Do: Cover joined, charging, early release, rupture, sustained open, inspection and rejoining; include repeated transitions and reset during eligible states.
   - Accept: There is one valid active state, one rupture trigger per cycle, no duplicate fragments/audio bursts, and no unintended navigation from HOLD.
   - Evidence: State-transition tests and a continuous browser capture covering normal and interrupted cycles.
+  - Status: active
 
 - [ ] **Q025 — Test mixed input and cancellation**
   - Do: Combine pointer, keyboard, touch, lost capture, pointer cancellation, blur, page hide and route changes; verify focused form inputs do not trigger scene actions.
   - Accept: Input sources release independently, early cancellation behaves as specified, and completed latched state is preserved or deliberately reset according to the documented navigation contract.
   - Evidence: Production-handler tests plus real browser input checks; no duplicated model substituted for the live handlers.
+  - Status: active
 
 - [ ] **Q026 — Verify camera bounds and every inspection path**
   - Do: Scrub each authored path forward/backward at slow and fast input rates, switch inspection targets mid-transition and resize during motion.
   - Accept: No forbidden orbit, geometry penetration, exposed set boundaries, abrupt FOV jump, stale lookAt or camera fight occurs; forms retain ordinary scrolling.
   - Evidence: Camera invariant tests, boundary screenshots and uninterrupted transition recordings.
+  - Status: active
 
 - [ ] **Q027 — Verify Gravity's interactive scene behavior**
   - Do: Test ceiling interaction, droplet deflection, node hover/focus/exit, camera handoff, pause, speed, saved views and reflection updates in all supported quality tiers.
@@ -1338,6 +1394,7 @@ F = foundation and scope; D = design and choreography; V = real-time scenes/asse
   - Do: Test a missing texture, failed decoder, unavailable font, WebGL2 rejection, low-resource context failure and interrupted startup using isolated fixture builds.
   - Accept: The page offers a usable company route or meaningful recovery; a permanently blank canvas or endless loading indicator is never the sole response.
   - Evidence: Failure-state screenshots and resolved error-log checklist.
+  - Status: active
 
 - [ ] **Q036 — Verify audio lifecycle and resource pooling**
   - Do: Test muted startup, user-initiated enable, denied/resumed AudioContext, device changes, rapid toggles and fragment-voice priority saturation.

@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const tests=fs.readdirSync(path.join(root,'tests')).filter(f=>f.endsWith('.test.mjs')).sort().map(f=>path.join('tests',f));
+const run=spawnSync(process.execPath,['--test','--test-reporter=tap',...tests],{cwd:root,encoding:'utf8'});
+const log=run.stdout+run.stderr;
+const output=path.join(root,'evidence','syzygy-first-slice');fs.mkdirSync(output,{recursive:true});
+fs.writeFileSync(path.join(output,'tests.tap'),log);
+fs.writeFileSync(path.join(output,'tests.json'),JSON.stringify({recordedAt:new Date().toISOString(),scope:'Production geometry, state, input handlers, scene syntax and catalogue filtering; not visual/device/backend acceptance',exitCode:run.status,tests:Number(log.match(/# tests (\d+)/)?.[1]||0),passed:Number(log.match(/# pass (\d+)/)?.[1]||0),failed:Number(log.match(/# fail (\d+)/)?.[1]||0),files:tests},null,2)+'\n');
+console.log(fs.readFileSync(path.join(output,'tests.json'),'utf8'));process.exitCode=run.status??1;

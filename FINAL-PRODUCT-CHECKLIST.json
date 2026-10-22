@@ -3,9 +3,9 @@
   "edition": 1,
   "assembled": "2026-10-20",
   "master": "/home/n1khy/Downloads/lunar paradox/FINAL-PRODUCT-CHECKLIST.md",
-  "masterSha256": "deab230fb0548db5aa895f2a89fb260b2a736e2225272414a7fa45461dd119fe",
+  "masterSha256": "26259271befc2ef1e06c47f71d398c0fb9c328a4a359bc27147201855cfdd347",
   "taskCount": 302,
-  "verifiedCount": 0,
+  "verifiedCount": 3,
   "byGroup": {
     "F": 16,
     "D": 24,
@@ -22,7 +22,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Record current Git branch/commit/status in Downloads, actual runtime entry URLs, source hashes and active processes. Inspect local instructions and overlapping user changes before edits.",
       "accept": "The executor can identify exactly which files and build are being changed; no dirty user work is silently discarded.",
       "evidence": "Baseline receipt with status and hashes, excluding credentials."
@@ -33,7 +33,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Compare delivered scene-source.html and shared modules against Codex outputs/work source. Choose one canonical editable tree inside the repository; import required current changes without treating generated index.html as authoring source.",
       "accept": "A documented source-to-generated-output map exists for all three scenes, company modules and backend; there is no competing edit path.",
       "evidence": "Comparison report and source map reviewed before migration."
@@ -44,7 +44,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Inventory database/owner-key locations and archive files; create a recoverable private backup with restrictive permissions before any migration. Preserve logical content, application decisions, estimates and saved views.",
       "accept": "Existing records and credentials survive migration; no archive is deleted as incidental cleanup and no private file enters release output.",
       "evidence": "Private backup/restore receipt and redacted logical record checksums."
@@ -55,7 +55,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Encode the charter's HOLD/latch/REJOIN/ENTER, constrained inspection and three-app decisions in state and route specs. Search legacy docs, hints and tests for contradictory release-to-close or free-orbit instructions.",
       "accept": "One contract governs code, tests, button labels and help text; only clearly marked historical receipts retain superseded behavior.",
       "evidence": "Contract document and contradiction inventory with disposition."
@@ -66,7 +66,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Bring the standalone builder, packaging/verification scripts, backend, dependency manifests/locks and essential tests into the chosen tree. Replace hard-coded Codex paths with project-relative configuration.",
       "accept": "Tooling operates from a path containing spaces without reliance on the old workspace or global undocumented modules.",
       "evidence": "Clean checkout build log and dependency inventory."
@@ -77,7 +77,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Classify scene assets, company copy, financial plans, private evidence, applicant data, admin keys, generated bundles, release archives and cache folders. Restrict the web server's document root to public artifacts.",
       "accept": "Business simulations, contract drafts, key files, source maps containing secrets and applicant records cannot be downloaded through public routes.",
       "evidence": "Path policy, asset manifest and attempted forbidden-path checks."
@@ -154,7 +154,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Configure task receipts with commit/hash, environment, tests/captures, result and limitations. Require human visual judgment for appearance and actual provider tests for connected services.",
       "accept": "A checkbox cannot be closed merely because code exists, unit tests pass or a plan describes the desired behavior.",
       "evidence": "Receipt format and one completed baseline example."
@@ -165,7 +165,7 @@
       "group": "Foundation",
       "prefix": "F",
       "section": "Foundation, scope and source custody",
-      "status": "planned",
+      "status": "active",
       "do": "Define shared packages and per-scene ownership; plan navigation and resource disposal without loading all three renderers at once. Distinguish shared session/content APIs from shared WebGL lifetimes.",
       "accept": "Any scene can load directly and independently; navigating away releases its expensive work and ordinary links retain browser behavior.",
       "evidence": "Dependency map and direct-entry/resource-lifetime tests."
@@ -198,7 +198,7 @@
       "group": "Design and journeys",
       "prefix": "D",
       "section": "Art direction, reference matching and whole-journey choreography",
-      "status": "planned",
+      "status": "blocked",
       "do": "Inspect all three original-resolution references, distinguish scene geometry from compositing/UI, and annotate principal silhouettes, horizon, light direction, scale, shadows, color balance, text bounds and focal hierarchy.",
       "accept": "Each platform has a concrete visual target with uncertain/hidden geometry explicitly authored rather than falsely recovered from pixels.",
       "evidence": "Annotated reference sheets with source filenames and aspect ratios."
@@ -242,7 +242,7 @@
       "group": "Design and journeys",
       "prefix": "D",
       "section": "Art direction, reference matching and whole-journey choreography",
-      "status": "planned",
+      "status": "active",
       "do": "Prototype reference-like typography framing and light/planet occlusion in Syzygy. Separate primary accessible DOM copy from rendering masks; define joined/open and narrow-screen layouts.",
       "accept": "TWO REALMS / ONE AXIS remains readable, light has depth, and the planet's most important contour is not unintentionally buried.",
       "evidence": "Matched reference overlays and joined/open/motion captures."
@@ -462,7 +462,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Shared art direction and asset foundation",
-      "status": "planned",
+      "status": "blocked",
       "do": "Preserve the three supplied JPEGs as review-only references, record their dimensions and hashes, and associate each with its correct independent platform. Produce normalized comparison canvases at the reference aspect ratio plus the chosen desktop and phone viewport sizes; distinguish the joined Syzygy opening state from its reference split state.",
       "accept": "A reviewer can identify the intended source, viewport, scene state and application revision for every comparison. No reference screenshot is loaded as the live scene background or substituted for the hero geometry.",
       "evidence": "Reference manifest, comparison layout definitions and one uncropped source-to-current comparison per scene."
@@ -638,7 +638,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Produce closed exterior and fracture interior geometry for both primary masses with consistent winding, shared boundary positions, UVs and normals. Preserve the approved outer spherical silhouette while preventing mirror-identical cut profiles.",
       "accept": "Joined seams coincide within a documented tolerance; no holes, inverted triangles, zero-area faces or non-finite vertices exist. Volume/depth remains convincing across every approved camera point.",
       "evidence": "Geometry validation receipt, joined seam measurements and solid/wireframe inspection captures."
@@ -649,7 +649,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Create several visually important slabs with unique broad planes, broken corners and layered interiors, sized by the shot rather than an arbitrary count. Include socket wall detail and material continuity so a piece reads as belonging to its origin before it leaves.",
       "accept": "Slow-motion separation reveals matching opposing faces and vacated gaps; no overlapping duplicate rock, hollow parent edge or slab popping from nowhere is visible.",
       "evidence": "Slab-by-slab origin/release/clearance captures and attachment-transform checks."
@@ -682,7 +682,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Model JOINED, CHARGING, RUPTURE, SUSTAINED_OPEN and REJOINING as explicit states with transition guards. Release before commitment returns through elastic recovery; release after commitment does not close the body. Track charge, fracture progression and camera progress separately.",
       "accept": "Each valid input produces one defined transition; a committed rupture reaches latched open exactly once. Rapid repeat input cannot duplicate a burst, skip cleanup, trigger navigation or strand the interface.",
       "evidence": "State-transition tests, readable event trace and normal/early-release/repeated-input recordings."
@@ -693,7 +693,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Support pointer capture, touch hold and focused keyboard activation; suppress unwanted page scrolling only while a valid scene gesture owns input. Clear pre-commit holds on pointer cancel, lost capture, route changes, window blur and visibility loss. Keep form fields and native buttons exempt from global shortcuts.",
       "accept": "No stuck charging after interruptions, no touch double-trigger and no spacebar interference with forms. Users can achieve the same state through keyboard and touch; hold guidance and focus states remain readable.",
       "evidence": "Input matrix covering mouse, touch emulation, keyboard, cancellation and focus/visibility interruptions."
@@ -704,7 +704,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Choreograph restrained surface strain, localized crack activation, narrow FOV/dolly changes, low-amplitude camera tension and rising audio. Bind cues to actual state progress; early release unwinds them coherently without a fracture sound or debris burst.",
       "accept": "The planet feels under load before failure without inflating, wobbling or shaking text. Early release visibly communicates recovery and returns to a clean joined state.",
       "evidence": "Half-charge/release and near-threshold/release captures with synchronized state and audio traces."
@@ -726,7 +726,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "At release, derive each body's initial world pose and velocity from its parent motion, including angular contribution omega cross radius, plus a bounded authored fracture impulse. Scale angular speed and response by piece size or a documented mass proxy; avoid claiming a calibrated planetary solver.",
       "accept": "Detachment is position/velocity continuous and fragments travel away from their actual local origin. Large slabs feel heavier than chips, and tuning does not generate impossible instantaneous reversals.",
       "evidence": "Release-pose continuity checks, velocity arrows and comparison of large/medium/small fragment motion."
@@ -737,7 +737,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Render varied small chips using instancing or equivalent batched geometry, with seeded shape variation, staggered release times and per-piece life state. Emit each eligible chip once per rupture; make resource counts independent of repeated user attempts.",
       "accept": "Chips do not respawn in the same opening, loop through their origins or grow the draw-call count each cycle. Size, distribution and silhouette support the reference rather than resembling uniform confetti.",
       "evidence": "Long-held-open recording, release counters, resource counts across repeated cycles and seeded reproducibility checks."
@@ -792,7 +792,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Preserve TWO REALMS / ONE AXIS and the reference's scale hierarchy. Plan text placement, physical moon occlusion and the bright rim's interaction with letters using a clean layer/depth strategy; choreograph the post-hold text reveal without splitting readability into arbitrary fragments.",
       "accept": "Typography is legible at landing and reduced-motion states, the planet retains visual priority and no halo appears accidentally clipped by DOM layers. Brand and commission copy appears in its intended route with ENTER remaining independent.",
       "evidence": "Desktop/phone screenshots, overlay boundary inspection and the complete text/rupture sequence."
@@ -814,7 +814,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Specify what happens when ENTER, company navigation, back/forward, pause, capture or a modal is used during each rupture state. Preserve a coherent visual state and restore relevant progress deliberately; camera controllers and route transitions must not compete.",
       "accept": "ENTER never starts charging or requires holding. Navigation during charging cancels safely; navigation after commitment neither duplicates fracture nor silently resets state contrary to the declared route policy.",
       "evidence": "Transition matrix and route/input regression recordings at every state boundary."
@@ -825,7 +825,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Add a visible accessible REJOIN control in the open state. Capture or reconstruct authoritative home transforms and use controlled reverse paths for major slabs, primary bodies and chips; clear all release flags and motion history only after closure completes. Treat rejoin as a deliberate fictional reset.",
       "accept": "Rejoin has no teleporting slab, inward clipping, lingering debris or crack seam. Ten consecutive open/rejoin cycles reproduce the same joined geometry and resource counts; REJOIN does not submit or navigate a form.",
       "evidence": "Multi-cycle recording, transform/state reset checks and close-up joined seam comparison."
@@ -836,7 +836,7 @@
       "group": "Scenes, assets and audio",
       "prefix": "V",
       "section": "Syzygy — complete the signature rupture before proceeding to the next hero",
-      "status": "planned",
+      "status": "active",
       "do": "Replace shake, rapid camera travel and fine particle motion with a direct, legible state change or short restrained transition; provide a simple activate/rejoin action without requiring prolonged hold. Preserve the distinct joined/open art direction and business access.",
       "accept": "The user can understand and operate the experience with motion reduction enabled at startup or changed during a session. No full cinematic path or audio autoplay is forced by activation.",
       "evidence": "Reduced-motion interaction recording, preference-change test and keyboard walkthrough."
@@ -1584,7 +1584,7 @@
       "group": "Company and backend",
       "prefix": "P",
       "section": "Public information architecture and interface journeys",
-      "status": "planned",
+      "status": "active",
       "do": "Give public routes appropriate titles, descriptions, canonical URLs, share imagery and indexability; expose real collection/detail content to search only when published. Keep private application/admin/preview routes out of public discovery.",
       "accept": "Shared links describe the right platform and real content; private IDs, applicant information and draft titles never appear in public metadata or sitemaps.",
       "evidence": "Metadata/sitemap snapshots and an authenticated-versus-public crawling check."
@@ -2332,10 +2332,10 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "A. Authority, source provenance and reproducible builds",
-      "status": "planned",
+      "status": "verified",
       "do": "Replace implicit dependencies on the current user's directories with explicit source, output and data-root configuration; preserve the requested Downloads location as a documented delivery target.",
-      "accept": "A build in a fresh temporary checkout succeeds without accessing private data or prior generated outputs.",
-      "evidence": "Clean-checkout command log, environment inventory and output hashes."
+      "accept": "A build from a fresh temporary copy of the canonical source succeeds without accessing private data or prior generated outputs.",
+      "evidence": "Isolated clean-directory build log, pinned offline dependency installation, and output hashes in `evidence/F005/isolated-rebuild.json`."
     },
     {
       "id": "Q006",
@@ -2343,10 +2343,10 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "A. Authority, source provenance and reproducible builds",
-      "status": "planned",
-      "do": "Build the same commit twice with pinned dependencies; compare HTML, scripts, assets and manifests while treating intentionally variable timestamps separately.",
+      "status": "verified",
+      "do": "Build the same canonical source and full dependency hashes twice with pinned dependencies; compare HTML, scripts, assets and manifests while treating intentionally variable timestamps separately.",
       "accept": "Runtime payload hashes match; any nondeterministic seed, ordering or generated texture is explicitly stabilized or justified.",
-      "evidence": "Two-build comparison and a list of metadata fields excluded from equality checking."
+      "evidence": "Independent-directory rebuild comparison in `evidence/F005/isolated-rebuild.json`; no generated timestamp is included in the compared payload."
     },
     {
       "id": "Q007",
@@ -2354,10 +2354,10 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "A. Authority, source provenance and reproducible builds",
-      "status": "planned",
-      "do": "Extend provenance beyond the current scene HTML hash to cover shared CSS/JS, engine modules, shaders, textures, fonts, backend and build tools.",
-      "accept": "Each release manifest identifies exactly which source and asset bytes produced each independently launchable platform.",
-      "evidence": "Machine-readable release manifest and verification against extracted delivery archives."
+      "status": "verified",
+      "do": "Extend client runtime provenance beyond the scene HTML hash to cover shared CSS/JS, engine modules, shaders, textures and fonts. Track the separate backend and build-tool dependencies in their own manifests.",
+      "accept": "Each standalone client manifest identifies the source and asset bytes included in that scene; archive extraction and distribution checks remain under Q013.",
+      "evidence": "Per-scene `BUILD.json` dependency maps, verified by the isolated rebuild receipt and source hash checks."
     },
     {
       "id": "Q008",
@@ -2365,7 +2365,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "A. Authority, source provenance and reproducible builds",
-      "status": "planned",
+      "status": "active",
       "do": "Follow only the repository README from a clean checkout and produce development, hosted-candidate and standalone artifacts.",
       "accept": "No undocumented manual copy, global package, private key or prior build is required; build errors return a nonzero exit status.",
       "evidence": "Rebuild transcript and a second-person or isolated-environment reproduction record."
@@ -2376,7 +2376,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "B. Offline packaging, data preservation and recovery",
-      "status": "planned",
+      "status": "active",
       "do": "Specify local HTTP/SQLite, standalone static export, direct file opening and future hosted operation separately, including which features each provides.",
       "accept": "Launch instructions never imply that local backend checks prove hosted service readiness or that a self-contained file proves browser compatibility.",
       "evidence": "Mode capability matrix and truthful user-facing launch documentation."
@@ -2387,7 +2387,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "B. Offline packaging, data preservation and recovery",
-      "status": "planned",
+      "status": "active",
       "do": "Inventory database schemas, row counts and content hashes with a private backup before migration or packaging; keep owner secrets outside release trees.",
       "accept": "Existing settings, published/draft records, applications and estimates survive migration or have a tested reversible conversion; private details do not enter QA reports.",
       "evidence": "Redacted pre/post data comparison and a successful restore in an isolated data directory."
@@ -2420,7 +2420,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "B. Offline packaging, data preservation and recovery",
-      "status": "planned",
+      "status": "active",
       "do": "Extract each individual ZIP into its own temporary directory and run its launcher; test the combined suite separately, including sibling-platform navigation.",
       "accept": "A single-scene package does not present broken links as working destinations; the full suite resolves all company links correctly.",
       "evidence": "Per-package launch and navigation results, archive CRC checks and file-content hashes."
@@ -2431,7 +2431,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "B. Offline packaging, data preservation and recovery",
-      "status": "planned",
+      "status": "active",
       "do": "Launch the delivered scripts, disable external network access, request every runtime asset and exercise saves, settings and the applicable company workflows against disposable data.",
       "accept": "All declared offline features work without CDN, remote fonts, remote textures or an internet API; console and network errors are explained or resolved.",
       "evidence": "Offline network trace, browser logs, launcher output and SQLite persistence round trips."
@@ -2442,7 +2442,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "B. Offline packaging, data preservation and recovery",
-      "status": "planned",
+      "status": "blocked",
       "do": "Test the standalone file only through a permitted browser or user-run verification path; record local-storage, URL, audio and navigation behavior separately from HTTP behavior.",
       "accept": "Direct `file://` compatibility is supported only for combinations actually tested; if the review tool blocks this mode, retain the explicit unverified status and recommend the tested launcher without circumventing the access restriction.",
       "evidence": "Browser/device/version-specific result or a recorded verification limitation; no HTTP result relabelled as a file-mode pass."
@@ -2530,7 +2530,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "D. Functional correctness and interaction regression",
-      "status": "planned",
+      "status": "active",
       "do": "Inventory prior tests and remove obsolete assumptions such as completed-rupture release immediately rejoining; retain useful failure coverage and tie each new behavior to an explicit requirement.",
       "accept": "Passing legacy tests cannot conceal a regression against latched-open behavior, independent ENTER or bounded inspection.",
       "evidence": "Requirement-to-test map and documented reasons for each changed expectation."
@@ -2541,7 +2541,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "D. Functional correctness and interaction regression",
-      "status": "planned",
+      "status": "active",
       "do": "Cover joined, charging, early release, rupture, sustained open, inspection and rejoining; include repeated transitions and reset during eligible states.",
       "accept": "There is one valid active state, one rupture trigger per cycle, no duplicate fragments/audio bursts, and no unintended navigation from HOLD.",
       "evidence": "State-transition tests and a continuous browser capture covering normal and interrupted cycles."
@@ -2552,7 +2552,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "D. Functional correctness and interaction regression",
-      "status": "planned",
+      "status": "active",
       "do": "Combine pointer, keyboard, touch, lost capture, pointer cancellation, blur, page hide and route changes; verify focused form inputs do not trigger scene actions.",
       "accept": "Input sources release independently, early cancellation behaves as specified, and completed latched state is preserved or deliberately reset according to the documented navigation contract.",
       "evidence": "Production-handler tests plus real browser input checks; no duplicated model substituted for the live handlers."
@@ -2563,7 +2563,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "D. Functional correctness and interaction regression",
-      "status": "planned",
+      "status": "active",
       "do": "Scrub each authored path forward/backward at slow and fast input rates, switch inspection targets mid-transition and resize during motion.",
       "accept": "No forbidden orbit, geometry penetration, exposed set boundaries, abrupt FOV jump, stale lookAt or camera fight occurs; forms retain ordinary scrolling.",
       "evidence": "Camera invariant tests, boundary screenshots and uninterrupted transition recordings."
@@ -2662,7 +2662,7 @@
       "group": "Verification and delivery",
       "prefix": "Q",
       "section": "E. Runtime resilience and lifecycle behavior",
-      "status": "planned",
+      "status": "active",
       "do": "Test a missing texture, failed decoder, unavailable font, WebGL2 rejection, low-resource context failure and interrupted startup using isolated fixture builds.",
       "accept": "The page offers a usable company route or meaningful recovery; a permanently blank canvas or endless loading indicator is never the sole response.",
       "evidence": "Failure-state screenshots and resolved error-log checklist."

@@ -10,12 +10,12 @@
 
 ## Publishing
 
-Run the local launcher. Open SCENE → Local publisher, or `#/manage`.
+For offline publishing, run the local launcher and open SCENE → Local publisher, or `#/manage`. For hosted publishing, open `#/manage` on Syzygy and authenticate with the configured production owner key. The hosted publisher writes to Neon/Postgres through the Vercel API; it is available only after database and environment setup described in `PRODUCTION-BACKEND.md`.
 Choose Experiments or Products. NEW RECORD opens an empty editor. Save as draft, preview privately, then set the state to published and save. Published entries receive detail routes. Archive withdraws the entry while retaining it for editing and republication.
 
 A published record needs title, summary and content. Optional preview imagery and actions require complete HTTPS URLs; an action needs both its label and URL. Content is plain text, escaped before display. No scripts or HTML are accepted as rich content.
 
-The local launcher persists the registry in SQLite alongside existing settings, without replacing saved scene observations. Version checks prevent a stale tab overwriting a newer publisher document. Each scene's settings and telemetry remain isolated by scene.
+The local launcher persists the registry in SQLite alongside existing settings, without replacing saved scene observations. The hosted publisher persists it in Postgres. Both use revision checks to prevent a stale tab overwriting a newer document. Each scene's local settings and telemetry remain isolated by scene.
 
 EXPORT CONTENT saves a JSON backup including drafts. MERGE BACKUP restores previously absent IDs without overwriting existing records. For public distribution, EXPORT PUBLIC SNAPSHOT downloads `published-content.js` containing only published entries and the configured public contact email. Replace the matching source file in each intended platform and rebuild the standalone exports. The file is bundled into HTML. On a fresh local database, the launcher imports that public snapshot; it never overwrites an existing local registry. Keep private JSON backups outside public website assets.
 
@@ -23,7 +23,7 @@ Public collection templates do not invent experiments, products, project counts,
 
 ## Commissioning
 
-Application-first workflow now replaces the brief-only form. Applicants submit for review; only accepted applications unlock configured service selection and a server-calculated estimate. SCENE → Applications & pricing opens owner-key-protected review and rate configuration. See COMMISSIONING.md for operation and deployment boundaries. No automatic email or payment is configured.
+Application-first workflow replaces the brief-only form. Applicants submit for review; only accepted applications unlock configured service selection and a server-calculated estimate. SCENE → Applications & pricing opens owner-key-protected review and rate configuration. The hosted review desk uses the environment owner key and Postgres. See `COMMISSIONING.md` and root `PRODUCTION-BACKEND.md` for operation and deployment boundaries. No automatic email or payment is configured.
 
 ## Offline navigation
 

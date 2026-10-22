@@ -39,12 +39,23 @@
       "has": [
         {
           "type": "host",
+          "value": "www.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "https://lunarparadox.com/:path*",
+      "permanent": true
+    },
+    {
+      "has": [
+        {
+          "type": "host",
           "value": "labs.lunarparadox.com"
         }
       ],
       "source": "/:path*",
       "destination": "https://lunarparadox.com/labs/:path*",
-      "permanent": false
+      "permanent": true
     },
     {
       "has": [
@@ -55,7 +66,7 @@
       ],
       "source": "/:path*",
       "destination": "https://lunarparadox.com/products/:path*",
-      "permanent": false
+      "permanent": true
     },
     {
       "has": [
@@ -66,49 +77,66 @@
       ],
       "source": "/:path*",
       "destination": "https://lunarparadox.com/studio/:path*",
-      "permanent": false
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/studio.html",
+      "destination": "/studio",
+      "permanent": true
+    },
+    {
+      "source": "/gravity",
+      "destination": "/labs",
+      "permanent": true
+    },
+    {
+      "source": "/gravity/:path*",
+      "destination": "/labs/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/astrolabe",
+      "destination": "/products",
+      "permanent": true
+    },
+    {
+      "source": "/astrolabe/:path*",
+      "destination": "/products/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
     {
+      "source": "/studio",
+      "destination": "/studio.html"
+    },
+    {
       "source": "/labs",
-      "destination": "/offline-platforms/lunar-gravity/index.html"
+      "destination": "/lunar-gravity/index.html"
     },
     {
       "source": "/labs/:path*",
-      "destination": "/offline-platforms/lunar-gravity/:path*"
-    },
-    {
-      "source": "/gravity",
-      "destination": "/offline-platforms/lunar-gravity/index.html"
-    },
-    {
-      "source": "/gravity/:path*",
-      "destination": "/offline-platforms/lunar-gravity/:path*"
+      "destination": "/lunar-gravity/:path*"
     },
     {
       "source": "/products",
-      "destination": "/offline-platforms/lunar-astrolabe/index.html"
+      "destination": "/lunar-astrolabe/index.html"
     },
     {
       "source": "/products/:path*",
-      "destination": "/offline-platforms/lunar-astrolabe/:path*"
-    },
-    {
-      "source": "/astrolabe",
-      "destination": "/offline-platforms/lunar-astrolabe/index.html"
-    },
-    {
-      "source": "/astrolabe/:path*",
-      "destination": "/offline-platforms/lunar-astrolabe/:path*"
-    },
-    {
-      "source": "/studio",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/studio/:path*",
-      "destination": "/index.html"
+      "destination": "/lunar-astrolabe/:path*"
     }
-  ]
+  ],
+  "buildCommand": "npm run build -- --hosted-only",
+  "outputDirectory": "build/hosted",
+  "functions": {
+    "api/[...path].js": {
+      "maxDuration": 15
+    }
+  }
 }

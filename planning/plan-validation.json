@@ -1,0 +1,24 @@
+{
+  "taskCount": 302,
+  "groups": {
+    "F": 16,
+    "D": 24,
+    "V": 84,
+    "P": 82,
+    "Q": 72,
+    "O": 12,
+    "Z": 12
+  },
+  "uniqueIDs": 302,
+  "completeTaskFields": true,
+  "verifiedCount": 3,
+  "masterSha256": "26259271befc2ef1e06c47f71d398c0fb9c328a4a359bc27147201855cfdd347",
+  "masterBytes": 197917,
+  "words": 27024,
+  "outputs": [
+    "/home/n1khy/Downloads/lunar paradox/FINAL-PRODUCT-CHECKLIST.md",
+    "/home/n1khy/Downloads/lunar paradox/FINAL-PRODUCT-CHECKLIST.json",
+    "/home/n1khy/Downloads/lunar paradox/FINAL-PRODUCT-CHECKLIST.html",
+    "/home/n1khy/.cursor/projects/empty-window/canvases/lunar-paradox-final-product.canvas.tsx"
+  ]
+}

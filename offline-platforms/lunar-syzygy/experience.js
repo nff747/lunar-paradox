@@ -130,7 +130,7 @@
   addEventListener('lunar:telemetry',event=>{if(event.detail?.scene==='syzygy')lastTelemetry=event.detail;});
   document.addEventListener('lunar:state',event=>{if(event.detail?.scene==='syzygy'){lastTelemetry={...lastTelemetry,snapshot:{...lastTelemetry?.snapshot,...event.detail}};}});
   setInterval(()=>{if(document.hidden||current==='realms')return;const now=performance.now();if(now-lastSampleAt>=450){const row=sample();if(row){history.push(row);if(history.length>120)history.shift();lastSampleAt=now;}}update();},500);
-  if(!window.lunarCompany?.isCompanyHash()&&!/^#\/(realms|mission|data|simulation)$/.test(location.hash))historyReplace();
+  if(!window.lunarCompany?.isCompanyHash()&&location.hash&&!/^#\/(realms|mission|data|simulation)$/.test(location.hash))historyReplace();
   function historyReplace(){window.history.replaceState(null,'','#/'+getRoute());}
   renderRoute();
 })();

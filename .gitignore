@@ -24,3 +24,7 @@ Thumbs.db
 .idea/
 .vercel
 .env*
+/.local-backups/
+/build/
+*.sqlite3-wal
+*.sqlite3-shm

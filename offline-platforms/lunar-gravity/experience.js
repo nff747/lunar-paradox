@@ -57,7 +57,7 @@ function mount(){
  window.addEventListener('lunar:sessions',()=>{if(route==='archive')refreshArchive();});
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&route!=='explore'&&!document.querySelector('.lp-session:not([hidden])')){event.preventDefault();go('explore');}});
  const startReadouts=()=>{clearInterval(interval);interval=setInterval(()=>{if(!document.hidden)update();},500);};startReadouts();window.addEventListener('pagehide',()=>clearInterval(interval));window.addEventListener('pageshow',()=>{startReadouts();update();});
- if(!location.hash)history.replaceState(null,'','#/explore');render(false);
+ if(!location.hash&&!window.lunarCompany?.isCompanyHash())history.replaceState(null,'','#/explore');render(false);
 }
 function restore(settings){window.dispatchEvent(new CustomEvent('lunar:restore',{detail:{settings:{scene:'gravity',...settings}}}));}
 function render(focus=true){

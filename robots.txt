@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /offline-platforms/
+Disallow: /build/
+
+Sitemap: https://lunarparadox.com/sitemap.xml

@@ -1,0 +1,172 @@
+TAP version 13
+# Subtest: syzygy: unpublished collection contains no fake programme or empty card
+ok 1 - syzygy: unpublished collection contains no fake programme or empty card
+  ---
+  duration_ms: 1.477287
+  type: 'test'
+  ...
+# Subtest: syzygy: only published records appear without ornamental filler
+ok 2 - syzygy: only published records appear without ornamental filler
+  ---
+  duration_ms: 0.751152
+  type: 'test'
+  ...
+# Subtest: gravity: unpublished collection contains no fake programme or empty card
+ok 3 - gravity: unpublished collection contains no fake programme or empty card
+  ---
+  duration_ms: 0.586121
+  type: 'test'
+  ...
+# Subtest: gravity: only published records appear without ornamental filler
+ok 4 - gravity: only published records appear without ornamental filler
+  ---
+  duration_ms: 0.497134
+  type: 'test'
+  ...
+# Subtest: astrolabe: unpublished collection contains no fake programme or empty card
+ok 5 - astrolabe: unpublished collection contains no fake programme or empty card
+  ---
+  duration_ms: 0.477408
+  type: 'test'
+  ...
+# Subtest: astrolabe: only published records appear without ornamental filler
+ok 6 - astrolabe: only published records appear without ornamental filler
+  ---
+  duration_ms: 0.633291
+  type: 'test'
+  ...
+# Subtest: primary bodies and each removed slab form individually closed finite solids
+ok 7 - primary bodies and each removed slab form individually closed finite solids
+  ---
+  duration_ms: 377.342287
+  type: 'test'
+  ...
+# Subtest: the complete partition conserves the joined sphere volume without duplicate slabs
+ok 8 - the complete partition conserves the joined sphere volume without duplicate slabs
+  ---
+  duration_ms: 701.401221
+  type: 'test'
+  ...
+# Subtest: all exterior vertices remain on the spherical envelope and pole caps are closed
+ok 9 - all exterior vertices remain on the spherical envelope and pole caps are closed
+  ---
+  duration_ms: 11.316332
+  type: 'test'
+  ...
+# Subtest: undeformed parent positions are preserved on both sides
+ok 10 - undeformed parent positions are preserved on both sides
+  ---
+  duration_ms: 0.82445
+  type: 'test'
+  ...
+# Subtest: local parent motion separates the sides and contributes continuous finite release velocity
+ok 11 - local parent motion separates the sides and contributes continuous finite release velocity
+  ---
+  duration_ms: 0.237526
+  type: 'test'
+  ...
+# Subtest: position sampling can reuse a scratch vector and returns exactly home at rejoin
+ok 12 - position sampling can reuse a scratch vector and returns exactly home at rejoin
+  ---
+  duration_ms: 0.130125
+  type: 'test'
+  ...
+# Subtest: early release unloads without committing or moving the fracture drive
+ok 13 - early release unloads without committing or moving the fracture drive
+  ---
+  duration_ms: 0.69696
+  type: 'test'
+  ...
+# Subtest: threshold commits in the same update and pointer release cannot reverse rupture
+ok 14 - threshold commits in the same update and pointer release cannot reverse rupture
+  ---
+  duration_ms: 4.161002
+  type: 'test'
+  ...
+# Subtest: rejoin is explicit, smooth, non-repeatable and returns cleanly before another cycle
+ok 15 - rejoin is explicit, smooth, non-repeatable and returns cleanly before another cycle
+  ---
+  duration_ms: 0.29806
+  type: 'test'
+  ...
+# Subtest: pause and large frame gaps never fast-forward a charge
+ok 16 - pause and large frame gaps never fast-forward a charge
+  ---
+  duration_ms: 0.128912
+  type: 'test'
+  ...
+# Subtest: accessible activation completes without prolonged hold; reduced motion is immediate
+ok 17 - accessible activation completes without prolonged hold; reduced motion is immediate
+  ---
+  duration_ms: 0.163828
+  type: 'test'
+  ...
+# Subtest: another activation in committed states cannot add a second burst
+ok 18 - another activation in committed states cannot add a second burst
+  ---
+  duration_ms: 0.139111
+  type: 'test'
+  ...
+# Subtest: syzygy: production scene module parses before any packaging
+ok 19 - syzygy: production scene module parses before any packaging
+  ---
+  duration_ms: 12.445055
+  type: 'test'
+  ...
+# Subtest: gravity: production scene module parses before any packaging
+ok 20 - gravity: production scene module parses before any packaging
+  ---
+  duration_ms: 6.905151
+  type: 'test'
+  ...
+# Subtest: astrolabe: production scene module parses before any packaging
+ok 21 - astrolabe: production scene module parses before any packaging
+  ---
+  duration_ms: 5.609865
+  type: 'test'
+  ...
+# Subtest: pointer cancellation, window blur, page hide and navigation release the actual handler
+ok 22 - pointer cancellation, window blur, page hide and navigation release the actual handler
+  ---
+  duration_ms: 7.518042
+  type: 'test'
+  ...
+# Subtest: keyboard and pointer sources release independently
+ok 23 - keyboard and pointer sources release independently
+  ---
+  duration_ms: 0.839598
+  type: 'test'
+  ...
+# Subtest: forms, company routes and consumed events cannot charge the scene
+ok 24 - forms, company routes and consumed events cannot charge the scene
+  ---
+  duration_ms: 2.209103
+  type: 'test'
+  ...
+# Subtest: Enter/assistive click can activate without a prolonged press; normal pointer click cannot double activate
+ok 25 - Enter/assistive click can activate without a prolonged press; normal pointer click cannot double activate
+  ---
+  duration_ms: 0.751513
+  type: 'test'
+  ...
+# Subtest: navigation cancels an accessible automatic charge before commitment
+ok 26 - navigation cancels an accessible automatic charge before commitment
+  ---
+  duration_ms: 0.791187
+  type: 'test'
+  ...
+# Subtest: R respects text/company focus and Escape never resets a committed scene
+ok 27 - R respects text/company focus and Escape never resets a committed scene
+  ---
+  duration_ms: 1.912886
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1516.185861

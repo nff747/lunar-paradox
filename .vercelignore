@@ -15,3 +15,12 @@ offline-platforms-before-*/
 previous-workspace-*
 *.py[cod]
 __pycache__/
+.local-backups/
+build/
+planning/
+evidence/
+tests/
+FINAL-PRODUCT-CHECKLIST.*
+THE-PLAN.md
+The plan.md
+commercial/

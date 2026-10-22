@@ -1,4 +1,7 @@
 # THE PLAN (V3.2 RATIFIED)
+
+> Historical planning edition. From 20 October 2026, use [FINAL-PRODUCT-CHECKLIST.md](FINAL-PRODUCT-CHECKLIST.md) as the execution authority. This V3.2 document is preserved for context; its outdated counts, assumptions, promises and conflicting instructions do not supersede the master checklist. The checklist defines all three independent platforms, acceptance evidence, source/data custody and final release gates.
+
 ## Operational System, Continuum Mechanics, and Commercial Architecture for Lunar Paradox
 
 ---

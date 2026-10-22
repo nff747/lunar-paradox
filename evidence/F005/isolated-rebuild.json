@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-21T06:10:32.592Z",
+  "freshDirectory": true,
+  "offlineNpmInstall": true,
+  "oldWorkspaceAccessRequired": false,
+  "results": [
+    {
+      "scene": "syzygy",
+      "htmlSha256": "14d5c2f35e950ec566feae29a3176362a914bfcfcf6a6dd6b23a4b782f50a39a",
+      "dependencyFiles": 47,
+      "match": true
+    },
+    {
+      "scene": "gravity",
+      "htmlSha256": "94272e8fab0770ebea109963d3def7dedc7c4ef5fe06a25b0d9162a582c5c8ad",
+      "dependencyFiles": 39,
+      "match": true
+    },
+    {
+      "scene": "astrolabe",
+      "htmlSha256": "e72eef8f5d0c72854765dd9b5ea292446d3dac95bbb3e04ecf1515ca7273913a",
+      "dependencyFiles": 34,
+      "match": true
+    }
+  ]
+}
