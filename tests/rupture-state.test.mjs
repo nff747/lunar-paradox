@@ -16,11 +16,11 @@ test('full hold latches open until an explicit graceful rejoin action',()=>{
   assert.equal(s.committed,true);assert.equal(s.canInspect,true);
   run(s,90);assert.equal(s.state,'HELD_OPEN');assert.equal(s.drive,1);
   assert.equal(s.rejoin(),true);run(s,24);assert.equal(s.state,'REJOINING');assert(s.drive>0&&s.drive<1);
-  run(s,90);assert.equal(s.state,'JOINED');assert.equal(s.drive,0);assert.equal(s.committed,false);
+  run(s,180);assert.equal(s.state,'JOINED');assert.equal(s.drive,0);assert.equal(s.committed,false);
 });
 
 test('a second complete hold is counted only after the first release',()=>{
-  const s=new RuptureController();run(s,90,{holding:true});assert(s.rejoin());run(s,90);run(s,90,{holding:true});
+  const s=new RuptureController();run(s,90,{holding:true});assert(s.rejoin());run(s,180);run(s,90,{holding:true});
   assert.equal(s.cycles,2);assert.equal(s.state,'HELD_OPEN');
 });
 
@@ -31,7 +31,9 @@ test('pause and large frame gaps never fast-forward strain',()=>{
 
 test('accessible activation runs once; reduced motion resolves immediately',()=>{
   const s=new RuptureController();assert(s.activate());run(s,73);assert.equal(s.state,'HELD_OPEN');
-  run(s,90);assert.equal(s.state,'HELD_OPEN');assert(s.activate());assert.equal(s.state,'REJOINING');run(s,90);assert.equal(s.state,'JOINED');
+  run(s,90);assert.equal(s.state,'HELD_OPEN');assert(s.activate());assert.equal(s.state,'REJOINING');run(s,180);assert.equal(s.state,'JOINED');
   const r=new RuptureController();r.activate();r.update(.016,{reduced:true});assert.equal(r.state,'HELD_OPEN');
   assert(r.activate());r.update(.016,{reduced:true});assert.equal(r.state,'JOINED');
 });
+
+test('a slow foreground frame contributes its elapsed hold time',()=>{const s=new RuptureController();s.update(.3,{holding:true});assert(Math.abs(s.charge-.25)<1e-12);});

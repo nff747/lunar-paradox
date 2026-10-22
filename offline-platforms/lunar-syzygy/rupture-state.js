@@ -8,9 +8,11 @@ export class RuptureController {
   cancel(immediate=false){this.automatic=false;if(immediate&&!this.committed){this.charge=0;this.state='JOINED';this.wasAtFailure=false;}}
   rejoin(){if(!this.committed||this.state==='REJOINING')return false;this.automatic=false;this.state='REJOINING';return true;}
   update(seconds,{holding=false,paused=false,reduced=false}={}){
-    const dt=paused?0:clamp(Number.isFinite(seconds)?seconds:0,0,.05),active=holding||this.automatic;
+    // Foreground frame time drives gestures. Ignore long suspension gaps, but
+    // do not turn a 1.2s hold into dozens of frames on a slower GPU.
+    const dt=paused||!Number.isFinite(seconds)||seconds>2?0:Math.max(0,seconds),active=holding||this.automatic;
     if(this.state==='REJOINING'){
-      this.charge=reduced?0:clamp(this.charge-dt/.95);
+      this.charge=reduced?0:clamp(this.charge-dt/2.4);
       if(this.charge===0){this.state='JOINED';this.wasAtFailure=false;}
     }else if(this.committed){this.charge=1;this.state='HELD_OPEN';}
     else if(active){

@@ -11,9 +11,13 @@ export function buildFracturedMoon(radius=1.5, angular=256, surfaceSteps=80, wal
     const d=Math.sqrt(Math.max(0,radius*radius-x*x));boundary.push({x,y:Math.sin(a)*d,z:Math.cos(a)*d,a});
   }
   boundary[angular]={...boundary[0],a:Math.PI*2};
-  const defs=[[-1,.35,.45],[-1,1.85,.38],[-1,3.45,.42],[1,.95,.40],[1,2.60,.46],[1,4.80,.35]];
+  const defs=[];
+  for(const side of [-1,1])for(let i=0;i<9;i++){
+    const start=(i+.18+(side>0?.13:0))*Math.PI*2/9;
+    defs.push([side,start,.19+(.5+.5*Math.sin(i*7.13+side))*.18]);
+  }
   const depth=Math.max(2,Math.round(surfaceSteps*.14)),inner=Math.round(wallSteps*.86);
-  const sectors=defs.map(([side,a,len],id)=>({id,side,start:Math.round(a/(Math.PI*2)*angular),end:Math.round((a+len)/(Math.PI*2)*angular),exterior:sink(),interior:sink()}));
+  const sectors=defs.map(([side,a,len],id)=>({id,side,start:Math.round(a/(Math.PI*2)*angular),end:Math.round((a+len)/(Math.PI*2)*angular),depth,inner,exterior:sink(),interior:sink()}));
   const shells=[],walls=[],slabs=[];
   function sink(){return {p:[],uv:[],n:[],rim:[]};}
   function point(x,y,z,rim=1){return {v:new THREE.Vector3(x,y,z),rim};}
@@ -30,35 +34,48 @@ export function buildFracturedMoon(radius=1.5, angular=256, surfaceSteps=80, wal
     const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(out.p,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(out.n,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(out.uv,2));if(interior)g.setAttribute('aRim',new THREE.Float32BufferAttribute(out.rim,1));g.setIndex(Array.from({length:out.p.length/3},(_,i)=>i));g.computeBoundingSphere();return g;
   }
   function owner(side,j){return sectors.find(s=>s.side===side&&j>=s.start&&j<s.end);}
+  function profile(side,j){
+    const sector=sectors.find(s=>s.side===side&&j>=s.start&&j<=s.end);
+    if(!sector)return {shell:.015,wall:.985};
+    const t=(j-sector.start)/(sector.end-sector.start),arch=Math.pow(Math.max(0,Math.sin(t*Math.PI)),.65);
+    // Tapered, eroded tear outlines rather than rectangular constant-depth
+    // slots. Both sides of every cap share these exact remapped vertices.
+    const erosion=scalarNoise(j*.79,sector.id*1.9,8.1)-.5;
+    return {shell:.015+arch*(.045+(sector.id%3)*.012+erosion*.025),wall:.985-arch*(.065+(sector.id%2)*.02+erosion*.025)};
+  }
   for(const side of [-1,1]){
-    const outer=sink(),inside=sink(),sphere=[],wall=[];
+    const outer=sink(),inside=sink(),sphere=[],wall=[],profiles=boundary.map((b,j)=>profile(side,j));
     for(let r=0;r<=surfaceSteps;r++){
-      sphere[r]=boundary.map(b=>{
+      sphere[r]=boundary.map((b,j)=>{
         if(r===surfaceSteps)return point(side*radius,0,0);
-        const phi=THREE.MathUtils.lerp(Math.asin(b.x/radius),side*Math.PI/2,r/surfaceSteps),d=radius*Math.cos(phi);
+        const cut=profiles[j].shell;
+        const fraction=r<=depth?r/depth*cut:cut+(r-depth)/(surfaceSteps-depth)*(1-cut);
+        const phi=THREE.MathUtils.lerp(Math.asin(b.x/radius),side*Math.PI/2,fraction),d=radius*Math.cos(phi);
         return point(radius*Math.sin(phi),d*Math.sin(b.a),d*Math.cos(b.a));
       });
       sphere[r][angular]=point(...sphere[r][0].v);
     }
     for(let r=0;r<=wallSteps;r++){
-      wall[r]=boundary.map(b=>{
-        const s=r/wallSteps,y=b.y*s,z=b.z*s,bed=scalarNoise(y*4.1+z*.8,z*5.8,3.4),shelves=(Math.floor(bed*9)/9-.5)*.135;
+      wall[r]=boundary.map((b,j)=>{
+        const cut=profiles[j].wall;
+        const s=r<=inner?r/inner*cut:cut+(r-inner)/(wallSteps-inner)*(1-cut),y=b.y*s,z=b.z*s,bed=scalarNoise(y*4.1+z*.8,z*5.8,3.4),shelves=(Math.floor(bed*9)/9-.5)*.135;
         const rough=((scalarNoise(y*2.3,z*2.3,5.1)-.5)*.24+shelves+(scalarNoise(y*19,z*17,8.7)-.5)*.070+(scalarNoise(y*57,z*61,1.2)-.5)*.028)*(1-s**12);
         return r===0?point(fissureCPU(0,0),0,0,0):r===wallSteps?point(b.x,b.y,b.z,1):point(fissureCPU(y,z)+rough,y,z,s);
       });
       wall[r][angular]=point(...wall[r][0].v,wall[r][0].rim);
     }
     for(let r=0;r<surfaceSteps;r++)for(let j=0;j<angular;j++){
-      const slab=r<depth?owner(side,j):null,out=slab?slab.exterior:outer;
+      const candidate=owner(side,j),slab=candidate&&r<candidate.depth?candidate:null,out=slab?slab.exterior:outer;
       const a=sphere[r][j],b=sphere[r+1][j],c=sphere[r][j+1],d=sphere[r+1][j+1];
       emit(out,a,b,c,a.v,true);emit(out,b,d,c,b.v,true);
     }
     for(let r=0;r<wallSteps;r++)for(let j=0;j<angular;j++){
-      const slab=r>=inner?owner(side,j):null,out=slab?slab.interior:inside;
+      const candidate=owner(side,j),slab=candidate&&r>=candidate.inner?candidate:null,out=slab?slab.interior:inside;
       const a=wall[r][j],b=wall[r+1][j],c=wall[r][j+1],d=wall[r+1][j+1],normal=new THREE.Vector3(-side,0,0);
       emit(out,a,b,c,normal);emit(out,b,d,c,normal);
     }
     for(const slab of sectors.filter(s=>s.side===side)){
+      const depth=slab.depth,inner=slab.inner;
       const mid=Math.round((slab.start+slab.end)/2);
       slab.center=new THREE.Vector3().add(sphere[0][mid].v).add(sphere[depth][mid].v).add(wall[inner][mid].v).multiplyScalar(1/3);
       function cut(a,b,c,direction){
@@ -81,7 +98,7 @@ export function buildFracturedMoon(radius=1.5, angular=256, surfaceSteps=80, wal
         for(const [a,b,c] of THREE.ShapeUtils.triangulateShape(profile,[]))cut(loop[a],loop[b],loop[c],outward.clone());
       }
       const angle=boundary[mid].a;
-      slabs.push({id:slab.id,side,center:slab.center,delay:.07+Math.abs(Math.sin(angle))*.23,drift:new THREE.Vector3(side*(.10+.025*(slab.id%3)),Math.sin(angle)*.11,.13+(slab.id%2)*.06),turn:new THREE.Vector3(side*.19,(slab.id%2?1:-1)*.27,Math.sin(angle)*.15),exterior:finish(slab.exterior),interior:finish(slab.interior,true)});
+      slabs.push({id:slab.id,side,center:slab.center,delay:.07+(1.5-slab.center.y)/3*.68,drift:new THREE.Vector3(side*(.16+.055*(slab.id%3)),Math.sin(angle)*(.18+(slab.id%2)*.09),Math.cos(angle)*(.32+(slab.id%3)*.14)),turn:new THREE.Vector3(side*.31,(slab.id%2?1:-1)*.43,Math.sin(angle)*.24),exterior:finish(slab.exterior),interior:finish(slab.interior,true)});
     }
     shells.push({side,geometry:finish(outer)});walls.push({side,geometry:finish(inside,true)});
   }

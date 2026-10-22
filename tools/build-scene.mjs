@@ -9,7 +9,10 @@ const source=path.resolve(sourceArg),target=path.resolve(targetArg);
 const sourceFilename=(await fs.stat(path.join(source,'scene-source.html')).catch(()=>null))?'scene-source.html':'index.html';
 const originalHtml=await fs.readFile(path.join(source,sourceFilename),'utf8');
 let html=originalHtml;
-const match=html.match(/<script\s+type=["']module["'][^>]*>([\s\S]*?)<\/script>/i);
+// Cloud analytics and persistence are hosted-only integrations. Standalone
+// files use the existing local session bridge and must not require a network.
+html=html.replace(/<script\b[^>]*src=["']\.\/(?:firebase-config|supabase-client)\.js["'][^>]*><\/script>/gi,'');
+const match=html.match(/<script\b(?=[^>]*\btype=["']module["'])(?![^>]*\bsrc\s*=)[^>]*>([\s\S]*?)<\/script>/i);
 if(!match)throw Error('Expected one scene ES module');
 const assets={};
 const mime={'.jpg':'image/jpeg','.jpeg':'image/jpeg','.png':'image/png','.ttf':'font/ttf','.woff2':'font/woff2','.svg':'image/svg+xml'};
@@ -45,9 +48,9 @@ for(const linked of [...html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*hr
 const routeScripts=[];
 for(const linked of [...html.matchAll(/<script\b[^>]*src=["'](\.\/[^"']+)["'][^>]*><\/script>/gi)]){
   const jsPath=path.resolve(source,linked[1]);if(!jsPath.startsWith(source+path.sep))throw Error('Script escapes source');
-  routeScripts.push((await fs.readFile(jsPath,'utf8')).replace(/<\/script/gi,'<\\/script'));html=html.replace(linked[0],'');
+  routeScripts.push({module:/\btype=["']module["']/.test(linked[0]),code:(await fs.readFile(jsPath,'utf8')).replace(/<\/script/gi,'<\\/script')});html=html.replace(linked[0],'');
 }
-html=html.replace('</body>',()=>routeScripts.map(code=>'<script>'+code+'</script>').join('')+'</body>');
+html=html.replace('</body>',()=>routeScripts.map(({module,code})=>'<script'+(module?' type="module"':'')+'>'+code+'</script>').join('')+'</body>');
 await fs.mkdir(target,{recursive:true});
 await fs.writeFile(path.join(target,'index.html'),html);
 await fs.writeFile(path.join(target,'scene-source.html'),originalHtml);

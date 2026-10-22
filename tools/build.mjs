@@ -24,6 +24,12 @@ for(const name of names){
     const base=name==='syzygy'?'/':name==='gravity'?'/labs/':'/products/';
     html=html.replace('<head>','<head><base href="'+base+'">');
     await fs.writeFile(path.join(staging,'index.html'),html);
+    // A Syzygy-only rebuild replaces the hosted root. Preserve its sibling
+    // platform exports so updating the hero cannot remove Labs or Products.
+    if(selected==='syzygy')for(const sibling of ['lunar-gravity','lunar-astrolabe']){
+      const existing=path.join(hostedRoot,sibling);
+      if(await fs.stat(existing).catch(()=>null))await fs.cp(existing,path.join(staging,sibling),{recursive:true});
+    }
     await fs.mkdir(path.dirname(dest),{recursive:true});
     // Only generated build paths may be replaced; canonical source/private data are untouched.
     await fs.rm(dest,{recursive:true,force:true});
