@@ -22,6 +22,16 @@ header{height:38px;padding:0 14px;gap:20px}.brand{font-size:22px;font-weight:300
 @media(min-width:1400px){.feed{font-size:8px}.wave-label{font-size:7px}}
 @media(max-width:750px){.feed{font-size:5.5px}}
 .loading{font-size:0;letter-spacing:0;color:transparent}.loading:after{content:"";width:28px;height:28px;border:1px solid #b9c7ce44;border-top-color:#c9d5db;border-radius:50%;animation:lp-load-spin 1s linear infinite}@keyframes lp-load-spin{to{transform:rotate(360deg)}}
+/* Keep the reference HUD legible without letting instrumentation dominate the scene. */
+.telemetry{width:clamp(142px,13vw,178px);background:linear-gradient(90deg,#080e14ed,#091116e8);padding:12px 11px;gap:10px}
+.feed{font-size:7.2px;line-height:1.55;height:82px;color:#b1bdc2;opacity:.82}
+.data-note,.chart-label{font-size:7px;line-height:1.4;color:#96a5ab}
+.coordinates{font-size:8px;line-height:1.7}
+.radar-title{font-size:7px;letter-spacing:.45px}
+.xy-grid{border-color:#b4c8d044}
+.mini-wave{border-color:#b4c8d044}
+@media(max-width:750px){.telemetry{width:122px;padding:8px 7px}.feed{font-size:6px;height:62px}.data-note,.chart-label{font-size:6px}.coordinates{font-size:6.5px}.radar-title{font-size:6px}}
+@media(max-width:540px){.telemetry{width:96px}.radar-title{font-size:5.5px}}
 </style><link rel="stylesheet" href="./experience.css"><link rel="stylesheet" href="./company.css"><script type="module" src="./supabase-client.js"></script>
 <script type="module" src="./firebase-config.js"></script>
 </head><body data-scene="gravity">
@@ -79,7 +89,7 @@ const hemi=new THREE.HemisphereLight(0xb8c0c8,0x010204,.16);scene.add(hemi);
 const key=new THREE.DirectionalLight(0xf2f4f6,6.8);key.position.set(13,.8,-7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-26;key.shadow.camera.right=26;key.shadow.camera.top=20;key.shadow.camera.bottom=-20;key.shadow.camera.near=.5;key.shadow.camera.far=90;key.shadow.bias=-.00018;key.shadow.normalBias=.012;key.shadow.radius=1;key.target.position.set(0,-2,0);scene.add(key.target);scene.add(key);
 // A restrained camera-side sky bounce reveals fractured planes without making
 // the black basalt emissive or washing out its silhouette.
-const fill=new THREE.DirectionalLight(0xb4bec7,.36);fill.position.set(-14,2,12);scene.add(fill);
+const fill=new THREE.DirectionalLight(0xc3d3df,.62);fill.position.set(-14,2,12);scene.add(fill);
 const under=new THREE.PointLight(0xffd185,6.5,42,1.6);under.position.set(0,2,4);scene.add(under); // Warm gold celestial chasm accent
 const back=new THREE.PointLight(0xb48eff,24,35,1.7);back.position.set(-1,3,-17);scene.add(back); // Deep violet rim accent
 function ready(){const loader=document.querySelector('#loading');loader.classList.add('ready');setTimeout(()=>loader.hidden=true,850);}
@@ -196,7 +206,7 @@ const compilePhysicalMercury=mercury.onBeforeCompile;mercury.onBeforeCompile=sha
 
 // Massive basalt columns keep broad brutalist faces, but their bevels, joints,
 // missing wedges and oblique fracture caps are all volumetric geometry.
-const monolithMat=new THREE.MeshStandardMaterial({color:0x454c52,map:basaltColor,normalMap:basaltNormal,normalScale:new THREE.Vector2(.82,.82),aoMap:basaltARM,aoMapIntensity:1,roughnessMap:basaltARM,bumpMap:basaltHeight,bumpScale:.060,displacementMap:basaltHeight,displacementScale:.045,displacementBias:-.0225,roughness:.98,metalness:0,envMapIntensity:.13,flatShading:true});
+const monolithMat=new THREE.MeshStandardMaterial({color:0x555c62,map:basaltColor,normalMap:basaltNormal,normalScale:new THREE.Vector2(.82,.82),aoMap:basaltARM,aoMapIntensity:1,roughnessMap:basaltARM,bumpMap:basaltHeight,bumpScale:.060,displacementMap:basaltHeight,displacementScale:.045,displacementBias:-.0225,roughness:.98,metalness:0,envMapIntensity:.13,flatShading:true});
 monolithMat.onBeforeCompile=shader=>{shader.vertexShader='varying vec3 vRock;\n'+shader.vertexShader;shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvRock=position;');shader.fragmentShader='varying vec3 vRock;\n'+sceneNoiseGLSL+shader.fragmentShader;shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\nfloat lithicAlbedo=dot(diffuseColor.rgb,vec3(.2126,.7152,.0722));diffuseColor.rgb=vec3(lithicAlbedo)*vec3(.94,.98,1.02)*(.55+.45*rn(vRock*.7));');shader.fragmentShader=shader.fragmentShader.replace('#include <normal_fragment_maps>','#include <normal_fragment_maps>\nfloat quarry=rn(vRock*vec3(2.3,.9,2.3));normal=perturbNormalArb(-vViewPosition,normal,vec2(dFdx(quarry),dFdy(quarry))*.055,faceDirection);');};
 function makeMonolith(x,z,width,depth,length,variant=0){
  const salt=29.71+variant*19.371,positions=[],uvs=[],indices=[],segments=5,faceCount=8+(variant%2);
