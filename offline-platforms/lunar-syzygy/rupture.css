@@ -1,5 +1,0 @@
-.gate-position .gate{touch-action:none}
-.gate-position .gate[hidden]{display:none!important}
-.gate-position .rejoin-gate{margin:0!important;background:rgba(21,18,29,.75)!important;border-color:rgba(212,197,231,.55)!important}
-.gate-position .rejoin-gate:disabled{cursor:wait;opacity:.7}
-@media(prefers-reduced-motion:reduce){.gate,.gate:before,.orb{transition:none!important;animation:none!important}}

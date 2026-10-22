@@ -2,9 +2,34 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {RuptureController} from '../offline-platforms/lunar-syzygy/rupture-state.js';
 function run(s,n,options={}){for(let i=0;i<n;i++)s.update(1/60,options);}
-test('early release unloads without committing or moving the fracture drive',()=>{const s=new RuptureController();run(s,35,{holding:true});assert.equal(s.state,'CHARGING');assert.equal(s.drive,0);run(s,60);assert.equal(s.state,'JOINED');assert.equal(s.cycles,0);});
-test('threshold commits in the same update and pointer release cannot reverse rupture',()=>{const s=new RuptureController();run(s,82,{holding:true});assert.equal(s.state,'RUPTURE');assert.equal(s.cycles,1);run(s,600);assert.equal(s.drive,1);assert.equal(s.state,'RUPTURE');s.update(.016,{opening:1,velocity:0});assert.equal(s.state,'SUSTAINED_OPEN');run(s,600);assert.equal(s.state,'SUSTAINED_OPEN');assert.equal(s.cycles,1);});
-test('rejoin is explicit, smooth, non-repeatable and returns cleanly before another cycle',()=>{const s=new RuptureController();run(s,82,{holding:true});s.update(.016,{opening:1});assert(s.rejoin());assert(!s.rejoin());const a=s.drive;s.update(.016,{opening:.8});assert(s.drive<a&&s.drive>.9);run(s,90);assert.equal(s.state,'JOINED');assert.equal(s.committed,false);assert.equal(s.drive,0);run(s,82,{holding:true});assert.equal(s.cycles,2);});
-test('pause and large frame gaps never fast-forward a charge',()=>{const s=new RuptureController();run(s,60,{holding:true,paused:true});assert.equal(s.charge,0);s.update(60,{holding:true});assert(s.charge<.04);});
-test('accessible activation completes without prolonged hold; reduced motion is immediate',()=>{const s=new RuptureController();assert(s.activate());run(s,82);assert.equal(s.state,'RUPTURE');const r=new RuptureController();r.activate();r.update(.016,{reduced:true});assert.equal(r.state,'SUSTAINED_OPEN');assert(r.rejoin());r.update(.016,{reduced:true});assert.equal(r.state,'JOINED');});
-test('another activation in committed states cannot add a second burst',()=>{const s=new RuptureController();s.activate();run(s,82);assert(!s.activate());run(s,300,{holding:true,opening:1});assert.equal(s.cycles,1);assert.equal(s.state,'SUSTAINED_OPEN');});
+
+test('hold continuously drives the opening and an early release unloads to joined',()=>{
+  const s=new RuptureController();run(s,35,{holding:true});
+  assert.equal(s.state,'CHARGING');assert(s.drive>0&&s.drive<1);
+  const before=s.drive;run(s,12,{holding:true});assert(s.drive>before);
+  run(s,120);assert.equal(s.state,'JOINED');assert.equal(s.drive,0);assert.equal(s.cycles,0);
+});
+
+test('full hold reaches the open state but remains a reversible hold action',()=>{
+  const s=new RuptureController();run(s,90,{holding:true});
+  assert.equal(s.state,'HELD_OPEN');assert.equal(s.drive,1);assert.equal(s.cycles,1);
+  assert.equal(s.committed,false);assert.equal(s.rejoin(),false);
+  run(s,90);assert.equal(s.state,'JOINED');assert.equal(s.drive,0);
+});
+
+test('a second complete hold is counted only after the first release',()=>{
+  const s=new RuptureController();run(s,90,{holding:true});run(s,90);run(s,90,{holding:true});
+  assert.equal(s.cycles,2);assert.equal(s.state,'HELD_OPEN');
+});
+
+test('pause and large frame gaps never fast-forward strain',()=>{
+  const s=new RuptureController();run(s,60,{holding:true,paused:true});assert.equal(s.charge,0);
+  s.update(60,{holding:true});assert(s.charge<.05);
+});
+
+test('accessible activation runs once; reduced motion resolves immediately',()=>{
+  const s=new RuptureController();assert(s.activate());run(s,73);assert.equal(s.state,'HELD_OPEN');
+  run(s,90);assert.equal(s.state,'JOINED');
+  const r=new RuptureController();r.activate();r.update(.016,{reduced:true});assert.equal(r.state,'HELD_OPEN');
+  r.update(.016,{reduced:true});assert.equal(r.state,'JOINED');
+});

@@ -9,7 +9,7 @@
 .gate{background:linear-gradient(155deg,#eee6df7d 0%,#b3a8b84d 42%,#89839457 100%);border-color:#e4dcdbb3;box-shadow:inset 0 1px 2px #ffffff85,inset 0 -2px 4px #10101d88,0 0 28px #c6b7d52f;backdrop-filter:blur(18px) saturate(.65)}.gate:after{content:"";position:absolute;inset:2px 7px auto;height:45%;border-radius:100px;background:linear-gradient(#ffffff1b,#ffffff00);pointer-events:none}.gate:focus-visible{outline:1px solid #e5ded077;outline-offset:4px}
 body[data-route=realms] .viewport,body[data-route=realms] .viewport:active{cursor:default;touch-action:pan-y}
 .loading{width:30px;height:30px;border:1px solid #c6bacd42;border-top-color:#e5d8e9;border-radius:50%;font-size:0;letter-spacing:0;color:transparent;animation:lp-load-spin 1s linear infinite}@keyframes lp-load-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-</style><link rel="stylesheet" href="./experience.css"><link rel="stylesheet" href="./company.css"><link rel="stylesheet" href="./rupture.css"><script type="module" src="./supabase-client.js"></script>
+</style><link rel="stylesheet" href="./experience.css"><link rel="stylesheet" href="./company.css"><script type="module" src="./supabase-client.js"></script>
 <script type="module" src="./firebase-config.js"></script>
 </head><body data-scene="syzygy">
 <a class="skip" href="#trigger">Skip to simulation</a><div class="cosmos" aria-hidden="true"></div>
@@ -36,7 +36,7 @@ body[data-route=realms] .viewport,body[data-route=realms] .viewport:active{curso
 
 <div class="frame" aria-hidden="true"><i class="edge left"></i><i class="edge right"></i><i class="cross left"></i><i class="cross right"></i><i class="cross bottom"></i></div>
 <div class="readout top" title="Live camera position in scene units">VIEW // CAMERA<br>X <strong id="coord-x">+0.0000</strong><br>Y <strong id="coord-y">+0.0000</strong></div><div class="readout bottom" title="Camera field of view and fracture opening">FOV // DEG <strong id="coord-a">+0.00000</strong><br>OPEN // % <strong id="coord-b">+0.00000</strong></div>
-<div class="gate-position"><button class="gate" id="trigger" aria-pressed="false"><span>HOLD TO TRIGGER PARADOX</span><i class="orb" aria-hidden="true" style="position:relative"><svg viewBox="0 0 40 40" style="position:absolute;inset:-12%;width:124%;height:124%;transform:rotate(-90deg)"><circle id="charge-ring" cx="20" cy="20" r="18" fill="none" stroke="#f5e6c8" stroke-width="1.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg></i></button><button class="gate rejoin-gate" id="rejoin-trigger" hidden style="margin-left:12px;background:linear-gradient(145deg,#3c234a99,#1e122bbf);border-color:#bb98db;"><span>REJOIN FRACTURE ↺</span></button></div><span class="gate-note" id="gate-note">HOLD POINTER OR SPACE TO WIDEN THE RIFT</span>
+<div class="gate-position"><button class="gate" id="trigger" aria-pressed="false"><span>HOLD TO TRIGGER PARADOX</span><i class="orb" aria-hidden="true" style="position:relative"><svg viewBox="0 0 40 40" style="position:absolute;inset:-12%;width:124%;height:124%;transform:rotate(-90deg)"><circle id="charge-ring" cx="20" cy="20" r="18" fill="none" stroke="#f5e6c8" stroke-width="1.4" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/></svg></i></button></div><span class="gate-note" id="gate-note">HOLD POINTER OR SPACE TO WIDEN THE RIFT</span>
 <div class="status" style="display:none"><span><i></i><span id="gpu-status">INITIALIZING</span></span><span>FPS <b id="fps">—</b></span><button id="motion" aria-pressed="false">PAUSE Ⅱ</button></div><div class="loading" id="loading" role="status" aria-label="Rendering 3D scene"></div><div class="failure" id="failure" role="alert"></div>
 <aside class="panel" id="panel" hidden><button class="close" aria-label="Close panel">×</button><div id="panel-content"></div></aside>
 <script type="module">
@@ -53,23 +53,7 @@ const startupMarks={};function startupMark(name){startupMarks[name]=Number(perfo
 const $=s=>document.querySelector(s), motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
 let reduced=motionPreference.matches;
 const rupture=new RuptureController();
-let isLatchedOpen=false,actuatorStrain=0,returnTriggerFocus=false;
-function triggerRejoin(){
-  if(!rupture.rejoin())return;
-  returnTriggerFocus=document.activeElement===$('#rejoin-trigger');
-  for(const piece of pieces)piece.rejoinFrom.copy(piece.position);
-  release();
-  heroTravelTarget=0;
-}
-$('#rejoin-trigger').onclick=()=>triggerRejoin();
-window.addEventListener('keydown',e=>{
-  const focused=document.activeElement;
-  if(e.defaultPrevented||e.repeat||document.body.dataset.companyRoute||focused?.isContentEditable||['INPUT','TEXTAREA','SELECT'].includes(focused?.tagName))return;
-  if(e.code==='KeyR' && isLatchedOpen){
-    e.preventDefault();
-    triggerRejoin();
-  }
-});
+let actuatorStrain=0;
 let paused=reduced,holding=false,paradox=0,charge=0,time=0,last=performance.now(),fpsTime=last,frames=0,totalFrames=0,rendered=false,masterVolume=.35,simulationSpeed=1;
 // Normalized specimen mechanics: length U, time s, mass M. This is an actively
 // driven cohesive illustration, not a lunar-scale finite-element breakup model.
@@ -114,10 +98,13 @@ const impactCode=`uniform sampler2D uImpactMap;float impactHeight(vec3 p){vec3 d
 const u={uTime:{value:0},uParadox:{value:0},uStrain:{value:0},uDamage:{value:0},uBurstAge:{value:0},uSolarLocal:{value:new THREE.Vector3(-1,.32,.17).normalize()},uColdLocal:{value:new THREE.Vector3(.65,.92,.30).normalize()},uSolarView:{value:new THREE.Vector3(-1,.32,.17).normalize()},uColdView:{value:new THREE.Vector3(.65,.92,.30).normalize()},uMoon:{value:moonMap},uDetail:{value:detailMap},uCrater:{value:craterMap},uFault:{value:fractureTexture},uImpacts:{value:impacts},uImpactMap:{value:impactMap}};
 // Both halves share one fracture field. At zero stress their boundaries coincide.
 const displacement=`uniform float uDamage;${fractureFieldGLSL}
-float localOpening(vec3 p){float threshold=.08+.30*abs(p.y/1.5)+.06*noise(vec3(p.yz*5.,7.));return uParadox*smoothstep(threshold-.08,threshold+.08,uDamage);}
+// The fracture partition already carries a jagged topological boundary. Once
+// separated, each primary half must remain rigid; per-vertex opening caused a
+// visibly rubbery, clamshell-like distortion.
+float localOpening(vec3 p){return uParadox;}
 vec3 fractureNormal(vec3 n,vec3 p,float side){
   float opening=localOpening(p);
-  // Asymmetric yaw and roll angles for Body A (side < 0) vs Body B (side > 0)
+  // Small independent rotations about each half's approximate centre of mass.
   float yawAngle = side < 0. ? -opening * 0.092 : opening * 0.068;
   float rollAngle = side < 0. ? opening * 0.034 : -opening * 0.021;
   float pitchAngle = side * opening * 0.015;
@@ -131,8 +118,10 @@ vec3 fracture(vec3 p,float side){
   float yawAngle = side < 0. ? -opening * 0.092 : opening * 0.068;
   float rollAngle = side < 0. ? opening * 0.034 : -opening * 0.021;
   float pitchAngle = side * opening * 0.015;
-  // Non-coincident virtual pivots: Body A offsets forward, Body B offsets backward
-  vec3 pivot = side < 0. ? vec3(-0.18, 0.05, 0.12) : vec3(0.14, -0.04, -0.09);
+  // A solid hemisphere's COM lies 3R/8 from the cut plane (R = 1.5 here).
+  // Both bodies rotate about their own COM instead of shearing around arbitrary
+  // near-centre pivots.
+  vec3 pivot = side < 0. ? vec3(-0.5625, 0., 0.) : vec3(0.5625, 0., 0.);
   vec3 q = p - pivot;
   // Yaw
   float x1 = q.x*cos(yawAngle) - q.z*sin(yawAngle);
@@ -147,9 +136,10 @@ vec3 fracture(vec3 p,float side){
   q.z = q.y*sin(pitchAngle) + q.z*cos(pitchAngle);
   q.y = y1;
   q += pivot;
-  // Translational tectonic separation along divergent non-planar vectors
-  vec3 translation = side < 0. ? vec3(-opening * 0.22, opening * 0.045, -opening * 0.14)
-                               : vec3( opening * 0.18, -opening * 0.032, -opening * 0.09);
+  // Equal-and-opposite centre translation keeps the combined COM stationary.
+  vec3 translation = vec3(side * opening * 0.22,
+                          -side * opening * 0.025,
+                          side * opening * 0.035);
   return q + translation;
 }`;
 const vertex=`uniform sampler2D uCrater,uDetail,uFault;uniform float uTime,uParadox,uSide;varying vec2 vUv;varying vec3 vN,vP,vV;${noiseCode}${impactCode}${displacement}void main(){vUv=uv;vP=position;vN=normalMatrix*fractureNormal(normal,position,uSide);float h=texture2D(uCrater,uv).r;vec3 p=position+normal*((h-.52)*.026+(texture2D(uDetail,uv).r-.5)*.014+impactHeight(position)-texture2D(uFault,uv).r*.0016*step(0.,uSide));p=fracture(p,uSide);vec4 mv=modelViewMatrix*vec4(p,1.);vV=-mv.xyz;gl_Position=projectionMatrix*mv;}`;
@@ -246,7 +236,7 @@ rockMat.onBeforeCompile=shader=>{shader.vertexShader=shader.vertexShader.replace
 for(let i=0;i<count;i++){const p=pieces[i],a=(random()-.5)*Math.PI*1.35,r=1.39+random()*.1,y=Math.sin(a)*r,z=Math.cos(a)*r,side=i%4===0?-1:1;p.origin=new THREE.Vector3(fissureCPU(y,z),y,z);p.position=p.origin.clone();p.impulse=new THREE.Vector3(side*(.38+Math.pow(random(),1.5)*1.18),(random()-.5)*.72,.20+random()*.65);if(i<7){p.impulse.x=(i===1?-1:1)*(.75+i*.10);p.impulse.z=.38+(i%3)*.13;}p.velocity=p.impulse.clone();p.spin=new THREE.Vector3((random()-.5)*2,(random()-.5)*2,(random()-.5)*2);p.delay=Math.abs(y)/1.5*.55+random()*.22;p.life=i<7?14+random()*3:6+random()*7;p.threshold=.08+.32*Math.abs(y)/1.5;p.releaseAt=0;p.cycle=-1;p.active=false;}
 const totalFragmentVolume=pieces.reduce((sum,p)=>sum+p.size**3,0);for(const p of pieces)p.mass=.22*p.size**3/totalFragmentVolume;const baseEjectionEnergy=pieces.reduce((sum,p)=>sum+.5*p.mass*p.impulse.lengthSq(),0);
 moon.add(debris);let burstAge=0,burstActive=false;const gravityScratch=new THREE.Vector3(),parentPrevious=new THREE.Vector3(),parentCurrent=new THREE.Vector3();
-for(let i=0;i<pieces.length;i++){pieces[i].parentSide=i%4===0?-1:1;pieces[i].rejoinFrom=new THREE.Vector3();}
+for(let i=0;i<pieces.length;i++)pieces[i].parentSide=i%4===0?-1:1;
 // Fine suspended scattering grains mark the live gravitational column. They
 // are discrete GPU points behind the fracture, preserving the empty canyon.
 const dustP=[],dustC=[],dustS=[],dustPhase=[];for(let i=0;i<560;i++){const x=(random()-.5)*.46;dustP.push(x,(random()-.5)*4.4,-.5-random()*.9);const c=x<0?new THREE.Color(1.,.73,.35):new THREE.Color(.55,.29,1.);if(i%5===0)c.setRGB(1.,.9,.8);dustC.push(c.r,c.g,c.b);dustS.push(.45+Math.pow(random(),4)*3.1);dustPhase.push(random()*6.28);}const dustGeo=new THREE.BufferGeometry();dustGeo.setAttribute('position',new THREE.Float32BufferAttribute(dustP,3));dustGeo.setAttribute('color',new THREE.Float32BufferAttribute(dustC,3));dustGeo.setAttribute('aSize',new THREE.Float32BufferAttribute(dustS,1));dustGeo.setAttribute('aPhase',new THREE.Float32BufferAttribute(dustPhase,1));const dust=new THREE.Points(dustGeo,new THREE.ShaderMaterial({uniforms:{uTime:u.uTime,uParadox:u.uParadox,uPixelRatio:{value:renderer.getPixelRatio()}},vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,vertexShader:`attribute float aSize,aPhase;uniform float uTime,uParadox,uPixelRatio;varying vec3 vColor;varying float vGlow;void main(){vColor=color;vGlow=.6+.4*sin(aPhase+uTime*.3);vec3 p=position;p.y=mod(p.y+2.2+uTime*.018,4.4)-2.2;p.x+=sin(p.y*3.+aPhase+uTime*.11)*(.012+uParadox*.047);p.z+=cos(aPhase+uTime*.07)*.075;gl_PointSize=aSize*uPixelRatio*(1.+uParadox*.8);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,fragmentShader:`uniform float uParadox;varying vec3 vColor;varying float vGlow;void main(){float r=length(gl_PointCoord-.5);float a=exp(-r*r*22.);gl_FragColor=vec4(vColor*a*vGlow*(.09+uParadox*.38),1.);}`}));scene.add(dust);
@@ -350,11 +340,8 @@ function animate(now){
 if(contextLost)return;requestAnimationFrame(animate);const elapsed=Math.max(0,(now-last)/1000),dt=Math.min(elapsed,.05),simulationDelta=dt*simulationSpeed;last=now;if(document.hidden)return;if(!paused)time+=simulationDelta;if(audioGain&&audioContext)audioGain.gain.setTargetAtTime(.07*masterVolume,audioContext.currentTime,.1);
 // The gate ramps strain. The critically damped cohesive DOF, rather than a
 // cosmetic interpolation of meshes, determines actual opening and its energy.
-rupture.update(dt,{holding,paused,reduced,opening:paradox,velocity:fractureState.velocity});
-charge=rupture.charge;actuatorStrain=rupture.drive;isLatchedOpen=rupture.committed&&rupture.state!=='REJOINING';
-$('#rejoin-trigger').hidden=!rupture.committed;$('#rejoin-trigger').disabled=rupture.state==='REJOINING';
-gate.hidden=rupture.committed;gate.setAttribute('aria-pressed',String(holding));
-if(returnTriggerFocus&&rupture.state==='JOINED'){returnTriggerFocus=false;if(!document.body.dataset.companyRoute)gate.focus({preventScroll:true});}
+rupture.update(dt,{holding,paused,reduced});
+charge=rupture.charge;actuatorStrain=rupture.drive;gate.hidden=false;gate.setAttribute('aria-pressed',String(holding));
 const previousOpening=paradox,previousDamage=fractureState.damage;
 if(reduced){fractureState.opening=actuatorStrain;fractureState.velocity=0;fractureState.damage=actuatorStrain>0?1:0;paradox=actuatorStrain;}
 else if(!paused)advanceFracture(simulationDelta);
@@ -366,7 +353,7 @@ if(previousOpening>.015&&paradox<=.015&&!holding)playMaterialEvent('closure',new
 if(burstActive&&!paused)burstAge+=simulationDelta;if(paradox===0&&charge===0){burstActive=false;burstAge=0;}u.uBurstAge.value=burstAge;
 fractureState.ejectaKinetic=0;
 for(let i=0;i<count;i++){
- const p=pieces[i],eligible=rupture.state!=='REJOINING'&&burstActive&&burstAge>p.delay&&fractureState.damage>p.threshold;
+ const p=pieces[i],eligible=burstActive&&burstAge>p.delay&&fractureState.damage>p.threshold;
  if(eligible&&!p.active&&!paused){
   const budget=Math.max(.015,.075*fractureState.fractureWork),impulseScale=THREE.MathUtils.clamp(Math.sqrt(budget/baseEjectionEnergy),.5,1.4);
   fracturePoint(p.origin,p.parentSide,paradox,fractureState.damage,parentCurrent);
@@ -376,10 +363,7 @@ for(let i=0;i<count;i++){
   if(p.size>.020&&time-lastMaterialAudioAt>.105){lastMaterialAudioAt=time;playMaterialEvent('chip',p.origin,releaseEnergy*30,p.mass);}
  }
  const age=p.active?Math.max(0,burstAge-p.releaseAt):0;
- if(p.active&&rupture.state==='REJOINING'){
-  fracturePoint(p.origin,p.parentSide,paradox,fractureState.damage,parentCurrent);
-  p.position.lerpVectors(p.rejoinFrom,parentCurrent,1-rupture.rejoinCharge);
- }else if(p.active&&!paused&&age<p.life){const duration=Math.min(simulationDelta,age),steps=Math.max(1,Math.ceil(duration/(1/90))),step=duration/steps;
+ if(p.active&&!paused&&age<p.life){const duration=Math.min(simulationDelta,age),steps=Math.max(1,Math.ceil(duration/(1/90))),step=duration/steps;
   for(let sub=0;sub<steps;sub++){gravityScratch.copy(p.position);const radius=Math.max(1.45,gravityScratch.length());gravityScratch.multiplyScalar(-.065/(radius*radius*radius));p.velocity.addScaledVector(gravityScratch,step);p.position.addScaledVector(p.velocity,step);}
  }
  if(p.active&&paradox>.001&&age<p.life)fractureState.ejectaKinetic+=.5*p.mass*p.velocity.lengthSq();
@@ -397,19 +381,15 @@ gate.style.setProperty('--progress',`${charge*100}%`);$('#charge-ring').setAttri
 const triggerSpan = $('#trigger span');
 const realmSelector = $('#realm-selector');
 if(realmSelector) realmSelector.style.display = 'none';
-if(rupture.state==='REJOINING'){
-  $('#rejoin-trigger span').textContent='REJOINING';
-  $('#gate-note').textContent=paused&&!reduced?'RESUME TO CONTINUE REJOINING':'RETURNING TO EQUILIBRIUM';
-} else if(isLatchedOpen){
-  $('#rejoin-trigger span').textContent='REJOIN FRACTURE ↺';
-  if(triggerSpan) triggerSpan.textContent = 'FRACTURE OPENED · EXPLORING';
-  $('#gate-note').textContent = rupture.canInspect?'SCROLL TO INSPECT · R TO REJOIN':'FRACTURE PROPAGATING';
-} else if(holding){
-  if(triggerSpan) triggerSpan.textContent = (charge > 0.6) ? 'KEEP HOLDING TO RUPTURE' : 'CHARGING TECTONIC STRAIN...';
-  $('#gate-note').textContent = paused&&!reduced?'RESUME ANIMATION TO CHARGE':'MAINTAIN HOLD UNTIL CRITICAL ENERGY COMMITS';
+if(holding){
+  if(triggerSpan) triggerSpan.textContent = (paradox > 0.72) ? 'FRACTURE PROPAGATING · KEEP HOLDING' : 'BUILDING TECTONIC STRAIN…';
+  $('#gate-note').textContent = paused&&!reduced?'RESUME ANIMATION TO CONTINUE':'RELEASE TO LET THE MASS RETURN';
+} else if(charge>0){
+  if(triggerSpan) triggerSpan.textContent='FRACTURE RECEDING';
+  $('#gate-note').textContent='HOLD AGAIN TO REOPEN THE DIVIDE';
 } else {
   if(triggerSpan) triggerSpan.textContent = 'HOLD TO TRIGGER PARADOX';
-  $('#gate-note').textContent = reduced?'PRESS ENTER TO REVEAL THE FRACTURE':'HOLD POINTER OR SPACE TO WIDEN THE RIFT';
+  $('#gate-note').textContent = reduced?'PRESS TO REVEAL THE FRACTURE':'HOLD POINTER OR SPACE TO SPLIT THE BODY';
 }
 if(now-lastStateSent>=1000){lastStateSent=now;const physics=debug.getPhysicsSnapshot();Object.assign(document.body.dataset,{openingVelocity:String(physics.openingVelocity),interfaceDamage:String(physics.damage),cohesivePotential:String(physics.cohesivePotential),driverWork:String(physics.driverWork),dampingLoss:String(physics.dissipatedWork),fractureWork:String(physics.fractureWork),energyResidual:String(physics.energyResidual),fractureEvents:String(physics.fractureEvents),fragmentEvents:String(physics.fragmentEvents),healingResets:String(physics.externalRejoinResets),audioEvents:String(physics.audioEvents)});const activeCount=paradox>.001?pieces.filter(p=>p.active).length:0,fractureGap=.28*paradox+3*Math.sin(.078*paradox);Object.assign(document.body.dataset,{cinematicCamera:camera.position.toArray().map(v=>v.toFixed(4)).join(','),debrisCount:String(count),activeEjecta:String(activeCount),fractureGap:fractureGap.toFixed(5),orbitX:moon.rotation.x.toFixed(5),orbitY:moon.rotation.y.toFixed(5),zoom:zoom.toFixed(3)});document.dispatchEvent(new CustomEvent('lunar:state',{detail:{scene:'syzygy',paused,paradox,quality:'ultra',zoom,orbit:{x:orbitX,y:orbitY},camera:{azimuth:targetOrbitY,elevation:targetOrbitX,distance:zoom},ejecta:activeCount,debrisCount:count,fractureGap,audio:audioContext?.state||'suspended',simulationTime:time,physics:'normalized central gravity with externally applied fracture impulse'}}));}
 if(now-fpsTime>850){const fps=Math.round(frames*1000/(now-fpsTime));frames=0;fpsTime=now;$('#fps').textContent=fps;$('#coord-x').textContent=camera.position.x.toFixed(4);$('#coord-y').textContent=camera.position.y.toFixed(4);$('#coord-a').textContent=camera.fov.toFixed(2);$('#coord-b').textContent=(paradox*100).toFixed(1);Object.assign(document.body.dataset,{fps:String(fps),drawCalls:String(renderer.info.render.calls),triangles:String(renderer.info.render.triangles),paused:String(paused),pixelRatio:String(renderer.getPixelRatio()),renderedFrames:String(totalFrames)});Object.assign(debug,{fps,paradox,renderedFrames:totalFrames});if($('#data-fps'))$('#data-fps').textContent=fps+' FPS';if($('#data-rift'))$('#data-rift').textContent=(paradox*100).toFixed(1)+' %';if($('#data-tris'))$('#data-tris').textContent=renderer.info.render.triangles.toLocaleString()+' TRI';if($('#data-scale'))$('#data-scale').textContent=renderer.getPixelRatio().toFixed(2)+'×';}}
