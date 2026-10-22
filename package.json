@@ -10,9 +10,12 @@
     "db:migrate": "node scripts/migrate-production-db.mjs",
     "checklist": "node planning/build-checklist.mjs"
   },
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
-    "esbuild": "0.25.10"
+    "esbuild": "0.25.10",
+    "pg": "^8.23.1"
   }
 }

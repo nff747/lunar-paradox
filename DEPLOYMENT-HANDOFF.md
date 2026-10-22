@@ -1,3 +1,5 @@
+> Current database status (22 October 2026): LIVE and verified. `/api/health` returns 200/ready/postgres. Earlier setup-blocker notes below are historical; see the superseding LIVE update and PRODUCTION-BACKEND.md.
+
 # Lunar Paradox — Local-to-Live Handoff
 
 This note is for whoever maintains and promotes the project. The user confirms that **v0.5 is already launched** at [lunarparadox.com](https://lunarparadox.com/). The local changes described below are not confirmed to be part of that launch.
@@ -41,3 +43,11 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
 These commands validate the local build and tests only. They do **not** publish to GitHub or Vercel. The Python tests check local backend logic with temporary databases; run the `offline-platforms/start.py` launcher separately for local end-to-end HTTP/browser checks.
+
+## Database update — 22 October 2026
+
+Supabase is connected in Vercel Production, but live health still reports a missing migration. Local code now supports Supabase through `pg`, includes migration 002 for RLS/private API access, and passes eight real PostgreSQL integration checks plus 54 automated tests. Production database credentials cannot be pulled because they are Sensitive. Both server-only owner/rate-limit secrets are now configured as Sensitive Production variables; redeployment is required to activate them. See PRODUCTION-BACKEND.md for the precise remaining migration/deployment gate. No production data/schema or deployment was changed in this pass.
+
+## LIVE database/backend superseding update — 22 October 2026
+
+Earlier statements in this document that no production database/migration was verified are now historical. Migrations 1–3 have been applied inside a staged Vercel build using existing protected Supabase credentials. The tested backend was promoted, and `https://lunarparadox.com/api/health` returns 200/ready/postgres. Nine main-domain workflow checks passed and all synthetic test records were removed. The production rate card is empty; no prices or products were fabricated. Supabase TLS remains certificate- and hostname-verified using its official CA. Existing legacy tables are retained privately. See PRODUCTION-BACKEND.md and evidence/database-readiness/ for current receipts and remaining operational work. Uncommitted visual changes were not deployed.

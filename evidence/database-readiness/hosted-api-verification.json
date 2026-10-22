@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-10-22T21:58:10.140Z",
+  "deployment": "https://lunarparadox.com",
+  "checks": [
+    "database health and configured protection",
+    "cleanup of this verification workflow’s interrupted test records",
+    "public content API",
+    "owner desk rejects unauthenticated access",
+    "application persistence, private access and pending estimate gate",
+    "owner approval persists and unlocks rate card",
+    "authenticated publisher access",
+    "brief persists in owner desk",
+    "temporary verification records removed"
+  ],
+  "skipped": [
+    "Positive production estimate: no real services/prices configured; no invented prices added."
+  ],
+  "temporaryRecordsRemoved": true
+}

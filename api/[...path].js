@@ -1,5 +1,5 @@
 import { createHash, createHmac, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto';
-import { Pool } from '@neondatabase/serverless';
+import { createDatabasePool, DatabaseConfigurationError } from '../lib/database.js';
 import {
   cleanApplication, cleanApplicationCredentials, cleanBrief, cleanContent,
   cleanEstimateSelection, cleanPricing, InputError,
@@ -15,17 +15,19 @@ class ApiError extends Error {
 }
 
 function pool() {
-  const connectionString = process.env.DATABASE_URL || process.env.POSTGRES_URL;
-  if (!connectionString) throw new ApiError(503, 'The production database is not configured.');
-  const parsed = new URL(connectionString);
-  if (!['postgres:', 'postgresql:'].includes(parsed.protocol) || !parsed.hostname || !parsed.pathname.slice(1)) throw new ApiError(503, 'The production database configuration is invalid.');
-  if (!globalThis[globalKey]) globalThis[globalKey] = new Pool({ connectionString, max: 1, idleTimeoutMillis: 5000, connectionTimeoutMillis: 5000 });
+  if (!globalThis[globalKey]) {
+    try { globalThis[globalKey] = createDatabasePool(); }
+    catch (error) {
+      if (error instanceof DatabaseConfigurationError) throw new ApiError(503, error.message);
+      throw error;
+    }
+  }
   return globalThis[globalKey];
 }
 
 async function assertSchema(db) {
   try {
-    const result = await db.query('SELECT version FROM lunar_schema_migrations WHERE version = 1');
+    const result = await db.query('SELECT version FROM lunar_schema_migrations WHERE version = 2');
     if (!result.rowCount) throw new ApiError(503, 'The production database migration has not been applied.');
   } catch (error) {
     if (error instanceof ApiError) throw error;
@@ -150,7 +152,11 @@ async function createEstimate(db, value) {
 }
 
 async function handle(req, res) {
-  const rawPath = req.query?.path;
+  // Vercel's raw Node runtime does not always populate catch-all query params.
+  // Parse the actual URL as a fallback; validation below still rejects encoded
+  // separators and malformed escapes before touching the database.
+  const pathname = new URL(req.url || '/', 'http://localhost').pathname;
+  const rawPath = req.query?.path ?? req.query?.['...path'] ?? (pathname.startsWith('/api/') ? pathname.slice(5) : '');
   const segments = Array.isArray(rawPath) ? rawPath : typeof rawPath === 'string' ? rawPath.split('/') : [];
   let decodedSegments;
   try { decodedSegments = segments.map(decodeURIComponent); }
@@ -162,6 +168,8 @@ async function handle(req, res) {
     const db = pool();
     await assertSchema(db);
     await db.query('SELECT 1');
+    if ((process.env.LUNAR_OWNER_KEY || '').length < 32) throw new ApiError(503, 'Production owner access is not configured.');
+    if ((process.env.LUNAR_RATE_LIMIT_SECRET || '').length < 32) throw new ApiError(503, 'Production request protection is not configured.');
     return send(res, 200, { status: 'ready', storage: 'postgres' });
   }
   sameOrigin(req);
@@ -250,6 +258,7 @@ async function handle(req, res) {
     const client = await db.connect();
     try {
       await client.query('BEGIN');
+      await client.query('SELECT pg_advisory_xact_lock(173531679, 1)');
       const current = await client.query('SELECT document FROM lunar_pricing WHERE singleton = true FOR UPDATE');
       const revision = current.rows[0]?.document.revision || 0;
       if (value.revision !== revision) throw new ApiError(409, 'Pricing changed. Reload before saving.');
@@ -266,6 +275,7 @@ async function handle(req, res) {
     const client = await db.connect();
     try {
       await client.query('BEGIN');
+      await client.query('SELECT pg_advisory_xact_lock(173531679, 2)');
       const current = await client.query('SELECT revision FROM lunar_company_content WHERE singleton = true FOR UPDATE');
       const revision = current.rows[0]?.revision || 0;
       if (value.revision !== revision) throw new ApiError(409, 'Publisher changed in another tab. Reload before saving.');

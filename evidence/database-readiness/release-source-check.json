@@ -1,0 +1,17 @@
+{
+  "baseCommit": "e54b0b2eddc80a11a16289cb95920b1f3220459f",
+  "unchangedSceneFiles": {
+    "offline-platforms/lunar-syzygy/scene-source.html": "7926ce4d609d5d21f31630e28f564b11bb49648f71a5870ae28c2be497291218",
+    "offline-platforms/lunar-syzygy/company.css": "2281acd3612f9a5e2a98403804a0eab985ba7a00db03da2b043baaf7d0ab8c30",
+    "offline-platforms/lunar-syzygy/company.js": "fb12f886097b222a1e19aaa72e2d2912cc89c026e698d9275b2da75e5bac9a63",
+    "offline-platforms/lunar-syzygy/session-client.js": "d406ec5b9c0ff7e2ce249a42a01cf966d01f0d7a66e11e522319f8be02e6f676",
+    "offline-platforms/lunar-gravity/scene-source.html": "f7e9033417541b0bc71997dab7cc988dbb282be3fc4f3c50dbf02a044515a474",
+    "offline-platforms/lunar-gravity/company.css": "2281acd3612f9a5e2a98403804a0eab985ba7a00db03da2b043baaf7d0ab8c30",
+    "offline-platforms/lunar-gravity/company.js": "be53256f15cb197483efc02fd46b2eefc53992a7a6fc93d003b53f4bb76790a0",
+    "offline-platforms/lunar-gravity/session-client.js": "d406ec5b9c0ff7e2ce249a42a01cf966d01f0d7a66e11e522319f8be02e6f676",
+    "offline-platforms/lunar-astrolabe/scene-source.html": "2d1b13e76e46c622a59f6850126d227a82e2c6b842614d660847fd051e1892ff",
+    "offline-platforms/lunar-astrolabe/company.css": "2281acd3612f9a5e2a98403804a0eab985ba7a00db03da2b043baaf7d0ab8c30",
+    "offline-platforms/lunar-astrolabe/company.js": "21b538cbf5f0fac0ce2a7bf5942f53b05abe5949bea563e0cb0dcd85376f4b5d",
+    "offline-platforms/lunar-astrolabe/session-client.js": "d406ec5b9c0ff7e2ce249a42a01cf966d01f0d7a66e11e522319f8be02e6f676"
+  }
+}

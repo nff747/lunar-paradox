@@ -1,0 +1,68 @@
+
+> lunar-paradox@0.1.0 test
+> node --test tests/*.test.mjs
+
+✔ hold stores strain without opening the two large masses before failure (1.71539ms)
+✔ fracture front leads primary release, and impulse is followed by slow drift (7.586867ms)
+✔ pause freezes choreography and reduced motion reveals its final state directly (2.151907ms)
+✔ rejoin can interrupt a shot smoothly and a later cycle starts cleanly (0.727621ms)
+✔ crust failure is staggered by crack-front arrival rather than opening all slabs together (0.430817ms)
+✔ authored camera samples are finite and retain a safe distance from the rock (5.644642ms)
+✔ foreground timing follows elapsed time at lower frame rates (0.30985ms)
+✔ syzygy: unpublished collection contains no fake programme or empty card (3.781366ms)
+✔ syzygy: only published records appear without ornamental filler (1.86486ms)
+✔ gravity: unpublished collection contains no fake programme or empty card (1.039225ms)
+✔ gravity: only published records appear without ornamental filler (1.319319ms)
+✔ astrolabe: unpublished collection contains no fake programme or empty card (4.244863ms)
+✔ astrolabe: only published records appear without ornamental filler (1.794028ms)
+✔ Supabase uses verified TLS TCP while Neon retains its own transport (2.910757ms)
+✔ migrations prefer direct URLs without changing runtime connection selection (0.565648ms)
+✔ redacted, malformed and insecure remote connection strings fail without exposing credentials (0.936051ms)
+✔ legacy browser Supabase bridge does not expose shared private tables or URL access keys (7.285894ms)
+✔ primary bodies and each removed slab form individually closed finite solids (576.713955ms)
+✔ the complete partition conserves the joined sphere volume without duplicate slabs (664.156572ms)
+✔ all exterior vertices remain on the spherical envelope and pole caps are closed (11.957736ms)
+✔ undeformed parent positions are preserved on both sides (1.695182ms)
+✔ rigid halves separate with finite continuous motion and preserve pair distances (0.756926ms)
+✔ equal-mass body centres remain centred during divergent translation (0.285284ms)
+✔ position sampling can reuse a scratch vector and returns exactly home at rejoin (0.300963ms)
+✔ hosted application validation accepts only bounded required fields (8.191398ms)
+✔ public content validation rejects unsafe links, duplicate IDs and unfinished published records (2.448953ms)
+✔ pricing and estimate selections can use only configured server-owned ranges (1.038874ms)
+✔ applicant access credentials must be a UUID and high-entropy key (0.538829ms)
+✔ health fails closed with a clear setup status when no hosted database is configured (56.346989ms)
+✔ malformed encoded API paths return a client error instead of a service failure (0.7374ms)
+✔ raw Vercel URLs are parsed when catch-all query parameters are absent (0.594112ms)
+✔ Vercel explicitly dispatches nested API URLs to the catch-all function (8.313025ms)
+✔ hold immediately drives strain and an early release unloads to joined (2.487956ms)
+✔ full hold latches open until an explicit graceful rejoin action (2.111812ms)
+✔ a second complete hold is counted only after the first release (0.499424ms)
+✔ pause and large frame gaps never fast-forward strain (0.245399ms)
+✔ accessible activation runs once; reduced motion resolves immediately (0.35781ms)
+✔ a slow foreground frame contributes its elapsed hold time (0.173555ms)
+✔ syzygy: production scene module parses before any packaging (30.830041ms)
+✔ gravity: production scene module parses before any packaging (17.484428ms)
+✔ astrolabe: production scene module parses before any packaging (13.699836ms)
+✔ search metadata exposes only useful, canonical public pages (8.527708ms)
+✔ canonical redirects do not leave legacy scene aliases as rewrites (0.896798ms)
+✔ Vercel deployment input retains the scripts required by its build command (0.580386ms)
+✔ clean Labs and Products entries do not add duplicate hash landing routes (0.871671ms)
+✔ hosted HTML stays small and resolves per-scene modules and textures separately (1.358362ms)
+✔ scene startup affordances do not print loading copy over the model (0.67311ms)
+✔ Studio page does not present unverified technical proof claims (0.615882ms)
+✔ pointer cancellation, window blur, page hide and navigation release the actual handler (10.945491ms)
+✔ keyboard and pointer sources release independently (1.61376ms)
+✔ forms, company routes and consumed events cannot charge the scene (4.764024ms)
+✔ Enter/assistive activation charges once, then activates explicit rejoin while latched (2.086655ms)
+✔ navigation cancels an accessible automatic charge and the scene returns to joined (1.712826ms)
+✔ a hold-to-open release stays latched and a later tap deliberately rejoins (2.266882ms)
+✔ explicit rejoin clears route-owned holds and Space remains a native button activation (2.093347ms)
+✔ fracture actuator begins responding from the first increment of hold strain (0.947974ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 56
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2127.817535

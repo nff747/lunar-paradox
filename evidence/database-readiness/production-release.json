@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-10-22T21:58:52.370255+00:00",
+  "deployment": "https://lunar-paradox-18zixcre3-nff747s-projects.vercel.app",
+  "production": "https://lunarparadox.com",
+  "health": {
+    "httpStatus": 200,
+    "status": "ready",
+    "storage": "postgres"
+  },
+  "migrations": [
+    1,
+    2,
+    3
+  ],
+  "databasePasswordExported": false,
+  "visualChangesDeployed": false,
+  "knownRemaining": [
+    "Configure real rate-card service items",
+    "Transactional email",
+    "Named staff accounts/MFA",
+    "Operational privacy/retention/backup policies"
+  ]
+}

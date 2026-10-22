@@ -1,0 +1,9 @@
+PASS migrated schema health
+PASS private application access and approval gate
+PASS first-save rate card concurrency
+PASS approved estimates use only server-owned prices
+PASS draft isolation and first-save publisher concurrency
+PASS brief persistence and owner-only deletion
+PASS application deletion cascades to estimates
+PASS all seven API tables deny browser roles and enable RLS
+{"status":"passed","checks":8}

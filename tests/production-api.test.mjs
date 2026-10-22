@@ -70,3 +70,17 @@ test('malformed encoded API paths return a client error instead of a service fai
   assert.equal(response.statusCode, 400);
   assert.match(response.body.error, /invalid api path/i);
 });
+
+test('raw Vercel URLs are parsed when catch-all query parameters are absent', async()=>{
+  const {default:handler}=await import('../api/[...path].js');
+  const response={setHeader(){},end(value){this.body=JSON.parse(value);this.writableEnded=true;}};
+  await handler({method:'GET',url:'/api/%E0%A4%A',headers:{},socket:{}},response);
+  assert.equal(response.statusCode,400);
+  assert.match(response.body.error,/invalid api path/i);
+});
+
+test('Vercel explicitly dispatches nested API URLs to the catch-all function',async()=>{
+  const {readFile}=await import('node:fs/promises');
+  const config=JSON.parse(await readFile(new URL('../vercel.json',import.meta.url),'utf8'));
+  assert.deepEqual(config.rewrites[0],{source:'/api/:path*',destination:'/api/[...path]?path=:path*'});
+});
