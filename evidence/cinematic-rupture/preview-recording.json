@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-10-22T04:57:51.926Z",
+  "source": "Actual standalone WebGL browser recording; no interpolation or image animation added",
+  "audio": "Browser video capture is silent; procedural sound remains available in the application",
+  "viewport": [
+    1280,
+    720
+  ],
+  "gpu": "AMD Radeon 780M",
+  "durationSeconds": 13.04,
+  "cutLeadingLoadSeconds": 2.0,
+  "trimMethod": "Trimmed initial loading only, verified against recorded frames; original motion speed preserved"
+}
