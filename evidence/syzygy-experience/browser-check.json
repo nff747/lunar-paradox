@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-10-23T23:11:10.454Z",
+  "startupMs": 1708,
+  "pacing": {
+    "samples": 180,
+    "medianMs": 16.69999999999891,
+    "p95Ms": 16.700000000000728,
+    "over50Ms": 0,
+    "device": "ANGLE (AMD, AMD Radeon 780M Graphics (radeonsi phoenix ACO), OpenGL ES 3.2)"
+  },
+  "before": [
+    1.4054560361484887,
+    0.2878194397927456,
+    7.319072022235812
+  ],
+  "after": [
+    1.3949916842224976,
+    0.6021245027922477,
+    5.634136632848581
+  ],
+  "holdLatched": true,
+  "explicitRejoin": true,
+  "reducedMotionPaused": true,
+  "mobileWidth": 390,
+  "errors": [],
+  "networkRequests": 0
+}

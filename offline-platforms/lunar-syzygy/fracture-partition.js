@@ -37,11 +37,11 @@ export function buildFracturedMoon(radius=1.5, angular=256, surfaceSteps=80, wal
   function profile(side,j){
     const sector=sectors.find(s=>s.side===side&&j>=s.start&&j<=s.end);
     if(!sector)return {shell:.015,wall:.985};
-    const t=(j-sector.start)/(sector.end-sector.start),arch=Math.pow(Math.max(0,Math.sin(t*Math.PI)),.65);
+    const t=(j-sector.start)/(sector.end-sector.start),peak=.28+(sector.id*37%61)/150,arch=Math.max(0,t<peak?t/peak:(1-t)/(1-peak));
     // Tapered, eroded tear outlines rather than rectangular constant-depth
     // slots. Both sides of every cap share these exact remapped vertices.
     const erosion=scalarNoise(j*.79,sector.id*1.9,8.1)-.5;
-    return {shell:.015+arch*(.045+(sector.id%3)*.012+erosion*.025),wall:.985-arch*(.065+(sector.id%2)*.02+erosion*.025)};
+    return {shell:.015+arch*(.030+(sector.id%4)*.011+erosion*.016),wall:.985-arch*(.065+(sector.id%2)*.02+erosion*.025)};
   }
   for(const side of [-1,1]){
     const outer=sink(),inside=sink(),sphere=[],wall=[],profiles=boundary.map((b,j)=>profile(side,j));

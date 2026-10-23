@@ -79,5 +79,14 @@ test('scene startup affordances do not print loading copy over the model',()=>{
 test('Studio page does not present unverified technical proof claims',()=>{
   const company=read('offline-platforms/lunar-syzygy/company.js');
   assert.doesNotMatch(company,/Selected Technical Proof|cohesive zone model|P95|finite-depth dispersion|planar reflection probe/i);
-  assert.match(company,/START A TECHNICAL CONVERSATION/);
+  assert.match(company,/href="#\/commission"[^>]*>APPLY TO WORK WITH US/);
+});
+
+test('platform subdomains resolve their prefixed assets before the host catch-all',()=>{
+ const config=JSON.parse(read('vercel.json'));
+ for(const [host,prefix,folder] of [['labs.lunarparadox.com','labs','lunar-gravity'],['products.lunarparadox.com','products','lunar-astrolabe']]){
+  const asset=config.rewrites.findIndex(rule=>rule.source===`/${prefix}/:path*`&&rule.has?.some(item=>item.value===host));
+  const general=config.rewrites.findIndex(rule=>rule.source==='/:path*'&&rule.has?.some(item=>item.value===host));
+  assert(asset>=0&&asset<general);assert.equal(config.rewrites[asset].destination,`/${folder}/:path*`);
+ }
 });

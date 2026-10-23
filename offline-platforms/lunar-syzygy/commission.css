@@ -1,0 +1,33 @@
+/* A focused project desk; controls stay readable without covering the scene. */
+.lc-journey{display:flex;gap:0;list-style:none;margin:30px 0 40px;padding:0;border-top:1px solid var(--lc-line)}
+.lc-journey li{flex:1;color:#8f8e97;padding:14px 10px 0 0;font:12px/1.5 Arial,sans-serif;position:relative}
+.lc-journey li>span{display:block;margin-bottom:8px;font:10px monospace;color:#777580}
+.lc-journey li[aria-current=step]{color:#f1e8d9}
+.lc-journey li[aria-current=step]:before{content:'';position:absolute;top:-1px;left:0;right:16px;height:2px;background:#d8bb8e}
+#lunar-company .lc-commission{max-width:900px;padding-bottom:100px}
+#lunar-company .lc-commission>.lc-deck{max-width:600px;line-height:1.85;color:#c0bac6}
+#lunar-company .lc-commission form{max-width:650px}
+#lunar-company .lc-commission input:not([type=checkbox]),#lunar-company .lc-commission textarea,#lunar-company .lc-commission select{background:#0c1017f0;border-color:#8f88945c;border-radius:3px;min-height:46px}
+#lunar-company .lc-commission input::placeholder,#lunar-company .lc-commission textarea::placeholder{color:#85818b}
+.lc-commission [data-app-message]{color:#dfc6a5;font:12px/1.7 Arial,sans-serif;white-space:pre-wrap;min-height:1.7em}
+.lc-commission .lc-button:disabled{opacity:.45;cursor:default;filter:none}
+.lc-access-receipt{margin:25px 0;padding:20px;border:1px solid #c1ac893d;background:#090d14e8}
+.lc-access-receipt dt{font:10px monospace;color:#98929f;margin:12px 0 7px;text-transform:uppercase;letter-spacing:.08em}
+.lc-access-receipt dd{margin:0;color:#e8e1d6;font:13px/1.8 monospace;overflow-wrap:anywhere}
+.lc-scope-heading p{font:14px/1.8 Arial,sans-serif;color:#b6aeba}
+.lc-service-list{border-top:1px solid #c1ac8942}
+.lc-service{display:grid;grid-template-columns:1fr 90px;gap:24px;align-items:center;padding:16px 0;border-bottom:1px solid #c1ac8933}
+#lunar-company .lc-service label{margin:0}
+#lunar-company label.lc-service-choice{display:flex;align-items:flex-start;gap:14px;cursor:pointer}
+#lunar-company .lc-service-choice input[type=checkbox]{flex:0 0 auto;width:18px!important;height:18px!important;margin:3px 0 0;padding:0}
+.lc-service-choice strong{display:block;font:16px/1.55 Arial,sans-serif;color:#e7e0d8}
+.lc-service-choice small{display:block;margin-top:7px;font:12px/1.65 Arial,sans-serif;color:#b0a6b7}
+#lunar-company .lc-service-quantity input{min-height:40px;margin-top:5px;padding:7px 10px}
+#lunar-company .lc-service-quantity input:disabled{opacity:.35}
+.lc-scope-total{padding:25px 0;margin:14px 0;border-bottom:1px solid #c1ac8933}
+.lc-scope-total>span{font:10px monospace;color:#b5a58d;letter-spacing:.08em}
+.lc-scope-total>strong{display:block;font:400 clamp(24px,3vw,38px)/1.4 Arial,sans-serif;color:#f2e7d5;margin-top:9px;font-variant-numeric:tabular-nums}
+.lc-scope-total p{font:12px/1.85 Arial,sans-serif;color:#aba1b2;max-width:500px}
+body[data-scene=syzygy].company-open #lunar-company{top:130px}
+@media(max-width:650px){body[data-scene=syzygy].company-open #lunar-company{top:145px}.lc-journey{margin:22px 0 30px}.lc-journey li{font-size:11px}.lc-service{gap:12px;grid-template-columns:1fr 72px}#lunar-company .lc-commission{padding:25px 22px 70px}.lc-service-choice strong{font-size:14px}.lc-access-receipt{padding:14px}.lc-service-choice small{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.lc-commission *{scroll-behavior:auto!important}}

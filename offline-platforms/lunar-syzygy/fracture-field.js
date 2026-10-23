@@ -33,21 +33,21 @@ export function scalarNoise(x, y, z) {
 // Non-planar, asymmetric 3D tectonic cleavage path
 export function fissureCPU(y, z) {
   return (
-    (scalarNoise(y * 2.15, z * 2.15, 11.7) - 0.5) * 0.34 +
-    (scalarNoise(y * 7.3, z * 7.3, 4.1) - 0.5) * 0.080 +
+    (scalarNoise(y * 2.15, z * 2.15, 11.7) - 0.5) * 0.62 +
+    (scalarNoise(y * 7.3, z * 7.3, 4.1) - 0.5) * 0.125 +
     (scalarNoise(y * 31, z * 31, 2.9) - 0.5) * 0.026 +
-    Math.sin(y * 1.8 + z * 0.45) * 0.075 +
-    Math.cos(y * 3.4 - z * 1.2) * 0.042 // Asymmetry bias
+    Math.sin(y * 1.8 + z * 0.45) * 0.095 +
+    Math.cos(y * 3.4 - z * 1.2) * 0.060 // Asymmetry bias
   );
 }
 
 export const fractureFieldGLSL = `
 float fissure(vec3 p) {
-  return (noise(vec3(p.yz * 2.15, 11.7)) - 0.5) * 0.34 +
-         (noise(vec3(p.yz * 7.3, 4.1)) - 0.5) * 0.080 +
+  return (noise(vec3(p.yz * 2.15, 11.7)) - 0.5) * 0.62 +
+         (noise(vec3(p.yz * 7.3, 4.1)) - 0.5) * 0.125 +
          (noise(vec3(p.yz * 31.0, 2.9)) - 0.5) * 0.026 +
-         sin(p.y * 1.8 + p.z * 0.45) * 0.075 +
-         cos(p.y * 3.4 - p.z * 1.2) * 0.042;
+         sin(p.y * 1.8 + p.z * 0.45) * 0.095 +
+         cos(p.y * 3.4 - p.z * 1.2) * 0.060;
 }
 `;
 

@@ -48,3 +48,12 @@ body.company-ready:not(.company-open) .type .back{opacity:calc(1 - var(--hold-re
 #lunar-company .lc-catalogue-intro h1{font-size:32px!important;line-height:1.1;margin:0 0 8px;letter-spacing:-.025em}
 .lc-catalogue-intro .lc-eyebrow{margin-bottom:12px;font-size:9px}.lc-catalogue-status{font:12px/1.7 monospace;color:#b5b4ba;margin:0 0 12px}.lc-catalogue-intro .lc-link{font-size:12px}
 @media(max-width:650px){.lc-catalogue-intro{bottom:20px;padding:18px 22px;max-width:260px}#lunar-company .lc-catalogue-intro h1{font-size:28px!important}.lc-page-labs .lc-collection,.lc-page-products .lc-collection{margin-top:35px}}
+
+/* Syzygy's brand sits in the scene rather than inside an application toolbar. */
+body[data-scene="syzygy"].company-ready header{background:transparent!important;border:0!important;pointer-events:none;height:132px!important;padding:0!important}
+body[data-scene="syzygy"].company-ready header .brand{position:absolute!important;left:3.2vw!important;top:3.8vh!important;pointer-events:auto}
+body[data-scene="syzygy"].company-ready header .wordmark{font:700 clamp(30px,2.45vw,48px)/.90 Arial,Helvetica,sans-serif!important;letter-spacing:-.045em!important}
+body[data-scene="syzygy"] .lc-nav{inset:3.8vh 3.2vw auto auto!important;height:44px!important;background:transparent!important;border:0!important}
+body[data-scene="syzygy"].company-ready:not(.company-open) #viewport,body[data-scene="syzygy"].company-ready:not(.company-open) .viewport{top:0!important}
+@media(max-width:900px){body[data-scene="syzygy"] .lc-nav{gap:16px!important}body[data-scene="syzygy"] .lc-nav #lc-tools{padding-left:14px!important}}
+@media(max-width:650px){body[data-scene="syzygy"].company-ready header .brand{top:24px!important;left:6vw!important}body[data-scene="syzygy"].company-ready header .wordmark{font-size:30px!important}body[data-scene="syzygy"] .lc-nav{inset:98px 6vw auto!important;height:36px!important;font-size:9px!important;gap:10px!important}body[data-scene="syzygy"] .ratio{top:157px}body[data-scene="syzygy"] .lc-nav #lc-tools{padding-left:10px!important}}

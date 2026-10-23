@@ -1,3 +1,5 @@
+> Latest handoff: [Deployment notes — 23 October 2026](DEPLOYMENT-NOTES-2026-10-23.md). Includes the local-only moon-colour update, current Git remote, migration 004 requirement and unresolved public subdomain routing verification. Older status sections below are historical.
+
 > Current database status (22 October 2026): LIVE and verified. `/api/health` returns 200/ready/postgres. Earlier setup-blocker notes below are historical; see the superseding LIVE update and PRODUCTION-BACKEND.md.
 
 # Lunar Paradox — Local-to-Live Handoff

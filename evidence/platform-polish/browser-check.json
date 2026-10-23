@@ -1,0 +1,65 @@
+{
+  "recordedAt": "2026-10-23T05:24:33.485Z",
+  "results": [
+    {
+      "scene": "gravity",
+      "startupMs": 2366,
+      "before": [
+        0.21380569783281508,
+        1.643071660534423,
+        18.01484074165275
+      ],
+      "after": [
+        0.8810842356202002,
+        1.448724381516641,
+        15.810540898781756
+      ],
+      "movement": 2.311270064084762,
+      "pacing": {
+        "samples": 180,
+        "medianMs": 16.699999999999818,
+        "p95Ms": 16.700000000000728,
+        "over50Ms": 0
+      },
+      "initialAudio": {
+        "sound": "muted"
+      },
+      "activeAudio": {
+        "sound": "active"
+      },
+      "mobileNoOverflow": true,
+      "errors": [],
+      "remoteRequests": 0
+    },
+    {
+      "scene": "astrolabe",
+      "startupMs": 2424,
+      "before": [
+        0.6303881952250248,
+        0.10650888064019633,
+        7.686078821231309
+      ],
+      "after": [
+        2.043670886275646,
+        0.7893803760854763,
+        6.64605400499847
+      ],
+      "movement": 1.8829054842171735,
+      "pacing": {
+        "samples": 180,
+        "medianMs": 16.699999999999818,
+        "p95Ms": 16.700000000000728,
+        "over50Ms": 0
+      },
+      "initialAudio": {
+        "audio": "false"
+      },
+      "activeAudio": {
+        "audio": "true"
+      },
+      "mobileNoOverflow": true,
+      "errors": [],
+      "remoteRequests": 0
+    }
+  ]
+}

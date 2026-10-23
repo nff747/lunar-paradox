@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-10-23T05:30:40.126Z",
+  "deployment": "https://lunar-paradox-b3ikeue98-nff747s-projects.vercel.app",
+  "checks": [
+    "migration and production protection readiness",
+    "anonymous owner access denied",
+    "submission retry returns the same application and private access",
+    "private status and approval gate",
+    "owner approval persists",
+    "publisher authentication",
+    "temporary test application and dependent records removed"
+  ],
+  "noRealPricesOrProductsAdded": true
+}

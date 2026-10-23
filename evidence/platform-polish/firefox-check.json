@@ -1,0 +1,19 @@
+{
+  "results": [
+    {
+      "scene": "syzygy",
+      "rendered": true,
+      "errors": []
+    },
+    {
+      "scene": "gravity",
+      "rendered": true,
+      "errors": []
+    },
+    {
+      "scene": "astrolabe",
+      "rendered": true,
+      "errors": []
+    }
+  ]
+}

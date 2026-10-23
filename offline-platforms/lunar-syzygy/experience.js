@@ -131,7 +131,7 @@
   document.addEventListener('lunar:state',event=>{if(event.detail?.scene==='syzygy'){lastTelemetry={...lastTelemetry,snapshot:{...lastTelemetry?.snapshot,...event.detail}};}});
   setInterval(()=>{if(document.hidden||current==='realms')return;const now=performance.now();if(now-lastSampleAt>=450){const row=sample();if(row){history.push(row);if(history.length>120)history.shift();lastSampleAt=now;}}update();},500);
   if(!window.lunarCompany?.isCompanyHash()&&location.hash&&!/^#\/(realms|mission|data|simulation)$/.test(location.hash))historyReplace();
-  if(!window.lunarCompany?.isCompanyHash()&&(location.hash==='#/realms'||location.hash===''))history.replaceState(null,'','/');
-  function historyReplace(){if(getRoute()==='realms'||!getRoute())history.replaceState(null,'','/');else window.history.replaceState(null,'','#/'+getRoute());}
+  if(!window.lunarCompany?.isCompanyHash()&&(location.hash==='#/realms'||location.hash===''))window.history.replaceState(null,'',location.protocol==='file:'?'#/realms':'/');
+  function historyReplace(){if(getRoute()==='realms'||!getRoute())window.history.replaceState(null,'',location.protocol==='file:'?'#/realms':'/');else window.history.replaceState(null,'','#/'+getRoute());}
   renderRoute();
 })();

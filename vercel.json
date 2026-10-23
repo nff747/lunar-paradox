@@ -25,7 +25,32 @@
       ]
     },
     {
-      "source": "/(.*)\\.(css|js|ttf|woff2|png|jpg|webp)",
+      "source": "/(.*)\\.(ttf|woff2|png|jpg|webp)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(css|js)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(css|js)",
+      "has": [
+        {
+          "type": "query",
+          "key": "v",
+          "value": "[a-f0-9]{12}"
+        }
+      ],
       "headers": [
         {
           "key": "Cache-Control",
@@ -80,12 +105,74 @@
       "source": "/platforms/syzygy/:path*",
       "destination": "https://lunarparadox.com",
       "permanent": true
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "source": "/labs",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/products",
+      "destination": "/",
+      "permanent": true
     }
   ],
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "/api/[...path]?path=:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "source": "/",
+      "destination": "/lunar-gravity/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/",
+      "destination": "/lunar-astrolabe/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "source": "/labs/:path*",
+      "destination": "/lunar-gravity/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/products/:path*",
+      "destination": "/lunar-astrolabe/:path*"
     },
     {
       "has": [

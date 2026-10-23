@@ -1,0 +1,113 @@
+{
+  "layout": {
+    "brand": {
+      "x": 61.4375,
+      "y": 41.03125,
+      "width": 216.875,
+      "height": 84.65625,
+      "top": 41.03125,
+      "right": 278.3125,
+      "bottom": 125.6875,
+      "left": 61.4375
+    },
+    "font": "700 47.04px / 42.336px Arial, Helvetica, sans-serif",
+    "headerBackground": "rgba(0, 0, 0, 0)",
+    "viewportTop": 0
+  },
+  "state": {
+    "data": {
+      "scene": "syzygy",
+      "startupMilestones": "{\"engineScriptStart\":324.5,\"assetsDecoded\":1124,\"faultsReady\":1124,\"geometryReady\":2115.2,\"firstRenderStarted\":2138.6,\"firstFrame\":3314.7}",
+      "cinematicStage": "HELD_OPEN",
+      "cinematicAge": "6.200",
+      "crackProgress": "1.000",
+      "cinematicBusy": "false",
+      "ruptureState": "HELD_OPEN",
+      "ruptureCommitted": "true",
+      "ruptureCycles": "1",
+      "missionApproach": "0.000",
+      "spatialRoute": "realms",
+      "paradox": "1.000",
+      "chargeSeconds": "1.200",
+      "openingVelocity": "1.2695750327762583e-11",
+      "interfaceDamage": "1",
+      "cohesivePotential": "0",
+      "driverWork": "19.442455343987156",
+      "dampingLoss": "17.7009941510255",
+      "fractureWork": "1.6081999999999994",
+      "energyResidual": "-3.055333763768431e-13",
+      "fractureEvents": "1",
+      "fragmentEvents": "320",
+      "healingResets": "0",
+      "audioEvents": "12",
+      "cinematicCamera": "1.3878,0.2851,7.3151",
+      "debrisCount": "320",
+      "activeEjecta": "320",
+      "fractureGap": "0.51376",
+      "orbitX": "0.00000",
+      "orbitY": "0.00000",
+      "zoom": "1.000",
+      "sessionStorage": "browser",
+      "companyRoute": "",
+      "route": "realms",
+      "fps": "60",
+      "drawCalls": "70",
+      "triangles": "192190",
+      "paused": "false",
+      "pixelRatio": "1.5",
+      "renderedFrames": "695",
+      "graphicsDevice": "ANGLE (AMD, AMD Radeon 780M Graphics (radeonsi phoenix ACO), OpenGL ES 3.2)",
+      "graphicsApi": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+      "audioVolume": "0.35",
+      "sessionReady": "true",
+      "browserFocused": "true",
+      "browserVisibility": "visible",
+      "telemetrySource": "measured-browser",
+      "spatialAudio": "HRTF · 6 voice limit",
+      "audio": "running",
+      "lastMaterialEvent": "chip"
+    },
+    "snapshot": {
+      "paused": false,
+      "cinematicStage": "HELD_OPEN",
+      "cinematicAge": 6.2,
+      "state": "HELD_OPEN",
+      "committed": true,
+      "cycles": 1,
+      "speed": 1,
+      "simulationTime": 13.466099999999953,
+      "paradox": 0.9999999999924075,
+      "camera": {
+        "azimuth": 0,
+        "elevation": 0,
+        "distance": 1
+      }
+    }
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390,
+    "brand": {
+      "x": 23.390625,
+      "y": 24,
+      "width": 138.34375,
+      "height": 54,
+      "top": 24,
+      "right": 161.734375,
+      "bottom": 78,
+      "left": 23.390625
+    },
+    "nav": {
+      "x": 23.390625,
+      "y": 98,
+      "width": 343.21875,
+      "height": 36,
+      "top": 98,
+      "right": 366.609375,
+      "bottom": 134,
+      "left": 23.390625
+    }
+  },
+  "errors": [],
+  "remoteRequests": []
+}

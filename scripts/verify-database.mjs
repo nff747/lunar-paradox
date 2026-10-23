@@ -14,7 +14,7 @@ process.env.LUNAR_OWNER_KEY=randomBytes(32).toString('hex');process.env.LUNAR_RA
 const db=createDatabasePool();
 const server=createServer((req,res)=>{req.headers['x-forwarded-proto']='http';handler(req,res);});
 server.listen(0,'127.0.0.1');await once(server,'listening');const base=`http://127.0.0.1:${server.address().port}`;
-const call=async(path,method='GET',body,owner=false)=>{const res=await fetch(base+'/api/'+path,{method,headers:{'Content-Type':'application/json',...(owner?{'X-Lunar-Owner':process.env.LUNAR_OWNER_KEY}:{})},body:body?JSON.stringify(body):undefined});return {status:res.status,body:await res.json()};};
+const call=async(path,method='GET',body,owner=false,token)=>{const res=await fetch(base+'/api/'+path,{method,headers:{'Content-Type':'application/json',...(token?{'Idempotency-Key':token}:{}),...(owner?{'X-Lunar-Owner':process.env.LUNAR_OWNER_KEY}:{})},body:body?JSON.stringify(body):undefined});return {status:res.status,body:await res.json()};};
 const checks=[];const check=(name)=>{checks.push(name);console.log('PASS',name);};
 try{
  await db.query('TRUNCATE lunar_applications, lunar_estimates, lunar_pricing, lunar_company_content, lunar_briefs, lunar_api_limits CASCADE');
@@ -38,6 +38,11 @@ try{
  assert.equal((await call('applications/'+credentials.id,'DELETE',undefined,true)).status,200);assert.equal(Number((await db.query('SELECT count(*) FROM lunar_estimates')).rows[0].count),0);check('application deletion cascades to estimates');
  const security=await db.query("SELECT c.relname,c.relrowsecurity,has_table_privilege('anon',c.oid,'SELECT') AS can_read,has_table_privilege('authenticated',c.oid,'INSERT') AS can_write FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relname LIKE 'lunar_%' AND c.relkind='r'");
  assert.equal(security.rows.length,7);assert(security.rows.every(r=>r.relrowsecurity&&!r.can_read&&!r.can_write));check('all seven API tables deny browser roles and enable RLS');
+ const retryBody={name:'Retry verification',email:'retry@example.test',type:'commission',goal:'Disposable retry test',timing:'',budget:''};
+ const retry=await Promise.all([call('apply','POST',retryBody,false,'r'.repeat(40)),call('apply','POST',retryBody,false,'r'.repeat(40))]);
+ assert(retry.every(r=>r.status===201));assert.equal(retry[0].body.id,retry[1].body.id);assert.equal(retry[0].body.accessKey,retry[1].body.accessKey);
+ assert.equal((await call('apply','POST',{...retryBody,goal:'Different brief'},false,'r'.repeat(40))).status,409);
+ await call('applications/'+retry[0].body.id,'DELETE',undefined,true);check('concurrent submission retries return one application; changed briefs cannot reuse a token');
  console.log(JSON.stringify({status:'passed',checks:checks.length}));
 }finally{
  await new Promise(resolve=>server.close(resolve));

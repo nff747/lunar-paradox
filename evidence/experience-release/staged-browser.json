@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-23T05:29:52.952Z",
+  "deployment": "https://lunar-paradox-b3ikeue98-nff747s-projects.vercel.app",
+  "results": [
+    {
+      "route": "/",
+      "startupMs": 2959,
+      "versionedCodeResources": 21,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/labs/",
+      "startupMs": 6469,
+      "versionedCodeResources": 22,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/products/",
+      "startupMs": 3886,
+      "versionedCodeResources": 22,
+      "errors": [],
+      "failed": []
+    }
+  ],
+  "mobileApplication": true
+}

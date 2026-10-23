@@ -27,7 +27,7 @@ function pool() {
 
 async function assertSchema(db) {
   try {
-    const result = await db.query('SELECT version FROM lunar_schema_migrations WHERE version = 2');
+    const result = await db.query('SELECT version FROM lunar_schema_migrations WHERE version = 4');
     if (!result.rowCount) throw new ApiError(503, 'The production database migration has not been applied.');
   } catch (error) {
     if (error instanceof ApiError) throw error;
@@ -216,9 +216,19 @@ async function handle(req, res) {
   if (path === '/apply' && method === 'POST') {
     await rateLimit(db, req, 'apply', 5, 10 * 60 * 1000);
     const application = cleanApplication(await readBody(req));
-    const id = randomUUID(), accessKey = randomBytes(32).toString('base64url');
-    await db.query('INSERT INTO lunar_applications (id, status, access_hash, document) VALUES ($1, \'pending\', $2, $3::jsonb)', [id, createHash('sha256').update(accessKey).digest('hex'), json(application)]);
-    return send(res, 201, { id, accessKey, status: 'pending', created: new Date().toISOString() });
+    const token = req.headers['idempotency-key'];
+    if (token !== undefined && (typeof token !== 'string' || !/^[a-zA-Z0-9_-]{32,128}$/.test(token))) throw new InputError('Invalid submission token');
+    const requestHash = token ? createHash('sha256').update(token).digest('hex') : null;
+    const accessKey = token ? createHmac('sha256', process.env.LUNAR_RATE_LIMIT_SECRET).update('application-access-v1:'+token).digest('base64url') : randomBytes(32).toString('base64url');
+    const accessHash = createHash('sha256').update(accessKey).digest('hex');
+    const inserted = await db.query("INSERT INTO lunar_applications (id, status, access_hash, document, request_hash) VALUES ($1, 'pending', $2, $3::jsonb, $4) ON CONFLICT (request_hash) DO NOTHING RETURNING id,created_at,status", [randomUUID(), accessHash, json(application), requestHash]);
+    let row = inserted.rows[0];
+    if (!row) {
+      const previous = await db.query('SELECT id,created_at,status,access_hash,document FROM lunar_applications WHERE request_hash=$1', [requestHash]);
+      row = previous.rows[0];
+      if (!row || row.access_hash !== accessHash || !Object.keys(application).every(key => row.document[key] === application[key])) throw new ApiError(409, 'This submission token was already used. Check your existing application before submitting a different brief.');
+    }
+    return send(res, 201, { id: row.id, accessKey, status: row.status, created: iso(row.created_at) });
   }
 
   if (path === '/application-access' && method === 'POST') {
