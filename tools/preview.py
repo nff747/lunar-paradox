@@ -13,7 +13,7 @@ class Preview(SimpleHTTPRequestHandler):
     def translate_path(self, url):
         parts = unquote(urlsplit(url).path).strip('/').split('/')
         if parts == ['']:
-            parts = ['index.html']
+            parts = ['lunar-syzygy', 'index.html']
         elif parts == ['studio']:
             parts = ['studio.html']
         elif parts == ['studio.html']:

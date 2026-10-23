@@ -77,6 +77,16 @@
       "permanent": true
     },
     {
+      "source": "/lunar-syzygy",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/lunar-syzygy/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/studio.html",
       "destination": "/studio",
       "permanent": true
@@ -193,6 +203,10 @@
       ],
       "source": "/:path*",
       "destination": "/lunar-astrolabe/:path*"
+    },
+    {
+      "source": "/",
+      "destination": "/lunar-syzygy/index.html"
     },
     {
       "source": "/studio",

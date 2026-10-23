@@ -25,7 +25,12 @@ for(const name of names){
     const base=name==='syzygy'?'/':name==='gravity'?'/labs/':'/products/';
     html=html.replace('<head>','<head><base href="'+base+'">');
     const versioned=await versionHostedAssets(src,staging,html);html=versioned.html;
-    await fs.writeFile(path.join(staging,'index.html'),html);
+    if(name==='syzygy'){
+      await fs.mkdir(path.join(staging,'lunar-syzygy'),{recursive:true});
+      await fs.writeFile(path.join(staging,'lunar-syzygy','index.html'),html);
+    }else{
+      await fs.writeFile(path.join(staging,'index.html'),html);
+    }
     // A Syzygy-only rebuild replaces the hosted root. Preserve its sibling
     // platform exports so updating the hero cannot remove Labs or Products.
     if(selected==='syzygy')for(const sibling of ['lunar-gravity','lunar-astrolabe']){
@@ -36,7 +41,8 @@ for(const name of names){
     // Only generated build paths may be replaced; canonical source/private data are untouched.
     await fs.rm(dest,{recursive:true,force:true});
     await fs.rename(staging,dest);
-    manifest.scenes[name]={codeVersion:versioned.version,sourceSha256:crypto.createHash('sha256').update(html).digest('hex'),entry:path.relative(root,path.join(dest,'index.html'))};
+    const entryRel=name==='syzygy'?path.join('lunar-syzygy','index.html'):'index.html';
+    manifest.scenes[name]={codeVersion:versioned.version,sourceSha256:crypto.createHash('sha256').update(html).digest('hex'),entry:path.relative(root,path.join(dest,entryRel))};
     if(!process.argv.includes('--hosted-only')){
       const offline=path.join(root,'build','offline','lunar-'+name);
       await fs.mkdir(offline,{recursive:true});
@@ -49,7 +55,7 @@ for(const name of names){
 }
 if(!selected||selected==='syzygy'){
   const hostedRoot=path.join(root,'build','hosted');
-  const rootHtml=await fs.readFile(path.join(hostedRoot,'index.html'),'utf8');
+  const rootHtml=await fs.readFile(path.join(hostedRoot,'lunar-syzygy','index.html'),'utf8');
   const studioHtml=rootHtml
     .replace('<title>Lunar Paradox — Applied Technology Studio</title>','<title>Studio — Lunar Paradox</title>')
     .replaceAll('https://lunarparadox.com/"','https://lunarparadox.com/studio"')

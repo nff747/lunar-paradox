@@ -57,7 +57,7 @@ test('clean Labs and Products entries do not add duplicate hash landing routes',
 });
 
 test('hosted HTML stays small and resolves per-scene modules and textures separately',()=>{
-  for(const [scene,entry,base] of [['syzygy','build/hosted/index.html','/'],['gravity','build/hosted/lunar-gravity/index.html','/labs/'],['astrolabe','build/hosted/lunar-astrolabe/index.html','/products/']]){
+  for(const [scene,entry,base] of [['syzygy','build/hosted/lunar-syzygy/index.html','/'],['gravity','build/hosted/lunar-gravity/index.html','/labs/'],['astrolabe','build/hosted/lunar-astrolabe/index.html','/products/']]){
     const html=read(entry);
     assert.ok(Buffer.byteLength(html)<200_000,`${scene} shell should not inline the texture pack`);
     assert.ok(html.includes(`<base href="${base}">`),scene);
