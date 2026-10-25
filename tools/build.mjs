@@ -19,7 +19,7 @@ for(const name of names){
   const staging=await fs.mkdtemp(path.join(root,`build-${name}-`));
   try{
     for(const entry of await fs.readdir(src,{withFileTypes:true})){
-      if(entry.isDirectory()&&['assets','vendor'].includes(entry.name))await fs.cp(path.join(src,entry.name),path.join(staging,entry.name),{recursive:true});
+      if(entry.isDirectory()&&['assets','vendor','tools'].includes(entry.name))await fs.cp(path.join(src,entry.name),path.join(staging,entry.name),{recursive:true});
       else if(entry.isFile()&&/\.(js|css)$/.test(entry.name))await fs.copyFile(path.join(src,entry.name),path.join(staging,entry.name));
     }
     let html=await fs.readFile(path.join(src,'scene-source.html'),'utf8');
@@ -51,6 +51,8 @@ for(const name of names){
       // Offline exports build from the unmodified canonical source; the hosted
       // copy gets its deployment-specific base URL above.
       for(const file of await fs.readdir(src))if(/\.(js|css)$/.test(file))await fs.copyFile(path.join(src,file),path.join(offline,file));
+      const toolsSrc=path.join(src,'tools');
+      if(await fs.stat(toolsSrc).then(s=>s.isDirectory()).catch(()=>false))await fs.cp(toolsSrc,path.join(offline,'tools'),{recursive:true});
     }
   }finally{await fs.rm(staging,{recursive:true,force:true});}
 }

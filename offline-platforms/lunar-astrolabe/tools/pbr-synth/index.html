@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PBR Surface Normal & Texture Map Synthesizer — Lunar Products</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="tool-header">
+    <div class="brand-section">
+      <a href="https://products.lunarparadox.com/" class="back-link">← LUNAR PRODUCTS</a>
+      <span class="divider">/</span>
+      <span class="tool-title">PBR Surface Normal & Texture Map Synthesizer</span>
+    </div>
+    <div class="air-gap-pill">
+      <span class="pulse-dot"></span>
+      100% IN-BROWSER / ZERO SERVER TRANSMISSION
+    </div>
+    <div class="telemetry-readout">
+      <span id="telemetry-res">DIM: -- × --</span>
+      <span id="telemetry-gpu">GPU: ACTIVE</span>
+    </div>
+  </header>
+
+  <main class="tool-container">
+    <!-- Left Sidebar: Settings -->
+    <aside class="controls-sidebar">
+      <!-- Input Image / Presets -->
+      <section class="section-group">
+        <div class="section-title">
+          <span>Source Texture</span>
+          <span style="font-size: 10px; color: var(--text-muted);">PNG, JPG, WEBP</span>
+        </div>
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" style="display:none">
+          <div class="dropzone-icon">⤓</div>
+          <div class="dropzone-label">Drop Diffuse Image Here</div>
+          <div class="dropzone-sub">or click to browse local files</div>
+        </div>
+
+        <div class="section-title" style="margin-top: 4px;">Procedural Presets</div>
+        <div class="presets-grid">
+          <button type="button" class="btn-preset" data-preset="lunar">Lunar Regolith</button>
+          <button type="button" class="btn-preset" data-preset="carbon">Carbon Weave</button>
+          <button type="button" class="btn-preset" data-preset="hex">Hex Solar Plating</button>
+          <button type="button" class="btn-preset" data-preset="obsidian">Obsidian Basalt</button>
+        </div>
+      </section>
+
+      <!-- Normal Map Parameters -->
+      <section class="section-group">
+        <div class="section-title">Normal Generation</div>
+        
+        <div class="control-row">
+          <div class="control-label">
+            <span>Normal Strength</span>
+            <span class="control-val" id="val-strength">2.5×</span>
+          </div>
+          <input type="range" id="param-strength" min="0.2" max="8.0" step="0.1" value="2.5">
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">
+            <span>Filter Kernel</span>
+            <span class="control-val" id="val-kernel">Sobel 3×3</span>
+          </div>
+          <select id="param-kernel" style="background:var(--bg-secondary);color:var(--text-main);border:1px solid var(--border-color);padding:6px;border-radius:4px;font-family:var(--font-mono);font-size:11px;">
+            <option value="sobel">Sobel 3×3 (Balanced)</option>
+            <option value="scharr">Scharr 5×5 (Smooth Edge)</option>
+          </select>
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">
+            <span>Blur / Smoothing</span>
+            <span class="control-val" id="val-blur">0 px</span>
+          </div>
+          <input type="range" id="param-blur" min="0" max="6" step="1" value="0">
+        </div>
+
+        <label class="toggle-row">
+          <span>Invert Green (-Y / DirectX)</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="param-invert-y">
+            <span class="slider-round"></span>
+          </div>
+        </label>
+      </section>
+
+      <!-- Height / Displacement Parameters -->
+      <section class="section-group">
+        <div class="section-title">Height / Displacement</div>
+        
+        <div class="control-row">
+          <div class="control-label">
+            <span>Contrast</span>
+            <span class="control-val" id="val-height-contrast">1.0×</span>
+          </div>
+          <input type="range" id="param-height-contrast" min="0.2" max="2.5" step="0.05" value="1.0">
+        </div>
+
+        <label class="toggle-row">
+          <span>Invert Height Map</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="param-invert-height">
+            <span class="slider-round"></span>
+          </div>
+        </label>
+      </section>
+
+      <!-- Roughness / Glossiness -->
+      <section class="section-group">
+        <div class="section-title">Roughness / Gloss</div>
+        
+        <div class="control-row">
+          <div class="control-label">
+            <span>Base Roughness</span>
+            <span class="control-val" id="val-roughness">0.65</span>
+          </div>
+          <input type="range" id="param-roughness" min="0.0" max="1.0" step="0.02" value="0.65">
+        </div>
+
+        <label class="toggle-row">
+          <span>Invert (Export as Gloss)</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="param-invert-rough">
+            <span class="slider-round"></span>
+          </div>
+        </label>
+      </section>
+
+      <!-- Ambient Occlusion -->
+      <section class="section-group">
+        <div class="section-title">Ambient Occlusion</div>
+        
+        <div class="control-row">
+          <div class="control-label">
+            <span>Cavity AO Depth</span>
+            <span class="control-val" id="val-ao-strength">1.4×</span>
+          </div>
+          <input type="range" id="param-ao-strength" min="0.2" max="3.0" step="0.1" value="1.4">
+        </div>
+      </section>
+    </aside>
+
+    <!-- Main Viewport Area -->
+    <div class="viewport-area">
+      <!-- Tabs for 3D View vs 2D Maps -->
+      <div class="view-tabs">
+        <div class="tabs-group">
+          <button type="button" class="tab-btn active" data-view="3d">3D Specimen Light Lab</button>
+          <button type="button" class="tab-btn" data-view="diffuse">Diffuse (Color)</button>
+          <button type="button" class="tab-btn" data-view="normal">Normal Map</button>
+          <button type="button" class="tab-btn" data-view="height">Height (Disp)</button>
+          <button type="button" class="tab-btn" data-view="roughness">Roughness</button>
+          <button type="button" class="tab-btn" data-view="ao">Ambient Occlusion</button>
+        </div>
+
+        <div class="model-controls" id="model-controls">
+          <button type="button" class="btn-icon active" data-geom="sphere">Sphere</button>
+          <button type="button" class="btn-icon" data-geom="cube">Cube</button>
+          <button type="button" class="btn-icon" data-geom="plane">Plane</button>
+          <button type="button" class="btn-icon" id="btn-toggle-rotate" title="Toggle Auto-Rotation">Auto-Spin: ON</button>
+        </div>
+      </div>
+
+      <!-- Canvas Viewport -->
+      <div class="canvas-wrapper" id="canvas-wrapper">
+        <canvas id="viewport-3d"></canvas>
+        <canvas id="preview-2d"></canvas>
+
+        <div class="viewport-hint" id="viewport-hint">
+          Drag to rotate specimen · Scroll to zoom
+        </div>
+
+        <div class="viewport-info" id="viewport-info">
+          <div>PIXEL ENGINE: CANVAS2D / WEBGL</div>
+          <div id="info-render-time">TIME: -- ms</div>
+        </div>
+      </div>
+
+      <!-- Footer Bar / Action Row -->
+      <footer class="tool-footer">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+          <span>OUTPUT: </span>
+          <span id="output-meta">1024 × 1024 PNG / 32-BIT RGBA</span>
+        </div>
+
+        <div class="footer-actions">
+          <button type="button" class="btn-secondary" id="btn-export-single">
+            ⤓ Download Active Map (PNG)
+          </button>
+          <button type="button" class="btn-primary" id="btn-export-all">
+            ⤓ Export PBR Set (.ZIP)
+          </button>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

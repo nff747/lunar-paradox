@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resonance Procedural Cosmic Sound Lab — Lunar Products</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="tool-header">
+    <div class="brand-section">
+      <a href="https://products.lunarparadox.com/" class="back-link">← LUNAR PRODUCTS</a>
+      <span class="divider">/</span>
+      <span class="tool-title">Resonance Procedural Cosmic Sound Lab</span>
+    </div>
+    <div class="air-gap-pill">
+      <span class="pulse-dot"></span>
+      100% IN-BROWSER / ZERO SERVER TRANSMISSION
+    </div>
+    <div class="telemetry-readout">
+      <span id="telemetry-dsp">DSP: 48.0 kHz / 32-BIT</span>
+      <span id="telemetry-limiter" style="color:var(--accent-emerald);">LIMITER: ENGAGED (-3dB)</span>
+    </div>
+  </header>
+
+  <main class="tool-container">
+    <!-- Left Controls Sidebar -->
+    <aside class="controls-sidebar">
+      <!-- Master Transport -->
+      <div class="master-bar">
+        <button type="button" class="btn-play" id="btn-master-play">
+          ▶ START SYNTHESIZER
+        </button>
+        <div style="display:flex; flex-direction:column; gap:4px; width:100px;">
+          <span style="font-size:10px; font-family:var(--font-mono); color:var(--text-muted);">MASTER GAIN</span>
+          <input type="range" id="param-master-gain" min="0" max="0.8" step="0.02" value="0.45">
+        </div>
+      </div>
+
+      <!-- Presets -->
+      <section class="section-group">
+        <div class="section-title">Celestial Presets</div>
+        <div class="presets-grid">
+          <button type="button" class="btn-preset active" data-preset="mare">Mare Tranquillitatis</button>
+          <button type="button" class="btn-preset" data-preset="solar">Solar Wind Flare</button>
+          <button type="button" class="btn-preset" data-preset="pulsar">Neutron Pulsar</button>
+          <button type="button" class="btn-preset" data-preset="void">Deep Void Stasis</button>
+        </div>
+      </section>
+
+      <!-- Oscillator Nodes -->
+      <section class="section-group">
+        <div class="section-title">Harmonic Oscillators</div>
+
+        <!-- Node 1: Root / Fundamental -->
+        <div class="osc-box">
+          <div class="osc-header">
+            <span>NODE 1: ROOT FUNDAMENTAL</span>
+            <span id="val-osc1-freq">55 Hz</span>
+          </div>
+          <div class="osc-row">
+            <select id="param-osc1-wave">
+              <option value="sine" selected>Sine</option>
+              <option value="triangle">Triangle</option>
+              <option value="sawtooth">Sawtooth</option>
+            </select>
+            <input type="range" id="param-osc1-freq" min="30" max="220" step="1" value="55">
+          </div>
+        </div>
+
+        <!-- Node 2: Harmonic Overtones -->
+        <div class="osc-box">
+          <div class="osc-header">
+            <span>NODE 2: HARMONIC OVERTONE</span>
+            <span id="val-osc2-ratio">1.5× (Fifth)</span>
+          </div>
+          <div class="osc-row">
+            <select id="param-osc2-wave">
+              <option value="sine">Sine</option>
+              <option value="triangle" selected>Triangle</option>
+              <option value="sawtooth">Sawtooth</option>
+            </select>
+            <select id="param-osc2-ratio">
+              <option value="1.5" selected>1.5× (Perfect 5th)</option>
+              <option value="2.0">2.0× (1st Octave)</option>
+              <option value="2.5">2.5× (Major 10th)</option>
+              <option value="3.0">3.0× (12th / Octave 5th)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Node 3: Binaural Beat Detune -->
+        <div class="osc-box">
+          <div class="osc-header">
+            <span>NODE 3: BINAURAL BEAT DETUNE</span>
+            <span id="val-binaural-beat">4.5 Hz (Theta)</span>
+          </div>
+          <div class="osc-row">
+            <select id="param-binaural-preset">
+              <option value="2.0">2.0 Hz (Delta Deep)</option>
+              <option value="4.5" selected>4.5 Hz (Theta Lucid)</option>
+              <option value="10.0">10.0 Hz (Alpha Calm)</option>
+              <option value="40.0">40.0 Hz (Gamma Focus)</option>
+            </select>
+            <input type="range" id="param-binaural-gain" min="0" max="0.5" step="0.02" value="0.3">
+          </div>
+        </div>
+
+        <!-- Node 4: Cosmic Dust Noise -->
+        <div class="osc-box">
+          <div class="osc-header">
+            <span>COSMIC RADIATION NOISE</span>
+            <span id="val-noise-gain">15%</span>
+          </div>
+          <input type="range" id="param-noise-gain" min="0" max="0.4" step="0.02" value="0.15">
+        </div>
+      </section>
+
+      <!-- Resonant Ladder Filter & LFO -->
+      <section class="section-group">
+        <div class="section-title">Resonant Acoustic Filter</div>
+        
+        <div class="control-row">
+          <div class="control-label">
+            <span>Cutoff Frequency</span>
+            <span class="control-val" id="val-filter-cutoff">480 Hz</span>
+          </div>
+          <input type="range" id="param-filter-cutoff" min="50" max="5000" step="10" value="480">
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">
+            <span>Resonance (Q)</span>
+            <span class="control-val" id="val-filter-q">4.2</span>
+          </div>
+          <input type="range" id="param-filter-q" min="0.5" max="15.0" step="0.1" value="4.2">
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">
+            <span>Filter LFO Modulation Rate</span>
+            <span class="control-val" id="val-lfo-rate">0.15 Hz</span>
+          </div>
+          <input type="range" id="param-lfo-rate" min="0.02" max="2.0" step="0.01" value="0.15">
+        </div>
+      </section>
+    </aside>
+
+    <!-- Main Visualizer Area -->
+    <div class="stage-area">
+      <div class="stage-bar">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+          <span>AUDIO ENGINE: WEB AUDIO API STEREO GRAPH</span>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-violet);">
+          HARDWARE LIMITER: CLAMPED DYNAMICS
+        </div>
+      </div>
+
+      <div class="visualizer-wrapper">
+        <!-- 1. Real-time Lissajous Phase Oscilloscope -->
+        <div class="scope-card">
+          <div class="scope-header">
+            <span>LISSAJOUS PHASE MATRIX (X:L / Y:R)</span>
+            <span>PHASE COHERENCE</span>
+          </div>
+          <canvas id="canvas-lissajous" class="scope-canvas"></canvas>
+        </div>
+
+        <!-- 2. FFT Spectral Analyzer -->
+        <div class="scope-card">
+          <div class="scope-header">
+            <span>FFT SPECTRAL DISTRIBUTION</span>
+            <span id="val-peak-db">-12.4 dB</span>
+          </div>
+          <canvas id="canvas-spectrum" class="scope-canvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Action Footer -->
+      <footer class="tool-footer">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
+          <span>SECURITY: </span>
+          <span style="color: var(--accent-emerald);">CLIENT AUDITORY PROTECTION ACTIVE (BRICKWALL DYNAMICS COMPRESSOR)</span>
+        </div>
+
+        <button type="button" class="btn-record" id="btn-record-wav">
+          <span style="width:8px; height:8px; border-radius:50%; background:#f43f5e; display:inline-block;"></span>
+          <span id="record-label">Record Lossless WAV (10s)</span>
+        </button>
+      </footer>
+    </div>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

@@ -24,7 +24,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' blob: 'sha256-8Cy+L5UgS7jLJOgEksp4Yv1mtuhniEST0Nt2MmdMJb0=' 'sha256-DWRNvhn9/8lsuGr5vdsk3YgpHOOi2iYwdc7Yh2oQwGI=' 'sha256-I4/AUsKkgwS/reGVtKcvdEvnlMALKzyRgVyQJffJrgY=' 'sha256-o/LczZ3yFDM1CAk8p5tX9mTw6MBsD2Re/dOjW/ibst0=' 'sha256-qyTnRBDg9JVtFcReb0ggUoxUSx1jdkpWZbQ5Ybfylrg='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     },
@@ -231,6 +231,10 @@
     {
       "source": "/products/:path*",
       "destination": "/lunar-astrolabe/:path*"
+    },
+    {
+      "source": "/tools/:path*",
+      "destination": "/lunar-astrolabe/tools/:path*"
     }
   ],
   "buildCommand": "npm run build -- --hosted-only",
