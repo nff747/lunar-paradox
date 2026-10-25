@@ -59,7 +59,7 @@ test('client tools: published content registry passes strict production validati
 
   for (const prod of cleaned.products) {
     assert.equal(prod.status, 'published');
-    assert.match(prod.actionUrl, /^https:\/\/products\.lunarparadox\.com\/tools\/[-\w]+\/$/);
+    assert.match(prod.actionUrl, /^https:\/\/products\.lunarparadox\.com\/tools\/[-\w]+$/);
     assert.ok(prod.actionLabel.length > 0);
   }
 });
