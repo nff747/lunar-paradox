@@ -1,0 +1,18 @@
+Contact: mailto:security@lunarparadox.com
+Expires: 2027-10-20T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://lunarparadox.com/.well-known/security.txt
+Policy: https://lunarparadox.com/#/studio
+
+# LUNAR PARADOX SECURITY & CANONICAL BRAND ADVISORY
+# Canonical Domains:
+#   Root / Studio: https://lunarparadox.com / https://studio.lunarparadox.com
+#   Labs (R&D):    https://labs.lunarparadox.com
+#   Products:      https://products.lunarparadox.com
+#
+# FRAUD & CLONE DISAVOWAL NOTICE:
+# Lunar Paradox operates exclusively as an applied technology, 3D WebGL, and spatial computing laboratory.
+# We DO NOT offer social casino games, real-money gambling, lottery apps, or untrusted binary executables.
+# Any external domains claiming our name (including zalife.site, bstgame.shop, supergameapp.site, and others)
+# are unauthorized scraper clones and fraudulent ad-network whitepages with astroturfed reviews.
+# Official releases and binaries are distributed strictly with published SHA-256 cryptographic checksums.

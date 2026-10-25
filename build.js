@@ -51,7 +51,7 @@ copyDir(path.join(PLATFORMS, 'lunar-syzygy'), path.join(DIST, 'studio'));
 fs.mkdirSync(path.join(DIST, 'platforms'), { recursive: true });
 
 // 6. Copy Root Canonical, Security & SEO metadata
-const rootFiles = ['robots.txt', 'sitemap.xml', 'releases.json'];
+const rootFiles = ['robots.txt', 'sitemap.xml', 'releases.json', 'security.txt'];
 for (const file of rootFiles) {
   const src = path.join(ROOT, file);
   if (fs.existsSync(src)) {

@@ -1,3 +1,65 @@
+# Legitimate Search Engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Yandex
+Allow: /
+
+# Unwanted AI Data Miners, Scrapers, and Crawlers (AI Labyrinth Defense)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: Cohere-ai
+Disallow: /
+
+User-agent: Kangaroo Bot
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
 User-agent: *
 Allow: /
 Disallow: /offline-platforms/

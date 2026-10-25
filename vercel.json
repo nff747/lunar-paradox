@@ -4,8 +4,25 @@
   "trailingSlash": false,
   "headers": [
     {
+      "source": "/(\\.well-known/security\\.txt|security\\.txt)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
@@ -235,6 +252,10 @@
     {
       "source": "/tools/:path*",
       "destination": "/lunar-astrolabe/tools/:path*"
+    },
+    {
+      "source": "/security.txt",
+      "destination": "/.well-known/security.txt"
     }
   ],
   "buildCommand": "npm run build -- --hosted-only",
