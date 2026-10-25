@@ -22,7 +22,7 @@ class Preview(SimpleHTTPRequestHandler):
             parts = ['lunar-' + parts[1], *parts[2:]]
         elif parts[0] in {'labs', 'products'}:
             parts = ['lunar-' + ('gravity' if parts[0] == 'labs' else 'astrolabe'), *parts[1:]]
-        if len(parts) == 1 and parts[0].startswith('lunar-'):
+        if len(parts) == 1 and parts[0] in {'lunar-syzygy','lunar-gravity','lunar-astrolabe'}:
             parts.append('index.html')
         if any(part in ('.', '..') or part.startswith('.') for part in parts):
             return str(ROOT / '__denied__')
@@ -60,6 +60,10 @@ class Preview(SimpleHTTPRequestHandler):
         return None
 
     def end_headers(self):
+        config=json.loads((ROOT.parents[1]/'vercel.json').read_text())
+        for item in config.get('headers',[]):
+            if item['source']=='/(.*)':
+                for header in item['headers']:self.send_header(header['key'],header['value'])
         self.send_header('Cache-Control', 'no-store')
         super().end_headers()
 

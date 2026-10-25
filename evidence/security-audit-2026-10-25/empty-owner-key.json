@@ -1,0 +1,8 @@
+{
+  "scope": "temporary isolated launcher only",
+  "emptyExistingOwnerKeyFile": true,
+  "ownerCredentialSupplied": false,
+  "applicationsStatus": 200,
+  "applicationCount": 0,
+  "riskPrerequisite": "An existing owner key file must be empty or whitespace. Normal generated keys are not empty."
+}

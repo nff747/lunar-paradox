@@ -1,0 +1,97 @@
+{
+  "recordedAt": "2026-10-25T06:57:14.857Z",
+  "noFormsSubmitted": true,
+  "results": [
+    {
+      "origin": "https://lunarparadox.com",
+      "expected": "syzygy",
+      "status": 200,
+      "ready": true,
+      "sampleElapsedMs": 8177,
+      "title": "Lunar Paradox — Applied Technology Studio",
+      "scene": "syzygy",
+      "canvasCount": 1,
+      "canonical": "https://lunarparadox.com/",
+      "robots": "index,follow",
+      "links": [
+        {
+          "text": "01 / LABS",
+          "href": "https://labs.lunarparadox.com/"
+        },
+        {
+          "text": "02 / STUDIO",
+          "href": "https://lunarparadox.com/studio"
+        },
+        {
+          "text": "03 / PRODUCTS",
+          "href": "https://products.lunarparadox.com/"
+        },
+        {
+          "text": "ENTER ↗",
+          "href": "https://lunarparadox.com/#/home"
+        }
+      ],
+      "horizontalOverflow": false,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "origin": "https://labs.lunarparadox.com",
+      "expected": "gravity",
+      "status": 200,
+      "ready": true,
+      "sampleElapsedMs": 9591,
+      "title": "Labs — Lunar Paradox",
+      "scene": "gravity",
+      "canvasCount": 1,
+      "canonical": "https://labs.lunarparadox.com/",
+      "robots": "noindex,follow",
+      "links": [
+        {
+          "text": "01 / LABS",
+          "href": "https://labs.lunarparadox.com/"
+        },
+        {
+          "text": "02 / STUDIO",
+          "href": "https://lunarparadox.com/studio"
+        },
+        {
+          "text": "03 / PRODUCTS",
+          "href": "https://products.lunarparadox.com/"
+        }
+      ],
+      "horizontalOverflow": false,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "origin": "https://products.lunarparadox.com",
+      "expected": "astrolabe",
+      "status": 200,
+      "ready": true,
+      "sampleElapsedMs": 8769,
+      "title": "Products — Lunar Paradox",
+      "scene": "astrolabe",
+      "canvasCount": 1,
+      "canonical": "https://products.lunarparadox.com/",
+      "robots": "noindex,follow",
+      "links": [
+        {
+          "text": "01 / LABS",
+          "href": "https://labs.lunarparadox.com/"
+        },
+        {
+          "text": "02 / STUDIO",
+          "href": "https://lunarparadox.com/studio"
+        },
+        {
+          "text": "03 / PRODUCTS",
+          "href": "https://products.lunarparadox.com/"
+        }
+      ],
+      "horizontalOverflow": false,
+      "errors": [],
+      "failed": []
+    }
+  ]
+}

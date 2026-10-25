@@ -1,0 +1,5 @@
+{
+  "scope": "Disposable PostgreSQL only; 30 days is a test parameter, not a production policy",
+  "dryRunPreservedRecord": true,
+  "explicitApplyDeletedExpiredFixture": true
+}

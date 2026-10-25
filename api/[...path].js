@@ -1,3 +1,5 @@
+import {AdminAuthError,adminSession,adminRoute} from '../lib/admin-auth.js';
+import {clientAddress} from '../lib/request-security.js';
 import { createHash, createHmac, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto';
 import { createDatabasePool, DatabaseConfigurationError } from '../lib/database.js';
 import {
@@ -27,7 +29,7 @@ function pool() {
 
 async function assertSchema(db) {
   try {
-    const result = await db.query('SELECT version FROM lunar_schema_migrations WHERE version = 4');
+    const result = await db.query('SELECT version FROM lunar_schema_migrations WHERE version = 5');
     if (!result.rowCount) throw new ApiError(503, 'The production database migration has not been applied.');
   } catch (error) {
     if (error instanceof ApiError) throw error;
@@ -86,12 +88,12 @@ function ownerAuthorized(req) {
 function addressHash(req) {
   const secret = process.env.LUNAR_RATE_LIMIT_SECRET || '';
   if (secret.length < 32) throw new ApiError(503, 'Production request protection is not configured.');
-  const forwarded = req.headers['x-real-ip'] || req.headers['x-forwarded-for']?.split(',').at(-1)?.trim() || req.socket?.remoteAddress || 'unknown';
+  const forwarded = clientAddress(req);
   return createHmac('sha256', secret).update(String(forwarded)).digest('hex');
 }
 
-async function rateLimit(db, req, route, limit, windowMs) {
-  const subject = addressHash(req);
+async function rateLimit(db, req, route, limit, windowMs, identity) {
+  const subject = identity ? createHmac('sha256',process.env.LUNAR_RATE_LIMIT_SECRET).update(identity).digest('hex') : addressHash(req);
   const { rows } = await db.query(
     `INSERT INTO lunar_api_limits (route, subject_hash, window_started, hits)
      VALUES ($1, $2, now(), 1)
@@ -168,13 +170,20 @@ async function handle(req, res) {
     const db = pool();
     await assertSchema(db);
     await db.query('SELECT 1');
-    if ((process.env.LUNAR_OWNER_KEY || '').length < 32) throw new ApiError(503, 'Production owner access is not configured.');
+    if(process.env.VERCEL==='1'){if(!(process.env.SUPABASE_URL||process.env.NEXT_PUBLIC_SUPABASE_URL)||!(process.env.SUPABASE_ANON_KEY||process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY))throw new ApiError(503,'Administrator identity provider is not configured.');}
+    else if ((process.env.LUNAR_OWNER_KEY || '').length < 32) throw new ApiError(503, 'Local owner access is not configured.');
     if ((process.env.LUNAR_RATE_LIMIT_SECRET || '').length < 32) throw new ApiError(503, 'Production request protection is not configured.');
     return send(res, 200, { status: 'ready', storage: 'postgres' });
   }
   sameOrigin(req);
   const db = pool();
   await assertSchema(db);
+
+  if(path.startsWith('/admin/')){
+    if(['/admin/session','/admin/logout'].includes(path)){let who;try{who=await adminSession(db,req);}catch(error){if(path!=='/admin/logout'){await rateLimit(db,req,'owner-failures',30,60000);throw error;}}if(who)await rateLimit(db,req,'admin-session',120,60000,'admin:'+who.principal);}
+    else await rateLimit(db,req,'admin-auth',20,10*60*1000);
+    const result=await adminRoute(path,req,res,db,method==='POST'?await readBody(req):undefined);return send(res,200,result);
+  }
 
   if (path === '/content' && method === 'GET') {
     const { rows } = await db.query('SELECT document FROM lunar_company_content WHERE singleton = true');
@@ -187,8 +196,15 @@ async function handle(req, res) {
     (path === '/briefs' && method === 'GET') ||
     ((path.startsWith('/applications/') || path.startsWith('/briefs/')) && method === 'DELETE');
   if (protectedRoute) {
-    await rateLimit(db, req, 'owner-api', 120, 60 * 1000);
-    ownerAuthorized(req);
+    try {
+      try{req.lunarAdmin=await adminSession(db,req);}
+      catch(error){if(error.status!==401||req.headers.cookie?.includes('lunar-admin=')||(process.env.VERCEL==='1'&&process.env.LUNAR_ALLOW_LEGACY_OWNER!=='true'))throw error;ownerAuthorized(req);req.lunarAdmin={principal:'local-owner',roles:['review','pricing','publish','delete']};}
+    }
+    catch(error){await rateLimit(db, req, 'owner-failures', 30, 60 * 1000);throw error;}
+    const role=method==='DELETE'?'delete':path==='/pricing'?'pricing':path==='/publisher'?'publish':'review';
+    if(!req.lunarAdmin.roles.includes(role))throw new ApiError(403,'Your administrator role does not permit this action.');
+    await rateLimit(db, req, 'owner-api', 120, 60 * 1000, 'owner:'+req.lunarAdmin.principal);
+    await db.query('INSERT INTO lunar_admin_audit(principal,action,target,outcome) VALUES($1,$2,$3,$4)',[req.lunarAdmin.principal,method+' '+path.split('/').slice(0,2).join('/'),path.split('/')[2]||'','attempt']);
   }
 
   if ((path === '/applications' || path === '/pricing') && method === 'GET') {
@@ -215,6 +231,7 @@ async function handle(req, res) {
 
   if (path === '/apply' && method === 'POST') {
     await rateLimit(db, req, 'apply', 5, 10 * 60 * 1000);
+    await rateLimit(db,req,'apply-global',100,10*60*1000,'global-submission-budget');
     const application = cleanApplication(await readBody(req));
     const token = req.headers['idempotency-key'];
     if (token !== undefined && (typeof token !== 'string' || !/^[a-zA-Z0-9_-]{32,128}$/.test(token))) throw new InputError('Invalid submission token');
@@ -258,7 +275,7 @@ async function handle(req, res) {
     const value = await readBody(req);
     if (!value || Object.keys(value).sort().join(',') !== 'id,note,status' || !['pending', 'accepted', 'declined'].includes(value.status) || typeof value.note !== 'string' || value.note.length > 1000) throw new InputError('Invalid application decision');
     assertId(value.id);
-    const { rowCount } = await db.query('UPDATE lunar_applications SET status = $2, note = $3 WHERE id = $1', [value.id, value.status, value.note.trim()]);
+    const { rowCount } = await db.query("WITH changed AS (UPDATE lunar_applications SET status=$2,note=$3 WHERE id=$1 RETURNING id) INSERT INTO lunar_admin_audit(principal,action,target,outcome) SELECT $4,'application.review',id::text,'success' FROM changed RETURNING id", [value.id,value.status,value.note.trim(),req.lunarAdmin.principal]);
     if (!rowCount) throw new ApiError(404, 'Application not found.');
     return send(res, 200, { saved: true });
   }
@@ -274,6 +291,7 @@ async function handle(req, res) {
       if (value.revision !== revision) throw new ApiError(409, 'Pricing changed. Reload before saving.');
       const result = { ...value, revision: revision + 1 };
       await client.query('INSERT INTO lunar_pricing (singleton, document) VALUES (true, $1::jsonb) ON CONFLICT (singleton) DO UPDATE SET document = EXCLUDED.document', [json(result)]);
+      await client.query("INSERT INTO lunar_admin_audit(principal,action,outcome) VALUES($1,$2,'success')",[req.lunarAdmin.principal,method+' '+path]);
       await client.query('COMMIT');
       return send(res, 200, result);
     } catch (error) { try { await client.query('ROLLBACK'); } catch {} throw error; }
@@ -291,6 +309,7 @@ async function handle(req, res) {
       if (value.revision !== revision) throw new ApiError(409, 'Publisher changed in another tab. Reload before saving.');
       const result = { ...value, revision: revision + 1 };
       await client.query('INSERT INTO lunar_company_content (singleton, revision, document) VALUES (true, $1, $2::jsonb) ON CONFLICT (singleton) DO UPDATE SET revision = EXCLUDED.revision, document = EXCLUDED.document', [result.revision, json(result)]);
+      await client.query("INSERT INTO lunar_admin_audit(principal,action,outcome) VALUES($1,$2,'success')",[req.lunarAdmin.principal,method+' '+path]);
       await client.query('COMMIT');
       return send(res, 200, result);
     } catch (error) { try { await client.query('ROLLBACK'); } catch {} throw error; }
@@ -299,14 +318,14 @@ async function handle(req, res) {
 
   if (/^\/applications\/[^/]+$/.test(path) && method === 'DELETE') {
     const id = assertId(path.split('/')[2]);
-    const { rowCount } = await db.query('DELETE FROM lunar_applications WHERE id = $1', [id]);
+    const { rowCount } = await db.query("WITH changed AS (DELETE FROM lunar_applications WHERE id=$1 RETURNING id) INSERT INTO lunar_admin_audit(principal,action,target,outcome) SELECT $2,'application.delete',id::text,'success' FROM changed RETURNING id", [id,req.lunarAdmin.principal]);
     if (!rowCount) throw new ApiError(404, 'Application not found.');
     return send(res, 200, { deleted: true });
   }
 
   if (/^\/briefs\/[^/]+$/.test(path) && method === 'DELETE') {
     const id = assertId(path.split('/')[2]);
-    const { rowCount } = await db.query('DELETE FROM lunar_briefs WHERE id = $1', [id]);
+    const { rowCount } = await db.query("WITH changed AS (DELETE FROM lunar_briefs WHERE id=$1 RETURNING id) INSERT INTO lunar_admin_audit(principal,action,target,outcome) SELECT $2,'brief.delete',id::text,'success' FROM changed RETURNING id", [id,req.lunarAdmin.principal]);
     if (!rowCount) throw new ApiError(404, 'Brief not found.');
     return send(res, 200, { deleted: true });
   }
@@ -322,7 +341,7 @@ export default async function handler(req, res) {
   } catch (error) {
     if (res.writableEnded) return;
     if (error instanceof InputError) return send(res, 400, { error: error.message });
-    if (error instanceof ApiError) return send(res, error.status, { error: error.message });
+    if (error instanceof ApiError || error instanceof AdminAuthError) return send(res, error.status, { error: error.message });
     console.error('Lunar API request failed:', error?.code || error?.name || 'unknown');
     return send(res, 503, { error: 'The service is temporarily unavailable. Please try again later.' });
   }

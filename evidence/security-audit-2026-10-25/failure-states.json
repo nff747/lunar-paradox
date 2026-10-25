@@ -1,0 +1,56 @@
+{
+  "recordedAt": "2026-10-25T06:28:38.267Z",
+  "allApiRequestsMocked": true,
+  "results": [
+    {
+      "origin": "https://lunarparadox.com",
+      "route": "/studio",
+      "webglDisabled": true,
+      "errors": [],
+      "bodyText": "Skip to simulation\nLUNAR\nPARADOX\nThe live scene could not render. Error creating WebGL context.\n← Home\n\nSTUDIO / COMMISSIONS & COLLABORATIONS\n\nMake the idea\nwork in the world.\n\nCommission an interactive experience, a digital product, or a focused technical investigation. We agree the purpose, scope, target devices and handover before work begins.\n\n01 / EXPERIENCE\nInteractive & spatial\n\nProduct reveals, real-time 3D and browser experiences shaped around your audience.\n\n02 / ENGINEERING\nDigital products\n\nUseful interfaces and the systems behind them, from a focused first release to an agreed integration.\n\n03 / INVESTIGATION\nTechnical feasibility\n\nTest a difficult interaction or technical constraint before committing to a larger build.\n\nA clear way to begin.\n\nShare the outcome you need and what already exists. We review fit and availability, then agree the deliverables, milestones, revision limits and target devices.\n\nAccepted applications can select configured services and save an indicative estimate. Work begins only after a written scope and terms are agreed.\n\nAPPLY TO WORK WITH US ↗\nRETURN TO YOUR APPLICATION ↗\n01 / LABS\n02 / STUDIO\n03 / PRODUCTS\nENTER ↗\nCONTROLS ≡",
+      "ready": false,
+      "applicationLink": [
+        {
+          "text": "APPLY TO WORK WITH US ↗",
+          "visible": true
+        }
+      ],
+      "scene": "syzygy",
+      "loading": ""
+    },
+    {
+      "origin": "https://labs.lunarparadox.com",
+      "route": "/",
+      "webglDisabled": true,
+      "errors": [
+        "Error creating WebGL context."
+      ],
+      "bodyText": "LUNAR PARADOX\n\nLUNAR PARADOX / RESEARCH\n\nLabs\nPROPOSE A COLLABORATION ↗\n01 / LABS\n02 / STUDIO\n03 / PRODUCTS\nSCENE ≡",
+      "ready": false,
+      "applicationLink": [
+        {
+          "text": "PROPOSE A COLLABORATION ↗",
+          "visible": true
+        }
+      ],
+      "scene": "gravity",
+      "loading": ""
+    },
+    {
+      "origin": "https://products.lunarparadox.com",
+      "route": "/",
+      "webglDisabled": true,
+      "errors": [],
+      "bodyText": "LUNAR PARADOX\n\nLUNAR PARADOX / PRODUCTS\n\nProducts\nWORK WITH US ↗\n01 / LABS\n02 / STUDIO\n03 / PRODUCTS\nSCENE ≡",
+      "ready": false,
+      "applicationLink": [
+        {
+          "text": "WORK WITH US ↗",
+          "visible": true
+        }
+      ],
+      "scene": "astrolabe",
+      "loading": "OBSERVATORY UNAVAILABLE — Error creating WebGL context.. Use a browser with WebGL 2 enabled."
+    }
+  ]
+}

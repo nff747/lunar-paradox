@@ -1,0 +1,4 @@
+JavaScript: 59 passed, 0 failed.
+Python: 3 passed.
+Browser injection: both tested surfaces escaped payloads.
+Dependency advisory audit: zero known advisories.

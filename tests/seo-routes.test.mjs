@@ -14,7 +14,7 @@ test('search metadata exposes only useful, canonical public pages',()=>{
   assert.match(sitemap,/<loc>https:\/\/lunarparadox\.com\/<\/loc>/);
   assert.match(sitemap,/<loc>https:\/\/lunarparadox\.com\/studio<\/loc>/);
   assert.doesNotMatch(sitemap,/gravity|astrolabe|products|offline-platforms/);
-  for(const [scene,url,indexability] of [['syzygy','https://lunarparadox.com/','index,follow'],['gravity','https://lunarparadox.com/labs','noindex,follow'],['astrolabe','https://lunarparadox.com/products','noindex,follow']]){
+  for(const [scene,url,indexability] of [['syzygy','https://lunarparadox.com/','index,follow'],['gravity','https://labs.lunarparadox.com/','noindex,follow'],['astrolabe','https://products.lunarparadox.com/','noindex,follow']]){
     const html=read(`offline-platforms/lunar-${scene}/scene-source.html`);
     assert.ok(html.includes(`<link rel="canonical" href="${url}">`),scene);
     assert.ok(html.includes(`<meta name="robots" content="${indexability}">`),scene);

@@ -3,6 +3,8 @@
 import argparse
 import secrets
 import hashlib
+import hmac
+import tempfile
 import re
 import os
 from contextlib import contextmanager
@@ -105,16 +107,26 @@ class Store:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.parent.chmod(0o700)
         owner_file=self.path.parent/'commission-owner.key'
-        try:
-            fd=os.open(owner_file,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
-            with os.fdopen(fd,'w') as stream:stream.write(secrets.token_urlsafe(32))
-        except FileExistsError:pass
+        if not owner_file.exists():
+            fd,temporary=tempfile.mkstemp(prefix='.owner-',dir=self.path.parent)
+            try:
+                with os.fdopen(fd,'w') as stream:
+                    stream.write(secrets.token_urlsafe(32));stream.flush();os.fsync(stream.fileno())
+                try:os.link(temporary,owner_file)
+                except FileExistsError:pass
+            finally:Path(temporary).unlink(missing_ok=True)
+        if owner_file.is_symlink() or not owner_file.is_file() or owner_file.stat().st_size>512:
+            raise ValueError('Invalid owner key file. Restore or explicitly rotate the private key before starting.')
         owner_file.chmod(0o600)
         self.owner_key=owner_file.read_text().strip()
+        if not self.owner_key.isascii() or len(self.owner_key)<32:
+            raise ValueError('Invalid owner key file. Restore or explicitly rotate the private key before starting.')
         with self.connect() as db:
             db.execute('CREATE TABLE IF NOT EXISTS company_content (id INTEGER PRIMARY KEY CHECK(id=1), revision INTEGER NOT NULL, document TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS company_briefs (id TEXT PRIMARY KEY, created TEXT NOT NULL, document TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS applications (id TEXT PRIMARY KEY, created TEXT NOT NULL, status TEXT NOT NULL, token TEXT NOT NULL, document TEXT NOT NULL, note TEXT NOT NULL)')
+            if 'request_hash' not in {row[1] for row in db.execute('PRAGMA table_info(applications)')}:db.execute('ALTER TABLE applications ADD COLUMN request_hash TEXT')
+            db.execute('CREATE UNIQUE INDEX IF NOT EXISTS application_requests ON applications(request_hash)')
             db.execute('CREATE TABLE IF NOT EXISTS commissioning_pricing (id INTEGER PRIMARY KEY CHECK(id=1), document TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS commissioning_estimates (id TEXT PRIMARY KEY, application_id TEXT NOT NULL, document TEXT NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS settings (scene TEXT PRIMARY KEY, state TEXT NOT NULL)')
@@ -157,15 +169,24 @@ class Store:
         with self.connect() as db:db.execute('INSERT INTO company_briefs VALUES(?,?,?)',(identifier,created,json.dumps(value)))
         return {'id':identifier,'created':created}
 
-    def create_application(self, value):
+    def create_application(self, value, request_token=None):
         fields={'name':120,'email':254,'type':30,'goal':6000,'timing':200,'budget':200}
         if not isinstance(value,dict) or set(value)!=set(fields):raise ValueError('Invalid application fields')
         if any(not isinstance(value[k],str) or len(value[k])>n for k,n in fields.items()):raise ValueError('Application field too long')
         value={k:v.strip() for k,v in value.items()}
         if not value['name'] or not value['goal'] or not re.fullmatch(r'[^\s@]+@[^\s@]+\.[^\s@]+',value['email']):raise ValueError('Name, valid email and project goal are required')
         if value['type'] not in ('commission','collaboration','research'):raise ValueError('Unknown application type')
-        token=secrets.token_urlsafe(32);identifier=str(uuid.uuid4());created=datetime.now(timezone.utc).isoformat()
-        with self.connect() as db:db.execute('INSERT INTO applications VALUES(?,?,?,?,?,?)',(identifier,created,'pending',hashlib.sha256(token.encode()).hexdigest(),json.dumps(value),''))
+        if request_token is not None and (not isinstance(request_token,str) or not re.fullmatch(r'[a-zA-Z0-9_-]{32,128}',request_token)):raise ValueError('Invalid submission token')
+        request_hash=hashlib.sha256(request_token.encode()).hexdigest() if request_token else None
+        token=hmac.new(self.owner_key.encode(),('application-access-v1:'+request_token).encode(),hashlib.sha256).hexdigest() if request_token else secrets.token_urlsafe(32)
+        identifier=str(uuid.uuid4());created=datetime.now(timezone.utc).isoformat()
+        with self.connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            previous=db.execute('SELECT id,created,status,document,token FROM applications WHERE request_hash=?',(request_hash,)).fetchone() if request_hash else None
+            if previous:
+                if json.loads(previous[3])!=value or previous[4]!=hashlib.sha256(token.encode()).hexdigest():raise ValueError('Submission token already used for another application')
+                return {'id':previous[0],'created':previous[1],'status':previous[2],'accessKey':token}
+            db.execute('INSERT INTO applications(id,created,status,token,document,note,request_hash) VALUES(?,?,?,?,?,?,?)',(identifier,created,'pending',hashlib.sha256(token.encode()).hexdigest(),json.dumps(value),'',request_hash))
         return {'id':identifier,'accessKey':token,'status':'pending','created':created}
 
     def application(self, value):
@@ -358,9 +379,17 @@ class LunarHandler(SimpleHTTPRequestHandler):
                 root=self.server.root
                 base=(root.parent.parent/('lunar-'+parts[2])/'dist') if root.name=='dist' else root.parent/('lunar-'+parts[2])
                 target=(base/'/'.join(parts[3:])).resolve()
-                if base.is_dir() and target.is_relative_to(base.resolve()):return str(target)
+                if base.is_dir() and target.is_relative_to(base.resolve()) and not any(part.startswith('.') or part.endswith(('.key','.sqlite3','.sqlite3-wal','.sqlite3-shm')) for part in target.relative_to(base.resolve()).parts):return str(target)
             return str(self.server.root/'__unavailable_platform__')
-        return super().translate_path(path)
+        target=Path(super().translate_path(path)).resolve()
+        if not target.is_relative_to(self.server.root):return str(self.server.root/'__denied__')
+        parts=target.relative_to(self.server.root).parts
+        if any(part.startswith('.') or part.endswith(('.key','.sqlite3','.sqlite3-wal','.sqlite3-shm')) for part in parts):return str(self.server.root/'__denied__')
+        return str(target)
+
+    def list_directory(self, path):
+        self.send_error(404)
+        return None
 
     def log_message(self, format, *args):
         pass
@@ -395,9 +424,14 @@ class LunarHandler(SimpleHTTPRequestHandler):
         return json.loads(self.rfile.read(length))
 
     def require_owner(self):
-        if not self.allowed_origin() or not self.headers.get('X-Lunar-Owner','').isascii() or not secrets.compare_digest(self.headers.get('X-Lunar-Owner',''),self.server.store.owner_key):raise PermissionError('Owner key required')
+        if len(self.server.store.owner_key)<32 or not self.allowed_origin() or not self.headers.get('X-Lunar-Owner','').isascii() or not secrets.compare_digest(self.headers.get('X-Lunar-Owner',''),self.server.store.owner_key):raise PermissionError('Owner key required')
+
+    def do_HEAD(self):
+        if not self.allowed_origin():return self.json_response(403,{'error':'Use the local launcher'})
+        return super().do_HEAD()
 
     def do_GET(self):
+        if not self.allowed_origin():return self.json_response(403,{'error':'Use the local launcher'})
         route = urlsplit(self.path).path
         if route in ('/api/applications','/api/pricing'):
             try:
@@ -405,6 +439,9 @@ class LunarHandler(SimpleHTTPRequestHandler):
                 return self.json_response(200,{'applications':self.server.store.applications(),'estimates':self.server.store.commission_estimates()} if route=='/api/applications' else self.server.store.pricing())
             except PermissionError as error:return self.json_response(403,{'error':str(error)})
         if route in ('/api/content','/api/publisher','/api/briefs'):
+            if route!='/api/content':
+                try:self.require_owner()
+                except PermissionError as error:return self.json_response(403,{'error':str(error)})
             if not self.allowed_origin():return self.json_response(403, {'error':'Use the local launcher'})
             return self.json_response(200, {'briefs':self.server.store.briefs()} if route=='/api/briefs' else self.server.store.content(public=route=='/api/content'))
         if route == '/api/health':
@@ -448,7 +485,9 @@ class LunarHandler(SimpleHTTPRequestHandler):
             except PermissionError as error:return self.json_response(403,{'error':str(error)})
             except (ValueError,TypeError,KeyError,json.JSONDecodeError) as error:return self.json_response(400,{'error':str(error)})
         if urlsplit(self.path).path=='/api/publisher':
-            try:return self.json_response(200,self.server.store.save_content(self.read_json(262144)))
+            try:
+                self.require_owner()
+                return self.json_response(200,self.server.store.save_content(self.read_json(262144)))
             except PermissionError as error:return self.json_response(403,{'error':str(error)})
             except (ValueError,TypeError,json.JSONDecodeError) as error:return self.json_response(400,{'error':str(error)})
         self.mutate('settings')
@@ -458,7 +497,7 @@ class LunarHandler(SimpleHTTPRequestHandler):
         if route in ('/api/apply','/api/application-access','/api/estimate'):
             try:
                 value=self.read_json()
-                if route=='/api/apply':return self.json_response(201,self.server.store.create_application(value))
+                if route=='/api/apply':return self.json_response(201,self.server.store.create_application(value,self.headers.get('Idempotency-Key')))
                 if route=='/api/estimate':return self.json_response(201,self.server.store.estimate(value))
                 app=self.server.store.application(value);result={'application':app}
                 if app['status']=='accepted':result['pricing']=self.server.store.pricing()

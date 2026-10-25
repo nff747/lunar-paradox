@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-25",
+  "findings": [
+    {
+      "id": "LP-01",
+      "severity": "High",
+      "title": "Offline publisher has no owner authentication",
+      "state": "Reproduced locally",
+      "source": "offline-platforms/lunar_backend.py:408,450",
+      "proof": "GET /api/publisher returned the synthetic private draft; PUT /api/publisher with no owner key replaced the publisher document and returned 200.",
+      "impact": "A process or another local account able to reach the loopback port can read unpublished content and modify the public content snapshot served by the launcher. This is not a demonstrated remote Internet exploit.",
+      "fix": "Require require_owner() for GET and PUT publisher. Update local company.js to send the owner key rather than exempting localhost. Retain origin/Host checks as additional controls.",
+      "evidence": "local-exploits.json"
+    },
+    {
+      "id": "LP-02",
+      "severity": "High",
+      "title": "Offline briefs inbox exposes private enquiries without an owner key",
+      "state": "Reproduced locally",
+      "source": "offline-platforms/lunar_backend.py:408",
+      "proof": "An unauthenticated GET /api/briefs returned the synthetic private brief, including name, email, goal and budget fields.",
+      "impact": "Any caller able to access the loopback service can retrieve local commissioning enquiries. Normal remote websites are constrained by the existing origin/Host checks and browser same-origin policy.",
+      "fix": "Require owner authentication for the inbox; change the local UI to authenticate too. Test that public content remains readable while briefs and drafts do not.",
+      "evidence": "local-exploits.json"
+    },
+    {
+      "id": "LP-03",
+      "severity": "Medium",
+      "title": "Submission throttling trusts request IP headers without a proxy boundary",
+      "state": "Local handler bypass confirmed; live exploitability unproven",
+      "source": "api/[...path].js:89",
+      "proof": "Same socket and x-real-ip produced [201,201,201,201,201,429]. Changing x-real-ip produced seven further 201 responses against real disposable PostgreSQL.",
+      "impact": "A direct or incorrectly proxied deployment can evade application limits and generate spam or database costs. Vercel may replace these headers; that ingress behavior was not tested.",
+      "fix": "Define and verify the trusted hosting ingress, reject unsupported direct ingress, and use the hosting platform trusted client-address contract. Add a global submission budget and abuse controls so limits do not rely only on IP.",
+      "evidence": "hosted-local-probes.json"
+    },
+    {
+      "id": "LP-04",
+      "severity": "Medium",
+      "title": "Unauthenticated requests consume the valid owner request budget",
+      "state": "Reproduced locally",
+      "source": "api/[...path].js:190",
+      "proof": "120 anonymous owner-endpoint requests consumed the shared owner-api/IP window. A subsequent request with the correct owner key received 429.",
+      "impact": "A caller sharing the owner\u2019s egress IP can temporarily block the review/publishing desk; spoofable identity would expand the impact. No production flooding was performed.",
+      "fix": "Separate unauthenticated failure limits from authenticated owner traffic; retain a pre-auth abuse cap while applying a distinct authenticated principal budget.",
+      "evidence": "hosted-local-probes.json"
+    },
+    {
+      "id": "LP-05",
+      "severity": "Medium",
+      "title": "One long-lived owner key grants all administrative powers",
+      "state": "Design risk confirmed by source; no credential theft demonstrated",
+      "source": "api/[...path].js:77; offline-platforms/lunar-syzygy/company.js:8,59",
+      "proof": "Owner authentication uses a single environment secret with no user identity, role split or expiry. The publisher retains it in sessionStorage.",
+      "impact": "A stolen key grants review, pricing, publishing and deletion powers. Individual staff cannot be revoked independently; a same-origin script compromise could read the publisher key.",
+      "fix": "Use named admin identities, MFA, role-limited authorization, expiring server sessions in secure HttpOnly cookies, revocation and an audit trail. Add CSRF protection when introducing cookie authentication. Keep applicant access keys separate.",
+      "evidence": "Source review; not an exploit receipt"
+    },
+    {
+      "id": "LP-06",
+      "severity": "Low",
+      "title": "Offline static handler follows symlinks outside the public root",
+      "state": "Reproduced with synthetic marker",
+      "source": "offline-platforms/lunar_backend.py:353,363",
+      "proof": "A symlink placed in the temporary served directory pointed to an outside marker file; GET returned that marker with 200.",
+      "impact": "If a public-root symlink points to private data, that target is readable through the launcher. This requires an existing symlink or filesystem write access; no traversal to arbitrary host files was demonstrated.",
+      "fix": "Resolve every static target and enforce containment within an explicit public root. Deny private filenames and directory listings; test the cross-platform asset path separately.",
+      "evidence": "local-exploits.json"
+    },
+    {
+      "id": "LP-07",
+      "severity": "Low",
+      "title": "Public responses have no Content Security Policy",
+      "state": "Confirmed by read-only public response headers",
+      "source": "vercel.json headers",
+      "proof": "All three public origins returned no Content-Security-Policy header in sampled root and health responses. HSTS, nosniff and SAMEORIGIN were present.",
+      "impact": "There is less containment if an injection or compromised script is introduced. Missing CSP alone does not prove an XSS vulnerability.",
+      "fix": "Deploy a tested Report-Only policy first, then enforce a nonce/hash-based policy compatible with Three.js workers, shaders and assets. Include object-src, base-uri and frame-ancestors restrictions; do not break the current import map with an untested blanket policy.",
+      "evidence": "public-readonly.json"
+    },
+    {
+      "id": "LP-08",
+      "severity": "Medium",
+      "title": "Lock Review Desk can be undone by an in-flight response",
+      "state": "Reproduced in local and live UI using intercepted synthetic responses",
+      "source": "commissions.js:29\u201330; matching platform copies",
+      "proof": "Unlock, start a second review fetch, click Lock Review Desk, then release the delayed response. Synthetic private application data reappears in the locked desk.",
+      "impact": "Data already requested by an authorized operator can be redrawn after they deliberately lock the screen. This is a privacy/session-state race, not a demonstrated bypass of the production backend owner key. All live test API requests were intercepted; no real credentials or records were used.",
+      "fix": "Increment an owner session epoch on lock, abort outstanding owner requests and reject stale responses before touching DOM. Clear pricing/private UI state, and require a new successful authentication before rendering it again.",
+      "evidence": "owner-lock-race.json"
+    },
+    {
+      "id": "LP-09",
+      "severity": "Medium",
+      "title": "Empty existing offline owner key disables effective authentication",
+      "state": "Reproduced with a temporary empty key file",
+      "source": "offline-platforms/lunar_backend.py:107\u2013114,397",
+      "proof": "With an existing zero-byte commission-owner.key, startup proceeds and GET /api/applications without X-Lunar-Owner returns 200.",
+      "impact": "Requires an empty/whitespace owner-key file, for example after a failed initialization or manual edit. Normal freshly generated keys are not empty. The hosted API independently rejects short configured keys and is not implicated.",
+      "fix": "Validate minimum key strength on startup and again during authorization. Fail closed on invalid files and provide explicit repair/rotation instructions. Create/write the key atomically so interrupted initialization cannot leave a valid-looking empty file.",
+      "evidence": "empty-owner-key.json"
+    }
+  ]
+}

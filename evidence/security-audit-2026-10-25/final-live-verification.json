@@ -1,0 +1,63 @@
+{
+  "recordedAt": "2026-10-25T06:57:49.812452+00:00",
+  "deployment": "https://lunar-paradox-myo0uhy9f-nff747s-projects.vercel.app",
+  "rollbackDeployment": "https://lunar-paradox-o4bbo721p-nff747s-projects.vercel.app",
+  "checks": [
+    {
+      "check": "health",
+      "host": "lunarparadox.com",
+      "ready": true
+    },
+    {
+      "check": "health",
+      "host": "labs.lunarparadox.com",
+      "ready": true
+    },
+    {
+      "check": "health",
+      "host": "products.lunarparadox.com",
+      "ready": true
+    },
+    {
+      "check": "anonymous access denied",
+      "path": "/api/applications",
+      "status": 401
+    },
+    {
+      "check": "anonymous access denied",
+      "path": "/api/pricing",
+      "status": 401
+    },
+    {
+      "check": "anonymous access denied",
+      "path": "/api/publisher",
+      "status": 401
+    },
+    {
+      "check": "anonymous access denied",
+      "path": "/api/briefs",
+      "status": 401
+    },
+    {
+      "check": "anonymous access denied",
+      "path": "/api/admin/session",
+      "status": 401
+    },
+    {
+      "check": "legacy production owner key rejected",
+      "status": 401
+    },
+    {
+      "check": "real named password accepted; MFA still required before admin session",
+      "status": 200
+    },
+    {
+      "check": "production CSP present and www permanently redirects",
+      "passed": true
+    }
+  ],
+  "mfaEnrollmentOnOwnersDevicePending": true,
+  "noRealApplicantDataReadOrModified": true,
+  "productionBackupScheduleNotConfigured": true,
+  "productionRetentionDeletionNotEnabled": true
+}

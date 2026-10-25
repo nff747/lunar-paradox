@@ -1,0 +1,19 @@
+{
+  "syntheticResponses": true,
+  "results": [
+    {
+      "surface": "applications",
+      "executed": false,
+      "injectedElements": 0,
+      "literalMarker": true,
+      "passed": true
+    },
+    {
+      "surface": "estimate",
+      "executed": false,
+      "injectedElements": 0,
+      "literalMarker": true,
+      "passed": true
+    }
+  ]
+}

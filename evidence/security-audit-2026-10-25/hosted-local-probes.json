@@ -1,0 +1,87 @@
+{
+  "scope": "Local handler, real disposable PostgreSQL, no production requests",
+  "recordedAt": "2026-10-25T05:02:56.105Z",
+  "results": [
+    {
+      "check": "anonymous applications",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "check": "anonymous pricing",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "check": "anonymous publisher",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "check": "anonymous briefs",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "check": "wrong key",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "check": "unknown ID",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "check": "pending estimate gate",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "check": "cross origin mutation",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "check": "body size cap",
+      "status": 413,
+      "passed": true
+    },
+    {
+      "check": "IP header trust: same socket bypasses submission limit",
+      "fixedHeaderStatuses": [
+        201,
+        201,
+        201,
+        201,
+        201,
+        429
+      ],
+      "changedHeaderStatuses": [
+        201,
+        201,
+        201,
+        201,
+        201,
+        201,
+        201
+      ],
+      "confirmedLocalHandler": true,
+      "liveIngressNotTested": true
+    },
+    {
+      "check": "anonymous requests exhaust shared owner budget; valid owner then blocked",
+      "unauthenticatedRequests": 120,
+      "validOwnerStatus": 429
+    },
+    {
+      "check": "all API tables have RLS and anon cannot SELECT",
+      "tables": 7,
+      "passed": true
+    },
+    {
+      "check": "application access secrets not stored plaintext",
+      "passed": true
+    }
+  ]
+}

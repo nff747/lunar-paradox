@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-10-25T06:47:43.849Z",
+  "scope": "Disposable loopback PostgreSQL; sessions seeded, real Supabase MFA not claimed",
+  "checks": [
+    "valid named session reads private records",
+    "cookie mutation without CSRF is denied",
+    "matching session plus CSRF authorizes mutation",
+    "anonymous failures cannot exhaust authenticated owner budget",
+    "rotating direct caller proxy headers does not evade submission limits",
+    "administrator roles restrict private operations",
+    "logout revokes server session and expires cookies",
+    "administrative attempts and successful mutations produce audit records"
+  ]
+}

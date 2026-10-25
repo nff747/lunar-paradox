@@ -1,0 +1,8 @@
+{
+  "deployment": "https://lunar-paradox-bqbeidbf7-nff747s-projects.vercel.app",
+  "passwordStepStatus": 200,
+  "verifiedNamedAccount": true,
+  "mfaEnrollmentRequired": true,
+  "administratorSessionNotIssuedBeforeMfa": true,
+  "recordedAt": "2026-10-25"
+}

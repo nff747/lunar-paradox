@@ -1,0 +1,9 @@
+{
+  "recordedAt": "2026-10-25T06:44:05.129Z",
+  "isolatedContainer": "lunar-security-test",
+  "encryptedBackup": true,
+  "restoredMarkerMatched": true,
+  "tamperingRejected": true,
+  "backupSha256": "927418e9b184af504ab4f63a1d7956dab024ae46c5fd5e0ca37080601ff0356b",
+  "productionBackupNotClaimed": true
+}

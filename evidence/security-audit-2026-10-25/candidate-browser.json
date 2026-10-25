@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-25T06:55:43.561Z",
+  "deployment": "https://lunar-paradox-myo0uhy9f-nff747s-projects.vercel.app",
+  "results": [
+    {
+      "scene": "syzygy",
+      "path": "/",
+      "cspEnforced": true,
+      "rendered": true,
+      "canonical": "https://lunarparadox.com/",
+      "errors": [],
+      "policyBlocks": [],
+      "failed": []
+    },
+    {
+      "reviewDeskUsesMfa": true,
+      "cancelledWithoutCredentials": true
+    },
+    {
+      "scene": "gravity",
+      "path": "/labs/",
+      "cspEnforced": true,
+      "rendered": true,
+      "canonical": "https://labs.lunarparadox.com/",
+      "errors": [],
+      "policyBlocks": [],
+      "failed": []
+    },
+    {
+      "scene": "astrolabe",
+      "path": "/products/",
+      "cspEnforced": true,
+      "rendered": true,
+      "canonical": "https://products.lunarparadox.com/",
+      "errors": [],
+      "policyBlocks": [],
+      "failed": []
+    }
+  ]
+}

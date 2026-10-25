@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {clientAddress} from '../lib/request-security.js';import {allowedAdmin,adminRoles,verifiedIdentity,AdminAuthError} from '../lib/admin-auth.js';
+test('direct callers cannot change rate identity using proxy headers',()=>{const req={headers:{'x-real-ip':'1.1.1.1','x-forwarded-for':'2.2.2.2','x-vercel-forwarded-for':'3.3.3.3'},socket:{remoteAddress:'127.0.0.1'}};assert.equal(clientAddress(req,{}),'127.0.0.1');assert.equal(clientAddress(req,{VERCEL:'1'}),'3.3.3.3');req.headers['x-vercel-forwarded-for']='4.4.4.4,5.5.5.5';assert.equal(clientAddress(req,{VERCEL:'1'}),'127.0.0.1');});
+test('only the approved administrator has default privileged roles',()=>{assert(allowedAdmin('hello@lunarparadox.com'));assert(!allowedAdmin('attacker@example.test'));assert(adminRoles('hello@lunarparadox.com').includes('delete'));assert.deepEqual(adminRoles('attacker@example.test'),[]);});
+test('MFA exchange requires provider verification, confirmed identity and valid AAL2 claims',async()=>{
+ const oldFetch=globalThis.fetch,oldUrl=process.env.SUPABASE_URL,oldKey=process.env.SUPABASE_ANON_KEY;process.env.SUPABASE_URL='https://audit-fixture.supabase.co';process.env.SUPABASE_ANON_KEY='public-test-key';
+ const user={id:'123e4567-e89b-42d3-a456-426614174000',email:'hello@lunarparadox.com',email_confirmed_at:'2026-10-25'};let accepted=true;
+ globalThis.fetch=async()=>({ok:accepted,json:async()=>user});
+ const claims={sub:user.id,iss:process.env.SUPABASE_URL+'/auth/v1',aud:'authenticated',exp:Math.floor(Date.now()/1000)+600,aal:'aal2'};const token=c=>'x.'+Buffer.from(JSON.stringify(c)).toString('base64url')+'.x';
+ try{assert.equal((await verifiedIdentity(token(claims),{mfa:true})).user.email,user.email);await assert.rejects(verifiedIdentity(token({...claims,aal:'aal1'}),{mfa:true}),AdminAuthError);await assert.rejects(verifiedIdentity(token({...claims,exp:0}),{mfa:true}),AdminAuthError);accepted=false;await assert.rejects(verifiedIdentity(token(claims),{mfa:true}),AdminAuthError);}finally{globalThis.fetch=oldFetch;if(oldUrl===undefined)delete process.env.SUPABASE_URL;else process.env.SUPABASE_URL=oldUrl;if(oldKey===undefined)delete process.env.SUPABASE_ANON_KEY;else process.env.SUPABASE_ANON_KEY=oldKey;}
+});

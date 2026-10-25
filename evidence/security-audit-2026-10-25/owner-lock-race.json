@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-10-25T06:27:49.938Z",
+  "results": [
+    {
+      "mode": "local",
+      "requestsIntercepted": true,
+      "hiddenImmediatelyAfterLock": true,
+      "privateDataReappearedAfterLock": true,
+      "realCredentialsOrRecordsUsed": false
+    },
+    {
+      "mode": "live",
+      "requestsIntercepted": true,
+      "hiddenImmediatelyAfterLock": true,
+      "privateDataReappearedAfterLock": true,
+      "realCredentialsOrRecordsUsed": false
+    }
+  ]
+}

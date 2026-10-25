@@ -1,0 +1,104 @@
+[
+  {
+    "host": "lunarparadox.com",
+    "route": "/",
+    "status": 200,
+    "headers": {
+      "content-security-policy": null,
+      "strict-transport-security": "max-age=63072000",
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "cache-control": "public, max-age=0, must-revalidate"
+    },
+    "scene": null
+  },
+  {
+    "host": "lunarparadox.com",
+    "route": "/api/health",
+    "status": 200,
+    "headers": {
+      "content-security-policy": null,
+      "strict-transport-security": "max-age=63072000",
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "cache-control": "no-store, max-age=0"
+    },
+    "scene": null
+  },
+  {
+    "host": "labs.lunarparadox.com",
+    "route": "/",
+    "status": 200,
+    "headers": {
+      "content-security-policy": null,
+      "strict-transport-security": "max-age=63072000",
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "cache-control": "public, max-age=0, must-revalidate"
+    },
+    "scene": null
+  },
+  {
+    "host": "labs.lunarparadox.com",
+    "route": "/api/health",
+    "status": 200,
+    "headers": {
+      "content-security-policy": null,
+      "strict-transport-security": "max-age=63072000",
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "cache-control": "no-store, max-age=0"
+    },
+    "scene": null
+  },
+  {
+    "host": "products.lunarparadox.com",
+    "route": "/",
+    "status": 200,
+    "headers": {
+      "content-security-policy": null,
+      "strict-transport-security": "max-age=63072000",
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "cache-control": "public, max-age=0, must-revalidate"
+    },
+    "scene": null
+  },
+  {
+    "host": "products.lunarparadox.com",
+    "route": "/api/health",
+    "status": 200,
+    "headers": {
+      "content-security-policy": null,
+      "strict-transport-security": "max-age=63072000",
+      "x-frame-options": "SAMEORIGIN",
+      "x-content-type-options": "nosniff",
+      "cache-control": "no-store, max-age=0"
+    },
+    "scene": null
+  },
+  {
+    "host": "lunarparadox.com",
+    "route": "/api/applications",
+    "status": "401",
+    "noCredentialsSent": true
+  },
+  {
+    "host": "lunarparadox.com",
+    "route": "/api/pricing",
+    "status": "401",
+    "noCredentialsSent": true
+  },
+  {
+    "host": "lunarparadox.com",
+    "route": "/api/publisher",
+    "status": "401",
+    "noCredentialsSent": true
+  },
+  {
+    "host": "lunarparadox.com",
+    "route": "/api/briefs",
+    "status": "401",
+    "noCredentialsSent": true
+  }
+]

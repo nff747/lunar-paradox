@@ -37,7 +37,7 @@ try{
  const brief=await call('briefs','POST',{name:'Test',email:'verification@example.test',type:'research',goal:'Disposable test',timing:'',budget:''});assert.equal(brief.status,201);assert.equal((await call('briefs','GET',undefined,true)).body.briefs.length,1);assert.equal((await call('briefs/'+brief.body.id,'DELETE',undefined,true)).status,200);check('brief persistence and owner-only deletion');
  assert.equal((await call('applications/'+credentials.id,'DELETE',undefined,true)).status,200);assert.equal(Number((await db.query('SELECT count(*) FROM lunar_estimates')).rows[0].count),0);check('application deletion cascades to estimates');
  const security=await db.query("SELECT c.relname,c.relrowsecurity,has_table_privilege('anon',c.oid,'SELECT') AS can_read,has_table_privilege('authenticated',c.oid,'INSERT') AS can_write FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relname LIKE 'lunar_%' AND c.relkind='r'");
- assert.equal(security.rows.length,7);assert(security.rows.every(r=>r.relrowsecurity&&!r.can_read&&!r.can_write));check('all seven API tables deny browser roles and enable RLS');
+ assert.equal(security.rows.length,9);assert(security.rows.every(r=>r.relrowsecurity&&!r.can_read&&!r.can_write));check('all nine API tables deny browser roles and enable RLS');
  const retryBody={name:'Retry verification',email:'retry@example.test',type:'commission',goal:'Disposable retry test',timing:'',budget:''};
  const retry=await Promise.all([call('apply','POST',retryBody,false,'r'.repeat(40)),call('apply','POST',retryBody,false,'r'.repeat(40))]);
  assert(retry.every(r=>r.status===201));assert.equal(retry[0].body.id,retry[1].body.id);assert.equal(retry[0].body.accessKey,retry[1].body.accessKey);

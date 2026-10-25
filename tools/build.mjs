@@ -1,3 +1,4 @@
+import {updateContentSecurity} from './content-security.mjs';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
@@ -64,6 +65,7 @@ if(!selected||selected==='syzygy'){
   await fs.writeFile(path.join(hostedRoot,'studio.html'),studioHtml);
   for(const file of ['robots.txt','sitemap.xml'])await fs.copyFile(path.join(root,file),path.join(hostedRoot,file));
 }
+await updateContentSecurity(root);
 await fs.mkdir(path.join(root,'build'),{recursive:true});
 await fs.writeFile(path.join(root,'build','manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 console.log(JSON.stringify(manifest,null,2));

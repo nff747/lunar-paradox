@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-10-25T06:49:58.050Z",
+  "results": [
+    {
+      "scene": "syzygy",
+      "cspEnforced": true,
+      "rendered": true,
+      "pageErrors": [],
+      "policyBlocks": []
+    },
+    {
+      "mfaBrowserFlow": "synthetic provider responses only",
+      "passwordAndIdentityTokensStored": false
+    },
+    {
+      "scene": "gravity",
+      "cspEnforced": true,
+      "rendered": true,
+      "pageErrors": [],
+      "policyBlocks": []
+    },
+    {
+      "scene": "astrolabe",
+      "cspEnforced": true,
+      "rendered": true,
+      "pageErrors": [],
+      "policyBlocks": []
+    },
+    {
+      "gravityWebglFailureCaught": true,
+      "accessibleRecoveryMessage": true
+    }
+  ]
+}

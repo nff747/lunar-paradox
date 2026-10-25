@@ -1,0 +1,268 @@
+{
+  "recordedAt": "2026-10-25T06:56:44.421955+00:00",
+  "scope": "Sequential read-only GET/HEAD; no authentication, writes, flooding or third-party targets",
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "location": null,
+      "bytes": 85646,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "title": [
+        "Lunar Paradox \u2014 Applied Technology Studio"
+      ],
+      "canonical": [
+        "<link rel=\"canonical\" href=\"https://lunarparadox.com/\">"
+      ],
+      "robots": [
+        "<meta name=\"robots\" content=\"index,follow\">"
+      ],
+      "scriptPaths": [
+        "./supabase-client.js?v=3c5c160f458b",
+        "./firebase-config.js?v=3c5c160f458b",
+        "./published-content.js?v=3c5c160f458b",
+        "./admin-client.js?v=3c5c160f458b",
+        "./commissions.js?v=3c5c160f458b",
+        "./company.js?v=3c5c160f458b",
+        "./experience.js?v=3c5c160f458b",
+        "./session-client.js?v=3c5c160f458b"
+      ]
+    },
+    {
+      "path": "/studio",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "location": null,
+      "bytes": 85592,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "title": [
+        "Studio \u2014 Lunar Paradox"
+      ],
+      "canonical": [
+        "<link rel=\"canonical\" href=\"https://lunarparadox.com/studio\">"
+      ],
+      "robots": [
+        "<meta name=\"robots\" content=\"index,follow\">"
+      ],
+      "scriptPaths": [
+        "./supabase-client.js?v=3c5c160f458b",
+        "./firebase-config.js?v=3c5c160f458b",
+        "./published-content.js?v=3c5c160f458b",
+        "./admin-client.js?v=3c5c160f458b",
+        "./commissions.js?v=3c5c160f458b",
+        "./company.js?v=3c5c160f458b",
+        "./experience.js?v=3c5c160f458b",
+        "./session-client.js?v=3c5c160f458b"
+      ]
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 118,
+      "cacheControl": "public, max-age=14400, must-revalidate",
+      "csp": null,
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "publicContent": "User-agent: *\nAllow: /\nDisallow: /offline-platforms/\nDisallow: /build/\n\nSitemap: https://lunarparadox.com/sitemap.xml\n"
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "contentType": "application/xml",
+      "location": null,
+      "bytes": 216,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "publicContent": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>https://lunarparadox.com/</loc></url>\n  <url><loc>https://lunarparadox.com/studio</loc></url>\n</urlset>\n"
+    },
+    {
+      "path": "/.env",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 79,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/.env.local",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 79,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/.git/config",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 79,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/package.json",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 79,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/.lunar-data/production-owner.key",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 79,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/offline-platforms/.lunar-data/sessions.sqlite3",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 79,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/api/not-a-real-route",
+      "status": 404,
+      "contentType": "application/json; charset=utf-8",
+      "location": null,
+      "bytes": 30,
+      "cacheControl": "no-store, max-age=0",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/not-a-real-page-security-check",
+      "status": 404,
+      "contentType": "text/plain; charset=utf-8",
+      "location": null,
+      "bytes": 79,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": "default-src 'self'; script-src 'self' blob: 'sha256-61jmFeGADcXWpB9OwLOmVsOfjUEyAOsOB42z0OYNHnw=' 'sha256-LUWHc7kp5xXG7gIX0kdqEGzkPC2aRDhyvFDLpTxPPbU=' 'sha256-S4CVmWQkNCYuOQlidkJkHR03V4j5fSAEwPyAMCHmbkA=' 'sha256-SOsKqbWXXxBExwTvAQqibrqD8U7vg+S4dGjRq+67AMU=' 'sha256-rn32tCG3UFkI+k4LEal+SpHjGcbZ11ZYbmjvvH4qnvQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests",
+      "frameOptions": "SAMEORIGIN",
+      "nosniff": "nosniff",
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/index.html",
+      "status": 308,
+      "contentType": "text/plain",
+      "location": "/",
+      "bytes": 15,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": null,
+      "frameOptions": null,
+      "nosniff": null,
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/gravity",
+      "status": 308,
+      "contentType": "text/plain",
+      "location": "/labs",
+      "bytes": 15,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": null,
+      "frameOptions": null,
+      "nosniff": null,
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "path": "/astrolabe",
+      "status": 308,
+      "contentType": "text/plain",
+      "location": "/products",
+      "bytes": 15,
+      "cacheControl": "public, max-age=0, must-revalidate",
+      "csp": null,
+      "frameOptions": null,
+      "nosniff": null,
+      "hsts": "max-age=63072000",
+      "looksLikeHtml": false,
+      "sensitiveFileSignature": false
+    },
+    {
+      "url": "http://lunarparadox.com/",
+      "status": "308",
+      "location": "https://lunarparadox.com/"
+    },
+    {
+      "url": "https://www.lunarparadox.com/",
+      "status": "308",
+      "location": "https://lunarparadox.com/"
+    },
+    {
+      "url": "https://labs.lunarparadox.com/labs",
+      "status": "308",
+      "location": "/"
+    },
+    {
+      "url": "https://products.lunarparadox.com/products",
+      "status": "308",
+      "location": "/"
+    }
+  ]
+}
