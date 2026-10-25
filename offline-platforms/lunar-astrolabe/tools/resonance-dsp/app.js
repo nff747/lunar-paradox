@@ -31,8 +31,14 @@ const valFilterQ = document.getElementById('val-filter-q');
 const paramLfoRate = document.getElementById('param-lfo-rate');
 const valLfoRate = document.getElementById('val-lfo-rate');
 
-// Presets
-const presetButtons = document.querySelectorAll('.btn-preset');
+// Additional DOM Elements for Patches & Stereo Widener
+const paramStereoSpread = document.getElementById('param-stereo-spread');
+const valStereoStatus = document.getElementById('val-stereo-status');
+const btnSavePatch = document.getElementById('btn-save-patch');
+const btnExportPatches = document.getElementById('btn-export-patches');
+const btnImportPatches = document.getElementById('btn-import-patches');
+const patchFileInput = document.getElementById('patch-file-input');
+const presetsContainer = document.getElementById('presets-container');
 
 // State
 let isPlaying = false;
@@ -64,6 +70,14 @@ let binGain = null;
 
 let noiseNode = null;
 let noiseGain = null;
+
+// Stereo Widening / Phase Matrix Nodes
+let stereoSplitter = null;
+let stereoMerger = null;
+let widenerDelay = null;
+let dryGainL = null;
+let dryGainR = null;
+let wetGainR = null;
 
 let analyserL = null;
 let analyserR = null;
@@ -178,19 +192,45 @@ function initAudio() {
   noiseGain.connect(mainFilter);
   noiseNode.start();
 
-  // Visualizer Splitter & Analysers
+  // Stereo Widener Stage (Haas acoustic phase decorrelation)
+  // Splits filter output into L & R, passes R through a micro 12ms delay to open stereo field
+  stereoSplitter = audioCtx.createChannelSplitter(2);
+  stereoMerger = audioCtx.createChannelMerger(2);
+  widenerDelay = audioCtx.createDelay(0.05);
+  widenerDelay.delayTime.setValueAtTime(0.012, audioCtx.currentTime); // 12ms phase offset
+  
+  dryGainL = audioCtx.createGain();
+  dryGainR = audioCtx.createGain();
+  wetGainR = audioCtx.createGain();
+  
+  const isWidenerOn = paramStereoSpread ? paramStereoSpread.checked : true;
+  dryGainL.gain.setValueAtTime(1.0, audioCtx.currentTime);
+  dryGainR.gain.setValueAtTime(isWidenerOn ? 0.2 : 1.0, audioCtx.currentTime);
+  wetGainR.gain.setValueAtTime(isWidenerOn ? 0.8 : 0.0, audioCtx.currentTime);
+
+  mainFilter.connect(stereoSplitter);
+  stereoSplitter.connect(dryGainL, 0);
+  stereoSplitter.connect(dryGainR, 1);
+  stereoSplitter.connect(widenerDelay, 1);
+  widenerDelay.connect(wetGainR);
+
+  dryGainL.connect(stereoMerger, 0, 0); // Left channel
+  dryGainR.connect(stereoMerger, 0, 1); // Right channel (dry)
+  wetGainR.connect(stereoMerger, 0, 1); // Right channel (delayed phase)
+
+  // Visualizer Splitter & Analysers tap from stereoMerger
   splitter = audioCtx.createChannelSplitter(2);
   analyserL = audioCtx.createAnalyser();
   analyserR = audioCtx.createAnalyser();
   analyserL.fftSize = 1024;
   analyserR.fftSize = 1024;
 
-  mainFilter.connect(splitter);
+  stereoMerger.connect(splitter);
   splitter.connect(analyserL, 0);
   splitter.connect(analyserR, 1);
 
-  // Connect filter into limiter -> masterGain -> destination
-  mainFilter.connect(limiter);
+  // Connect stereo stage into limiter -> masterGain -> destination
+  stereoMerger.connect(limiter);
   limiter.connect(masterGain);
   masterGain.connect(audioCtx.destination);
 
@@ -210,6 +250,19 @@ function initAudio() {
   };
   masterGain.connect(recorderNode);
   recorderNode.connect(audioCtx.destination);
+}
+
+// Stereo Widener Toggle
+if (paramStereoSpread) {
+  paramStereoSpread.addEventListener('change', (e) => {
+    const enabled = e.target.checked;
+    valStereoStatus.textContent = enabled ? 'STEREO WIDENER ON' : 'STEREO WIDENER OFF';
+    valStereoStatus.style.color = enabled ? 'var(--accent-cyan)' : 'var(--text-muted)';
+    if (audioCtx && dryGainR && wetGainR) {
+      dryGainR.gain.setTargetAtTime(enabled ? 0.2 : 1.0, audioCtx.currentTime, 0.02);
+      wetGainR.gain.setTargetAtTime(enabled ? 0.8 : 0.0, audioCtx.currentTime, 0.02);
+    }
+  });
 }
 
 // -------------------------------------------------------------
@@ -299,34 +352,64 @@ paramLfoRate.addEventListener('input', (e) => {
 });
 
 // -------------------------------------------------------------
-// PRESETS
+// PRESETS & PATCH MANAGER (Local Storage & JSON Export/Import)
 // -------------------------------------------------------------
-const presets = {
+const defaultPresets = {
   mare: {
+    name: 'Mare Tranquillitatis',
     f1: 55, w1: 'sine', ratio: 1.5, w2: 'triangle',
     beat: '4.5', binGain: 0.3, noiseGain: 0.12, cutoff: 420, q: 4.5, lfo: 0.12
   },
   solar: {
+    name: 'Solar Wind Flare',
     f1: 110, w1: 'sawtooth', ratio: 2.0, w2: 'sine',
     beat: '10.0', binGain: 0.25, noiseGain: 0.25, cutoff: 1600, q: 8.0, lfo: 0.45
   },
   pulsar: {
+    name: 'Neutron Pulsar',
     f1: 42, w1: 'triangle', ratio: 3.0, w2: 'sawtooth',
     beat: '2.0', binGain: 0.4, noiseGain: 0.08, cutoff: 280, q: 11.0, lfo: 1.2
   },
   void: {
+    name: 'Deep Void Stasis',
     f1: 65, w1: 'sine', ratio: 2.0, w2: 'sine',
     beat: '4.5', binGain: 0.35, noiseGain: 0.05, cutoff: 650, q: 2.0, lfo: 0.05
   }
 };
 
-presetButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    presetButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyPreset(presets[btn.dataset.preset]);
+let activePatches = { ...defaultPresets };
+
+function loadCustomPatches() {
+  try {
+    const saved = localStorage.getItem('lunar_dsp_patches');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      activePatches = { ...defaultPresets, ...parsed };
+    }
+  } catch (err) {
+    console.warn('Failed to load local patches', err);
+  }
+  renderPresetButtons();
+}
+
+function renderPresetButtons() {
+  if (!presetsContainer) return;
+  presetsContainer.innerHTML = '';
+  Object.keys(activePatches).forEach((key, idx) => {
+    const p = activePatches[key];
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `btn-preset ${idx === 0 ? 'active' : ''}`;
+    btn.dataset.preset = key;
+    btn.textContent = p.name || key;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyPreset(p);
+    });
+    presetsContainer.appendChild(btn);
   });
-});
+}
 
 function applyPreset(p) {
   paramOsc1Freq.value = p.f1;
@@ -351,6 +434,70 @@ function applyPreset(p) {
   }
 }
 
+if (btnSavePatch) {
+  btnSavePatch.addEventListener('click', () => {
+    const patchName = prompt('Enter a name for this custom sound patch:', `Patch ${Object.keys(activePatches).length + 1}`);
+    if (!patchName) return;
+    const id = `custom_${Date.now()}`;
+    activePatches[id] = {
+      name: patchName,
+      f1: parseFloat(paramOsc1Freq.value),
+      w1: paramOsc1Wave.value,
+      ratio: parseFloat(paramOsc2Ratio.value),
+      w2: paramOsc2Wave.value,
+      beat: paramBinauralPreset.value,
+      binGain: parseFloat(paramBinauralGain.value),
+      noiseGain: parseFloat(paramNoiseGain.value),
+      cutoff: parseFloat(paramFilterCutoff.value),
+      q: parseFloat(paramFilterQ.value),
+      lfo: parseFloat(paramLfoRate.value)
+    };
+    try {
+      localStorage.setItem('lunar_dsp_patches', JSON.stringify(activePatches));
+    } catch (e) {}
+    renderPresetButtons();
+    const newBtn = presetsContainer.querySelector(`[data-preset="${id}"]`);
+    if (newBtn) {
+      document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+      newBtn.classList.add('active');
+    }
+  });
+}
+
+if (btnExportPatches) {
+  btnExportPatches.addEventListener('click', () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(activePatches, null, 2));
+    const a = document.createElement('a');
+    a.href = dataStr;
+    a.download = `lunar_sound_patches_${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  });
+}
+
+if (btnImportPatches && patchFileInput) {
+  btnImportPatches.addEventListener('click', () => patchFileInput.click());
+  patchFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const imported = JSON.parse(event.target.result);
+        activePatches = { ...activePatches, ...imported };
+        localStorage.setItem('lunar_dsp_patches', JSON.stringify(activePatches));
+        renderPresetButtons();
+      } catch (err) {
+        alert('Invalid JSON patch file.');
+      }
+    };
+    reader.readAsText(file);
+  });
+}
+
+loadCustomPatches();
+
 // -------------------------------------------------------------
 // VISUALIZERS (Lissajous & FFT Spectrum)
 // -------------------------------------------------------------
@@ -370,6 +517,10 @@ const timeDataL = new Float32Array(512);
 const timeDataR = new Float32Array(512);
 const freqData = new Uint8Array(256);
 
+// Multi-trace phosphor decay history buffer
+const PHOSPHOR_TRACE_COUNT = 4;
+const traceHistory = [];
+
 function drawVisualizers() {
   requestAnimationFrame(drawVisualizers);
 
@@ -378,29 +529,45 @@ function drawVisualizers() {
   const wS = canvasSpectrum.width;
   const hS = canvasSpectrum.height;
 
-  // 1. Lissajous Scope (X=Left, Y=Right)
-  ctxLissajous.fillStyle = 'rgba(7, 9, 14, 0.25)';
+  // 1. Lissajous Scope (X=Left, Y=Right) with Phosphor Decay
+  ctxLissajous.fillStyle = 'rgba(7, 9, 14, 0.35)';
   ctxLissajous.fillRect(0, 0, wL, hL);
 
   if (analyserL && analyserR && isPlaying) {
     analyserL.getFloatTimeDomainData(timeDataL);
     analyserR.getFloatTimeDomainData(timeDataR);
 
-    ctxLissajous.strokeStyle = '#38bdf8';
-    ctxLissajous.lineWidth = 1.5 * window.devicePixelRatio;
-    ctxLissajous.beginPath();
+    // Push snapshot into phosphor trace history
+    traceHistory.unshift({
+      l: new Float32Array(timeDataL),
+      r: new Float32Array(timeDataR)
+    });
+    if (traceHistory.length > PHOSPHOR_TRACE_COUNT) {
+      traceHistory.pop();
+    }
 
     const cx = wL / 2;
     const cy = hL / 2;
     const scale = Math.min(wL, hL) * 0.42;
 
-    for (let i = 0; i < timeDataL.length; i++) {
-      const x = cx + timeDataL[i] * scale;
-      const y = cy - timeDataR[i] * scale;
-      if (i === 0) ctxLissajous.moveTo(x, y);
-      else ctxLissajous.lineTo(x, y);
+    // Render historical phosphor trails back to front
+    for (let t = traceHistory.length - 1; t >= 0; t--) {
+      const trace = traceHistory[t];
+      const isLead = (t === 0);
+      const alpha = isLead ? 0.95 : (0.28 / (t + 1));
+      
+      ctxLissajous.strokeStyle = isLead ? '#38bdf8' : `rgba(56, 189, 248, ${alpha.toFixed(2)})`;
+      ctxLissajous.lineWidth = (isLead ? 1.75 : 1.0) * window.devicePixelRatio;
+      ctxLissajous.beginPath();
+
+      for (let i = 0; i < trace.l.length; i++) {
+        const x = cx + trace.l[i] * scale;
+        const y = cy - trace.r[i] * scale;
+        if (i === 0) ctxLissajous.moveTo(x, y);
+        else ctxLissajous.lineTo(x, y);
+      }
+      ctxLissajous.stroke();
     }
-    ctxLissajous.stroke();
   } else {
     // Subtle resting circle
     ctxLissajous.strokeStyle = '#1e293b';

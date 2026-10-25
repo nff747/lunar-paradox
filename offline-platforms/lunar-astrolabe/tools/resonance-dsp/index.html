@@ -37,14 +37,37 @@
         </div>
       </div>
 
-      <!-- Presets -->
+      <!-- Presets & Custom Patches -->
       <section class="section-group">
-        <div class="section-title">Celestial Presets</div>
-        <div class="presets-grid">
+        <div class="section-title">
+          <span>Patch Bank</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn-tiny" id="btn-save-patch" title="Save current settings as custom preset">Save</button>
+            <button type="button" class="btn-tiny" id="btn-export-patches" title="Export all presets as JSON">Export</button>
+            <button type="button" class="btn-tiny" id="btn-import-patches" title="Import presets JSON">Import</button>
+            <input type="file" id="patch-file-input" accept=".json" style="display:none;">
+          </div>
+        </div>
+        <div class="presets-grid" id="presets-container">
           <button type="button" class="btn-preset active" data-preset="mare">Mare Tranquillitatis</button>
           <button type="button" class="btn-preset" data-preset="solar">Solar Wind Flare</button>
           <button type="button" class="btn-preset" data-preset="pulsar">Neutron Pulsar</button>
           <button type="button" class="btn-preset" data-preset="void">Deep Void Stasis</button>
+        </div>
+      </section>
+
+      <!-- Stereo Field & Spatial Matrix -->
+      <section class="section-group">
+        <div class="section-title">
+          <span>Spatial Phase Matrix</span>
+          <span id="val-stereo-status" style="color:var(--accent-cyan); font-size:10px;">STEREO WIDENER ON</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; font-family:var(--font-mono); color:var(--text-muted);">Stereo Phase Spread</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="param-stereo-spread" checked>
+            <span class="toggle-slider"></span>
+          </label>
         </div>
       </section>
 

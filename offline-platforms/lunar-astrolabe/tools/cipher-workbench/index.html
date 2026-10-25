@@ -89,7 +89,10 @@
         <div class="card">
           <div class="card-header">
             <span>Public Key</span>
-            <button type="button" class="btn-secondary" id="btn-copy-public" style="padding: 4px 10px; font-size: 11px;">Copy</button>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="btn-secondary" id="btn-qr-public" style="padding: 4px 10px; font-size: 11px;">Air-Gap QR</button>
+              <button type="button" class="btn-secondary" id="btn-copy-public" style="padding: 4px 10px; font-size: 11px;">Copy</button>
+            </div>
           </div>
           <div class="key-box" id="output-public-key">Click "Generate Keypair" to initialize...</div>
           <button type="button" class="btn-secondary" id="btn-download-public">⤓ Download Public Key (.pub)</button>
@@ -102,6 +105,20 @@
           </div>
           <div class="key-box" id="output-private-key" style="color: #fca5a5;">Click "Generate Keypair" to initialize...</div>
           <button type="button" class="btn-secondary" id="btn-download-private">⤓ Download Private Key (.pem)</button>
+        </div>
+      </div>
+
+      <!-- Air-Gap QR Modal (Inline pure DOM) -->
+      <div id="qr-modal" class="qr-modal" style="display:none;">
+        <div class="qr-dialog">
+          <div class="card-header" style="margin-bottom:12px;">
+            <span>Optical Air-Gap Handoff (Key Fingerprint)</span>
+            <button type="button" id="btn-close-qr" class="btn-secondary" style="padding:2px 8px;">✕</button>
+          </div>
+          <div id="qr-canvas-container" style="display:flex; justify-content:center; padding:16px; background:#fff; border-radius:6px;">
+            <canvas id="qr-canvas" width="200" height="200"></canvas>
+          </div>
+          <div id="qr-meta-text" style="margin-top:10px; font-family:var(--font-mono); font-size:11px; text-align:center; color:var(--text-muted); word-break:break-all;"></div>
         </div>
       </div>
     </section>
@@ -164,6 +181,15 @@
           </div>
         </div>
         <textarea id="cipher-output-text" readonly placeholder="Encrypted payload or decrypted plaintext will appear here..." style="font-size: 11px; font-family: var(--font-mono);"></textarea>
+
+        <!-- Air-Gapped Terminal Decryption CLI Command -->
+        <div class="cli-box-wrapper" style="margin-top:12px; border-top:1px solid var(--border-color); padding-top:12px;">
+          <div class="card-header" style="padding:0; margin-bottom:6px;">
+            <span style="font-size:11px; font-family:var(--font-mono); color:var(--accent-cyan);">Zero-Trust Standalone CLI Decrypt Script (Python 3 / Cryptography)</span>
+            <button type="button" class="btn-secondary" id="btn-copy-cli" style="padding: 2px 8px; font-size: 10px;">Copy Script</button>
+          </div>
+          <div id="cli-script-output" style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:4px; padding:8px; font-family:var(--font-mono); font-size:10px; color:var(--text-muted); overflow-x:auto; white-space:pre-wrap;">// Execute encryption above to generate matching offline CLI decryption command...</div>
+        </div>
       </div>
     </section>
 

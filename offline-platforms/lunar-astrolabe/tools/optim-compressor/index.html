@@ -115,6 +115,14 @@
             <span class="metric-label">Encoding</span>
             <span class="metric-number" id="metric-time">-- ms</span>
           </div>
+          <div class="metric-item">
+            <span class="metric-label">SSIM Index</span>
+            <span class="metric-number" id="metric-ssim" style="color:var(--accent-cyan);">--</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Perceptual Quality</span>
+            <span class="metric-number" id="metric-ssim-rating" style="font-size:11px; color:var(--accent-emerald);">--</span>
+          </div>
         </div>
       </section>
     </aside>
@@ -126,8 +134,11 @@
           <span>SPLIT-CURTAIN COMPARISON</span>
           <span id="indicator-dims">DIMENSIONS: -- × --</span>
         </div>
-        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan);">
-          ← ORIGINAL (LEFT) | OPTIMIZED (RIGHT) →
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button type="button" class="btn-preset" id="btn-toggle-loupe" style="padding: 4px 8px; font-size: 11px;">🔍 3× Loupe: OFF</button>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan);">
+            ← ORIGINAL (LEFT) | OPTIMIZED (RIGHT) →
+          </div>
         </div>
       </div>
 
@@ -144,6 +155,12 @@
           <!-- Draggable Split Line -->
           <div class="split-handle" id="split-handle" style="left: 50%;">
             <div class="split-pill">◂ DRAG TO COMPARE ▸</div>
+          </div>
+
+          <!-- 3x Magnifier Loupe -->
+          <div id="magnifier-loupe" class="magnifier-loupe" style="display:none;">
+            <canvas id="canvas-loupe" width="140" height="140"></canvas>
+            <span id="loupe-tag">ORIGINAL</span>
           </div>
         </div>
       </div>

@@ -456,7 +456,42 @@ input:checked + .slider-round:before {
   font-size: 10px;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+/* Magnifier Loupe */
+.magnifier-loupe {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border: 2px solid var(--accent-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 24px rgba(0,0,0,0.8), 0 0 10px rgba(56, 189, 248, 0.4);
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 50;
+  background: #000;
+  transform: translate(-50%, -50%);
+}
+
+#canvas-loupe {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  display: block;
+}
+
+#loupe-tag {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 17, 23, 0.9);
+  border: 1px solid var(--border-color);
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 /* Footer Action Bar */

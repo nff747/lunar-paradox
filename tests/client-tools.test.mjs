@@ -78,8 +78,31 @@ test('client tools: cipher-workbench uses standard WebCrypto and CSPRNG', () => 
   assert.match(appJs, /crypto\.getRandomValues/);
 });
 
-test('client tools: pbr-synth imports Three.js locally and exports zip container', () => {
+test('client tools: pbr-synth imports Three.js locally, packs ORM and bilateral filter', () => {
   const appJs = fs.readFileSync(path.join(root, 'offline-platforms', 'lunar-astrolabe', 'tools', 'pbr-synth', 'app.js'), 'utf8');
   assert.match(appJs, /import \* as THREE from '\.\.\/\.\.\/vendor\/three\.module\.js'/);
   assert.match(appJs, /createZip/);
+  assert.match(appJs, /applyBilateralFilter/);
+  assert.match(appJs, /maps\.orm/);
+  assert.match(appJs, /lunar_pbr_bundle/);
 });
+
+test('client tools: optim-compressor calculates SSIM and renders magnifier loupe', () => {
+  const appJs = fs.readFileSync(path.join(root, 'offline-platforms', 'lunar-astrolabe', 'tools', 'optim-compressor', 'app.js'), 'utf8');
+  assert.match(appJs, /calculateSSIM/);
+  assert.match(appJs, /renderLoupe/);
+});
+
+test('client tools: resonance-dsp has stereo widener delay and dynamic patch bank', () => {
+  const appJs = fs.readFileSync(path.join(root, 'offline-platforms', 'lunar-astrolabe', 'tools', 'resonance-dsp', 'app.js'), 'utf8');
+  assert.match(appJs, /widenerDelay/);
+  assert.match(appJs, /activePatches/);
+  assert.match(appJs, /PHOSPHOR_TRACE_COUNT/);
+});
+
+test('client tools: cipher-workbench generates standalone Python decrypt CLI and air-gap matrix', () => {
+  const appJs = fs.readFileSync(path.join(root, 'offline-platforms', 'lunar-astrolabe', 'tools', 'cipher-workbench', 'app.js'), 'utf8');
+  assert.match(appJs, /drawAirGapMatrix/);
+  assert.match(appJs, /from cryptography\.hazmat\.primitives\.ciphers\.aead import AESGCM/);
+});
+

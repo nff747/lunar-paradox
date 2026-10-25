@@ -25,6 +25,12 @@ const paramRoughness = document.getElementById('param-roughness');
 const paramInvertRough = document.getElementById('param-invert-rough');
 const paramAoStrength = document.getElementById('param-ao-strength');
 
+const paramBilateral = document.getElementById('param-bilateral');
+const valBilateral = document.getElementById('val-bilateral');
+const paramMicroDetail = document.getElementById('param-micro-detail');
+const valMicroDetail = document.getElementById('val-micro-detail');
+const btnExportOrm = document.getElementById('btn-export-orm');
+
 // Value readouts
 const valStrength = document.getElementById('val-strength');
 const valBlur = document.getElementById('val-blur');
@@ -46,7 +52,8 @@ const maps = {
   normal: document.createElement('canvas'),
   height: document.createElement('canvas'),
   roughness: document.createElement('canvas'),
-  ao: document.createElement('canvas')
+  ao: document.createElement('canvas'),
+  orm: document.createElement('canvas')
 };
 
 // -------------------------------------------------------------
@@ -207,6 +214,46 @@ function generateProcedural(type) {
 }
 
 // -------------------------------------------------------------
+// BILATERAL FILTER & EDGE PRESERVATION
+// -------------------------------------------------------------
+function applyBilateralFilter(src, w, h, radius, spatialSigma, rangeSigma) {
+  if (radius <= 0) return src;
+  const dst = new Float32Array(w * h);
+  const twoSpatialSigmaSq = 2 * spatialSigma * spatialSigma;
+  const twoRangeSigmaSq = 2 * rangeSigma * rangeSigma;
+
+  const weights = [];
+  for (let dy = -radius; dy <= radius; dy++) {
+    for (let dx = -radius; dx <= radius; dx++) {
+      weights.push({ dx, dy, w: Math.exp(-(dx * dx + dy * dy) / twoSpatialSigmaSq) });
+    }
+  }
+
+  for (let y = 0; y < h; y++) {
+    const yOffset = y * w;
+    for (let x = 0; x < w; x++) {
+      const centerVal = src[yOffset + x];
+      let sum = 0;
+      let totalW = 0;
+
+      for (let k = 0; k < weights.length; k++) {
+        const item = weights[k];
+        const nx = Math.min(w - 1, Math.max(0, x + item.dx));
+        const ny = Math.min(h - 1, Math.max(0, y + item.dy));
+        const neighborVal = src[ny * w + nx];
+        const diff = centerVal - neighborVal;
+        const weight = item.w * Math.exp(-(diff * diff) / twoRangeSigmaSq);
+        sum += neighborVal * weight;
+        totalW += weight;
+      }
+
+      dst[yOffset + x] = totalW > 0 ? sum / totalW : centerVal;
+    }
+  }
+  return dst;
+}
+
+// -------------------------------------------------------------
 // PBR MAP SYNTHESIS KERNELS (100% Client-Side)
 // -------------------------------------------------------------
 function recomputeMaps() {
@@ -218,7 +265,7 @@ function recomputeMaps() {
   outputMeta.textContent = `${w} × ${h} PNG / 32-BIT RGBA`;
 
   // Allocate all maps to matching dimensions
-  for (const key of ['normal', 'height', 'roughness', 'ao']) {
+  for (const key of ['normal', 'height', 'roughness', 'ao', 'orm']) {
     maps[key].width = w;
     maps[key].height = h;
   }
@@ -226,17 +273,30 @@ function recomputeMaps() {
   const diffCtx = maps.diffuse.getContext('2d');
   const srcData = diffCtx.getImageData(0, 0, w, h).data;
 
-  // 1. Compute Height (Luminance)
-  const heightData = new Float32Array(w * h);
+  // 1. Compute Height (Luminance) & Bilateral Smoothing
+  const rawHeight = new Float32Array(w * h);
   const heightContrast = parseFloat(paramHeightContrast.value);
   const invertHeight = paramInvertHeight.checked;
 
   for (let i = 0; i < srcData.length; i += 4) {
-    // Rec. 709 luminance
     let luma = (0.299 * srcData[i] + 0.587 * srcData[i + 1] + 0.114 * srcData[i + 2]) / 255;
     luma = Math.pow(luma, 1.0 / heightContrast);
     if (invertHeight) luma = 1.0 - luma;
-    heightData[i / 4] = luma;
+    rawHeight[i / 4] = luma;
+  }
+
+  // Edge-preserving smoothing
+  const bilateralRad = Math.round(parseFloat(paramBilateral ? paramBilateral.value : 1));
+  const microDetail = parseFloat(paramMicroDetail ? paramMicroDetail.value : 1.0);
+  let macroHeight = rawHeight;
+  if (bilateralRad > 0) {
+    macroHeight = applyBilateralFilter(rawHeight, w, h, bilateralRad, 2.0, 0.15);
+  }
+
+  const heightData = new Float32Array(w * h);
+  for (let i = 0; i < w * h; i++) {
+    const micro = rawHeight[i] - macroHeight[i];
+    heightData[i] = Math.max(0.0, Math.min(1.0, macroHeight[i] + micro * microDetail));
   }
 
   // Draw Height Map
@@ -347,6 +407,18 @@ function recomputeMaps() {
     }
   }
   aoCtx.putImageData(aoImgData, 0, 0);
+
+  // 5. Synthesize Packed ORM Map (Red: Ambient Occlusion, Green: Roughness, Blue: Metallic)
+  const ormCtx = maps.orm.getContext('2d');
+  const ormImgData = ormCtx.createImageData(w, h);
+  for (let i = 0; i < w * h; i++) {
+    const p = i * 4;
+    ormImgData.data[p] = aoImgData.data[p];           // R: AO
+    ormImgData.data[p + 1] = roughImgData.data[p];     // G: Roughness
+    ormImgData.data[p + 2] = 20;                      // B: Metallic baseline (dielectric)
+    ormImgData.data[p + 3] = 255;
+  }
+  ormCtx.putImageData(ormImgData, 0, 0);
 
   // Update Three.js texture pipeline
   for (const key of Object.keys(textures)) {
@@ -467,6 +539,16 @@ paramAoStrength.addEventListener('input', (e) => {
   recomputeMaps();
 });
 
+paramBilateral?.addEventListener('input', (e) => {
+  valBilateral.textContent = e.target.value;
+  recomputeMaps();
+});
+
+paramMicroDetail?.addEventListener('input', (e) => {
+  valMicroDetail.textContent = `${e.target.value}×`;
+  recomputeMaps();
+});
+
 // View Tabs
 tabButtons.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -545,9 +627,16 @@ function downloadBlob(blob, filename) {
 // Single map download
 btnExportSingle.addEventListener('click', () => {
   const mapKey = activeView === '3d' ? 'normal' : activeView;
-  const source = maps[mapKey];
+  const source = maps[mapKey] || maps.normal;
   source.toBlob((blob) => {
     downloadBlob(blob, `pbr_${mapKey}.png`);
+  }, 'image/png');
+});
+
+// Dedicated packed ORM export
+btnExportOrm?.addEventListener('click', () => {
+  maps.orm.toBlob((blob) => {
+    downloadBlob(blob, 'pbr_orm_packed.png');
   }, 'image/png');
 });
 
@@ -668,10 +757,11 @@ btnExportAll.addEventListener('click', async () => {
       { name: 'height.png', data: await canvasToBuffer(maps.height) },
       { name: 'roughness.png', data: await canvasToBuffer(maps.roughness) },
       { name: 'ao.png', data: await canvasToBuffer(maps.ao) },
+      { name: 'orm_packed.png', data: await canvasToBuffer(maps.orm) },
       { 
         name: 'manifest.txt',
         data: new TextEncoder().encode(
-          `LUNAR PARADOX — PBR SYNTHESIZER EXPORT\nGenerated: ${new Date().toISOString()}\nResolution: ${currentTextureSize.width}x${currentTextureSize.height}\nKernel: ${paramKernel.value}\nStrength: ${paramStrength.value}\nFormat: Standard PBR (Diffuse, Normal, Height, Roughness, AO)\n100% In-Browser Execution`
+          `LUNAR PARADOX — PBR SYNTHESIZER EXPORT\nGenerated: ${new Date().toISOString()}\nResolution: ${currentTextureSize.width}x${currentTextureSize.height}\nKernel: ${paramKernel.value}\nStrength: ${paramStrength.value}\nFormat: Standard PBR + ORM Packed (R:AO, G:Roughness, B:Metallic)\n100% In-Browser Execution`
         )
       }
     ];

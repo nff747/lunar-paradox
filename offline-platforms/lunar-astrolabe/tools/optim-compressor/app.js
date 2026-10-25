@@ -25,6 +25,15 @@ const telemetrySpeed = document.getElementById('telemetry-speed');
 const indicatorDims = document.getElementById('indicator-dims');
 const btnDownload = document.getElementById('btn-download');
 
+// SSIM & Magnifier Loupe elements
+const metricSsim = document.getElementById('metric-ssim');
+const metricSsimRating = document.getElementById('metric-ssim-rating');
+const btnToggleLoupe = document.getElementById('btn-toggle-loupe');
+const magnifierLoupe = document.getElementById('magnifier-loupe');
+const canvasLoupe = document.getElementById('canvas-loupe');
+const loupeTag = document.getElementById('loupe-tag');
+let loupeActive = false;
+
 // State
 let originalBlob = null;
 let optimizedBlob = null;
@@ -178,6 +187,66 @@ async function transcode() {
   }, format, quality);
 }
 
+// -------------------------------------------------------------
+// SSIM (STRUCTURAL SIMILARITY INDEX) CALCULATOR
+// -------------------------------------------------------------
+function calculateSSIM(origCtx, optCtx, width, height) {
+  if (width < 8 || height < 8) return 1.0;
+  const stepX = Math.max(4, Math.floor(width / 60));
+  const stepY = Math.max(4, Math.floor(height / 45));
+
+  const origData = origCtx.getImageData(0, 0, width, height).data;
+  const optData = optCtx.getImageData(0, 0, width, height).data;
+
+  const C1 = 6.5025;  // (0.01 * 255)^2
+  const C2 = 58.5225; // (0.03 * 255)^2
+
+  let totalSsim = 0;
+  let blocks = 0;
+
+  for (let y = 0; y <= height - 8; y += stepY) {
+    for (let x = 0; x <= width - 8; x += stepX) {
+      let meanX = 0, meanY = 0;
+
+      for (let dy = 0; dy < 8; dy++) {
+        const row = (y + dy) * width;
+        for (let dx = 0; dx < 8; dx++) {
+          const idx = (row + (x + dx)) * 4;
+          meanX += 0.299 * origData[idx] + 0.587 * origData[idx + 1] + 0.114 * origData[idx + 2];
+          meanY += 0.299 * optData[idx] + 0.587 * optData[idx + 1] + 0.114 * optData[idx + 2];
+        }
+      }
+      meanX /= 64;
+      meanY /= 64;
+
+      let varX = 0, varY = 0, covXY = 0;
+      for (let dy = 0; dy < 8; dy++) {
+        const row = (y + dy) * width;
+        for (let dx = 0; dx < 8; dx++) {
+          const idx = (row + (x + dx)) * 4;
+          const lx = 0.299 * origData[idx] + 0.587 * origData[idx + 1] + 0.114 * origData[idx + 2];
+          const ly = 0.299 * optData[idx] + 0.587 * optData[idx + 1] + 0.114 * optData[idx + 2];
+          const diffX = lx - meanX;
+          const diffY = ly - meanY;
+          varX += diffX * diffX;
+          varY += diffY * diffY;
+          covXY += diffX * diffY;
+        }
+      }
+      varX /= 63;
+      varY /= 63;
+      covXY /= 63;
+
+      const num = (2 * meanX * meanY + C1) * (2 * covXY + C2);
+      const den = (meanX * meanX + meanY * meanY + C1) * (varX + varY + C2);
+      totalSsim += den > 0 ? (num / den) : 1.0;
+      blocks++;
+    }
+  }
+
+  return blocks > 0 ? Math.max(0.0, Math.min(1.0, totalSsim / blocks)) : 1.0;
+}
+
 function updateTelemetry(durationMs) {
   metricOrigSize.textContent = formatBytes(originalFileSize);
   metricOptSize.textContent = formatBytes(optimizedFileSize);
@@ -190,6 +259,21 @@ function updateTelemetry(durationMs) {
 
   telemetrySavings.textContent = `SAVED: ${formatBytes(Math.max(0, diff))} (${percent}%)`;
   telemetrySpeed.textContent = `SPEED: ${durationMs} ms`;
+
+  // Compute SSIM
+  if (canvasOrig.width && canvasOrig.height) {
+    const ssimVal = calculateSSIM(canvasOrig.getContext('2d'), canvasOpt.getContext('2d'), canvasOrig.width, canvasOrig.height);
+    metricSsim.textContent = ssimVal.toFixed(3);
+
+    let rating = 'NEAR-LOSSLESS';
+    let color = 'var(--accent-emerald)';
+    if (ssimVal < 0.90) { rating = 'PERCEPTIBLE LOSS'; color = '#f43f5e'; }
+    else if (ssimVal < 0.95) { rating = 'BALANCED'; color = 'var(--accent-gold)'; }
+    else if (ssimVal < 0.98) { rating = 'HIGH FIDELITY'; color = 'var(--accent-cyan)'; }
+
+    metricSsimRating.textContent = rating;
+    metricSsimRating.style.color = color;
+  }
 }
 
 // -------------------------------------------------------------
@@ -312,6 +396,65 @@ btnDownload.addEventListener('click', () => {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 30000);
+});
+
+// -------------------------------------------------------------
+// 3X MAGNIFIER LOUPE INTERACTION
+// -------------------------------------------------------------
+btnToggleLoupe?.addEventListener('click', () => {
+  loupeActive = !loupeActive;
+  btnToggleLoupe.textContent = `🔍 3× Loupe: ${loupeActive ? 'ON' : 'OFF'}`;
+  btnToggleLoupe.classList.toggle('active', loupeActive);
+  magnifierLoupe.style.display = loupeActive ? 'block' : 'none';
+});
+
+function renderLoupe(relX, relY, rect) {
+  magnifierLoupe.style.display = 'block';
+  magnifierLoupe.style.left = `${relX}px`;
+  magnifierLoupe.style.top = `${relY}px`;
+
+  // Scale coordinates to source canvas
+  const scaleX = canvasOrig.width / rect.width;
+  const scaleY = canvasOrig.height / rect.height;
+  const srcX = relX * scaleX;
+  const srcY = relY * scaleY;
+
+  // Determine which side of split cursor is on
+  const splitPx = rect.width * splitPosition;
+  const isOptimized = relX > splitPx;
+  loupeTag.textContent = isOptimized ? 'OPTIMIZED (3×)' : 'ORIGINAL (3×)';
+  loupeTag.style.color = isOptimized ? 'var(--accent-cyan)' : 'var(--text-main)';
+
+  const lCtx = canvasLoupe.getContext('2d');
+  lCtx.imageSmoothingEnabled = false;
+  lCtx.clearRect(0, 0, 140, 140);
+
+  const sampleSize = 46; // 46px -> 140px (~3x magnification)
+  const sourceCanvas = isOptimized ? canvasOpt : canvasOrig;
+  lCtx.drawImage(
+    sourceCanvas,
+    Math.max(0, Math.min(sourceCanvas.width - sampleSize, srcX - sampleSize / 2)),
+    Math.max(0, Math.min(sourceCanvas.height - sampleSize, srcY - sampleSize / 2)),
+    sampleSize, sampleSize,
+    0, 0, 140, 140
+  );
+}
+
+canvasContainer.addEventListener('pointermove', (e) => {
+  if (!loupeActive) return;
+  const rect = canvasContainer.getBoundingClientRect();
+  const relX = e.clientX - rect.left;
+  const relY = e.clientY - rect.top;
+
+  if (relX < 0 || relX > rect.width || relY < 0 || relY > rect.height) {
+    magnifierLoupe.style.display = 'none';
+    return;
+  }
+  renderLoupe(relX, relY, rect);
+});
+
+canvasContainer.addEventListener('pointerleave', () => {
+  if (loupeActive) magnifierLoupe.style.display = 'none';
 });
 
 // Kick off with default nebula preset

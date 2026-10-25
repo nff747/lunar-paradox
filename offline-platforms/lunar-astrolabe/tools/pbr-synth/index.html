@@ -73,6 +73,22 @@
 
         <div class="control-row">
           <div class="control-label">
+            <span>Bilateral Edge Smoothing</span>
+            <span class="control-val" id="val-bilateral">1.0</span>
+          </div>
+          <input type="range" id="param-bilateral" min="0" max="4" step="0.5" value="1.0">
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">
+            <span>Micro Surface Detail</span>
+            <span class="control-val" id="val-micro-detail">1.0×</span>
+          </div>
+          <input type="range" id="param-micro-detail" min="0.0" max="2.5" step="0.1" value="1.0">
+        </div>
+
+        <div class="control-row">
+          <div class="control-label">
             <span>Blur / Smoothing</span>
             <span class="control-val" id="val-blur">0 px</span>
           </div>
@@ -155,6 +171,7 @@
           <button type="button" class="tab-btn" data-view="height">Height (Disp)</button>
           <button type="button" class="tab-btn" data-view="roughness">Roughness</button>
           <button type="button" class="tab-btn" data-view="ao">Ambient Occlusion</button>
+          <button type="button" class="tab-btn" data-view="orm">Packed ORM (R:AO, G:Rough, B:Metal)</button>
         </div>
 
         <div class="model-controls" id="model-controls">
@@ -190,6 +207,9 @@
         <div class="footer-actions">
           <button type="button" class="btn-secondary" id="btn-export-single">
             ⤓ Download Active Map (PNG)
+          </button>
+          <button type="button" class="btn-secondary" id="btn-export-orm">
+            ⤓ Export ORM Texture (PNG)
           </button>
           <button type="button" class="btn-primary" id="btn-export-all">
             ⤓ Export PBR Set (.ZIP)
