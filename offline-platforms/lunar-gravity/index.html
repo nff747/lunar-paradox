@@ -4804,7 +4804,7 @@ function enter(){
  groups.forEach((el,i)=>play(el,[{opacity:0,transform:'translate3d(0,18px,0)'},{opacity:1,transform:'translate3d(0,0,0)'}],{duration:520,delay:Math.min(i*65,300),easing:'cubic-bezier(.16,1,.3,1)',fill:'backwards'}));
 }
 async function navigate(){
- const ticket=++journey, destination=route();routePositions.set(shownHash,{scroll:host.scrollTop,travel,focus:document.activeElement?.getAttribute('href')});if(['labs','products'].includes(shownRoute))collectionReturn[shownRoute==='labs'?'experiments':'products']=shownHash;stopMotion();
+ const ticket=++journey, destination=route();routePositions.set(shownHash,{scroll:host.scrollTop,collectionScroll:host.querySelector('.lc-collection')?.scrollTop||0,travel,focus:document.activeElement?.getAttribute('href')});if(['labs','products'].includes(shownRoute))collectionReturn[shownRoute==='labs'?'experiments':'products']=shownHash;stopMotion();
  if(scene==='syzygy'&&destination==='mission')history.replaceState(null,'','#/home');
  if(destination!==shownRoute&&!host.hidden&&!motion.matches){
   const exit=play(host,[{opacity:1,transform:'translate3d(0,0,0)'},{opacity:0,transform:'translate3d(0,-8px,0)'}],{duration:140,easing:'ease-in',fill:'forwards'});
@@ -4813,7 +4813,7 @@ async function navigate(){
  if(ticket!==journey)return;
  if(route()==='manage'&&local){try{await load(true);}catch(error){notice=error.message;}}
  if(ticket!==journey)return;
- stopMotion();const saved=routePositions.get(location.hash);setTravel(saved?.travel||0);render(true);shownRoute=route();shownHash=location.hash;if(saved){host.scrollTop=saved.scroll;const target=[...host.querySelectorAll('a')].find(a=>a.getAttribute('href')===saved.focus);target?.focus({preventScroll:true});}enter();
+ stopMotion();const saved=routePositions.get(location.hash);setTravel(saved?.travel||0);render(true);shownRoute=route();shownHash=location.hash;if(saved){host.scrollTop=saved.scroll;const collectionNode=host.querySelector('.lc-collection');if(collectionNode)collectionNode.scrollTop=saved.collectionScroll||0;const target=[...host.querySelectorAll('a')].find(a=>a.getAttribute('href')===saved.focus);target?.focus({preventScroll:true});}enter();
 }
 motion.addEventListener('change',()=>{stopMotion();setTravel(0);document.body.style.removeProperty('--hold-reveal');});
 window.addEventListener('hashchange',navigate);document.body.classList.add('company-ready');const brand=document.querySelector('header .brand');if(brand){brand.removeAttribute('data-route');brand.setAttribute('aria-label','Lunar Paradox home');brand.href=href('syzygy','realms');}if(location.hostname==='products.lunarparadox.com'&&/^\/products\/?$/.test(location.pathname))history.replaceState(null,'','/#'+(route()||'products'));if(location.hostname==='labs.lunarparadox.com'&&/^\/labs\/?$/.test(location.pathname))history.replaceState(null,'','/#'+(route()||'labs'));if(scene==='syzygy'&&route()==='mission')history.replaceState(null,'','#/home');if(!location.hash&&!pathRoute())history.replaceState(null,'','#/'+landing);render();load(route()==='manage'&&local).then(()=>{if(!host.contains(document.activeElement))render();});

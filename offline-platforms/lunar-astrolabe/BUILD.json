@@ -1,7 +1,7 @@
 {
   "format": "standalone-live-webgl",
   "sourceSha256": "409acfbeb17b3323c934fef7c0cf131913c405045aafb441a095c8d061418f4d",
-  "htmlSha256": "29a7a69458166d3086b939c93178ccb016eeb2b7537c8c7c75e842ca0d982123",
+  "htmlSha256": "40120842817544b8b7d8ae3a7e997e5b7e022bd153ffcd19658120a8a6db755c",
   "dependencies": {
     "adaptive-graphics.js": "55bd353ecad8f72b9ea7f46dc5cd2254d1f55d90564867648def5cbed21eacdd",
     "admin-client.js": "3e76d0e3bd80cf1b56f59d6568e5e260c8e3512be5ee06eb7a5f5adcf297d582",
@@ -24,7 +24,7 @@
     "commissions.js": "db4dbce3f836989f08bf6d9daa1831329dcbb4fd86735393189782a58d2abc80",
     "COMPANY-INFRASTRUCTURE.md": "de40ca6bb74b1131e98286bf1b6a8e056ca9e4b44bb14ea9aebc47d603139b62",
     "company.css": "5024ad4adfe95b53f15a2ae057d239a9a8ac1a86403201104af49ada1dc64b64",
-    "company.js": "985e042244c9e86911ccab7a628ac8a3fc71426f6d17270a50351c32a2ecd574",
+    "company.js": "e9091305dcf34c83fb01b7c4d346759fcb585b9bf138281619e0999552053af9",
     "CREDITS.txt": "8f9a8b209d96ef8e259eefa826820caf2ac309b1cca63d8ba9334d9638386f58",
     "erosion-picking.js": "347c83ca504ccbf81ac1ba94c687733da232443687d674bca41a330fdedc6304",
     "EXPERIENCE-AUDIT.md": "04b4db2a1e776a43e0ecad843f0a67da260e831dfc16cfbe01af8f3e728d4980",

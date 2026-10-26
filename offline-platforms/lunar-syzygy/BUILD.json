@@ -1,7 +1,7 @@
 {
   "format": "standalone-live-webgl",
   "sourceSha256": "0f81b983d6f4ad26bf93d74b9523c97cc974bc3e5709b686a28246690306a95c",
-  "htmlSha256": "6752e854cb46363a37afab03c2a8cb9a18a478070c4ace4e548ce31646e8fe14",
+  "htmlSha256": "72d27d015b5586104d179ec9326fc746df62c6c841f06ad042d76e0b54dec54b",
   "dependencies": {
     "adaptive-graphics.js": "55bd353ecad8f72b9ea7f46dc5cd2254d1f55d90564867648def5cbed21eacdd",
     "admin-client.js": "3e76d0e3bd80cf1b56f59d6568e5e260c8e3512be5ee06eb7a5f5adcf297d582",
@@ -32,7 +32,7 @@
     "commissions.js": "db4dbce3f836989f08bf6d9daa1831329dcbb4fd86735393189782a58d2abc80",
     "COMPANY-INFRASTRUCTURE.md": "2eac27c2691486f7ae850c9ea115f6d812ccceb468c4eb15e1a3f630928293a9",
     "company.css": "f38dc03c6c2fcdff634ce8d87344bd9bab192cfe9aca7340421563cbf2e6e138",
-    "company.js": "82c2e6a1bbbb8c52b0bf03351848b5bdb1b08297bc7c890e6d7801b55ad1f29b",
+    "company.js": "215b7a1e1bef861a26704200ed70bac3a23e9e983e2d41dc4d85388e4623e182",
     "CREDITS.txt": "1f17f60ede6caf4c6fa0cba13909db3f4b8d74eed3e46c74a5f71f014364c20f",
     "engineering/build-syzygy-fault-field.mjs": "0e2e787baea1ab4fad0fcaa24b677ab88e84fac683a4de8f0db30468981e3daa",
     "engineering/build-syzygy-impact-field.mjs": "9db81a7050663b2e227f9b664377cb5ffabf324c135abbe00da2d4d97fc8b513",

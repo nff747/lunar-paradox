@@ -50,7 +50,7 @@ test('client tools: published content registry passes strict production validati
   const data = JSON.parse(jsonStr);
 
   const cleaned = cleanContent(data);
-  assert.equal(cleaned.products.length, 4, 'Must register 4 products');
+  assert.equal(cleaned.products.length, 10, 'Must register 10 products (4 tools + 6 open-source projects)');
 
   const registeredIds = cleaned.products.map(p => p.id);
   for (const id of TOOL_IDS) {
@@ -59,7 +59,7 @@ test('client tools: published content registry passes strict production validati
 
   for (const prod of cleaned.products) {
     assert.equal(prod.status, 'published');
-    assert.match(prod.actionUrl, /^https:\/\/products\.lunarparadox\.com\/(?:tools\/)?[-\w]+$/);
+    assert.match(prod.actionUrl, /^https:\/\/(?:products\.lunarparadox\.com\/(?:tools\/)?[-\w]+|github\.com\/nff747\/[-\w]+)$/);
     assert.ok(prod.actionLabel.length > 0);
   }
 });
