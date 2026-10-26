@@ -41,7 +41,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' blob: 'sha256-60cNxhqm0EJ/9xUiOrEIASctrfxNGxm7OHKQJ9yRfXw=' 'sha256-ayGX86nM3FzN/shXd0KStdoynZg6z84CvtobMk0Slok=' 'sha256-b7/F5Jvh8RB2HXEWdS946ssHYJv1iW0zliLrD08h9X4=' 'sha256-l04mlrQsxsPm82ew2V2i1MTHTi+i509Ic9yMWirfRHQ=' 'sha256-thEB8kkd7La7DxhEmiDZ6fJSi/J24nDegNkNanHYuYw='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' blob: 'sha256-L0Qm1HN4um+tG2/mhmtQ3UsusLec1T6GFT5t6RR5ARU=' 'sha256-MAjf1IptTx4QIBXN4XwGvYpasDgxFE74DfTnszBNbbM=' 'sha256-f/jZ5sEwQkfXQx+Q3bqViTf7QG31hILPa2Kaz5t/z9I=' 'sha256-gE6pOg3zYG6KsfDOvDNeE+pTf1cSIEEh97kL1ExyLJk=' 'sha256-yd3uySLz/UBrJ+3ocxh2tW4XuNhp8cJj14eEXil4dfI='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     },
@@ -152,11 +152,55 @@
       "has": [
         {
           "type": "host",
+          "value": "labs.lunarparadox.com"
+        }
+      ],
+      "source": "/labs/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "has": [
+        {
+          "type": "host",
           "value": "products.lunarparadox.com"
         }
       ],
       "source": "/products",
       "destination": "/",
+      "permanent": true
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/products/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/studio",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/studio/:path*",
+      "destination": "/:path*",
       "permanent": true
     }
   ],
@@ -164,6 +208,16 @@
     {
       "source": "/api/:path*",
       "destination": "/api/[...path]?path=:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/",
+      "destination": "/studio.html"
     },
     {
       "has": [
@@ -189,6 +243,86 @@
       "has": [
         {
           "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/pbr-synth",
+      "destination": "/lunar-astrolabe/tools/pbr-synth/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/pbr-synth/:path*",
+      "destination": "/lunar-astrolabe/tools/pbr-synth/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/optim-compressor",
+      "destination": "/lunar-astrolabe/tools/optim-compressor/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/optim-compressor/:path*",
+      "destination": "/lunar-astrolabe/tools/optim-compressor/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/resonance-dsp",
+      "destination": "/lunar-astrolabe/tools/resonance-dsp/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/resonance-dsp/:path*",
+      "destination": "/lunar-astrolabe/tools/resonance-dsp/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/cipher-workbench",
+      "destination": "/lunar-astrolabe/tools/cipher-workbench/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/cipher-workbench/:path*",
+      "destination": "/lunar-astrolabe/tools/cipher-workbench/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
           "value": "labs.lunarparadox.com"
         }
       ],
@@ -204,6 +338,16 @@
       ],
       "source": "/products/:path*",
       "destination": "/lunar-astrolabe/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "/lunar-syzygy/:path*"
     },
     {
       "has": [
@@ -248,6 +392,38 @@
     {
       "source": "/products/:path*",
       "destination": "/lunar-astrolabe/:path*"
+    },
+    {
+      "source": "/pbr-synth",
+      "destination": "/lunar-astrolabe/tools/pbr-synth/index.html"
+    },
+    {
+      "source": "/pbr-synth/:path*",
+      "destination": "/lunar-astrolabe/tools/pbr-synth/:path*"
+    },
+    {
+      "source": "/optim-compressor",
+      "destination": "/lunar-astrolabe/tools/optim-compressor/index.html"
+    },
+    {
+      "source": "/optim-compressor/:path*",
+      "destination": "/lunar-astrolabe/tools/optim-compressor/:path*"
+    },
+    {
+      "source": "/resonance-dsp",
+      "destination": "/lunar-astrolabe/tools/resonance-dsp/index.html"
+    },
+    {
+      "source": "/resonance-dsp/:path*",
+      "destination": "/lunar-astrolabe/tools/resonance-dsp/:path*"
+    },
+    {
+      "source": "/cipher-workbench",
+      "destination": "/lunar-astrolabe/tools/cipher-workbench/index.html"
+    },
+    {
+      "source": "/cipher-workbench/:path*",
+      "destination": "/lunar-astrolabe/tools/cipher-workbench/:path*"
     },
     {
       "source": "/tools/:path*",

@@ -48,3 +48,5 @@ body.company-ready:not(.company-open) .type .back{opacity:calc(1 - var(--hold-re
 #lunar-company .lc-catalogue-intro h1{font-size:32px!important;line-height:1.1;margin:0 0 8px;letter-spacing:-.025em}
 .lc-catalogue-intro .lc-eyebrow{margin-bottom:12px;font-size:9px}.lc-catalogue-status{font:12px/1.7 monospace;color:#b5b4ba;margin:0 0 12px}.lc-catalogue-intro .lc-link{font-size:12px}
 @media(max-width:650px){.lc-catalogue-intro{bottom:20px;padding:18px 22px;max-width:260px}#lunar-company .lc-catalogue-intro h1{font-size:28px!important}.lc-page-labs .lc-collection,.lc-page-products .lc-collection{margin-top:35px}}
+
+.lc-collection-head{flex-wrap:wrap;gap:12px}.lc-collection-head label{min-width:120px}.lc-prose p{white-space:pre-line}.lc-prose h2{font-size:22px;line-height:1.4;margin:32px 0 14px}.lc-refresh-notice{margin:12px 4vw;max-width:420px;font:11px/1.6 monospace;color:#c6c1ce}.lc-refresh-notice button{margin-left:10px}:where(.lc-button,.lc-link,.inspection-shots button):focus-visible{outline:2px solid currentColor;outline-offset:5px}

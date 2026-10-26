@@ -73,7 +73,7 @@ def clean_state(value):
         if key in ('scene', 'platform'):
             continue
         if key == 'quality':
-            if item not in ('ultra', 'high', 'balanced'):
+            if item not in ('auto', 'ultra', 'high', 'balanced'):
                 raise ValueError('Unknown graphics quality')
         elif key == 'route':
             if not isinstance(item, str) or item not in {route for routes in ROUTES.values() for route in routes}:

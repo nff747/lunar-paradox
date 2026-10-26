@@ -19,7 +19,7 @@
     const clean={},limits={volume:[0,1],paradox:[0,1],speed:[.1,5],timeline:[0,600],phase:[1,4],focusedNode:[0,6],simulationTime:[0,1e9],dissolve:[-2,2]};
     for(const [field,item] of Object.entries(value)){
       if(limits[field]){const [min,max]=limits[field];if(typeof item==='number'&&Number.isFinite(item)&&item>=min&&item<=max&&(!['phase','focusedNode'].includes(field)||Number.isInteger(item)))clean[field]=item;}
-      else if(field==='quality'&&['ultra','high','balanced'].includes(item))clean[field]=item;
+      else if(field==='quality'&&['auto','ultra','high','balanced'].includes(item))clean[field]=item;
       else if(field==='paused'&&typeof item==='boolean')clean[field]=item;
       else if(field==='route'&&routes[scene].includes(item))clean[field]=item;
       else if(field==='camera'&&item&&typeof item==='object'&&Object.keys(item).length===3){const axes={azimuth:[-10000,10000],elevation:[-Math.PI/2,Math.PI/2],distance:[.1,100]};if(Object.entries(axes).every(([axis,[min,max]])=>typeof item[axis]==='number'&&Number.isFinite(item[axis])&&item[axis]>=min&&item[axis]<=max))clean[field]={...item};}
@@ -38,7 +38,11 @@
   function notice(text){if(status)status.textContent=text;document.body.dataset.sessionStatus=text;}
   function applyQuality(quality){
     const renderer=window.__lunarDebug?.renderer;
-    if(renderer){const cap={ultra:2.5,high:1.6,balanced:1}[quality]||2.5;const scale=quality==='ultra'?Math.min(Math.max(devicePixelRatio,1.5),cap):Math.min(devicePixelRatio,cap);renderer.setPixelRatio(scale);const composer=window.__lunarDebug?.composer;if(composer){composer.setPixelRatio(scale);}window.dispatchEvent(new Event('resize'));}
+    window.LunarAdaptiveGraphics?.stop();
+    const applyScale=scale=>{if(!renderer)return;renderer.setPixelRatio(scale);window.__lunarDebug?.composer?.setPixelRatio(scale);document.body.dataset.renderScale=String(scale);window.dispatchEvent(new Event('resize'));};
+    if(quality==='auto'&&window.LunarAdaptiveGraphics)window.LunarAdaptiveGraphics.start(applyScale);
+    else{const cap={ultra:2.5,high:1.6,balanced:1}[quality]||2.5;applyScale(quality==='ultra'?Math.min(Math.max(devicePixelRatio,1.5),cap):Math.min(devicePixelRatio,cap));}
+    document.body.dataset.qualityMode=quality;
     window.dispatchEvent(new CustomEvent('lunar:quality',{detail:quality}));
   }
   function describeRenderer(){
@@ -169,7 +173,7 @@
     if(!panel){
       const css=document.createElement('style');css.textContent=`.lp-session{position:fixed;z-index:60;right:18px;top:76px;width:min(352px,calc(100vw - 36px));max-height:calc(100vh - 160px);overflow:auto;padding:22px;background:#080a0ff2;border:1px solid #74717c66;color:#d7d5db;font:11px/1.6 monospace;box-shadow:0 12px 80px #000a;backdrop-filter:blur(18px)}.lp-session[hidden]{display:none}.lp-diagnostics{margin-top:18px;border-top:1px solid #7774;padding-top:12px}.lp-diagnostics summary{cursor:pointer;font-size:10px;letter-spacing:.08em}.lp-diagnostics[open] summary{margin-bottom:10px}.lp-session h2{font:500 13px monospace;letter-spacing:.15em}.lp-session button,.lp-session select{font:10px monospace;color:#ddd;background:#1b1d23;border:1px solid #69656e88;padding:8px;margin:4px 3px 4px 0;cursor:pointer}.lp-session label{display:block;margin:12px 0}.lp-session input{width:100%;accent-color:#b79dd4}.lp-session .lp-close{position:absolute;right:8px;top:6px;font-size:20px;background:none;border:0}.lp-session .lp-snapshot{display:block;width:100%;text-align:left}.lp-session small{display:block;color:#9b96a2}.lp-session-status{font-size:10px;color:#b9a7ce;min-height:16px}.lp-session-toolbar{margin-top:16px;border-top:1px solid #7774;padding-top:8px}.lp-session-toolbar button{font:9px monospace;border:1px solid #7775;background:#12141b;color:#bbb;padding:7px;cursor:pointer}`;document.head.append(css);
       panel=document.createElement('section');panel.className='lp-session';panel.hidden=true;panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');panel.setAttribute('aria-label','View and sound settings');
-      panel.innerHTML='<button class="lp-close" aria-label="Close settings">×</button><h2>VIEW / SOUND</h2><small data-storage></small><label>GRAPHICS <select aria-label="Graphics quality"><option value="ultra">ULTRA · maximum resolution</option><option value="high">HIGH · 1.6× resolution cap</option><option value="balanced">BALANCED · native CSS resolution</option></select></label><button data-sound>Enable scene sound</button><label>SOUND LEVEL<input aria-label="Sonification volume" type="range" min="0" max="1" step=".01"></label><p class="lp-session-status" role="status"></p>';
+      panel.innerHTML='<button class="lp-close" aria-label="Close settings">×</button><h2>VIEW / SOUND</h2><small data-storage></small><label>GRAPHICS <select aria-label="Graphics quality"><option value="auto">AUTO · adapt to frame time</option><option value="ultra">ULTRA · maximum resolution</option><option value="high">HIGH · 1.6× resolution cap</option><option value="balanced">BALANCED · native CSS resolution</option></select></label><button data-sound>Enable scene sound</button><label>SOUND LEVEL<input aria-label="Sonification volume" type="range" min="0" max="1" step=".01"></label><p class="lp-session-status" role="status"></p>';
       css.textContent+='.lp-session select{display:inline-block;max-width:100%}';
       document.body.append(panel);status=panel.querySelector('[role=status]');
       panel.querySelector('[data-sound]').onclick=()=>{document.querySelector('#audio,#sound,#audioToggle')?.click();setTimeout(syncSceneControls,200)};
@@ -233,8 +237,8 @@
       else if(Date.now()-started>30000){clearInterval(timer);ready=true}
     },200);
     startStream();
-    window.addEventListener('pagehide',()=>{cancelMeasurement?.();localWrite();stream?.close();stream=undefined;backend.connected=false});
-    window.addEventListener('pageshow',event=>{if(event.persisted)startStream()});
+    window.addEventListener('pagehide',()=>{cancelMeasurement?.();window.LunarAdaptiveGraphics?.stop();localWrite();stream?.close();stream=undefined;backend.connected=false});
+    window.addEventListener('pageshow',event=>{if(event.persisted){startStream();applyQuality(state.quality);}});
   }
   function startStream(){
     if(mode!=='sqlite'||typeof EventSource!=='function'||stream)return;

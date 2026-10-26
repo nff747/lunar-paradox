@@ -11,6 +11,13 @@ body[data-route=realms] .viewport,body[data-route=realms] .viewport:active{curso
 .loading{width:30px;height:30px;border:1px solid #c6bacd42;border-top-color:#e5d8e9;border-radius:50%;font-size:0;letter-spacing:0;color:transparent;animation:lp-load-spin 1s linear infinite}@keyframes lp-load-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 .frame,.readout{transition:opacity .65s ease}body[data-cinematic-busy=true] .frame,body[data-cinematic-busy=true] .readout{opacity:.18}
 @media(prefers-reduced-motion:reduce){.frame,.readout{transition:none}}
+
+.cinematic-cue{position:fixed;left:50%;top:19%;transform:translateX(-50%);margin:0;max-width:70vw;pointer-events:none;z-index:18;opacity:0;text-align:center;color:#e8e4dc;font:10px/1.6 monospace;letter-spacing:.25em;text-transform:uppercase;text-shadow:0 2px 14px #000;}
+body[data-company-route] .cinematic-cue{display:none}
+@media(max-width:700px){.cinematic-cue{top:24%;font-size:9px;max-width:85vw}}
+@media(prefers-reduced-motion:reduce){.cinematic-cue{display:none}}
+
+.inspection-shots{position:fixed;bottom:140px;left:50%;transform:translateX(-50%);z-index:19;display:flex;gap:18px}.inspection-shots[hidden]{display:none}.inspection-shots button{background:none;border:0;border-bottom:1px solid transparent;padding:8px 0;color:#99949f;font:9px monospace;cursor:pointer;letter-spacing:.06em}.inspection-shots button[aria-pressed="true"]{color:#e8dfd0;border-color:#a89b82}@media(max-width:700px){.inspection-shots{bottom:125px;gap:16px}}
 </style><link rel="stylesheet" href="./experience.css"><link rel="stylesheet" href="./company.css"><link rel="stylesheet" href="./commission.css"><script type="module" src="./supabase-client.js"></script>
 <script type="module" src="./firebase-config.js"></script>
 </head><body data-scene="syzygy">
@@ -24,6 +31,7 @@ body[data-route=realms] .viewport,body[data-route=realms] .viewport:active{curso
 <div class="status" style="display:none"><span><i></i><span id="gpu-status">INITIALIZING</span></span><span>FPS <b id="fps">—</b></span><button id="motion" aria-pressed="false">PAUSE Ⅱ</button></div><div class="loading" id="loading" role="status" aria-label="Rendering 3D scene"></div><div class="failure" id="failure" role="alert"></div>
 <aside class="panel" id="panel" hidden><button class="close" aria-label="Close panel">×</button><div id="panel-content"></div></aside>
 <script type="module">
+import {createSceneCue} from './scene-cue.js';
 import * as THREE from './vendor/three.module.js';
 import {buildFracturedMoon, fissureCPU, fractureFieldGLSL} from './fracture-geometry.js';
 import {RuptureController} from './rupture-state.js';
@@ -40,6 +48,7 @@ const startupMarks={};function startupMark(name){startupMarks[name]=Number(perfo
 // optical scattering, HDR bloom, branching faults and fracture walls are all live.
 const $=s=>document.querySelector(s), motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
 let reduced=motionPreference.matches;
+const sceneCue=createSceneCue();
 const rupture=new RuptureController(),cinematic=new CinematicRupture(),ruptureShot=new Float64Array(7);
 let actuatorStrain=0;
 let paused=reduced,holding=false,paradox=0,charge=0,time=0,last=performance.now(),fpsTime=last,frames=0,totalFrames=0,rendered=false,masterVolume=.35,simulationSpeed=1;
@@ -100,7 +109,7 @@ float side=step(0.,uSide),raw=texture2D(uMoon,vUv).r,h=texture2D(uCrater,vUv).r,
 // Warm exposed minerals and dark impact melt vary over the curved surface.
 // The uploaded art is a lighting reference only; all fields use the live rock.
 float ore=fbm(vP*18.),breccia=noise(vP*43.+vec3(ore*5.)),mineralPatch=smoothstep(.28,.68,ore);vec3 basalt=mix(vec3(.015,.015,.019),vec3(.049,.044,.054),mineralPatch);basalt*=.85+.30*smoothstep(.24,.72,breccia);vec3 sunRock=mix(vec3(.066,.050,.032),vec3(.118,.091,.057),mineralPatch);vec3 base=mix(sunRock,basalt,side);float irradiance=regolithBRDF(N,V,L)*mix(14.,9.4,side)*visibility;irradiance*=mix(.18+.82*smoothstep(-.10,.70,dot(N0,L)),1.,side);vec3 tint=mix(vec3(1.,.90,.69),vec3(.83,.82,.92),side);vec3 color=base*albedo*pit*craterShadow*(.042+irradiance*tint);color*=(.88+grain*.20)*(.84+fbm(vP*12.)*.25)*mix(basin,.77+.23*basin,side);float crystal=smoothstep(.55,.74,texture2D(uDetail,vUv*4.3).r);float spec=mineralSpecular(N,V,L,mix(.91,.60,crystal));color+=mix(vec3(3.6,2.7,1.55),vec3(.19,.18,.23),side)*spec*visibility*(.19+crystal*.81);float dustGlint=pow(max(noise(vP*367.)-.71,0.)*3.45,6.);color+=vec3(1.3,1.1,.78)*dustGlint*ndl*(1.-side)*visibility;
-float facing=max(dot(N0,V),0.),hot=pow(max(-N0.x,0.),2.2);float fresnel=pow(1.-facing,mix(19.,14.,side));vec3 warm=vec3(32.,20.,8.5)*(.060+hot*1.40)*(.42+grain*1.1);vec3 violet=vec3(.15,.10,.28);color+=mix(warm,violet,side)*fresnel;
+float facing=max(dot(N0,V),0.),hot=pow(max(dot(N0,uSolarView),0.),2.2);float fresnel=pow(1.-facing,mix(19.,14.,side));vec3 warm=vec3(32.,20.,8.5)*(.060+hot*1.40)*(.42+grain*1.1);vec3 violet=vec3(.15,.10,.28);color+=mix(warm,violet,side)*fresnel;
 // Rough mineral facets catch solar light individually, rather than a broad
 // plastic specular disk. Retro-reflected lunar dust fills the bright highlands.
 float opposition=pow(max(dot(N,V),0.),6.);color+=vec3(.047,.025,.011)*opposition*ndl*albedo*(1.-side);float seam=exp(-abs(vP.x-fissure(vP))*158.)*smoothstep(.28,.67,noise(vP*38.+ore*3.))*(.22+breccia);color+=mix(vec3(.82,.37,.08),vec3(.038,.014,.09),side)*seam*uParadox*1.25;
@@ -147,16 +156,45 @@ if(cutMoon.slabs){
   }
 }
 function addLightPlane(w,h,x,y,z,frag,uniforms={}){const feathered=frag.replace(/}\s*$/,`float planeEdge=min(min(vUv.x,vUv.y),min(1.-vUv.x,1.-vUv.y));float planeFade=smoothstep(0.,.13,planeEdge);gl_FragColor.rgb*=planeFade;gl_FragColor.a*=planeFade;}`);const mesh=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.ShaderMaterial({uniforms:{...u,...uniforms},vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,fragmentShader:feathered,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));mesh.position.set(x,y,z);scene.add(mesh);return mesh;}
-const corona=addLightPlane(5.4,5.4,0,0,-.03,`uniform float uTime,uParadox;varying vec2 vUv;${noiseCode}void main(){vec2 p=(vUv-.5)*5.4;float side=step(0.,p.x),tintSide=smoothstep(-.18,.18,p.x);p.x-=mix(-1.,1.,side)*uParadox*.145;float r=length(p),a=atan(p.y,p.x),d=max(r-1.50,0.);vec2 direction=p/max(r,.001);float drift=uTime*.025;
+const corona=addLightPlane(5.4,5.4,0,0,-.03,`uniform float uTime,uParadox;varying vec2 vUv;${noiseCode}void main(){vec2 p=(vUv-.5)*5.4;float side=step(0.,p.x),tintSide=smoothstep(-.18,.18,p.x);float r=length(p),a=atan(p.y,p.x),d=max(r-1.50,0.);vec2 direction=p/max(r,.001);float drift=uTime*.025;
 // Domain-warped angular fields bend the scattering filaments as they expand.
 // No repeating angular sine or equally spaced spoke/starburst pattern is used.
 float warp=fbm(vec3(direction*5.,drift))-.45;float flow=fbm(vec3(direction*64.+d*vec2(13.,-8.)+warp*3.,drift+d*2.));float envelope=noise(vec3(direction*7.,2.4));float reach=.022+.075*pow(envelope,3.);float edge=exp(-abs(r-1.50)*100.);float outside=smoothstep(1.488,1.515,r);float polar=.25+.75*pow(abs(direction.x),.65);float broad=fbm(vec3(direction*8.,drift*.6));float haze=exp(-d/(.063+broad*.058))*(.037+broad*.093);float filaments=pow(flow,3.)*exp(-d/reach)*.65*polar;float hot=pow(max(-direction.x,0.),2.);float solarArc=.20+.80*pow(max(dot(direction,normalize(vec2(-1.,.22))),0.),2.);vec3 c=mix(vec3(13.,8.8,4.4)*(.07+hot*1.15)*solarArc,vec3(.032,.017,.075),tintSide);float strength=edge*.25+(haze*.36+filaments*.85)*outside;gl_FragColor=vec4(c,strength*(1.+uParadox*.16));}`);moon.add(corona);corona.position.set(0,0,-.03);
+corona.geometry.dispose();corona.geometry=new THREE.PlaneGeometry(5.4,5.4,100,64).toNonIndexed();
+const coronaPositions=corona.geometry.attributes.position,coronaSides=new Float32Array(coronaPositions.count);
+for(let i=0;i<coronaPositions.count;i+=3){const side=coronaPositions.getX(i)+coronaPositions.getX(i+1)+coronaPositions.getX(i+2)<0?-1:1;coronaSides.fill(side,i,i+3);}
+corona.geometry.setAttribute('aSide',new THREE.BufferAttribute(coronaSides,1));
+corona.material.vertexShader=`uniform float uParadox,uDamage;attribute float aSide;varying vec2 vUv;${fracturePoseGLSL}void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(fracture(position,aSide),1.);}`;
+
 const riftLight=addLightPlane(2.,3.8,0,0,.05,`uniform float uTime,uParadox,uImpact,uCrackProgress;varying vec2 vUv;${noiseCode}void main(){vec2 p=(vUv-.5)*vec2(2.,3.8);float column=exp(-abs(p.x)*17.)*exp(-pow(abs(p.y)/1.5,6.));float turbulence=fbm(vec3(p*vec2(8.,3.),uTime*.24));float front=smoothstep(mix(1.6,-1.6,uCrackProgress)-.1,mix(1.6,-1.6,uCrackProgress)+.1,p.y);vec3 heat=mix(vec3(1.8,.65,.14),vec3(.53,.15,1.25),smoothstep(-.12,.12,p.x));float energy=column*(.11+uImpact*3.)*(.4+turbulence)*smoothstep(.015,.13,uParadox)*front;gl_FragColor=vec4(heat*energy,energy);}`);moon.add(riftLight);
-const solarScatter=addLightPlane(6.5,6.5,-1.53,.25,-.13,`uniform float uTime,uParadox;varying vec2 vUv;${noiseCode}void main(){vec2 p=vUv-.5;float r=length(p);float distortion=fbm(vec3(p*23.,uTime*.025));float core=exp(-r*69.)*27.;float scatter=exp(-r*20.)*.16;float veil=exp(-r*25.)*pow(distortion,2.)*.26;float streak=exp(-abs(p.y)*310.)*exp(-abs(p.x)*10.)*.14;vec3 c=vec3(1.15,.76,.32);gl_FragColor=vec4(c*(core+scatter+streak+veil)*(1.+uParadox*.2),1.);}`);
+const solarScatter=addLightPlane(6.5,6.5,-1.53,.25,-.13,`uniform float uTime,uParadox,uImpact;varying vec2 vUv;${noiseCode}void main(){vec2 p=vUv-.5;float r=length(p);float distortion=fbm(vec3(p*23.,uTime*.025));float core=exp(-r*69.)*27.;float scatter=exp(-r*20.)*.16;float veil=exp(-r*25.)*pow(distortion,2.)*.26;float streak=exp(-abs(p.y)*310.)*exp(-abs(p.x)*10.)*.14;vec3 c=vec3(1.15,.76,.32);gl_FragColor=vec4(c*(core+scatter+streak+veil)*(1.+uImpact*.12),1.);}`);
 // Real tubular solar prominences occupy 3D space at the illuminated limb. The
 // camera can orbit around them; small turbulent vertex offsets move their loops.
-const prominenceMaterial=new THREE.ShaderMaterial({uniforms:{uTime:u.uTime,uParadox:u.uParadox},transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,vertexShader:`uniform float uTime,uParadox;varying vec2 vUv;${noiseCode}void main(){vUv=uv;vec3 p=position;p+=normal*(noise(position*37.+vec3(0.,uTime*.21,0.))-.5)*.008;p.x-=uParadox*.145;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,fragmentShader:`uniform float uTime;varying vec2 vUv;void main(){float strand=.45+.55*pow(abs(sin(vUv.y*6.283185)),3.);float flow=.75+.25*sin(vUv.x*23.-uTime*.7);gl_FragColor=vec4(vec3(4.,2.1,.68)*strand*flow,.58);}`});
-for(let i=0;i<11;i++){const angle=1.76+i*.245,span=.035+(i%4)*.014,rise=.035+(i%3)*.035,points=[];for(let j=0;j<=28;j++){const t=j/28,a=angle+(t-.5)*span*2.,r=1.495+Math.sin(t*Math.PI)*rise;points.push(new THREE.Vector3(Math.cos(a)*r,Math.sin(a)*r,-.03+Math.sin(t*Math.PI*2.+i)*.027));}const curve=new THREE.CatmullRomCurve3(points),mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,28,.002+(i%3)*.0007,4,false),prominenceMaterial);moon.add(mesh);}
+// Magnetic arches: rooted at both ends, evolving at staggered phases. The
+// luminous head travels along each loop; turbulent threads trail into its wake.
+const prominenceMaterial=new THREE.ShaderMaterial({uniforms:{...u},transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,vertexShader:`uniform float uTime,uParadox,uDamage;attribute float aSeed;varying vec2 vUv;varying float vLife,vSeed;${noiseCode}${fracturePoseGLSL}void main(){
+vUv=uv;vSeed=aSeed;
+// Each loop grows and drains over 6–10 seconds. Both feet remain attached;
+// only the arch expands, shears sideways and folds back into the limb.
+float rate=.105+fract(aSeed*.371)*.055,cycle=fract(uTime*rate+aSeed*.173);
+vLife=smoothstep(0.,.10,cycle)*(1.-smoothstep(.78,1.,cycle));
+float growth=smoothstep(0.,.40,cycle)*(1.-smoothstep(.60,1.,cycle));
+float arch=sin(uv.x*3.14159265);arch*=arch;
+vec3 p=position;vec2 radial=normalize(position.xy),tangent=vec2(-radial.y,radial.x);
+float initialHeight=max(0.,length(position.xy)-1.495);
+p.xy-=radial*initialHeight*(1.-growth);
+p.xy+=radial*arch*(growth*.075+sin(uTime*1.3+aSeed+uv.x*5.)*.012*growth);
+p.xy+=tangent*arch*sin(cycle*6.283185+aSeed)*.040*growth;
+p.z+=arch*sin(uTime*.85+aSeed+uv.x*4.)*.038*growth;
+p=fracture(p,-1.);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`,fragmentShader:`uniform float uTime;varying vec2 vUv;varying float vLife,vSeed;void main(){
+float core=pow(.5+.5*cos(vUv.y*6.283185),2.);
+float phase=fract(vUv.x-uTime*(.24+fract(vSeed*.23)*.14)+vSeed*.17);
+float knot=exp(-pow((phase-.5)*16.,2.));
+float threads=.5+.5*sin(vUv.x*54.-uTime*6.+vSeed);
+float feet=.25+.75*pow(abs(vUv.x*2.-1.),3.);
+vec3 heat=mix(vec3(2.8,.46,.065),vec3(9.,5.4,1.8),core*(.45+.55*knot));
+gl_FragColor=vec4(heat,(.14+threads*.15+knot*.57+feet*.16)*vLife);}`});
+for(let i=0;i<18;i++){const angle=1.65+i*.174+Math.sin(i*7.3)*.037,span=.026+(i%4)*.014,rise=.028+(i%5)*.021,points=[];for(let j=0;j<=40;j++){const t=j/40,a=angle+(t-.5)*span*2.,r=1.495+Math.sin(t*Math.PI)*rise;points.push(new THREE.Vector3(Math.cos(a)*r,Math.sin(a)*r,-.015+Math.sin(t*Math.PI*2.+i)*.022));}const curve=new THREE.CatmullRomCurve3(points),geometry=new THREE.TubeGeometry(curve,40,.0018+(i%3)*.00065,5,false);geometry.setAttribute('aSeed',new THREE.BufferAttribute(new Float32Array(geometry.attributes.position.count).fill(i+1),1));moon.add(new THREE.Mesh(geometry,prominenceMaterial));}
 // Hair-fine filaments have world-space depth, varying reach and bent trajectories.
 // One line-segment draw call complements the volumetric scatter and prominence loops.
 const rayPositions=[],rayOpacity=[],raySeeds=[];let raySeed=481311;const rayRandom=()=>{raySeed=raySeed*16807%2147483647;return(raySeed-1)/2147483646;};
@@ -272,7 +310,7 @@ document.addEventListener('visibilitychange',()=>{spatialSuspended=document.hidd
 document.addEventListener('lunar:route',()=>release());
 addEventListener('pointermove',e=>{const x=(e.clientX/innerWidth-.5)*2,y=(e.clientY/innerHeight-.5)*2,now=performance.now(),elapsed=Math.max(.016,(now-pointerAt)/1000);pointerImpulse.x=THREE.MathUtils.clamp((x-pointer.x)/elapsed,-2,2);pointerImpulse.y=THREE.MathUtils.clamp((y-pointer.y)/elapsed,-2,2);pointerAt=now;pointer.set(x,y);});
 function motion(){const b=$('#motion');b.textContent=paused?'RESUME ▷':'PAUSE Ⅱ';b.setAttribute('aria-pressed',String(paused));b.setAttribute('aria-label',paused?'Resume animation':'Pause animation');}$('#motion').onclick=()=>{paused=!paused;motion();};motion();
-let audioContext,audioGain,soundscape,lastMaterialAudioAt=-Infinity;
+let audioContext,audioGain,soundscape,lastMaterialAudioAt=-Infinity;const listenerForward=new THREE.Vector3(),listenerUp=new THREE.Vector3();
 // Authored material sonification: no claim that sound propagates through vacuum.
 function playMaterialEvent(kind,localPosition,energy,mass){if(soundscape?.event(kind,moon.localToWorld(localPosition.clone()),energy,mass)){fractureState.audioEvents++;document.body.dataset.lastMaterialEvent=kind;}}
 $('#audio').onclick=async()=>{try{if(!audioContext){audioContext=new AudioContext();soundscape=new LunarSoundscape(audioContext);audioGain=soundscape.master;audioGain.gain.value=masterVolume;document.body.dataset.spatialAudio='HRTF · 6 voice limit';}const active=$('#audio').getAttribute('aria-pressed')==='true';if(active)await audioContext.suspend();else await audioContext.resume();$('#audio').setAttribute('aria-pressed',String(!active));document.body.dataset.audio=audioContext.state;$('#audio').setAttribute('aria-label',active?'Enable ambient sound':'Mute ambient sound');}catch(e){console.error('Sound initialization failed',e);$('#audio').setAttribute('aria-label','Audio unavailable');}};
@@ -289,7 +327,8 @@ const heroCameraLocked=()=>true; // Every public route uses authored camera pose
 // Scroll moves the directed camera, never the object's orientation or free orbit.
 document.addEventListener('wheel',e=>{if(spatialRoute!=='realms'||!rupture.canInspect||!cinematic.ready||document.body.dataset.companyRoute||reduced||e.ctrlKey||e.target.closest('button,a,input,textarea,select'))return;e.preventDefault();heroTravelTarget=THREE.MathUtils.clamp(heroTravelTarget+e.deltaY*(e.deltaMode===1?.015:.00055),0,1);},{capture:true,passive:false});
 
-const canvas=renderer.domElement;let inspectionTouch=null;canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||!rupture.canInspect||!cinematic.ready||reduced||document.body.dataset.companyRoute)return;inspectionTouch={id:e.pointerId,y:e.clientY};canvas.setPointerCapture(e.pointerId);});canvas.addEventListener('pointermove',e=>{if(inspectionTouch?.id!==e.pointerId)return;heroTravelTarget=THREE.MathUtils.clamp(heroTravelTarget+(inspectionTouch.y-e.clientY)/Math.max(300,innerHeight*.75),0,1);inspectionTouch.y=e.clientY;});for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>inspectionTouch=null);canvas.addEventListener('pointerdown',e=>{if(heroCameraLocked()||e.button!==0)return;dragging=true;dragX=e.clientX;dragY=e.clientY;canvas.setPointerCapture(e.pointerId);});canvas.addEventListener('pointermove',e=>{if(heroCameraLocked()){dragging=false;return;}if(!dragging||e.buttons===0){dragging=false;return;}targetOrbitY+=(e.clientX-dragX)*.006;targetOrbitX=THREE.MathUtils.clamp(targetOrbitX+(e.clientY-dragY)*.004,-.75,.75);dragX=e.clientX;dragY=e.clientY;});for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>dragging=false);canvas.addEventListener('wheel',e=>{if(heroCameraLocked())return;e.preventDefault();zoom=THREE.MathUtils.clamp(zoom*Math.exp(e.deltaY*.0005),.82,1.65);},{passive:false});canvas.addEventListener('dblclick',()=>{targetOrbitX=targetOrbitY=0;zoom=1;});addEventListener('blur',()=>{dragging=false;});document.addEventListener('visibilitychange',()=>{if(document.hidden)dragging=false;});
+const inspectionNav=document.createElement('nav');inspectionNav.className='inspection-shots';inspectionNav.setAttribute('aria-label','Cinematic inspection shots');inspectionNav.hidden=true;inspectionNav.innerHTML=['RIM','FAULT','INTERIOR'].map((label,i)=>`<button type="button" data-shot="${i}" aria-pressed="false">0${i+1} / ${label}</button>`).join('');document.body.append(inspectionNav);inspectionNav.addEventListener('click',event=>{const button=event.target.closest('[data-shot]');if(button&&rupture.canInspect&&cinematic.ready)heroTravelTarget=Number(button.dataset.shot)/2;});
+const canvas=renderer.domElement;let inspectionTouch=null;canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||!rupture.canInspect||!cinematic.ready||reduced||document.body.dataset.companyRoute)return;inspectionTouch={id:e.pointerId,y:e.clientY};canvas.setPointerCapture(e.pointerId);});canvas.addEventListener('pointermove',e=>{if(inspectionTouch?.id!==e.pointerId)return;heroTravelTarget=THREE.MathUtils.clamp(heroTravelTarget+(inspectionTouch.y-e.clientY)/Math.max(300,innerHeight*.75),0,1);inspectionTouch.y=e.clientY;});for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>inspectionTouch=null);canvas.addEventListener('pointerdown',e=>{if(heroCameraLocked()||e.button!==0)return;dragging=true;dragX=e.clientX;dragY=e.clientY;canvas.setPointerCapture(e.pointerId);});canvas.addEventListener('pointermove',e=>{if(heroCameraLocked()){dragging=false;return;}if(!dragging||e.buttons===0){dragging=false;return;}targetOrbitY+=(e.clientX-dragX)*.006;targetOrbitX=THREE.MathUtils.clamp(targetOrbitX+(e.clientY-dragY)*.004,-.75,.75);dragX=e.clientX;dragY=e.clientY;});for(const event of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(event,()=>dragging=false);canvas.addEventListener('wheel',e=>{if(heroCameraLocked())return;e.preventDefault();zoom=THREE.MathUtils.clamp(zoom*Math.exp(e.deltaY*.0005),.82,1.65);},{passive:false});canvas.tabIndex=0;canvas.setAttribute('aria-description','When the fracture is open, use Up and Down to move between the rim, fault and interior shots.');canvas.addEventListener('keydown',e=>{if(!heroCameraLocked()||!rupture.canInspect||!cinematic.ready||reduced||!['ArrowUp','ArrowDown','Home'].includes(e.key))return;e.preventDefault();heroTravelTarget=e.key==='Home'?0:THREE.MathUtils.clamp(heroTravelTarget+(e.key==='ArrowDown'?.5:-.5),0,1);});canvas.addEventListener('dblclick',()=>{targetOrbitX=targetOrbitY=0;zoom=1;});addEventListener('blur',()=>{dragging=false;});document.addEventListener('visibilitychange',()=>{if(document.hidden)dragging=false;});
 document.addEventListener('lunar:route',event=>spatialRouteChange(event.detail?.route));
 window.addEventListener('lunar:mission-pillar',event=>{if(missionTargets[event.detail?.pillar])missionPillar=event.detail.pillar;});
 spatialRouteChange(document.body.dataset.route||'realms');
@@ -307,7 +346,9 @@ if(reduced){fractureState.opening=actuatorStrain;fractureState.velocity=0;fractu
 else if(!paused)advanceFracture(simulationDelta);
 for(const {slab,uniforms} of slabMeshes)uniforms.uSlabProgress.value=cinematic.slabProgress(slab);
 Object.assign(document.body.dataset,{cinematicStage:cinematic.stage,cinematicAge:cinematic.age.toFixed(3),crackProgress:cinematic.crack.toFixed(3)});
+sceneCue(({STRAIN:'Tension beneath the surface',NUCLEATION:'The fault awakens',RUPTURE:'Two realms. One rupture.',AFTERMATH:'Across the divide',HELD_OPEN:'Scroll to enter the fault',REJOINING:'Returning to one'})[cinematic.stage]);
 document.body.dataset.cinematicBusy=String(cinematic.age>=0&&!cinematic.ready);document.body.dataset.ruptureState=rupture.state;document.body.dataset.ruptureCommitted=String(rupture.committed);document.body.dataset.ruptureCycles=String(rupture.cycles);
+inspectionNav.hidden=!cinematic.ready||!rupture.canInspect||!!document.body.dataset.companyRoute||spatialRoute!=='realms';for(const button of inspectionNav.querySelectorAll('button'))button.setAttribute('aria-pressed',String(Math.abs(Number(button.dataset.shot)/2-heroTravelTarget)<.15));
 u.uTime.value=time;u.uParadox.value=paradox;u.uStrain.value=charge*(holding?1:Math.exp(-Math.max(0,cinematic.age)*1.2));u.uCrackProgress.value=cinematic.crack;u.uImpact.value=cinematic.impact;u.uDamage.value=fractureState.damage;warmLight.intensity=38+cinematic.impact*70;purpleLight.intensity=17+cinematic.impact*15;softPointer.lerp(pointer,1-Math.exp(-dt*1.6));pointerImpulse.multiplyScalar(Math.exp(-dt*5.));orbitX=THREE.MathUtils.damp(orbitX,targetOrbitX,7,dt);orbitY=THREE.MathUtils.damp(orbitY,targetOrbitY,7,dt);if(heroCameraLocked()){orbitX=orbitY=targetOrbitX=targetOrbitY=0;zoom=1;moon.rotation.set(0,0,0);}else{moon.rotation.y=orbitY+softPointer.x*.045+Math.sin(time*.075)*.018;moon.rotation.x=orbitX+softPointer.y*.028+Math.sin(time*.061)*.008;}updateRouteCamera(Math.min(elapsed,.25));stars.rotation.z=time*.00025;inverseMoonRotation.copy(moon.quaternion).invert();u.uSolarLocal.value.set(-1,.32,.17).normalize().applyQuaternion(inverseMoonRotation);u.uColdLocal.value.set(.65,.92,.30).normalize().applyQuaternion(inverseMoonRotation);
 if(fractureState.damage>.01&&paradox>.025&&!burstActive){heroTravelTarget=heroTravel=0;burstActive=true;burstAge=0;fractureState.events++;playMaterialEvent('fracture',new THREE.Vector3(0,0,1.2),Math.max(.2,fractureState.fractureWork),.2);for(const p of pieces){p.position.copy(p.origin);p.velocity.copy(p.impulse);p.cycle=-1;p.active=false;}}
 if(previousOpening>.015&&paradox<=.015&&!holding)playMaterialEvent('closure',new THREE.Vector3(0,0,1.2),.24,.2);
@@ -335,7 +376,7 @@ for(let i=0;i<count;i++){
 debris.instanceMatrix.needsUpdate=true;debris.visible=!reduced&&paradox>.001;dust.visible=false;dust.material.opacity=paradox;ruptureAtmosphere.update(burstActive?burstAge:-1,reduced?0:Math.min(1,paradox*6),renderer.getPixelRatio());
 if(audioContext?.state==='running'){
 soundscape.update(holding?charge:0,cinematic.impact,paradox);
-const listener=audioContext.listener;if(listener.positionX){listener.positionX.value=camera.position.x;listener.positionY.value=camera.position.y;listener.positionZ.value=camera.position.z;listener.forwardX.value=0;listener.forwardY.value=0;listener.forwardZ.value=-1;listener.upX.value=0;listener.upY.value=1;listener.upZ.value=0;}
+const listener=audioContext.listener;if(listener.positionX){listener.positionX.value=camera.position.x;listener.positionY.value=camera.position.y;listener.positionZ.value=camera.position.z;camera.getWorldDirection(listenerForward);listenerUp.set(0,1,0).applyQuaternion(camera.quaternion);listener.forwardX.value=listenerForward.x;listener.forwardY.value=listenerForward.y;listener.forwardZ.value=listenerForward.z;listener.upX.value=listenerUp.x;listener.upY.value=listenerUp.y;listener.upZ.value=listenerUp.z;}
 
 }
 if(!rendered)startupMark('firstRenderStarted');render();publishSpatial(now);totalFrames++;frames++;if(!rendered){rendered=true;startupMark('firstFrame');fpsTime=now;frames=0;debug.ready=true;$('#loading').hidden=true;$('#gpu-status').textContent='LIVE WEBGL';}
@@ -362,6 +403,6 @@ if(now-fpsTime>850){const fps=Math.round(frames*1000/(now-fpsTime));frames=0;fps
 motionPreference.addEventListener('change',event=>{reduced=event.matches;release();rupture.cancel(true);heroTravelTarget=heroTravel=0;if(reduced){paused=true;motion();}});
 requestAnimationFrame(animate);
 }catch(e){fail(e);}
-</script><script src="./published-content.js"></script><script src="./admin-client.js"></script><script src="./commissions.js"></script><script src="./company.js"></script><script src="./experience.js"></script><script src="./session-client.js"></script>
+</script><script src="./published-content.js"></script><script src="./admin-client.js"></script><script src="./commissions.js"></script><script src="./company.js"></script><script src="./experience.js"></script><script src="./adaptive-graphics.js"></script><script src="./session-client.js"></script>
 
 </body></html>

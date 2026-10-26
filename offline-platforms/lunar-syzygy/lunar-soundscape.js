@@ -24,8 +24,8 @@ export class LunarSoundscape {
   update(charge,impact,opening){
     const now=this.context.currentTime;
     this.bed.gain.setTargetAtTime(.006+charge*.07+impact*.025,now,.09);
-    this.air.gain.setTargetAtTime(.002+charge**2*.065+impact*.035,now,.08);
-    this.stress.frequency.setTargetAtTime(150+charge**2*1500+impact*420,now,.09);
+    this.air.gain.setTargetAtTime(.002+charge**2*.065+impact*.035+opening*.006*(.75+.25*Math.sin(now*.37)),now,.08);
+    this.stress.frequency.setTargetAtTime(150+charge**2*1500+impact*420+opening*140,now,.09);
     for(const {osc,frequency} of this.tones)osc.frequency.setTargetAtTime(frequency*(1+charge*.055-opening*.018),now,.10);
   }
   event(kind,position,energy=.2,mass=.02){

@@ -20,16 +20,19 @@ void main(){
  vec3 N=normalize(abs(determinant)*geometric-gradient);
  float radial=clamp(vRim,0.,1.),side=step(0.,uSide);
  vec3 L=normalize(mix(uSolarView,uColdView,side));
+ vec3 bounce=normalize(mix(uColdView,uSolarView,side));
  float direct=max(dot(N,L),0.),viewFill=pow(max(dot(N,V),0.),2.);
  float pocket=.32+.68*smoothstep(.18,.76,bed);
  vec3 stone=mix(vec3(.045,.042,.037),vec3(.115,.107,.094),smoothstep(.25,.73,aggregate));
  stone=mix(stone,stone*vec3(.75,.79,.88),side);
- vec3 color=stone*pocket*(.14+direct*1.95+viewFill*.12)*(.78+strata*.10);
+ vec3 color=stone*pocket*(.22+direct*2.8+viewFill*.18)*(.78+strata*.10);
+ // Low-energy cross-canyon bounce reveals the broken walls without flattening them.
+ color+=stone*pocket*max(dot(N,bounce),0.)*mix(vec3(.30,.22,.13),vec3(.16,.12,.27),side);
  // Sparse inclusions catch the grazing source; the entire cut is not metallic.
  float mineral=smoothstep(.69,.87,aggregate)*pow(max(dot(N,normalize(L+V)),0.),22.);
  color+=vec3(.14,.12,.087)*mineral*direct;
  float veins=pow(1.-abs(fbm(vP*vec3(12.,21.,17.))*2.-1.),30.);
- float heatDecay=exp(-max(0.,uBurstAge-.3)*.58);
+ float heatDecay=.16+.84*exp(-max(0.,uBurstAge-.3)*.58);
  float interior=1.-smoothstep(.35,.96,radial);
  vec3 heat=mix(vec3(1.8,.45,.07),vec3(.32,.065,.66),side);
  color+=heat*veins*interior*(heatDecay*.30+uImpact*.85);
