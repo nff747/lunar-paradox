@@ -14,11 +14,10 @@ To neutralize the orthographic split (double-"r" typo vs single-"r" canonical ro
            │                                 (Path & Query Preserving, HSTS)
            │                                            │
            ▼                                            ▼
-[ lunarparadox.com (Canonical Root) ] ◄─────────────────┘
+[ lunarparadox.com (Canonical Root & Studio) ] ◄─────────────────┘
      │
-     ├──► studio.lunarparadox.com  ──► maps to offline-platforms/lunar-syzygy
-     ├──► labs.lunarparadox.com    ──► maps to offline-platforms/lunar-gravity
-     └──► products.lunarparadox.com ──► maps to offline-platforms/lunar-astrolabe
+     ├──► labs.lunarparadox.com    ──► maps to offline-platforms/lunar-gravity (Labs)
+     └──► products.lunarparadox.com ──► maps to offline-platforms/lunar-astrolabe (Products & Tools)
 ```
 
 ## 2. Cloudflare Page Rule / Redirect Worker (Cost: $0 / Free Tier)
@@ -30,7 +29,7 @@ Deploy a serverless edge redirect rule for `*lunarparradox.com/*`:
   - `X-Content-Type-Options: nosniff`
   - `X-Frame-Options: SAMEORIGIN`
 
-## 3. Subdomain Mapping to Existing Codebase
-- **`studio.lunarparadox.com`:** Serves the cohesive fracture WebGL studio build (`offline-platforms/lunar-syzygy/`).
+## 3. Host Mapping to Existing Codebase
+- **`lunarparadox.com`:** Serves the cohesive fracture WebGL studio build & services (`offline-platforms/lunar-syzygy/`).
 - **`labs.lunarparadox.com`:** Serves the hydrodynamic inverted mercury lab (`offline-platforms/lunar-gravity/`).
-- **`products.lunarparadox.com`:** Serves celestial mechanics & technical direction offerings (`offline-platforms/lunar-astrolabe/`).
+- **`products.lunarparadox.com`:** Serves celestial mechanics, products, and zero-server tools (`offline-platforms/lunar-astrolabe/`).

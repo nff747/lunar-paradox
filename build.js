@@ -43,14 +43,10 @@ copyDir(path.join(PLATFORMS, 'lunar-gravity'), path.join(DIST, 'labs'));
 console.log('Copying Astrolabe to dist/products...');
 copyDir(path.join(PLATFORMS, 'lunar-astrolabe'), path.join(DIST, 'products'));
 
-// 4. /studio & studio.lunarparadox.com -> Syzygy
-console.log('Copying Syzygy to dist/studio...');
-copyDir(path.join(PLATFORMS, 'lunar-syzygy'), path.join(DIST, 'studio'));
-
-// 5. Create platforms alias directory
+// 4. Create platforms alias directory
 fs.mkdirSync(path.join(DIST, 'platforms'), { recursive: true });
 
-// 6. Copy Root Canonical, Security & SEO metadata
+// 5. Copy Root Canonical, Security & SEO metadata
 const rootFiles = ['robots.txt', 'sitemap.xml', 'releases.json', 'security.txt'];
 for (const file of rootFiles) {
   const src = path.join(ROOT, file);
@@ -58,7 +54,6 @@ for (const file of rootFiles) {
     fs.copyFileSync(src, path.join(DIST, file));
     fs.copyFileSync(src, path.join(DIST, 'labs', file));
     fs.copyFileSync(src, path.join(DIST, 'products', file));
-    fs.copyFileSync(src, path.join(DIST, 'studio', file));
   }
 }
 
@@ -67,7 +62,6 @@ if (fs.existsSync(wellKnownDir)) {
   copyDir(wellKnownDir, path.join(DIST, '.well-known'));
   copyDir(wellKnownDir, path.join(DIST, 'labs', '.well-known'));
   copyDir(wellKnownDir, path.join(DIST, 'products', '.well-known'));
-  copyDir(wellKnownDir, path.join(DIST, 'studio', '.well-known'));
 }
 
 console.log('[Lunar Paradox] Build completed successfully.');

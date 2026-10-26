@@ -7,22 +7,10 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://lunarparadox.com/studio</loc>
+    <loc>https://lunarparadox.com/privacy</loc>
     <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://lunarparadox.com/products</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://lunarparadox.com/labs</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.50</priority>
   </url>
   <url>
     <loc>https://products.lunarparadox.com/</loc>
@@ -92,12 +80,6 @@
   </url>
   <url>
     <loc>https://labs.lunarparadox.com/</loc>
-    <lastmod>2026-10-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.90</priority>
-  </url>
-  <url>
-    <loc>https://studio.lunarparadox.com/</loc>
     <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>

@@ -1,3 +1,4 @@
+import {operationsRoute,OperationsError} from '../lib/operations.js';
 import {AdminAuthError,adminSession,adminRoute} from '../lib/admin-auth.js';
 import {clientAddress} from '../lib/request-security.js';
 import { createHash, createHmac, randomBytes, randomUUID, timingSafeEqual } from 'node:crypto';
@@ -200,7 +201,7 @@ async function handle(req, res) {
     });
   }
 
-  const protectedRoute =
+  const protectedRoute = path.startsWith('/operations') ||
     (['/applications', '/pricing', '/publisher'].includes(path) && ['GET', 'PUT'].includes(method)) ||
     (path === '/briefs' && method === 'GET') ||
     ((path.startsWith('/applications/') || path.startsWith('/briefs/')) && method === 'DELETE');
@@ -215,6 +216,8 @@ async function handle(req, res) {
     await rateLimit(db, req, 'owner-api', 120, 60 * 1000, 'owner:'+req.lunarAdmin.principal);
     await db.query('INSERT INTO lunar_admin_audit(principal,action,target,outcome) VALUES($1,$2,$3,$4)',[req.lunarAdmin.principal,method+' '+path.split('/').slice(0,2).join('/'),path.split('/')[2]||'','attempt']);
   }
+
+  if(path.startsWith('/operations')||path==='/product-reviews'){const result=await operationsRoute({db,req,path,method,readBody,rateLimit,content:CANONICAL_CONTENT});return send(res,200,result);}
 
   if ((path === '/applications' || path === '/pricing') && method === 'GET') {
     if (path === '/pricing') {
@@ -350,7 +353,7 @@ export default async function handler(req, res) {
   } catch (error) {
     if (res.writableEnded) return;
     if (error instanceof InputError) return send(res, 400, { error: error.message });
-    if (error instanceof ApiError || error instanceof AdminAuthError) return send(res, error.status, { error: error.message });
+    if (error instanceof ApiError || error instanceof AdminAuthError || error instanceof OperationsError) return send(res, error.status, { error: error.message });
     console.error('Lunar API request failed:', error?.code || error?.name || 'unknown');
     return send(res, 503, { error: 'The service is temporarily unavailable. Please try again later.' });
   }

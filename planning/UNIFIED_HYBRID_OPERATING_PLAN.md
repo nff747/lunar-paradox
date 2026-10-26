@@ -36,7 +36,7 @@
 * **Not a separate SaaS company**. No subscription billing or marketing overhead.
 * Acts as the **live qualification demo** that validates technical competence instantly.
 
-### Role of Category 1 (`studio.lunarparadox.com`)
+### Role of Category 1 (`lunarparadox.com`)
 * **The sole focus of active working hours** until monthly burn is covered.
 * Sells a standardized **5-Day WebGL Performance & Asset Hardening Sprint**.
 

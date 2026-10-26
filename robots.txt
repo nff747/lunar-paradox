@@ -8,4 +8,3 @@ Disallow: /api/private/
 Sitemap: https://lunarparadox.com/sitemap.xml
 Sitemap: https://products.lunarparadox.com/sitemap.xml
 Sitemap: https://labs.lunarparadox.com/sitemap.xml
-Sitemap: https://studio.lunarparadox.com/sitemap.xml

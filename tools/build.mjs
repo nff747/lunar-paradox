@@ -71,15 +71,11 @@ for(const name of names){
 }
 if(!selected||selected==='syzygy'){
   const hostedRoot=path.join(root,'build','hosted');
-  const rootHtml=await fs.readFile(path.join(hostedRoot,'lunar-syzygy','index.html'),'utf8');
-  const studioHtml=rootHtml
-    .replace('<title>Lunar Paradox — Applied Technology Studio</title>','<title>Studio — Lunar Paradox</title>')
-    .replaceAll('https://lunarparadox.com/"','https://lunarparadox.com/studio"')
-    .replaceAll('Lunar Paradox — Applied Technology Studio','Studio — Lunar Paradox')
-    .replaceAll('Lunar Paradox explores what technology can become through interactive systems, WebGL experiences and product engineering.','Applied technology laboratory and product studio exploring AI, computing, interactive systems and emerging technology.');
-  await fs.writeFile(path.join(hostedRoot,'studio.html'),studioHtml);
-  for(const file of ['robots.txt','sitemap.xml']) {
-    await fs.copyFile(path.join(root,file),path.join(hostedRoot,file));
+  for(const file of ['robots.txt','sitemap.xml','privacy.html','LICENSE','NOTICE']) {
+    const srcFile = path.join(root, file);
+    if(await fs.stat(srcFile).catch(()=>null)) {
+      await fs.copyFile(srcFile, path.join(hostedRoot, file));
+    }
   }
   for(const asset of ['favicon.ico','favicon.svg','og-image.png','site.webmanifest']) {
     const srcAsset = path.join(root, 'assets', asset);
@@ -87,12 +83,16 @@ if(!selected||selected==='syzygy'){
       await fs.copyFile(srcAsset, path.join(hostedRoot, asset));
     }
   }
-  // Subdomain robots and sitemaps
-  for(const name of ['lunar-astrolabe', 'lunar-gravity', 'lunar-syzygy']){
-    const platDir = path.join(hostedRoot, name);
+  // Subdomain robots and sitemaps (Products & Labs only)
+  const subdomainSitemaps = {
+    'lunar-astrolabe': 'sitemap-products.xml',
+    'lunar-gravity': 'sitemap-labs.xml'
+  };
+  for(const [plat, sitemapFile] of Object.entries(subdomainSitemaps)){
+    const platDir = path.join(hostedRoot, plat);
     if(await fs.stat(platDir).catch(()=>null)) {
       await fs.copyFile(path.join(root, 'robots.txt'), path.join(platDir, 'robots.txt'));
-      await fs.copyFile(path.join(root, 'sitemap.xml'), path.join(platDir, 'sitemap.xml'));
+      await fs.copyFile(path.join(root, sitemapFile), path.join(platDir, 'sitemap.xml'));
       for(const asset of ['favicon.ico','favicon.svg','og-image.png','site.webmanifest']) {
         const srcAsset = path.join(root, 'assets', asset);
         if(await fs.stat(srcAsset).catch(()=>null)) {

@@ -7,9 +7,7 @@ const today = new Date().toISOString().split('T')[0];
 
 const masterUrls = [
   { loc: 'https://lunarparadox.com/', priority: '1.0', changefreq: 'weekly' },
-  { loc: 'https://lunarparadox.com/studio', priority: '0.9', changefreq: 'weekly' },
-  { loc: 'https://lunarparadox.com/products', priority: '0.9', changefreq: 'weekly' },
-  { loc: 'https://lunarparadox.com/labs', priority: '0.9', changefreq: 'weekly' },
+  { loc: 'https://lunarparadox.com/privacy', priority: '0.50', changefreq: 'monthly' },
   
   { loc: 'https://products.lunarparadox.com/', priority: '0.95', changefreq: 'weekly' },
   { loc: 'https://products.lunarparadox.com/pbr-synth', priority: '0.85', changefreq: 'monthly' },
@@ -23,8 +21,7 @@ const masterUrls = [
   { loc: 'https://products.lunarparadox.com/products/tensor-cloth-wgsl', priority: '0.80', changefreq: 'monthly' },
   { loc: 'https://products.lunarparadox.com/products/meshlet-culling-wgsl', priority: '0.80', changefreq: 'monthly' },
   
-  { loc: 'https://labs.lunarparadox.com/', priority: '0.90', changefreq: 'weekly' },
-  { loc: 'https://studio.lunarparadox.com/', priority: '0.90', changefreq: 'weekly' }
+  { loc: 'https://labs.lunarparadox.com/', priority: '0.90', changefreq: 'weekly' }
 ];
 
 function buildXml(urls) {
@@ -53,10 +50,6 @@ const labsUrls = masterUrls.filter(u => u.loc.includes('labs.lunarparadox.com'))
 const labsXml = buildXml(labsUrls);
 await fs.writeFile(path.join(root, 'sitemap-labs.xml'), labsXml);
 
-const studioUrls = masterUrls.filter(u => u.loc.includes('studio.lunarparadox.com'));
-const studioXml = buildXml(studioUrls);
-await fs.writeFile(path.join(root, 'sitemap-studio.xml'), studioXml);
-
 const robotsTxt = `# Legitimate Search Engines & AI Discovery Crawlers
 User-agent: *
 Allow: /
@@ -67,7 +60,6 @@ Disallow: /api/private/
 Sitemap: https://lunarparadox.com/sitemap.xml
 Sitemap: https://products.lunarparadox.com/sitemap.xml
 Sitemap: https://labs.lunarparadox.com/sitemap.xml
-Sitemap: https://studio.lunarparadox.com/sitemap.xml
 `;
 await fs.writeFile(path.join(root, 'robots.txt'), robotsTxt);
 

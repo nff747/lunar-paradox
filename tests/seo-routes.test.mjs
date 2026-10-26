@@ -11,11 +11,19 @@ test('search metadata exposes only useful, canonical public pages',()=>{
   const robots=read('robots.txt');
   const sitemap=read('sitemap.xml');
   assert.match(robots,/Sitemap: https:\/\/lunarparadox\.com\/sitemap\.xml/);
+  assert.match(robots,/Sitemap: https:\/\/products\.lunarparadox\.com\/sitemap\.xml/);
+  assert.match(robots,/Sitemap: https:\/\/labs\.lunarparadox\.com\/sitemap\.xml/);
+  assert.doesNotMatch(robots,/studio\.lunarparadox\.com/);
   assert.match(sitemap,/<loc>https:\/\/lunarparadox\.com\/<\/loc>/);
-  assert.match(sitemap,/<loc>https:\/\/lunarparadox\.com\/studio<\/loc>/);
+  assert.match(sitemap,/<loc>https:\/\/lunarparadox\.com\/privacy<\/loc>/);
   assert.match(sitemap,/<loc>https:\/\/products\.lunarparadox\.com\/<\/loc>/);
   assert.match(sitemap,/<loc>https:\/\/labs\.lunarparadox\.com\/<\/loc>/);
+  assert.doesNotMatch(sitemap,/studio\.lunarparadox\.com/);
+  assert.doesNotMatch(sitemap,/<loc>https:\/\/lunarparadox\.com\/(studio|labs|products)<\/loc>/);
   assert.doesNotMatch(sitemap,/lunar-gravity|lunar-astrolabe|offline-platforms/);
+  assert.ok(fs.existsSync(path.join(root,'LICENSE')),'LICENSE must exist');
+  assert.ok(fs.existsSync(path.join(root,'NOTICE')),'NOTICE must exist');
+  assert.ok(fs.existsSync(path.join(root,'privacy.html')),'privacy.html must exist');
   for(const [scene,url] of [['syzygy','https://lunarparadox.com/'],['gravity','https://labs.lunarparadox.com/'],['astrolabe','https://products.lunarparadox.com/']]){
     const html=read(`offline-platforms/lunar-${scene}/scene-source.html`);
     assert.ok(html.includes(`<link rel="canonical" href="${url}">`),scene);
@@ -29,13 +37,19 @@ test('canonical redirects do not leave legacy scene aliases as rewrites',()=>{
   const redirect=(source)=>config.redirects.find(item=>item.source===source);
   assert.equal(config.outputDirectory,'build/hosted');
   assert.equal(config.buildCommand,'npm run build -- --hosted-only');
-  for(const [oldPath,newPath] of [['/gravity','/labs'],['/astrolabe','/products'],['/index.html','/'],['/studio.html','/studio']]){
+  for(const [oldPath,newPath] of [
+    ['/gravity','https://labs.lunarparadox.com'],
+    ['/astrolabe','https://products.lunarparadox.com'],
+    ['/index.html','/'],
+    ['/studio.html','/'],
+    ['/studio','/'],
+    ['/labs','https://labs.lunarparadox.com'],
+    ['/products','https://products.lunarparadox.com']
+  ]){
     assert.equal(redirect(oldPath)?.destination,newPath,oldPath);
     assert.equal(redirect(oldPath)?.permanent,true,oldPath);
   }
-  assert.equal(config.rewrites.find(x=>x.source==='/labs')?.destination,'/lunar-gravity/index.html');
-  assert.equal(config.rewrites.find(x=>x.source==='/products')?.destination,'/lunar-astrolabe/index.html');
-  assert.ok(!config.rewrites.some(x=>['/gravity','/astrolabe'].includes(x.source)));
+  assert.ok(!config.rewrites.some(x=>['/gravity','/astrolabe','/studio','/labs','/products'].includes(x.source)));
 });
 
 test('Vercel deployment input retains the scripts required by its build command',()=>{
@@ -64,8 +78,6 @@ test('hosted HTML stays small and resolves per-scene modules and textures separa
     assert.ok(html.includes(`<base href="${base}">`),scene);
     assert.ok(fs.existsSync(path.join(root,'build/hosted',scene==='syzygy'?'assets':`lunar-${scene}/assets`)),`${scene} assets`);
   }
-  assert.match(read('build/hosted/studio.html'),/<title>Studio — Lunar Paradox<\/title>/);
-  assert.match(read('build/hosted/studio.html'),/href="https:\/\/lunarparadox\.com\/studio"/);
 });
 
 test('scene startup affordances do not print loading copy over the model',()=>{

@@ -6,7 +6,7 @@ Policy: https://lunarparadox.com/#/studio
 
 # LUNAR PARADOX SECURITY & CANONICAL BRAND ADVISORY
 # Canonical Domains:
-#   Root / Studio: https://lunarparadox.com / https://studio.lunarparadox.com
+#   Root / Studio: https://lunarparadox.com
 #   Labs (R&D):    https://labs.lunarparadox.com
 #   Products:      https://products.lunarparadox.com
 #

@@ -27,107 +27,24 @@ const toggle=document.getElementById('lc-tools');function close(){menu.hidden=tr
 const back=()=>`<a class="lc-back" href="#/${landing}">← Home</a>`;
 function recordMarkup(r,detail=false){return `<article class="lc-record">${r.image&&safe(r.image)?`<img src="${esc(r.image)}" alt="${esc(r.title)}" loading="lazy">`:''}<div class="lc-record-meta"><span class="lc-cat">${esc(r.category)}</span>${r.stage?`<span class="lc-stage-badge">${esc(r.stage)}</span>`:''}</div><h${detail?1:2}>${esc(r.title)}</h${detail?1:2}><p>${esc(r.summary)}</p>${detail?'<div class="lc-prose">'+r.body.split(/\n\s*\n/).map(p=>'<p>'+esc(p)+'</p>').join('')+'</div>':''}${detail?(r.actionUrl&&safe(r.actionUrl)?`<a class="lc-button" href="${esc(r.actionUrl)}" target="_blank" rel="noopener noreferrer">${esc(r.actionLabel)} ↗</a>`:''):`<a href="#/${collection==='experiments'?'experiment':'product'}/${esc(r.id)}" class="lc-button">DISCOVER ↗</a>`}</article>`;}
 function catalogue(name){
+  const query=new URLSearchParams(location.hash.split('?')[1]||'');filter=query.get('interest')||'';const selectedStage=query.get('stage')||'';
   collection=name;
   const items=content[name].filter(r=>r.status==='published');
   const categories=[...new Set(items.map(r=>r.category).filter(Boolean))];
-  if(!categories.includes(filter)) filter='';
+  if(!categories.includes(filter))filter='';
+  const stages=[...new Set(items.map(r=>r.stage).filter(Boolean))];const visible=items.filter(r=>(!filter||r.category===filter)&&(!selectedStage||r.stage===selectedStage));
   const lab=name==='experiments';
-  const ctaLabel = lab ? 'PROPOSE A COLLABORATION ↗' : 'GET LAUNCH NOTIFICATIONS ↗';
-  const statusLine = items.length > 0 
-    ? `<p class="lc-catalogue-status">${items.length} verified ${lab ? 'experiments' : 'releases'}</p>`
-    : `<p class="lc-catalogue-status" style="color:#bfa7db;font-weight:500;">Q4 2026 Release Track · Pipeline Active</p>`;
-  const emptyNotice = items.length === 0 
-    ? `<div class="lc-empty-state" style="margin:24px 0;padding:20px;border:1px solid #ffffff18;background:#0d111788;border-radius:4px;">
-         <p style="font-size:13px;line-height:1.6;color:#c0c4ce;margin:0 0 12px 0;">
-           ${lab ? 'Active investigations in non-planar continuum mechanics and hydrodynamic surface dispersion. Pre-print documentation under review.' : 'Hardware and spatial interface tools currently in private testing. Public releases and open-source packages debut Q4 2026.'}
-         </p>
-         <span style="font-size:11px;color:#9b99a8;letter-spacing:0.04em;">STATUS: IN BENCHMARK VERIFICATION</span>
-       </div>` 
-    : '';
   return `<section class="lc-intro lc-catalogue-intro lc-${lab?'labs':'products'}">
-    <p class="lc-eyebrow">LUNAR PARADOX / ${lab?'RESEARCH & LABS':'SPATIAL RELEASES'}</p>
+    <p class="lc-eyebrow">LUNAR PARADOX / ${lab?'RESEARCH':'PRODUCTS'}</p>
     <h1 tabindex="-1">${lab?'Labs':'Products'}</h1>
-    ${statusLine}
-    ${emptyNotice}
-    ${link('syzygy','commission', ctaLabel)}
-  </section>${!items.length?'':`<section class="lc-collection" aria-label="${lab?'Published experiments':'Published products'}"><div class="lc-hologram-rail" aria-hidden="true"><div class="lc-hologram-thumb" title="Scroll indicator"><span class="lc-chevron-indicator">&gt;</span></div></div><div class="lc-collection-head"><h2>${lab?'Experiments':'Releases'}</h2>${categories.length>1?`<label>Browse by interest<select data-filter><option value="">All interests</option>${categories.map(c=>`<option ${c===filter?'selected':''}>${esc(c)}</option>`).join('')}</select></label>`:''}</div><p class="lc-small" role="status"><span class="lc-live-pulse"></span> ${items.filter(r=>!filter||r.category===filter).length} loaded</p><div class="lc-records">${items.filter(r=>!filter||r.category===filter).map(r=>recordMarkup(r)).join('')}</div></section>`}`;
+    ${items.length?'<p class="lc-catalogue-status">Published '+(lab?'experiments':'products')+'</p>':''}
+    ${link('syzygy','commission',lab?'PROPOSE A COLLABORATION ↗':'WORK WITH US ↗')}
+  </section>${contentUnavailable?'<p class="lc-refresh-notice" role="status">The collection could not be refreshed. <button type="button" class="lc-link" data-retry-content>TRY AGAIN</button></p>':''}${!items.length?'':`<section class="lc-collection" aria-label="${lab?'Published experiments':'Published products'}"><div class="lc-hologram-rail" aria-hidden="true"><div class="lc-hologram-thumb" title="Scroll indicator"><span class="lc-chevron-indicator">&gt;</span></div></div><div class="lc-collection-head"><h2>${lab?'Experiments':'Products'}</h2>${categories.length>1?`<label>Browse by interest<select data-filter><option value="">All interests</option>${categories.map(c=>`<option ${c===filter?'selected':''}>${esc(c)}</option>`).join('')}</select></label>`:''}${stages.length>1?`<label>Browse by stage<select data-stage-filter><option value="">All stages</option>${stages.map(stage=>`<option ${stage===selectedStage?'selected':''}>${esc(stage)}</option>`).join('')}</select></label>`:''}</div><p class="lc-small" role="status"><span class="lc-live-pulse"></span> ${visible.length} ${visible.length===1?'entry':'entries'} loaded</p><div class="lc-records">${visible.map(r=>recordMarkup(r)).join('')}</div>${!visible.length?'<p>No entries match these filters. <button class="lc-link" type="button" data-reset-filters>Show all</button></p>':''}</section>`}
+  `;
 }
 
-function home(){return `<section class="lc-intro lc-brand-intro"><p class="lc-eyebrow">LUNAR PARADOX / APPLIED TECHNOLOGY</p><h1 tabindex="-1">We explore what<br>technology can become.</h1><p class="lc-deck">Applied technology laboratory and product studio exploring AI, computing, interactive systems and emerging technology.</p><div class="lc-actions">${link('gravity','labs','EXPLORE THE LAB ↗','lc-button')}<a href="#/studio" class="lc-button lc-secondary">WORK WITH US ↗</a></div><div class="lc-realms"><div><span>01 / EXPERIMENTATION</span><p>Research · Exploration · R&amp;D</p></div><div><span>02 / APPLICATION</span><p>Products · Engineering · Client work</p></div></div></section>`;}
-function studio(){
-  return back()+`<section class="lc-studio">
-    <p class="lc-eyebrow">STUDIO / TECHNICAL DIRECTION & BESPOKE WEBGL</p>
-    <h1 tabindex="-1" style="letter-spacing:-0.03em;word-spacing:0.12em;">Work with Lunar Paradox.</h1>
-    <p class="lc-deck" style="color:#d6d5dc;font-size:15px;line-height:1.7;">We engineer high-impact real-time WebGL shaders, spatial interactive interfaces, and continuum mechanics simulations for forward-looking design agencies and product teams.</p>
-    
-    <!-- Differentiator Funding Model Block -->
-    <div class="lc-funding-model" style="margin:20px 0 28px 0;padding:16px 20px;background:linear-gradient(90deg,#21132866,#131a2466);border-left:3px solid #b77bee;border-radius:0 4px 4px 0;">
-      <p style="margin:0;font-size:12px;letter-spacing:0.04em;color:#e8def2;font-weight:600;">THE OPERATING MODEL</p>
-      <p style="margin:4px 0 0 0;font-size:13px;line-height:1.5;color:#bfb8cc;">Client technical direction directly funds sovereign laboratory research. Lab discoveries directly feed open-source tools and production shaders.</p>
-    </div>
-
-    <div class="lc-offers">
-      <article>
-        <span>01</span>
-        <h2>Technical Direction Spikes</h2>
-        <p>3-day bounded investigations resolving complex shader math, 60 FPS bottlenecks, or interactive mechanics before full client builds.</p>
-      </article>
-      <article>
-        <span>02</span>
-        <h2>Spatial & WebGL Runtimes</h2>
-        <p>Production-grade Three.js scenes, GPU instancing, non-planar topological fractures, and custom glsl pipelines.</p>
-      </article>
-      <article>
-        <span>03</span>
-        <h2>Continuum Physics Solvers</h2>
-        <p>Bespoke mathematical modeling for brand reveals, liquid metals, and interactive gravitational mechanics.</p>
-      </article>
-    </div>
-
-    <!-- Numbered Process -->
-    <div class="lc-process" style="margin:30px 0;">
-      <h2>How we begin</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:14px;">
-        <div style="padding:14px;background:#ffffff08;border:1px solid #ffffff12;border-radius:4px;">
-          <strong style="color:#f5e6c8;font-size:12px;">STEP 01</strong>
-          <h3 style="margin:6px 0;font-size:14px;">Define Objective</h3>
-          <p style="margin:0;font-size:12px;color:#a9a7b5;line-height:1.5;">Identify the core visual hurdle, target hardware tier, and performance budget.</p>
-        </div>
-        <div style="padding:14px;background:#ffffff08;border:1px solid #ffffff12;border-radius:4px;">
-          <strong style="color:#f5e6c8;font-size:12px;">STEP 02</strong>
-          <h3 style="margin:6px 0;font-size:14px;">3-Day Spike</h3>
-          <p style="margin:0;font-size:12px;color:#a9a7b5;line-height:1.5;">Execute bounded prototype or performance optimization with flamegraph benchmarks.</p>
-        </div>
-        <div style="padding:14px;background:#ffffff08;border:1px solid #ffffff12;border-radius:4px;">
-          <strong style="color:#f5e6c8;font-size:12px;">STEP 03</strong>
-          <h3 style="margin:6px 0;font-size:14px;">Production Delivery</h3>
-          <p style="margin:0;font-size:12px;color:#a9a7b5;line-height:1.5;">Integrate battle-tested pull-request code directly into client repo with zero tech debt.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Selected Proof & Case Studies -->
-    <div class="lc-proof" style="margin:28px 0;">
-      <h2>Selected Technical Proof</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
-        <div style="padding:14px;background:#ffffff06;border:1px solid #ffffff10;border-radius:4px;">
-          <small style="color:#b48eff;font-weight:600;">GRAVITATIONAL CLEAVAGE RIG</small>
-          <h3 style="margin:4px 0 8px 0;font-size:14px;">Asymmetric Planetary Fracture</h3>
-          <p style="margin:0;font-size:12px;color:#9b9aa6;line-height:1.5;">Continuum cohesive zone model with 6 detachable slabs and real-time P95 &le; 16.6ms cadence.</p>
-        </div>
-        <div style="padding:14px;background:#ffffff06;border:1px solid #ffffff10;border-radius:4px;">
-          <small style="color:#ffd185;font-weight:600;">HYDRODYNAMIC INVERSION</small>
-          <h3 style="margin:4px 0 8px 0;font-size:14px;">Inverted Mercury Chasm</h3>
-          <p style="margin:0;font-size:12px;color:#9b9aa6;line-height:1.5;">Finite-depth dispersion waves and screen-space planar reflection probe running in Three.js.</p>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:24px;">
-      <a href="#/commission" class="lc-button" style="font-weight:600;letter-spacing:0.04em;">START A TECHNICAL CONVERSATION ↗</a>
-    </div>
-  </section>`;
-}
+function home(){return `<section class="lc-intro lc-brand-intro"><p class="lc-eyebrow">LUNAR PARADOX / APPLIED GRAPHICS & RUNTIMES</p><h1 tabindex="-1">Hardened 3D runtimes.<br>Zero-server browser systems.</h1><p class="lc-deck">Applied graphics laboratory and systems studio engineering locked-60-FPS WebGL/WebGPU runtimes, high-throughput shader mechanics, and privacy-first in-browser tools.</p><div class="lc-actions">${link('gravity','labs','EXPLORE RESEARCH ↗','lc-button')}<a href="#/studio" class="lc-button lc-secondary">WORK WITH STUDIO ↗</a></div><div class="lc-realms"><div><span>01 / RESEARCH LABS</span><p>Continuum mechanics · GPU simulations · Shaders</p></div><div><span>02 / CLIENT SPRINTS</span><p>5-day WebGL hardening · Bespoke reveals · Custom tools</p></div></div></section>`;}
+function studio(){return back()+`<section class="lc-studio"><p class="lc-eyebrow">STUDIO / PERFORMANCE SPRINTS & COMMISSIONS</p><h1 tabindex="-1">Hardened 3D runtimes<br>locked to 60 FPS.</h1><p class="lc-deck">Commission a 5-day WebGL performance hardening sprint, a bespoke interactive reveal, or an engineering feasibility investigation. We agree the scope, reference hardware and acceptance criteria before work begins.</p><div class="lc-offers"><article><span>01 / PERFORMANCE SPRINT</span><h2>5-Day WebGL Hardening</h2><p>Draw-call reduction, texture packing, and frame-time stabilization to lock heavy 3D scenes to a consistent 60 FPS.</p></article><article><span>02 / COMMISSIONS</span><h2>Interactive & spatial</h2><p>Product reveals, real-time 3D and browser experiences shaped around your audience.</p></article><article><span>03 / INVESTIGATION</span><h2>Technical feasibility</h2><p>Test a difficult interaction, shader mechanic, or pipeline constraint before committing to a larger build.</p></article></div><div class="lc-process"><h2>A clear way to begin.</h2><p>Share the bottleneck or outcome you need and what already exists. We review fit and availability, then agree the deliverables, milestones, revision limits and target devices.</p><p>Accepted applications can select configured services and save an indicative estimate. Work begins only after a written scope and terms are agreed.</p></div><div class="lc-actions"><a href="#/commission" class="lc-button">APPLY TO WORK WITH US ↗</a><a href="#/estimate" class="lc-link">RETURN TO YOUR APPLICATION ↗</a></div></section>`;}
 function commission(){return window.lunarCommission.markup("commission");}
 function fields(record){return `<input type="hidden" name="id" value="${esc(record.id)}"><label>Title<input name="title" maxlength="120" value="${esc(record.title)}"></label><label>One-sentence description<textarea name="summary" maxlength="300" rows="2">${esc(record.summary)}</textarea></label><label>Content<textarea name="body" maxlength="6000" rows="6">${esc(record.body)}</textarea></label><div class="lc-form-grid"><label>Interest / category<input name="category" maxlength="60" value="${esc(record.category)}"></label><label>Release label <span>optional</span><input name="stage" maxlength="40" value="${esc(record.stage)}"></label></div><label>Preview image HTTPS URL <span>optional</span><input name="image" type="url" maxlength="500" value="${esc(record.image)}"></label><div class="lc-form-grid"><label>Action label <span>optional</span><input name="actionLabel" maxlength="60" value="${esc(record.actionLabel)}"></label><label>Action HTTPS URL <span>optional</span><input name="actionUrl" type="url" maxlength="500" value="${esc(record.actionUrl)}"></label></div><label>Publication state<select name="status">${['draft','published','archived'].map(v=>`<option ${record.status===v?'selected':''}>${v}</option>`).join('')}</select></label><div class="lc-actions"><button class="lc-button" type="submit">SAVE RECORD</button><button class="lc-button lc-secondary" type="button" data-preview>PREVIEW</button><button class="lc-link" type="button" data-cancel>CLOSE EDITOR</button></div>`;}
 function manage(){if(!local)return '<h1>Publisher unavailable</h1><p>Use the private local launcher to manage content.</p>';return back()+`<section class="lc-manage"><p class="lc-eyebrow">LOCAL PUBLISHER / PRIVATE WORKSPACE</p><h1 tabindex="-1">Publish with<br>something to say.</h1><p class="lc-deck">Drafts stay out of the public collection. Preview a record, then publish it when its content and destinations are ready.</p><div class="lc-actions"><button class="lc-button lc-secondary" data-kind="experiments" aria-pressed="${collection==='experiments'}">EXPERIMENTS</button><button class="lc-button lc-secondary" data-kind="products" aria-pressed="${collection==='products'}">PRODUCTS</button><button class="lc-button" data-new>NEW RECORD +</button></div><p class="lc-notice" role="status">${esc(notice)}</p><div class="lc-editor-list">${content[collection].map(r=>`<button type="button" data-edit="${esc(r.id)}"><strong>${esc(r.title||'Untitled draft')}</strong><span>${esc(r.status)} ↗</span></button>`).join('')}</div>${editing?`<form id="lc-editor">${fields(editing)}</form><section id="lc-preview" aria-label="Draft preview" hidden></section>`:''}<details><summary>CONTACT & BACKUP</summary><form id="lc-contact"><label>Public company contact email <span>leave blank until ready</span><input name="contactEmail" type="email" maxlength="254" value="${esc(content.contactEmail)}"></label><button class="lc-button lc-secondary">SAVE CONTACT</button></form><div class="lc-actions"><button class="lc-button lc-secondary" data-backup>EXPORT CONTENT ↓</button><button class="lc-button lc-secondary" data-static>EXPORT PUBLIC SNAPSHOT ↓</button><label class="lc-button lc-secondary">MERGE BACKUP<input type="file" data-import accept="application/json" hidden></label></div><p class="lc-small">The local launcher stores content on this device. This editor has no public hosting or remote authentication setup.</p></details><details><summary>LOCALLY SAVED COMMISSION BRIEFS</summary><div data-briefs><p class="lc-small">Open this section to read briefs saved through the local launcher.</p></div></details></section>`;}

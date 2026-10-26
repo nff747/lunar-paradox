@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#020306">
+  <title>Privacy Policy — Lunar Paradox</title>
+  <meta name="description" content="Lunar Paradox Zero-Server Privacy Policy: 100% on-device compute, zero remote telemetry, zero cookies, and air-gapped cryptographic execution.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://lunarparadox.com/privacy">
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+  <style>
+    :root { color-scheme: dark; --bg: #020306; --card: #080912; --border: #ffffff18; --text: #f7f7f7; --muted: #95939e; --accent: #dedbe5; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.7; padding: 40px 24px 80px; min-height: 100vh; }
+    .container { max-width: 760px; margin: 0 auto; }
+    .header { margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 24px; display: flex; justify-content: space-between; align-items: baseline; }
+    .brand { font-size: 15px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+    .brand:hover { opacity: 0.8; }
+    .date { font-family: monospace; font-size: 12px; color: var(--muted); }
+    h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; color: #fff; }
+    .summary { font-size: 17px; line-height: 1.6; color: var(--muted); margin-bottom: 40px; }
+    section { margin-bottom: 36px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 28px; }
+    h2 { font-size: 18px; font-weight: 600; margin-bottom: 14px; color: #fff; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
+    h2::before { content: "//"; color: var(--muted); font-family: monospace; font-size: 14px; }
+    p { margin-bottom: 14px; color: #c4c2cb; font-size: 14px; }
+    p:last-child { margin-bottom: 0; }
+    ul { list-style: square; padding-left: 20px; color: #c4c2cb; font-size: 14px; margin-bottom: 14px; }
+    li { margin-bottom: 6px; }
+    a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { color: #fff; }
+    .footer { margin-top: 60px; text-align: center; font-size: 12px; color: var(--muted); font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <a href="https://lunarparadox.com/" class="brand">Lunar Paradox</a>
+      <span class="date">EFFECTIVE: OCTOBER 2026</span>
+    </header>
+
+    <main>
+      <h1>Zero-Server Privacy Policy</h1>
+      <p class="summary">
+        Lunar Paradox operates under a sovereign, privacy-first technical architecture. Our interactive 3D simulations, WebGL runtimes, and zero-server tools execute 100% locally on your hardware. We do not track you, we do not set tracking cookies, and we do not store your data.
+      </p>
+
+      <section>
+        <h2>1. Zero Telemetry & On-Device Processing</h2>
+        <p>All client tools hosted on our platform—including <strong>PBR Synth</strong>, <strong>Optim Compressor</strong>, <strong>Resonance DSP</strong>, and <strong>Cipher Workbench</strong>—execute entirely within your device's browser memory (V8/JavaScript, WebAssembly, HTML5 Canvas, WebGL, and WebCrypto).</p>
+        <ul>
+          <li>Zero image, audio, or document data is uploaded to remote servers.</li>
+          <li>Cryptographic key generation and symmetric encryption occur strictly within standard hardware CSPRNG and WebCrypto isolation.</li>
+          <li>All tools are air-gap capable and function completely offline without internet connectivity.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>2. Cookies & Local Storage</h2>
+        <p>We do not use advertising, marketing, or third-party tracking cookies.</p>
+        <p>Our applications utilize the browser's native <code>localStorage</code> API exclusively for maintaining client-side application state (such as UI preferences, audio volume level, draft review submissions, and camera perspective presets). This data never leaves your device and can be cleared at any time through your browser settings.</p>
+      </section>
+
+      <section>
+        <h2>3. Third-Party Dependencies & CDNs</h2>
+        <p>Lunar Paradox adheres to a strict self-hosting standard. All scripts, fonts, stylesheets, and Three.js 3D libraries are served directly from our origin domain with locked Subresource Integrity (SRI) hashes and strict Content Security Policies (CSP). We do not load remote analytics trackers, Google Tag Manager, Meta pixels, or external ad networks.</p>
+      </section>
+
+      <section>
+        <h2>4. Communication & Commission Inquiries</h2>
+        <p>If you voluntarily apply for a studio commission or contact us via email, we use the information you provide solely to evaluate technical fit, scope deliverables, and respond to your inquiry. We never sell, lease, or distribute applicant information to third parties.</p>
+      </section>
+
+      <section>
+        <h2>5. Compliance & Security Contact</h2>
+        <p>For questions regarding our privacy commitments, cryptographic audits, or technical vulnerability disclosures under our <a href="/.well-known/security.txt">security.txt</a> policy, contact:</p>
+        <p><strong>Security & Privacy Desk:</strong> <a href="mailto:security@lunarparadox.com">security@lunarparadox.com</a></p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© 2026 LUNAR PARADOX · APPLIED TECHNOLOGY STUDIO · ALL RIGHTS RESERVED</p>
+    </footer>
+  </div>
+</body>
+</html>

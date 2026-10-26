@@ -41,7 +41,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' blob: 'sha256-03wuUr9y09/uTuRmk5EqpsUumK0/ntvSH+Cl6pfFejQ=' 'sha256-3ip7ss8zmiG03s3PlAADP6iJ1Nt+CjNeksFFg5dd1a0=' 'sha256-7IhZ+hdlTpxyncbelsUyrBLGncYw3lHRuXtHwlNpPX8=' 'sha256-8HOIfBOyiDXQqUclbx3cia9QD2IunmD0R7Sj+81TjZc=' 'sha256-Ca9JXposLRTkFStPS+OuFCDjItmvS2ZnLvVdRq9le1o=' 'sha256-CmbZZ1oAGsrCLZg2a79dQgYYJ1t7+6YgWv5H4fN/X5U=' 'sha256-H2jkpbuunKYpk46ZRNr6qv0PHqtXrrnijBTjhu9ZmCk=' 'sha256-HxeYeWqXHyEwNJyr5LZimNuIuDZihp6eVc32GlYjbts=' 'sha256-L1z8HPnhgPQ/QEldcldmZ8m0NaSJDjeKRYUMfIfEiuw=' 'sha256-VCWSZ/Q8ktsZMGz9YFY73HbjxBKrYngZMmC03e8P8rw=' 'sha256-Zm0p3itaX8yD9SOus4pwzCrr/Lf5f7LSTgwoBb2xjcs=' 'sha256-a9nYXgQ0+Q+WE5vlp9pqApMSwE/ZxmsDQlmzWOXVpzg=' 'sha256-gZnok1b5iHdYN06BH9Y5tZMSdi2J3aqi3m6yrv/Tg5Q=' 'sha256-mL5tx+t0FPIemwlzc9NeTT8plrcGY9L2hy1oWgoRDRs=' 'sha256-oM6B5PHA5xqRZ8mq9amTsa+haj0GTXHztwXWWX7C/jc=' 'sha256-oQCiy8HgCadO2HkWe275ocsywZOVYIeatJYfWRK4VQ0=' 'sha256-s3oUjDPo71POBcf1LiTJD4CPjjkYZyYLE6wJGz8wlPw=' 'sha256-vzGVPLQbSQSZzDJmtsKYEMGbPzyDp/8Xsr5ieI12FCA=' 'sha256-zwNY7FL2T80DuClat5zSoAjFncMD+wvhW9Iezp6GLUQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' blob: 'sha256-/F9SkFEU9MiGObpeWsij2OQ4wSgAMIF1eUgYVX9gASM=' 'sha256-4g2i0ikzxLpmbMMzlxnHbWRxOqXDqvk00/6FFJABJrM=' 'sha256-7sRT0hHG4SWZ1LeK7LsevI5Kkljq1AA9mVwlYVSB1s0=' 'sha256-P49Z8c4RMTwxNWfbWEoZS2mdpKtT08jd3lQs9uHivpA=' 'sha256-PaiGDBoPN3L5QhD5EFd5FxHEoN/0GnGPGKxgsqEQLrw=' 'sha256-Q2NPNjfTP8KR5oS/jQtChDcEKpPtfjaYIVMgWm1g31g=' 'sha256-QggPpgOamRJ97LqUa1u1bV6yFHjAJv+hoEFRPCDFyNQ=' 'sha256-SNV+Lg3e/IL8Ewkd5OHKTxluADt8QhQjhI8lyRCdHkk=' 'sha256-SRRKHCGRugaNAJsbvvdL1ZGveT8b9ZdM1rXoPtpy+EA=' 'sha256-gnzvz2IyKpLHZpgPexLl9IRZM5gR1vc+6n/U74ODiPE=' 'sha256-jjm0WyQ7+F8DyFmlMeHpSSKc1VsCBEiPI9Kis73gE4c=' 'sha256-lvu6513e7v7lhEkwuD7N4AFxjLALm6VO2hq+B1eKkv0=' 'sha256-mb10Qh9t0K6UJ1t52Y0eVSzx8Yi+itdDcd2ubJO8jnY=' 'sha256-nrx/RnNoCj2j+ItACwARglh2qfbrRx3b7MDDrY3O6Nc=' 'sha256-p2+DZEz4XX2/nmkcm0ECq+/j/sgWNa5G+nXvC+cS2xA=' 'sha256-p2mj79yatZ4ev6i6aKEz7+/4vrmCEdEc53Eyp62B3vs=' 'sha256-s0ReVD+1jDQeb6FTcjOwhuOLqQOGbARhSeLMcUVmr1g=' 'sha256-tYK0ccJeKI2HDNSheDpc9uTw6tqXdLIgTaPlYDXANOc='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     },
@@ -147,18 +147,59 @@
       "permanent": true
     },
     {
+      "has": [
+        {
+          "type": "host",
+          "value": "studio.lunarparadox.com"
+        }
+      ],
+      "source": "/:path*",
+      "destination": "https://lunarparadox.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/studio.html",
-      "destination": "/studio",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/studio",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/studio/:path*",
+      "destination": "/:path*",
       "permanent": true
     },
     {
       "source": "/gravity",
-      "destination": "/labs",
+      "destination": "https://labs.lunarparadox.com",
+      "permanent": true
+    },
+    {
+      "source": "/labs",
+      "destination": "https://labs.lunarparadox.com",
+      "permanent": true
+    },
+    {
+      "source": "/labs/:path*",
+      "destination": "https://labs.lunarparadox.com/:path*",
       "permanent": true
     },
     {
       "source": "/astrolabe",
-      "destination": "/products",
+      "destination": "https://products.lunarparadox.com",
+      "permanent": true
+    },
+    {
+      "source": "/products",
+      "destination": "https://products.lunarparadox.com",
+      "permanent": true
+    },
+    {
+      "source": "/products/:path*",
+      "destination": "https://products.lunarparadox.com/:path*",
       "permanent": true
     },
     {
@@ -219,44 +260,12 @@
       "source": "/products/:path*",
       "destination": "/:path*",
       "permanent": true
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/studio",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/studio/:path*",
-      "destination": "/:path*",
-      "permanent": true
     }
   ],
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "/api/[...path]?path=:path*"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/",
-      "destination": "/studio.html"
     },
     {
       "has": [
@@ -452,41 +461,11 @@
       "has": [
         {
           "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/robots.txt",
-      "destination": "/lunar-syzygy/robots.txt"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/sitemap.xml",
-      "destination": "/lunar-syzygy/sitemap.xml"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
           "value": "products.lunarparadox.com"
         }
       ],
       "source": "/products/:path*",
       "destination": "/lunar-astrolabe/:path*"
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "studio.lunarparadox.com"
-        }
-      ],
-      "source": "/:path*",
-      "destination": "/lunar-syzygy/:path*"
     },
     {
       "has": [
@@ -509,24 +488,12 @@
       "destination": "/lunar-astrolabe/:path*"
     },
     {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
       "source": "/",
       "destination": "/lunar-syzygy/index.html"
-    },
-    {
-      "source": "/studio",
-      "destination": "/studio.html"
-    },
-    {
-      "source": "/labs",
-      "destination": "/lunar-gravity/index.html"
-    },
-    {
-      "source": "/labs/:path*",
-      "destination": "/lunar-gravity/:path*"
-    },
-    {
-      "source": "/products",
-      "destination": "/lunar-astrolabe/index.html"
     },
     {
       "source": "/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",

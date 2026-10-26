@@ -3,7 +3,7 @@
 > **Studio Showcase & Technical Retrospective**  
 > **Author**: Lunar Paradox Core Engineering  
 > **Date**: 26 October 2026  
-> **Target Displays**: `studio.lunarparadox.com`, Public Case Studies, Technical Manifesto
+> **Target Displays**: `lunarparadox.com`, Public Case Studies, Technical Manifesto
 
 ---
 
@@ -67,7 +67,7 @@ This migration eliminated routing redundancies ("URL stutter" such as `products.
 Subdomains now function as their own autonomous surface roots:
 - `products.lunarparadox.com` → Renders the complete catalogue immediately at `/`. No hash fragment (`#`) or pathname suffix is added.
 - `labs.lunarparadox.com` → Renders the experimental research catalogue cleanly at `/`.
-- `studio.lunarparadox.com` → Renders the studio overview and commission portal at `/` via edge rewrites to `studio.html`.
+- `lunarparadox.com` → Renders the studio overview and commission portal at `/` via edge rewrites to `studio.html`.
 - `lunarparadox.com` → Renders the central Syzygy 3D real-time fracture simulation.
 
 ### 2. Edge-Level Canonical Redirect Matrix
@@ -131,7 +131,7 @@ The CI/CD workflow mandates strictly **1 active production deployment** in Verce
 
 ## 5. Copy for Future Studio Display
 
-*When showcasing this milestone on `studio.lunarparadox.com` or in pitch decks, use the following narrative:*
+*When showcasing this milestone on `lunarparadox.com` or in pitch decks, use the following narrative:*
 
 > ### "Engineering Sovereignty: How We Streamlined Lunar Paradox"
 > 
