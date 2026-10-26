@@ -50,3 +50,18 @@ body.company-ready:not(.company-open) .type .back{opacity:calc(1 - var(--hold-re
 @media(max-width:650px){.lc-catalogue-intro{bottom:20px;padding:18px 22px;max-width:260px}#lunar-company .lc-catalogue-intro h1{font-size:28px!important}.lc-page-labs .lc-collection,.lc-page-products .lc-collection{margin-top:35px}}
 
 .lc-collection-head{flex-wrap:wrap;gap:12px}.lc-collection-head label{min-width:120px}.lc-prose p{white-space:pre-line}.lc-prose h2{font-size:22px;line-height:1.4;margin:32px 0 14px}.lc-refresh-notice{margin:12px 4vw;max-width:420px;font:11px/1.6 monospace;color:#c6c1ce}.lc-refresh-notice button{margin-left:10px}:where(.lc-button,.lc-link,.inspection-shots button):focus-visible{outline:2px solid currentColor;outline-offset:5px}
+
+/* In-Platform Product Interactive Testbenches */
+.lc-testbench-wrapper{margin:32px 0 24px;border:1px solid var(--lc-line);background:#090d14fa;padding:24px;border-radius:4px;box-shadow:0 8px 32px #00000080}
+.lc-testbench-wrapper .lc-eyebrow{margin-bottom:14px;color:var(--lc-accent);display:flex;align-items:center;justify-content:space-between}
+.lc-testbench{position:relative;min-height:200px;display:flex;flex-direction:column;gap:14px}
+.lc-testbench canvas{display:block;width:100%;max-width:100%;height:220px;background:#06080d;border:1px solid #ffffff14;border-radius:2px;cursor:crosshair}
+.lc-tb-controls{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.lc-tb-controls label{font:10px/1.4 monospace;color:#c0bcc8;display:inline-flex;align-items:center;gap:8px}
+.lc-tb-controls input[type=range]{accent-color:var(--lc-accent);cursor:pointer}
+.lc-tb-readout{font:11px/1.7 monospace;color:#9b97a4;background:#06080d;border:1px solid #ffffff0f;padding:12px 14px;border-radius:2px;white-space:pre-wrap;overflow-x:auto}
+.lc-tb-readout b{color:#e8dfd0}
+.lc-tb-btn{padding:8px 16px;background:transparent;border:1px solid var(--lc-accent);color:var(--lc-accent);font:10px/1.4 monospace;letter-spacing:.06em;cursor:pointer;border-radius:2px;transition:background .15s ease,color .15s ease}
+.lc-tb-btn:hover,.lc-tb-btn[data-active=true]{background:var(--lc-accent);color:#0d0b10}
+.lc-tb-glass-demo{height:180px;display:flex;align-items:center;justify-content:center;perspective:800px;background:#06080d;border:1px solid #ffffff14;border-radius:2px}
+.lc-tb-glass-card{width:280px;height:120px;background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.22);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#eeeae3;font:11px/1.6 monospace;letter-spacing:.08em;transition:transform .1s ease-out;user-select:none;cursor:pointer}
