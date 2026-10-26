@@ -20,9 +20,8 @@ for (const prod of openSourceProducts) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${prod.title} — Lunar Paradox Products</title>
   <meta name="description" content="${prod.summary}">
-  <meta name="keywords" content="${prod.title}, Lunar Paradox, ${prod.category}, WebGPU, WGSL, open source 3D engine, nff747">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <link rel="canonical" href="https://products.lunarparadox.com/products/${prod.id}">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://products.lunarparadox.com/${prod.id}">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="alternate icon" href="../../assets/favicon.ico">
   <link rel="apple-touch-icon" href="../../assets/favicon.svg">
@@ -30,7 +29,7 @@ for (const prod of openSourceProducts) {
   <meta property="og:site_name" content="Lunar Paradox">
   <meta property="og:title" content="${prod.title} — Lunar Paradox Products">
   <meta property="og:description" content="${prod.summary}">
-  <meta property="og:url" content="https://products.lunarparadox.com/products/${prod.id}">
+  <meta property="og:url" content="https://products.lunarparadox.com/${prod.id}">
   <meta property="og:image" content="https://products.lunarparadox.com/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${prod.title} — Lunar Paradox Products">
@@ -202,6 +201,7 @@ for (const prod of openSourceProducts) {
       <div class="actions">
         <a href="${prod.actionUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">${prod.actionLabel}</a>
         <a href="https://products.lunarparadox.com/#/product/${prod.id}" class="btn btn-secondary">LAUNCH IN 3D PLATFORM &rarr;</a>
+        <a href="https://lunarparadox.com/studio" class="btn btn-secondary" style="border-color:var(--cyan); color:var(--cyan);">WORK WITH STUDIO &rarr;</a>
       </div>
     </div>
   </main>

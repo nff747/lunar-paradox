@@ -41,7 +41,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' blob: 'sha256-03wuUr9y09/uTuRmk5EqpsUumK0/ntvSH+Cl6pfFejQ=' 'sha256-3ip7ss8zmiG03s3PlAADP6iJ1Nt+CjNeksFFg5dd1a0=' 'sha256-4ugLndzmZge/rC0BNhaooMoPEWmhceHj0bLx/giN/9U=' 'sha256-8cCgAS+UYX6xVNyu7Fe3bCIg8qZdWMfimz29suR6H24=' 'sha256-Ca9JXposLRTkFStPS+OuFCDjItmvS2ZnLvVdRq9le1o=' 'sha256-CmbZZ1oAGsrCLZg2a79dQgYYJ1t7+6YgWv5H4fN/X5U=' 'sha256-H2jkpbuunKYpk46ZRNr6qv0PHqtXrrnijBTjhu9ZmCk=' 'sha256-HxeYeWqXHyEwNJyr5LZimNuIuDZihp6eVc32GlYjbts=' 'sha256-Zm0p3itaX8yD9SOus4pwzCrr/Lf5f7LSTgwoBb2xjcs=' 'sha256-a9nYXgQ0+Q+WE5vlp9pqApMSwE/ZxmsDQlmzWOXVpzg=' 'sha256-gZnok1b5iHdYN06BH9Y5tZMSdi2J3aqi3m6yrv/Tg5Q=' 'sha256-jhR7UFZzHpC8adTZzNJWqjPwoc7uBnUwv8nNN1+75qA=' 'sha256-mL5tx+t0FPIemwlzc9NeTT8plrcGY9L2hy1oWgoRDRs=' 'sha256-oM6B5PHA5xqRZ8mq9amTsa+haj0GTXHztwXWWX7C/jc=' 'sha256-pU1BmxY7nWBgu3D38pCgKuaDEgJgvLTDOip+z7/Anog=' 'sha256-pUaGOiVoDyMdwYXcu9le5ydsQOHxeqARS0TozBrBaoM=' 'sha256-s3oUjDPo71POBcf1LiTJD4CPjjkYZyYLE6wJGz8wlPw=' 'sha256-vzGVPLQbSQSZzDJmtsKYEMGbPzyDp/8Xsr5ieI12FCA=' 'sha256-zwNY7FL2T80DuClat5zSoAjFncMD+wvhW9Iezp6GLUQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' blob: 'sha256-03wuUr9y09/uTuRmk5EqpsUumK0/ntvSH+Cl6pfFejQ=' 'sha256-3ip7ss8zmiG03s3PlAADP6iJ1Nt+CjNeksFFg5dd1a0=' 'sha256-7IhZ+hdlTpxyncbelsUyrBLGncYw3lHRuXtHwlNpPX8=' 'sha256-8HOIfBOyiDXQqUclbx3cia9QD2IunmD0R7Sj+81TjZc=' 'sha256-Ca9JXposLRTkFStPS+OuFCDjItmvS2ZnLvVdRq9le1o=' 'sha256-CmbZZ1oAGsrCLZg2a79dQgYYJ1t7+6YgWv5H4fN/X5U=' 'sha256-H2jkpbuunKYpk46ZRNr6qv0PHqtXrrnijBTjhu9ZmCk=' 'sha256-HxeYeWqXHyEwNJyr5LZimNuIuDZihp6eVc32GlYjbts=' 'sha256-L1z8HPnhgPQ/QEldcldmZ8m0NaSJDjeKRYUMfIfEiuw=' 'sha256-ThEoWDNiynB1BdftyTQ/PeHYRVquf2piI1+GDi3QUH4=' 'sha256-Zm0p3itaX8yD9SOus4pwzCrr/Lf5f7LSTgwoBb2xjcs=' 'sha256-a9nYXgQ0+Q+WE5vlp9pqApMSwE/ZxmsDQlmzWOXVpzg=' 'sha256-gZnok1b5iHdYN06BH9Y5tZMSdi2J3aqi3m6yrv/Tg5Q=' 'sha256-mL5tx+t0FPIemwlzc9NeTT8plrcGY9L2hy1oWgoRDRs=' 'sha256-oM6B5PHA5xqRZ8mq9amTsa+haj0GTXHztwXWWX7C/jc=' 'sha256-oQCiy8HgCadO2HkWe275ocsywZOVYIeatJYfWRK4VQ0=' 'sha256-s3oUjDPo71POBcf1LiTJD4CPjjkYZyYLE6wJGz8wlPw=' 'sha256-vzGVPLQbSQSZzDJmtsKYEMGbPzyDp/8Xsr5ieI12FCA=' 'sha256-zwNY7FL2T80DuClat5zSoAjFncMD+wvhW9Iezp6GLUQ='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     },
@@ -375,6 +375,16 @@
           "value": "products.lunarparadox.com"
         }
       ],
+      "source": "/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "destination": "/lunar-astrolabe/products/$1/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
       "source": "/products/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
       "destination": "/lunar-astrolabe/products/$1/index.html"
     },
@@ -517,6 +527,10 @@
     {
       "source": "/products",
       "destination": "/lunar-astrolabe/index.html"
+    },
+    {
+      "source": "/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "destination": "/lunar-astrolabe/products/$1/index.html"
     },
     {
       "source": "/products/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
