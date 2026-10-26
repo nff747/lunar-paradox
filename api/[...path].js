@@ -6,6 +6,7 @@ import {
   cleanApplication, cleanApplicationCredentials, cleanBrief, cleanContent,
   cleanEstimateSelection, cleanPricing, InputError,
 } from '../lib/production-validation.js';
+import { CANONICAL_CONTENT } from '../lib/canonical-content.js';
 
 export const config = { api: { bodyParser: false } };
 
@@ -187,8 +188,16 @@ async function handle(req, res) {
 
   if (path === '/content' && method === 'GET') {
     const { rows } = await db.query('SELECT document FROM lunar_company_content WHERE singleton = true');
-    const content = rows[0]?.document || { revision: 0, experiments: [], products: [], contactEmail: '' };
-    return send(res, 200, { ...content, experiments: content.experiments.filter(item => item.status === 'published'), products: content.products.filter(item => item.status === 'published') });
+    const content = rows[0]?.document;
+    const fallback = CANONICAL_CONTENT;
+    const experiments = (content?.experiments?.length ? content.experiments : fallback.experiments).filter(item => item.status === 'published');
+    const products = (content?.products?.length ? content.products : fallback.products).filter(item => item.status === 'published');
+    return send(res, 200, {
+      revision: content?.revision ?? fallback.revision,
+      contactEmail: content?.contactEmail ?? fallback.contactEmail,
+      experiments,
+      products
+    });
   }
 
   const protectedRoute =
@@ -221,7 +230,7 @@ async function handle(req, res) {
 
   if (path === '/publisher' && method === 'GET') {
     const { rows } = await db.query('SELECT document FROM lunar_company_content WHERE singleton = true');
-    return send(res, 200, rows[0]?.document || { revision: 0, experiments: [], products: [], contactEmail: '' });
+    return send(res, 200, rows[0]?.document || CANONICAL_CONTENT);
   }
 
   if (path === '/briefs' && method === 'GET') {

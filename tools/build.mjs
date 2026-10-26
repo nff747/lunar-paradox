@@ -7,6 +7,16 @@ import {execFileSync} from 'node:child_process';
 import {versionHostedAssets} from './hosted-assets.mjs';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+
+// Sync canonical content module and offline snapshots from published-content.js
+const publishedRaw = await fs.readFile(path.join(root, 'published-content.js'), 'utf8');
+const jsonStr = publishedRaw.replace(/^[\s\S]*?window\.LUNAR_PUBLISHED_CONTENT\s*=\s*/, '').replace(/;\s*$/, '');
+const canonicalCode = `/* Generated from published-content.js - do not edit directly */\nexport const CANONICAL_CONTENT = ${jsonStr.trim()};\n`;
+await fs.writeFile(path.join(root, 'lib', 'canonical-content.js'), canonicalCode);
+for(const name of ['syzygy','gravity','astrolabe']){
+  await fs.copyFile(path.join(root, 'published-content.js'), path.join(root, 'offline-platforms', 'lunar-'+name, 'published-content.js'));
+}
+
 const all=['syzygy','gravity','astrolabe'];
 const selected=process.argv.includes('--scene')?process.argv[process.argv.indexOf('--scene')+1]:null;
 if(selected&&!all.includes(selected))throw Error('Unknown scene');

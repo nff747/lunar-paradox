@@ -106,3 +106,18 @@ test('client tools: cipher-workbench generates standalone Python decrypt CLI and
   assert.match(appJs, /from cryptography\.hazmat\.primitives\.ciphers\.aead import AESGCM/);
 });
 
+test('client tools: CANONICAL_CONTENT exports 10 products and matches published snapshot', async () => {
+  const { CANONICAL_CONTENT } = await import('../lib/canonical-content.js');
+  assert.equal(CANONICAL_CONTENT.products.length, 10);
+  assert.equal(CANONICAL_CONTENT.revision, 0);
+  assert.ok(CANONICAL_CONTENT.products.every(p => p.status === 'published'));
+});
+
+test('client tools: company load protects canonical products from empty server response', () => {
+  for (const scene of ['astrolabe', 'gravity', 'syzygy']) {
+    const code = fs.readFileSync(path.join(root, 'offline-platforms', `lunar-${scene}`, 'company.js'), 'utf8');
+    assert.match(code, /if\(\(!validated\.products\|\|!validated\.products\.length\)&&fallback\.products\?\.length\)validated\.products=fallback\.products;/, scene);
+  }
+});
+
+
