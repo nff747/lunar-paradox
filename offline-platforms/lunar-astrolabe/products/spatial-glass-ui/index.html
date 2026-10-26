@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spatial Glass UI: Zero-DOM 3D Glassmorphism Runtime — Lunar Paradox Products</title>
+  <meta name="description" content="Hardware-accelerated 3D spatial glassmorphism UI with sub-pixel Matrix3D and WCAG-AAA accessibility synchronization.">
+  <meta name="keywords" content="Spatial Glass UI: Zero-DOM 3D Glassmorphism Runtime, Lunar Paradox, 3D UI & Interface Engines, WebGPU, WGSL, open source 3D engine, nff747">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://products.lunarparadox.com/products/spatial-glass-ui">
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="alternate icon" href="../../assets/favicon.ico">
+  <link rel="apple-touch-icon" href="../../assets/favicon.svg">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Lunar Paradox">
+  <meta property="og:title" content="Spatial Glass UI: Zero-DOM 3D Glassmorphism Runtime — Lunar Paradox Products">
+  <meta property="og:description" content="Hardware-accelerated 3D spatial glassmorphism UI with sub-pixel Matrix3D and WCAG-AAA accessibility synchronization.">
+  <meta property="og:url" content="https://products.lunarparadox.com/products/spatial-glass-ui">
+  <meta property="og:image" content="https://products.lunarparadox.com/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Spatial Glass UI: Zero-DOM 3D Glassmorphism Runtime — Lunar Paradox Products">
+  <meta name="twitter:description" content="Hardware-accelerated 3D spatial glassmorphism UI with sub-pixel Matrix3D and WCAG-AAA accessibility synchronization.">
+  <meta name="twitter:image" content="https://products.lunarparadox.com/assets/og-image.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareSourceCode","name":"Spatial Glass UI: Zero-DOM 3D Glassmorphism Runtime","codeRepository":"https://github.com/nff747/spatial-glass-ui","programmingLanguage":"WGSL / WebGPU","license":"https://www.apache.org/licenses/LICENSE-2.0","description":"Hardware-accelerated 3D spatial glassmorphism UI with sub-pixel Matrix3D and WCAG-AAA accessibility synchronization.","author":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}}</script>
+  <style>
+    :root {
+      --bg: #030408;
+      --card-bg: linear-gradient(165deg, rgba(6, 18, 38, 0.85) 0%, rgba(3, 10, 24, 0.95) 100%);
+      --border: rgba(0, 229, 255, 0.22);
+      --border-hover: rgba(0, 229, 255, 0.55);
+      --cyan: #00e5ff;
+      --violet: #bb84e9;
+      --text: #f0f3f6;
+      --muted: #8c96a4;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 229, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 75%, rgba(187, 132, 233, 0.08) 0%, transparent 45%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+    .back-link {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-link:hover { text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      font-family: monospace;
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      background: rgba(0, 229, 255, 0.06);
+    }
+    main {
+      flex: 1;
+      max-width: 860px;
+      margin: 60px auto;
+      padding: 0 24px;
+      width: 100%;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      backdrop-filter: blur(28px) saturate(180%);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+    .meta-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .category {
+      color: var(--violet);
+      border-color: rgba(187, 132, 233, 0.3);
+      background: rgba(187, 132, 233, 0.06);
+    }
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+    .summary {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #d0d7de;
+      margin-bottom: 28px;
+    }
+    .body-content {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 36px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 24px;
+    }
+    .actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.2) 0%, rgba(187, 132, 233, 0.2) 100%);
+      border: 1px solid var(--cyan);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #c9d1d9;
+    }
+    .btn-secondary:hover {
+      border-color: #fff;
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 12px;
+      color: #555b66;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="https://products.lunarparadox.com/" class="back-link">&larr; LUNAR PRODUCTS</a>
+    <span class="badge">Open Source · Apache 2.0</span>
+  </header>
+  <main>
+    <div class="card">
+      <div class="meta-row">
+        <span class="badge category">3D UI & INTERFACE ENGINES</span>
+        <span class="badge">OPEN SOURCE · APACHE 2.0</span>
+      </div>
+      <h1>Spatial Glass UI: Zero-DOM 3D Glassmorphism Runtime</h1>
+      <p class="summary">Hardware-accelerated 3D spatial glassmorphism UI with sub-pixel Matrix3D and WCAG-AAA accessibility synchronization.</p>
+      <div class="body-content">
+        <p>High-performance spatial UI engine that replaces traditional heavy DOM elements with GPU-rendered glassmorphic surfaces, depth refraction, and real-time frosted blur shaders. Synchronizes with an invisible, screen-reader-accessible semantic layer maintaining WCAG-AAA contrast standards.</p>
+      </div>
+      <div class="actions">
+        <a href="https://github.com/nff747/spatial-glass-ui" target="_blank" rel="noopener noreferrer" class="btn btn-primary">VIEW REPOSITORY ↗</a>
+        <a href="https://products.lunarparadox.com/#/product/spatial-glass-ui" class="btn btn-secondary">LAUNCH IN 3D PLATFORM &rarr;</a>
+      </div>
+    </div>
+  </main>
+  <footer>
+    LUNAR PARADOX &middot; HIGH-PERFORMANCE 3D ENGINES &middot; ZERO SERVER DEPENDENCY &middot; APACHE 2.0
+  </footer>
+</body>
+</html>

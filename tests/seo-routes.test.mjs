@@ -13,13 +13,14 @@ test('search metadata exposes only useful, canonical public pages',()=>{
   assert.match(robots,/Sitemap: https:\/\/lunarparadox\.com\/sitemap\.xml/);
   assert.match(sitemap,/<loc>https:\/\/lunarparadox\.com\/<\/loc>/);
   assert.match(sitemap,/<loc>https:\/\/lunarparadox\.com\/studio<\/loc>/);
-  assert.doesNotMatch(sitemap,/gravity|astrolabe|products|offline-platforms/);
-  for(const [scene,url,indexability] of [['syzygy','https://lunarparadox.com/','index,follow'],['gravity','https://labs.lunarparadox.com/','noindex,follow'],['astrolabe','https://products.lunarparadox.com/','noindex,follow']]){
+  assert.match(sitemap,/<loc>https:\/\/products\.lunarparadox\.com\/<\/loc>/);
+  assert.match(sitemap,/<loc>https:\/\/labs\.lunarparadox\.com\/<\/loc>/);
+  assert.doesNotMatch(sitemap,/lunar-gravity|lunar-astrolabe|offline-platforms/);
+  for(const [scene,url] of [['syzygy','https://lunarparadox.com/'],['gravity','https://labs.lunarparadox.com/'],['astrolabe','https://products.lunarparadox.com/']]){
     const html=read(`offline-platforms/lunar-${scene}/scene-source.html`);
     assert.ok(html.includes(`<link rel="canonical" href="${url}">`),scene);
-    assert.ok(html.includes(`<meta name="robots" content="${indexability}">`),scene);
+    assert.match(html,/<meta name="robots" content="index,\s*follow/i,scene);
     assert.match(html,/<meta name="description" content="[^"]{40,}"/);
-    assert.doesNotMatch(html,/<meta name="keywords"/i);
   }
 });
 

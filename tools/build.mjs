@@ -17,6 +17,10 @@ for(const name of ['syzygy','gravity','astrolabe']){
   await fs.copyFile(path.join(root, 'published-content.js'), path.join(root, 'offline-platforms', 'lunar-'+name, 'published-content.js'));
 }
 
+// Run product landing pages and sitemap generators
+execFileSync(process.execPath, [path.join(root, 'tools', 'generate-product-pages.mjs')], {stdio: 'inherit'});
+execFileSync(process.execPath, [path.join(root, 'tools', 'generate-sitemaps.mjs')], {stdio: 'inherit'});
+
 const all=['syzygy','gravity','astrolabe'];
 const selected=process.argv.includes('--scene')?process.argv[process.argv.indexOf('--scene')+1]:null;
 if(selected&&!all.includes(selected))throw Error('Unknown scene');
@@ -29,7 +33,7 @@ for(const name of names){
   const staging=await fs.mkdtemp(path.join(root,`build-${name}-`));
   try{
     for(const entry of await fs.readdir(src,{withFileTypes:true})){
-      if(entry.isDirectory()&&['assets','vendor','tools'].includes(entry.name))await fs.cp(path.join(src,entry.name),path.join(staging,entry.name),{recursive:true});
+      if(entry.isDirectory()&&['assets','vendor','tools','products'].includes(entry.name))await fs.cp(path.join(src,entry.name),path.join(staging,entry.name),{recursive:true});
       else if(entry.isFile()&&/\.(js|css)$/.test(entry.name))await fs.copyFile(path.join(src,entry.name),path.join(staging,entry.name));
     }
     let html=await fs.readFile(path.join(src,'scene-source.html'),'utf8');
@@ -70,12 +74,35 @@ if(!selected||selected==='syzygy'){
   const hostedRoot=path.join(root,'build','hosted');
   const rootHtml=await fs.readFile(path.join(hostedRoot,'lunar-syzygy','index.html'),'utf8');
   const studioHtml=rootHtml
-    .replace('<title>Lunar Paradox — Applied Technology Studio</title>','<title>Studio — Lunar Paradox</title>')
+    .replace(/<title>[\s\S]*?<\/title>/i,'<title>Studio — Lunar Paradox</title>')
     .replaceAll('https://lunarparadox.com/"','https://lunarparadox.com/studio"')
-    .replaceAll('Lunar Paradox — Applied Technology Studio','Studio — Lunar Paradox')
-    .replaceAll('Lunar Paradox explores what technology can become through interactive systems, WebGL experiences and product engineering.','Applied technology laboratory and product studio exploring AI, computing, interactive systems and emerging technology.');
+    .replaceAll('Lunar Paradox — Applied Technology Studio &amp; Research Lab','Studio — Lunar Paradox')
+    .replaceAll('Lunar Paradox is an applied technology studio and research laboratory engineering high-performance WebGL/WebGPU 3D systems, zero-server browser tools, and spatial computing engines.','Applied technology laboratory and product studio exploring AI, computing, interactive systems and emerging technology.');
   await fs.writeFile(path.join(hostedRoot,'studio.html'),studioHtml);
-  for(const file of ['robots.txt','sitemap.xml'])await fs.copyFile(path.join(root,file),path.join(hostedRoot,file));
+  for(const file of ['robots.txt','sitemap.xml','sitemap-products.xml','sitemap-labs.xml','sitemap-studio.xml']) {
+    await fs.copyFile(path.join(root,file),path.join(hostedRoot,file));
+  }
+  for(const asset of ['favicon.ico','favicon.svg','og-image.png','site.webmanifest']) {
+    const srcAsset = path.join(root, 'assets', asset);
+    if(await fs.stat(srcAsset).catch(()=>null)) {
+      await fs.copyFile(srcAsset, path.join(hostedRoot, asset));
+    }
+  }
+  // Subdomain robots and sitemaps
+  for(const name of ['lunar-astrolabe', 'lunar-gravity', 'lunar-syzygy']){
+    const platDir = path.join(hostedRoot, name);
+    if(await fs.stat(platDir).catch(()=>null)) {
+      await fs.copyFile(path.join(root, 'robots.txt'), path.join(platDir, 'robots.txt'));
+      const smName = name === 'lunar-astrolabe' ? 'sitemap-products.xml' : name === 'lunar-gravity' ? 'sitemap-labs.xml' : 'sitemap-studio.xml';
+      await fs.copyFile(path.join(root, smName), path.join(platDir, 'sitemap.xml'));
+      for(const asset of ['favicon.ico','favicon.svg','og-image.png','site.webmanifest']) {
+        const srcAsset = path.join(root, 'assets', asset);
+        if(await fs.stat(srcAsset).catch(()=>null)) {
+          await fs.copyFile(srcAsset, path.join(platDir, asset));
+        }
+      }
+    }
+  }
 }
 await updateContentSecurity(root);
 await fs.mkdir(path.join(root,'build'),{recursive:true});

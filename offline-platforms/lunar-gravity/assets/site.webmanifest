@@ -1,0 +1,21 @@
+{
+  "name": "Lunar Paradox",
+  "short_name": "LunarParadox",
+  "description": "Applied technology studio exploring AI, WebGL, WebGPU, interactive systems, and spatial computing.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020306",
+  "theme_color": "#030407",
+  "icons": [
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/assets/favicon.ico",
+      "sizes": "48x48 32x32 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
