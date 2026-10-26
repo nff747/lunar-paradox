@@ -71,7 +71,7 @@ for(const name of names){
 }
 if(!selected||selected==='syzygy'){
   const hostedRoot=path.join(root,'build','hosted');
-  for(const file of ['robots.txt','sitemap.xml','privacy.html','LICENSE','NOTICE']) {
+  for(const file of ['robots.txt','sitemap.xml','privacy.html','LICENSE','NOTICE','dde56fa386cb4658a58b46b8ee03020a.txt']) {
     const srcFile = path.join(root, file);
     if(await fs.stat(srcFile).catch(()=>null)) {
       await fs.copyFile(srcFile, path.join(hostedRoot, file));
@@ -83,7 +83,7 @@ if(!selected||selected==='syzygy'){
       await fs.copyFile(srcAsset, path.join(hostedRoot, asset));
     }
   }
-  // Subdomain robots and sitemaps (Products & Labs only)
+  // Subdomain robots, sitemaps, and IndexNow keys (Products & Labs only)
   const subdomainSitemaps = {
     'lunar-astrolabe': 'sitemap-products.xml',
     'lunar-gravity': 'sitemap-labs.xml'
@@ -93,6 +93,10 @@ if(!selected||selected==='syzygy'){
     if(await fs.stat(platDir).catch(()=>null)) {
       await fs.copyFile(path.join(root, 'robots.txt'), path.join(platDir, 'robots.txt'));
       await fs.copyFile(path.join(root, sitemapFile), path.join(platDir, 'sitemap.xml'));
+      const indexNowKey = 'dde56fa386cb4658a58b46b8ee03020a.txt';
+      if(await fs.stat(path.join(root, indexNowKey)).catch(()=>null)) {
+        await fs.copyFile(path.join(root, indexNowKey), path.join(platDir, indexNowKey));
+      }
       for(const asset of ['favicon.ico','favicon.svg','og-image.png','site.webmanifest']) {
         const srcAsset = path.join(root, 'assets', asset);
         if(await fs.stat(srcAsset).catch(()=>null)) {
