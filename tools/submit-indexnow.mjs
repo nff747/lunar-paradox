@@ -2,7 +2,7 @@
  * Submit all canonical URLs to the IndexNow protocol.
  * Instantly triggers indexing on Bing, DuckDuckGo, Yahoo, Yandex, and Microsoft Copilot AI.
  */
-const KEY = 'dde56fa386cb4658a58b46b8ee03020a';
+const KEY = '2f14973382e9477eaff927a5e0820004';
 
 const submissions = [
   {

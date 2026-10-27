@@ -35,6 +35,7 @@ for(const name of names){
       if(entry.isDirectory()&&['assets','vendor','tools','products'].includes(entry.name))await fs.cp(path.join(src,entry.name),path.join(staging,entry.name),{recursive:true});
       else if(entry.isFile()&&/\.(js|css)$/.test(entry.name))await fs.copyFile(path.join(src,entry.name),path.join(staging,entry.name));
     }
+    if(name==='astrolabe')for(const tool of ['pbr-synth','optim-compressor','resonance-dsp','cipher-workbench']){const entry=path.join(staging,'tools',tool,'index.html');const toolHtml=await fs.readFile(entry,'utf8');await fs.writeFile(entry,toolHtml.replace('<head>','<head><base href="/tools/'+tool+'/">'));}
     let html=await fs.readFile(path.join(src,'scene-source.html'),'utf8');
     const base=name==='syzygy'?'/':name==='gravity'?'/labs/':'/products/';
     html=html.replace('<head>','<head><base href="'+base+'">');
@@ -71,7 +72,7 @@ for(const name of names){
 }
 if(!selected||selected==='syzygy'){
   const hostedRoot=path.join(root,'build','hosted');
-  for(const file of ['robots.txt','sitemap.xml','privacy.html','LICENSE','NOTICE','dde56fa386cb4658a58b46b8ee03020a.txt']) {
+  for(const file of ['robots.txt','sitemap.xml','privacy.html','LICENSE','NOTICE','2f14973382e9477eaff927a5e0820004.txt']) {
     const srcFile = path.join(root, file);
     if(await fs.stat(srcFile).catch(()=>null)) {
       await fs.copyFile(srcFile, path.join(hostedRoot, file));
@@ -93,7 +94,7 @@ if(!selected||selected==='syzygy'){
     if(await fs.stat(platDir).catch(()=>null)) {
       await fs.copyFile(path.join(root, 'robots.txt'), path.join(platDir, 'robots.txt'));
       await fs.copyFile(path.join(root, sitemapFile), path.join(platDir, 'sitemap.xml'));
-      const indexNowKey = 'dde56fa386cb4658a58b46b8ee03020a.txt';
+      const indexNowKey = '2f14973382e9477eaff927a5e0820004.txt';
       if(await fs.stat(path.join(root, indexNowKey)).catch(()=>null)) {
         await fs.copyFile(path.join(root, indexNowKey), path.join(platDir, indexNowKey));
       }
@@ -106,6 +107,8 @@ if(!selected||selected==='syzygy'){
     }
   }
 }
+for(const file of ['operations.html','operations.css','operations-client.js'])await fs.copyFile(path.join(root,file),path.join(root,'build','hosted',file));
+for(const file of ['admin-client.js','workspace-shell.js','workspace-shell.css'])await fs.copyFile(path.join(root,'offline-platforms','lunar-astrolabe',file),path.join(root,'build','hosted',file));
 await updateContentSecurity(root);
 await fs.mkdir(path.join(root,'build'),{recursive:true});
 await fs.writeFile(path.join(root,'build','manifest.json'),JSON.stringify(manifest,null,2)+'\n');

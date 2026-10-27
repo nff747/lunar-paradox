@@ -24,7 +24,7 @@ test('search metadata exposes only useful, canonical public pages',()=>{
   assert.ok(fs.existsSync(path.join(root,'LICENSE')),'LICENSE must exist');
   assert.ok(fs.existsSync(path.join(root,'NOTICE')),'NOTICE must exist');
   assert.ok(fs.existsSync(path.join(root,'privacy.html')),'privacy.html must exist');
-  assert.equal(read('dde56fa386cb4658a58b46b8ee03020a.txt').trim(),'dde56fa386cb4658a58b46b8ee03020a');
+  assert.equal(read('2f14973382e9477eaff927a5e0820004.txt').trim(),'2f14973382e9477eaff927a5e0820004');
   for(const [scene,url] of [['syzygy','https://lunarparadox.com/'],['gravity','https://labs.lunarparadox.com/'],['astrolabe','https://products.lunarparadox.com/']]){
     const html=read(`offline-platforms/lunar-${scene}/scene-source.html`);
     assert.ok(html.includes(`<link rel="canonical" href="${url}">`),scene);
