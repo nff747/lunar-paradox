@@ -41,7 +41,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' blob: 'sha256-/F9SkFEU9MiGObpeWsij2OQ4wSgAMIF1eUgYVX9gASM=' 'sha256-4g2i0ikzxLpmbMMzlxnHbWRxOqXDqvk00/6FFJABJrM=' 'sha256-7sRT0hHG4SWZ1LeK7LsevI5Kkljq1AA9mVwlYVSB1s0=' 'sha256-P49Z8c4RMTwxNWfbWEoZS2mdpKtT08jd3lQs9uHivpA=' 'sha256-PaiGDBoPN3L5QhD5EFd5FxHEoN/0GnGPGKxgsqEQLrw=' 'sha256-Q2NPNjfTP8KR5oS/jQtChDcEKpPtfjaYIVMgWm1g31g=' 'sha256-QggPpgOamRJ97LqUa1u1bV6yFHjAJv+hoEFRPCDFyNQ=' 'sha256-SNV+Lg3e/IL8Ewkd5OHKTxluADt8QhQjhI8lyRCdHkk=' 'sha256-SRRKHCGRugaNAJsbvvdL1ZGveT8b9ZdM1rXoPtpy+EA=' 'sha256-gnzvz2IyKpLHZpgPexLl9IRZM5gR1vc+6n/U74ODiPE=' 'sha256-jjm0WyQ7+F8DyFmlMeHpSSKc1VsCBEiPI9Kis73gE4c=' 'sha256-lvu6513e7v7lhEkwuD7N4AFxjLALm6VO2hq+B1eKkv0=' 'sha256-mb10Qh9t0K6UJ1t52Y0eVSzx8Yi+itdDcd2ubJO8jnY=' 'sha256-nrx/RnNoCj2j+ItACwARglh2qfbrRx3b7MDDrY3O6Nc=' 'sha256-p2+DZEz4XX2/nmkcm0ECq+/j/sgWNa5G+nXvC+cS2xA=' 'sha256-p2mj79yatZ4ev6i6aKEz7+/4vrmCEdEc53Eyp62B3vs=' 'sha256-s0ReVD+1jDQeb6FTcjOwhuOLqQOGbARhSeLMcUVmr1g=' 'sha256-tYK0ccJeKI2HDNSheDpc9uTw6tqXdLIgTaPlYDXANOc='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' blob: 'sha256-/1nJWuNYXeei897Wod6zrCuKAYmV0ECa/pZ7FY23Yfk=' 'sha256-/F9SkFEU9MiGObpeWsij2OQ4wSgAMIF1eUgYVX9gASM=' 'sha256-1W94YnHxt2+ZOZLy3l1xbwptDD5teMjRqrxPqNATk38=' 'sha256-4g2i0ikzxLpmbMMzlxnHbWRxOqXDqvk00/6FFJABJrM=' 'sha256-7sRT0hHG4SWZ1LeK7LsevI5Kkljq1AA9mVwlYVSB1s0=' 'sha256-8oczD3UU30+2YLzFyVr6cb2GWgsHettfBhSZ7fyt/iE=' 'sha256-DyucK2k9C3x6QiOedv/SfQPWlYlWiSEOcwSPDBGIihY=' 'sha256-Ln73pnDDtC115d9gvdprG+kx2qpC6vV1Cma8WNu1ipg=' 'sha256-P49Z8c4RMTwxNWfbWEoZS2mdpKtT08jd3lQs9uHivpA=' 'sha256-QggPpgOamRJ97LqUa1u1bV6yFHjAJv+hoEFRPCDFyNQ=' 'sha256-gRCO8N0IeYsOpZcQh8x4ZoHuGWjT3WlqYC1CHp5zxaA=' 'sha256-jjm0WyQ7+F8DyFmlMeHpSSKc1VsCBEiPI9Kis73gE4c=' 'sha256-mb10Qh9t0K6UJ1t52Y0eVSzx8Yi+itdDcd2ubJO8jnY=' 'sha256-nrx/RnNoCj2j+ItACwARglh2qfbrRx3b7MDDrY3O6Nc=' 'sha256-p2mj79yatZ4ev6i6aKEz7+/4vrmCEdEc53Eyp62B3vs=' 'sha256-pdXx+rVr938y3jzZ2Tl1I7WuK3xATHOUo9/Bu1jj0jU=' 'sha256-tYK0ccJeKI2HDNSheDpc9uTw6tqXdLIgTaPlYDXANOc=' 'sha256-wncydD0C6QJa7rF6/3EX/hr294shBYOCfTFXj4mk9Qo='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     },
@@ -115,6 +115,19 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/operations(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
         }
       ]
     }
@@ -266,6 +279,10 @@
     {
       "source": "/api/:path*",
       "destination": "/api/[...path]?path=:path*"
+    },
+    {
+      "source": "/operations",
+      "destination": "/operations.html"
     },
     {
       "has": [

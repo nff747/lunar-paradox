@@ -22,6 +22,7 @@
   <meta name="twitter:image" content="https://products.lunarparadox.com/assets/og-image.png">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Resonance Procedural Cosmic Sound Lab","url":"https://products.lunarparadox.com/resonance-dsp","operatingSystem":"Any Modern Web Browser","applicationCategory":"AudioApplication","browserRequirements":"Requires Web Audio API support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Real-time client-side procedural acoustic synthesizer powered by the Web Audio API graph with hardware-grade brickwall acoustic limiter and 32-bit WAV recording.","featureList":["Quadruple Band-Limited Oscillators & FM Modulation","Bi-Quad Resonant Lowpass and Bandpass Filters","Stereo Delay & Spatial Widener Network","Hardware-Grade DynamicsCompressor Limiter & Clamped Master","Real-Time FFT Spectrum Visualizer","One-Click 32-bit Lossless WAV Audio Export"],"publisher":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does procedural Web Audio synthesis work in the browser?","acceptedAnswer":{"@type":"Answer","text":"Resonance constructs an interactive DSP node graph using the native Web Audio API, routing oscillators through gain, biquad filters, and stereo delay lines directly to your sound hardware without downloading large static audio files."}},{"@type":"Question","name":"How is audio clipping prevented?","acceptedAnswer":{"@type":"Answer","text":"A hardware-grade DynamicsCompressorNode acts as a brickwall limiter, and master amplitude is clamped below 0.85 to guarantee zero acoustic distortion or speaker clipping."}}]}]}</script>
   <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="../../workspace-shell.css">
 </head>
 <body>
   <header class="tool-header">
@@ -246,5 +247,6 @@
   </main>
 
   <script type="module" src="./app.js"></script>
+  <script src="../../workspace-shell.js"></script>
 </body>
 </html>

@@ -23,7 +23,7 @@ body[data-company-route] .cinematic-cue{display:none}
 @media(max-width:700px){.cinematic-cue{top:24%;font-size:9px;max-width:85vw}}
 @media(prefers-reduced-motion:reduce){.cinematic-cue{display:none}}
 </style>
-<link rel="stylesheet" href="./company.css"><link rel="stylesheet" href="./commission.css"><script type="module" src="./supabase-client.js"></script>
+<link rel="stylesheet" href="./company.css"><link rel="stylesheet" href="./exhibition.css"><link rel="stylesheet" href="./commission.css"><script type="module" src="./supabase-client.js"></script>
 <script type="module" src="./firebase-config.js"></script>
 </head>
 <body data-scene="astrolabe">
@@ -585,7 +585,7 @@ function frame(now){
  const publicComposition=!!document.body.dataset.companyRoute;
  const approach=THREE.MathUtils.damp(camera.position.distanceTo(new THREE.Vector3(.18,0,0)),Math.max(5.1,(publicComposition?8.5:targetZoom)+shot[2]-(publicComposition?0:instrumentTravel*1.65)),6,delta),rawAzimuth=(publicComposition?0:orbit.azimuth)+shot[0]+phaseCameraAzimuth*ambientCamera+Math.sin(instrumentTravel*Math.PI)*.32+Math.sin(simulationTime*Math.PI/30)*.065*ambientCamera+(reducedMotion?0:currentPointer.x*.04),rawElevation=(publicComposition?0:orbit.elevation)+shot[1]+phaseCameraElevation*ambientCamera+Math.sin(instrumentTravel*Math.PI*.75)*.14+Math.sin(simulationTime*Math.PI/60)*.024*ambientCamera+(reducedMotion?0:currentPointer.y*.022);
  const azimuth=publicComposition?THREE.MathUtils.clamp(rawAzimuth,-.32,.40):rawAzimuth,elevation=publicComposition?THREE.MathUtils.clamp(rawElevation,-.16,.30):rawElevation;
- const compositionTargetX=publicComposition&&document.body.dataset.companyRoute==='products'&&document.body.dataset.productExplore!=='true'&&width>650?width*.20:0;
+ const compositionTargetX=publicComposition&&document.body.dataset.companyRoute==='products'&&document.body.dataset.productExplore!=='true'&&width>650?-width*.065:0;
  const compositionTargetY=publicComposition&&document.body.dataset.companyRoute==='products'&&document.body.dataset.productExplore!=='true'&&width<=650?height*.17:0;
  compositionShiftX=reducedMotion?compositionTargetX:THREE.MathUtils.damp(compositionShiftX,compositionTargetX,4,delta);compositionShiftY=reducedMotion?compositionTargetY:THREE.MathUtils.damp(compositionShiftY,compositionTargetY,4,delta);
  const compositionOffset=Math.abs(compositionShiftX)<.05?0:compositionShiftX,compositionOffsetY=Math.abs(compositionShiftY)<.05?0:compositionShiftY;

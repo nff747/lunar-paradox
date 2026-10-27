@@ -44,6 +44,7 @@ function send(res, status, body) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store, max-age=0');
+  res.setHeader('X-Robots-Tag','noindex, nofollow');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'same-origin');
   res.end(JSON.stringify(body));
@@ -354,6 +355,7 @@ export default async function handler(req, res) {
     if (res.writableEnded) return;
     if (error instanceof InputError) return send(res, 400, { error: error.message });
     if (error instanceof ApiError || error instanceof AdminAuthError || error instanceof OperationsError) return send(res, error.status, { error: error.message });
+    if(error?.code==='23503')return send(res,409,{error:'This record is linked to retained business records and cannot be deleted.'});
     console.error('Lunar API request failed:', error?.code || error?.name || 'unknown');
     return send(res, 503, { error: 'The service is temporarily unavailable. Please try again later.' });
   }

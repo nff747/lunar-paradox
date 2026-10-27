@@ -20,6 +20,10 @@ class Preview(SimpleHTTPRequestHandler):
             parts = ['studio.html']
         elif parts[0] == 'platforms' and len(parts) >= 2 and parts[1] in SCENES:
             parts = ['lunar-' + parts[1], *parts[2:]]
+        elif parts[0] == 'tools':
+            parts = ['lunar-astrolabe', *parts]
+        elif parts == ['operations']:
+            parts = ['operations.html']
         elif parts[0] in {'labs', 'products'}:
             parts = ['lunar-' + ('gravity' if parts[0] == 'labs' else 'astrolabe'), *parts[1:]]
         if len(parts) == 1 and parts[0] in {'lunar-syzygy','lunar-gravity','lunar-astrolabe'}:

@@ -1,8 +1,12 @@
 CREATE TABLE IF NOT EXISTS lunar_operations (
  id uuid PRIMARY KEY, revision integer NOT NULL DEFAULT 0 CHECK(revision>=0),
  document jsonb NOT NULL CHECK(jsonb_typeof(document)='object'),
+ application_id uuid GENERATED ALWAYS AS (NULLIF(document->>'applicationId','')::uuid) STORED REFERENCES lunar_applications(id) ON DELETE RESTRICT,
+ parent_id uuid GENERATED ALWAYS AS (NULLIF(document->>'parentId','')::uuid) STORED REFERENCES lunar_operations(id) ON DELETE RESTRICT,
  created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now()
 );
+ALTER TABLE lunar_operations ADD COLUMN IF NOT EXISTS application_id uuid GENERATED ALWAYS AS (NULLIF(document->>'applicationId','')::uuid) STORED REFERENCES lunar_applications(id) ON DELETE RESTRICT;
+ALTER TABLE lunar_operations ADD COLUMN IF NOT EXISTS parent_id uuid GENERATED ALWAYS AS (NULLIF(document->>'parentId','')::uuid) STORED REFERENCES lunar_operations(id) ON DELETE RESTRICT;
 CREATE INDEX IF NOT EXISTS lunar_operations_parent ON lunar_operations ((document->>'parentId'));
 CREATE TABLE IF NOT EXISTS lunar_product_reviews (
  id uuid PRIMARY KEY, product_id text NOT NULL, author text NOT NULL, email text NOT NULL,
