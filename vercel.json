@@ -41,7 +41,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' blob: 'sha256-/1nJWuNYXeei897Wod6zrCuKAYmV0ECa/pZ7FY23Yfk=' 'sha256-/F9SkFEU9MiGObpeWsij2OQ4wSgAMIF1eUgYVX9gASM=' 'sha256-1W94YnHxt2+ZOZLy3l1xbwptDD5teMjRqrxPqNATk38=' 'sha256-4g2i0ikzxLpmbMMzlxnHbWRxOqXDqvk00/6FFJABJrM=' 'sha256-7sRT0hHG4SWZ1LeK7LsevI5Kkljq1AA9mVwlYVSB1s0=' 'sha256-8oczD3UU30+2YLzFyVr6cb2GWgsHettfBhSZ7fyt/iE=' 'sha256-DyucK2k9C3x6QiOedv/SfQPWlYlWiSEOcwSPDBGIihY=' 'sha256-Ln73pnDDtC115d9gvdprG+kx2qpC6vV1Cma8WNu1ipg=' 'sha256-P49Z8c4RMTwxNWfbWEoZS2mdpKtT08jd3lQs9uHivpA=' 'sha256-QggPpgOamRJ97LqUa1u1bV6yFHjAJv+hoEFRPCDFyNQ=' 'sha256-gRCO8N0IeYsOpZcQh8x4ZoHuGWjT3WlqYC1CHp5zxaA=' 'sha256-jjm0WyQ7+F8DyFmlMeHpSSKc1VsCBEiPI9Kis73gE4c=' 'sha256-mb10Qh9t0K6UJ1t52Y0eVSzx8Yi+itdDcd2ubJO8jnY=' 'sha256-nrx/RnNoCj2j+ItACwARglh2qfbrRx3b7MDDrY3O6Nc=' 'sha256-p2mj79yatZ4ev6i6aKEz7+/4vrmCEdEc53Eyp62B3vs=' 'sha256-pdXx+rVr938y3jzZ2Tl1I7WuK3xATHOUo9/Bu1jj0jU=' 'sha256-tYK0ccJeKI2HDNSheDpc9uTw6tqXdLIgTaPlYDXANOc=' 'sha256-wncydD0C6QJa7rF6/3EX/hr294shBYOCfTFXj4mk9Qo='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' blob: 'sha256-/F9SkFEU9MiGObpeWsij2OQ4wSgAMIF1eUgYVX9gASM=' 'sha256-1W94YnHxt2+ZOZLy3l1xbwptDD5teMjRqrxPqNATk38=' 'sha256-2zFpuI1w28iTMIC1XmdgIHKX1VvNJMHMOD2z2ZvMleI=' 'sha256-4g2i0ikzxLpmbMMzlxnHbWRxOqXDqvk00/6FFJABJrM=' 'sha256-7sRT0hHG4SWZ1LeK7LsevI5Kkljq1AA9mVwlYVSB1s0=' 'sha256-8oczD3UU30+2YLzFyVr6cb2GWgsHettfBhSZ7fyt/iE=' 'sha256-DyucK2k9C3x6QiOedv/SfQPWlYlWiSEOcwSPDBGIihY=' 'sha256-Ln73pnDDtC115d9gvdprG+kx2qpC6vV1Cma8WNu1ipg=' 'sha256-P49Z8c4RMTwxNWfbWEoZS2mdpKtT08jd3lQs9uHivpA=' 'sha256-QggPpgOamRJ97LqUa1u1bV6yFHjAJv+hoEFRPCDFyNQ=' 'sha256-gRCO8N0IeYsOpZcQh8x4ZoHuGWjT3WlqYC1CHp5zxaA=' 'sha256-jjm0WyQ7+F8DyFmlMeHpSSKc1VsCBEiPI9Kis73gE4c=' 'sha256-mb10Qh9t0K6UJ1t52Y0eVSzx8Yi+itdDcd2ubJO8jnY=' 'sha256-nrx/RnNoCj2j+ItACwARglh2qfbrRx3b7MDDrY3O6Nc=' 'sha256-p2mj79yatZ4ev6i6aKEz7+/4vrmCEdEc53Eyp62B3vs=' 'sha256-pdXx+rVr938y3jzZ2Tl1I7WuK3xATHOUo9/Bu1jj0jU=' 'sha256-t/YQN4Jkbca0N+vocfxqZ3KEFYdbdz6LVMhmcH30Ucs=' 'sha256-tYK0ccJeKI2HDNSheDpc9uTw6tqXdLIgTaPlYDXANOc='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     },
@@ -245,33 +245,11 @@
       "has": [
         {
           "type": "host",
-          "value": "labs.lunarparadox.com"
-        }
-      ],
-      "source": "/labs/:path*",
-      "destination": "/:path*",
-      "permanent": true
-    },
-    {
-      "has": [
-        {
-          "type": "host",
           "value": "products.lunarparadox.com"
         }
       ],
       "source": "/products",
       "destination": "/",
-      "permanent": true
-    },
-    {
-      "has": [
-        {
-          "type": "host",
-          "value": "products.lunarparadox.com"
-        }
-      ],
-      "source": "/products/:path*",
-      "destination": "/:path*",
       "permanent": true
     }
   ],
