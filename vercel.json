@@ -196,6 +196,12 @@
       "permanent": true
     },
     {
+      "has": [
+        {
+          "type": "host",
+          "value": "lunarparadox.com"
+        }
+      ],
       "source": "/labs/:path*",
       "destination": "https://labs.lunarparadox.com/:path*",
       "permanent": true
@@ -211,6 +217,12 @@
       "permanent": true
     },
     {
+      "has": [
+        {
+          "type": "host",
+          "value": "lunarparadox.com"
+        }
+      ],
       "source": "/products/:path*",
       "destination": "https://products.lunarparadox.com/:path*",
       "permanent": true
