@@ -17,6 +17,9 @@ for(const name of ['syzygy','gravity','astrolabe']){
   await fs.copyFile(path.join(root, 'published-content.js'), path.join(root, 'offline-platforms', 'lunar-'+name, 'published-content.js'));
 }
 
+// Run Cloudflare pre-deployment security audit
+execFileSync(process.execPath, [path.join(root, 'tools', 'security-audit.mjs')], {stdio: 'inherit'});
+
 // Run product landing pages generator
 execFileSync(process.execPath, [path.join(root, 'tools', 'generate-product-pages.mjs')], {stdio: 'inherit'});
 
