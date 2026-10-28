@@ -41,10 +41,16 @@ const valAoStrength = document.getElementById('val-ao-strength');
 // State
 let activeView = '3d';
 let activeGeom = 'sphere';
-let autoRotate = true;
+let autoRotate = !matchMedia('(prefers-reduced-motion: reduce)').matches;
 let isDragging = false;
 let previousMousePosition = { x: 0, y: 0 };
 let currentTextureSize = { width: 1024, height: 1024 };
+const viewNames={ '3d':'Lit material',diffuse:'Colour',normal:'Normal',height:'Height',roughness:'Roughness',ao:'Occlusion',orm:'Packed ORM' };
+const sourceName=document.getElementById('source-name'),sourceStatus=document.getElementById('source-status'),exportStatus=document.getElementById('export-status');
+let computationTimer=0;
+function scheduleMaps(){clearTimeout(computationTimer);computationTimer=setTimeout(recomputeMaps,80);}
+function syncRotation(){btnToggleRotate.textContent=autoRotate?'Pause rotation':'Resume rotation';btnToggleRotate.removeAttribute('aria-pressed');btnToggleRotate.classList.toggle('active',autoRotate);}
+
 
 // Canvas caches for generated PBR textures
 const maps = {
@@ -80,7 +86,7 @@ const dirLight1 = new THREE.DirectionalLight(0xffeedd, 2.2);
 dirLight1.position.set(3, 4, 3);
 scene.add(dirLight1);
 
-const dirLight2 = new THREE.DirectionalLight(0x7dd3fc, 0.8);
+const dirLight2 = new THREE.DirectionalLight(0xbda6e3, 0.65);
 dirLight2.position.set(-3, -2, -2);
 scene.add(dirLight2);
 
@@ -262,7 +268,7 @@ function recomputeMaps() {
   const h = maps.diffuse.height;
   currentTextureSize = { width: w, height: h };
   telemetryRes.textContent = `DIM: ${w} × ${h}`;
-  outputMeta.textContent = `${w} × ${h} PNG / 32-BIT RGBA`;
+  outputMeta.textContent = `${w} × ${h} · 6 PNG maps · ZIP`;
 
   // Allocate all maps to matching dimensions
   for (const key of ['normal', 'height', 'roughness', 'ao', 'orm']) {
@@ -430,8 +436,12 @@ function recomputeMaps() {
     render2DPreview(activeView);
   }
 
+  document.querySelectorAll('[data-map-thumb]').forEach(thumbnail=>{
+    const source=maps[thumbnail.dataset.mapThumb];thumbnail.getContext('2d').drawImage(source,0,0,thumbnail.width,thumbnail.height);
+  });
+  const sourceThumbnail=document.getElementById('source-thumb');sourceThumbnail.getContext('2d').drawImage(maps.diffuse,0,0,sourceThumbnail.width,sourceThumbnail.height);
   const duration = (performance.now() - startTime).toFixed(1);
-  infoRenderTime.textContent = `TIME: ${duration} ms`;
+  infoRenderTime.textContent = `${duration} ms`;
 }
 
 // -------------------------------------------------------------
@@ -450,6 +460,7 @@ function render2DPreview(mapType) {
 // USER INPUT & FILE DROP
 // -------------------------------------------------------------
 dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();fileInput.click();}});
 
 dropzone.addEventListener('dragover', (e) => {
   e.preventDefault();
@@ -473,10 +484,13 @@ fileInput.addEventListener('change', () => {
 });
 
 function handleFile(file) {
-  if (!file.type.startsWith('image/')) return;
+  if (!['image/png','image/jpeg','image/webp'].includes(file.type)){sourceStatus.textContent='Choose a PNG, JPEG or WebP image.';return;}
+  sourceStatus.textContent='Reading image…';
   const reader = new FileReader();
+  reader.onerror=()=>{sourceStatus.textContent='This file could not be read. Try another image.';};
   reader.onload = (event) => {
     const img = new Image();
+    img.onerror=()=>{sourceStatus.textContent='This image could not be decoded. Try another image.';};
     img.onload = () => {
       // Memory protection: clamp to max 4096px
       let w = img.width;
@@ -490,6 +504,8 @@ function handleFile(file) {
       maps.diffuse.height = h;
       const ctx = maps.diffuse.getContext('2d');
       ctx.drawImage(img, 0, 0, w, h);
+      sourceName.textContent=file.name;sourceStatus.textContent=w!==img.width||h!==img.height?'Resized to fit the 4096px processing limit.':'';
+      document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed','false'));
       recomputeMaps();
     };
     img.src = event.target.result;
@@ -500,28 +516,28 @@ function handleFile(file) {
 // Preset Buttons
 document.querySelectorAll('.btn-preset').forEach(btn => {
   btn.addEventListener('click', () => {
-    generateProcedural(btn.dataset.preset);
+    clearTimeout(computationTimer);sourceName.textContent=btn.textContent;sourceStatus.textContent='';document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed',String(button===btn)));generateProcedural(btn.dataset.preset);
   });
 });
 
 // Parameter change listeners with real-time feedback
 paramStrength.addEventListener('input', (e) => {
   valStrength.textContent = `${e.target.value}×`;
-  recomputeMaps();
+  scheduleMaps();
 });
 
-paramKernel.addEventListener('change', () => recomputeMaps());
+paramKernel.addEventListener('change',()=>{document.getElementById('val-kernel').textContent=paramKernel.value==='sobel'?'Sobel 3×3':'Scharr 3×3';scheduleMaps();});
 
 paramBlur.addEventListener('input', (e) => {
   valBlur.textContent = `${e.target.value} px`;
-  recomputeMaps();
+  scheduleMaps();
 });
 
 paramInvertY.addEventListener('change', () => recomputeMaps());
 
 paramHeightContrast.addEventListener('input', (e) => {
   valHeightContrast.textContent = `${e.target.value}×`;
-  recomputeMaps();
+  scheduleMaps();
 });
 
 paramInvertHeight.addEventListener('change', () => recomputeMaps());
@@ -529,37 +545,41 @@ paramInvertHeight.addEventListener('change', () => recomputeMaps());
 paramRoughness.addEventListener('input', (e) => {
   valRoughness.textContent = e.target.value;
   material.roughness = parseFloat(e.target.value);
-  recomputeMaps();
+  scheduleMaps();
 });
 
 paramInvertRough.addEventListener('change', () => recomputeMaps());
 
 paramAoStrength.addEventListener('input', (e) => {
   valAoStrength.textContent = `${e.target.value}×`;
-  recomputeMaps();
+  scheduleMaps();
 });
 
 paramBilateral?.addEventListener('input', (e) => {
   valBilateral.textContent = e.target.value;
-  recomputeMaps();
+  scheduleMaps();
 });
 
 paramMicroDetail?.addEventListener('input', (e) => {
   valMicroDetail.textContent = `${e.target.value}×`;
-  recomputeMaps();
+  scheduleMaps();
 });
 
 // View Tabs
 tabButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    tabButtons.forEach(b => b.classList.remove('active'));
+    tabButtons.forEach(b => {b.classList.remove('active');b.setAttribute('aria-selected',String(b===btn));b.tabIndex=b===btn?0:-1;});
     btn.classList.add('active');
     activeView = btn.dataset.view;
+    document.getElementById('view-name').textContent=viewNames[activeView];
+    document.getElementById('material-stage').setAttribute('aria-labelledby',btn.id);
+    document.getElementById('model-controls').hidden=activeView!=='3d';
+    btnExportSingle.textContent='Download '+(activeView==='3d'?'normal':viewNames[activeView].toLowerCase())+' map';
 
     if (activeView === '3d') {
       canvas3D.style.display = 'block';
       canvas2D.style.display = 'none';
-      document.getElementById('viewport-hint').textContent = 'Drag to rotate specimen · Scroll to zoom';
+      document.getElementById('viewport-hint').textContent = 'Drag to rotate · Scroll to zoom · Arrow keys to rotate';
     } else {
       canvas3D.style.display = 'none';
       canvas2D.style.display = 'block';
@@ -572,7 +592,7 @@ tabButtons.forEach(btn => {
 // Geometry switch
 geomButtons.forEach(btn => {
   btn.addEventListener('click', () => {
-    geomButtons.forEach(b => b.classList.remove('active'));
+    geomButtons.forEach(b => {b.classList.remove('active');b.setAttribute('aria-pressed',String(b===btn));});
     btn.classList.add('active');
     activeGeom = btn.dataset.geom;
     mesh.geometry = geometries[activeGeom];
@@ -582,19 +602,19 @@ geomButtons.forEach(btn => {
 // Auto-rotate toggle
 btnToggleRotate.addEventListener('click', () => {
   autoRotate = !autoRotate;
-  btnToggleRotate.textContent = `Auto-Spin: ${autoRotate ? 'ON' : 'OFF'}`;
-  btnToggleRotate.classList.toggle('active', autoRotate);
+  syncRotation();
 });
 
 // -------------------------------------------------------------
 // MOUSE ORBIT CONTROLS
 // -------------------------------------------------------------
 canvas3D.addEventListener('pointerdown', (e) => {
-  isDragging = true;
+  isDragging = true;canvas3D.setPointerCapture(e.pointerId);
   previousMousePosition = { x: e.clientX, y: e.clientY };
 });
 
 window.addEventListener('pointerup', () => { isDragging = false; });
+canvas3D.addEventListener('pointercancel',()=>{isDragging=false;});
 
 canvas3D.addEventListener('pointermove', (e) => {
   if (!isDragging) return;
@@ -614,6 +634,7 @@ canvas3D.addEventListener('wheel', (e) => {
 // EXPORT SYSTEM (Pure Client-Side Zero-Dependency ZIP Writer)
 // -------------------------------------------------------------
 function downloadBlob(blob, filename) {
+  if(!blob)throw Error('The browser could not encode this image.');
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -624,21 +645,10 @@ function downloadBlob(blob, filename) {
   setTimeout(() => URL.revokeObjectURL(url), 30000);
 }
 
-// Single map download
-btnExportSingle.addEventListener('click', () => {
-  const mapKey = activeView === '3d' ? 'normal' : activeView;
-  const source = maps[mapKey] || maps.normal;
-  source.toBlob((blob) => {
-    downloadBlob(blob, `pbr_${mapKey}.png`);
-  }, 'image/png');
-});
-
-// Dedicated packed ORM export
-btnExportOrm?.addEventListener('click', () => {
-  maps.orm.toBlob((blob) => {
-    downloadBlob(blob, 'pbr_orm_packed.png');
-  }, 'image/png');
-});
+// Individual map downloads report encoding failures beside the export controls.
+async function exportPNG(mapKey,filename){try{const data=await canvasToBuffer(maps[mapKey]);downloadBlob(new Blob([data],{type:'image/png'}),filename);exportStatus.textContent='PNG prepared. Check your browser downloads.';document.querySelector('.export-options').open=false;}catch(error){exportStatus.textContent='Export failed: '+error.message;}}
+btnExportSingle.addEventListener('click',()=>{const mapKey=activeView==='3d'?'normal':activeView;void exportPNG(mapKey,'pbr_'+mapKey+'.png');});
+btnExportOrm?.addEventListener('click',()=>void exportPNG('orm','pbr_orm_packed.png'));
 
 // CRC32 table for ZIP generator
 const CRC_TABLE = new Uint32Array(256);
@@ -739,15 +749,16 @@ function createZip(entries) {
 
 // Convert canvas to ArrayBuffer
 function canvasToBuffer(canvas) {
-  return new Promise((resolve) => {
+  return new Promise((resolve,reject) => {
     canvas.toBlob((blob) => {
-      blob.arrayBuffer().then(buf => resolve(new Uint8Array(buf)));
+      if(!blob){reject(Error('The browser could not encode a map.'));return;}blob.arrayBuffer().then(buf => resolve(new Uint8Array(buf)),reject);
     }, 'image/png');
   });
 }
 
 btnExportAll.addEventListener('click', async () => {
-  btnExportAll.textContent = 'Compressing PBR Bundle...';
+  btnExportAll.textContent = 'Preparing texture set…';
+  exportStatus.textContent='Encoding six PNG maps…';
   btnExportAll.disabled = true;
 
   try {
@@ -767,12 +778,12 @@ btnExportAll.addEventListener('click', async () => {
     ];
 
     const zipBlob = createZip(files);
-    downloadBlob(zipBlob, `lunar_pbr_bundle_${Date.now()}.zip`);
+    downloadBlob(zipBlob, `lunar_pbr_bundle_${Date.now()}.zip`);exportStatus.textContent='Texture set prepared. Check your browser downloads.';
   } catch (err) {
     console.error('Export failed:', err);
-    alert('Export error: ' + err.message);
+    exportStatus.textContent='Export failed: '+err.message;
   } finally {
-    btnExportAll.textContent = '⤓ Export PBR Set (.ZIP)';
+    btnExportAll.textContent = 'Download texture set ↗';
     btnExportAll.disabled = false;
   }
 });
@@ -792,11 +803,18 @@ function resizeRenderer() {
 }
 
 window.addEventListener('resize', resizeRenderer);
+new ResizeObserver(resizeRenderer).observe(document.getElementById('canvas-wrapper'));
+document.querySelector('.tabs-group').addEventListener('keydown',event=>{const index=[...tabButtons].indexOf(document.activeElement);if(index<0)return;const next=event.key==='Home'?0:event.key==='End'?tabButtons.length-1:event.key==='ArrowRight'?(index+1)%tabButtons.length:event.key==='ArrowLeft'?(index-1+tabButtons.length)%tabButtons.length:null;if(next!==null){event.preventDefault();tabButtons[next].click();tabButtons[next].focus({preventScroll:true});tabButtons[next].scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});}});
+document.getElementById('canvas-wrapper').addEventListener('keydown',event=>{if(activeView!=='3d')return;const step={ArrowLeft:[0,-.12],ArrowRight:[0,.12],ArrowUp:[-.12,0],ArrowDown:[.12,0]}[event.key];if(step){event.preventDefault();mesh.rotation.x+=step[0];mesh.rotation.y+=step[1];autoRotate=false;syncRotation();}else if(['+','=','-','Home'].includes(event.key)){event.preventDefault();if(event.key==='Home'){mesh.rotation.set(0,0,0);camera.position.z=3.2;}else camera.position.z=Math.max(1.5,Math.min(6,camera.position.z+(event.key==='-'?.2:-.2)));}});
+document.getElementById('btn-reset-parameters').addEventListener('click',()=>{clearTimeout(computationTimer);document.querySelectorAll('.parameter-body input,.parameter-body select').forEach(input=>{if(input.type==='checkbox')input.checked=input.defaultChecked;else if(input.tagName==='SELECT')input.value='sobel';else input.value=input.defaultValue;});valStrength.textContent=paramStrength.value+'×';valBilateral.textContent=paramBilateral.value;valMicroDetail.textContent=paramMicroDetail.value+'×';valBlur.textContent=paramBlur.value+' px';valHeightContrast.textContent=paramHeightContrast.value+'×';valRoughness.textContent=paramRoughness.value;valAoStrength.textContent=paramAoStrength.value+'×';document.getElementById('val-kernel').textContent='Sobel 3×3';material.roughness=Number(paramRoughness.value);recomputeMaps();});
+for(const [selector,targetId]of[['.mobile-settings-link','material-controls'],['.mobile-preview-link','canvas-wrapper']])document.querySelector(selector)?.addEventListener('click',event=>{event.preventDefault();const target=document.getElementById(targetId);target.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});target.focus({preventScroll:true});});
+let lastFrame=performance.now();
 
-function animate() {
-  requestAnimationFrame(animate);
-  if (autoRotate && !isDragging) {
-    mesh.rotation.y += 0.004;
+function animate(now=performance.now()) {
+  requestAnimationFrame(animate);const dt=Math.min(.05,(now-lastFrame)/1000);lastFrame=now;
+  if(document.hidden)return;
+  if (autoRotate && !isDragging&&activeView==='3d') {
+    mesh.rotation.y += dt*.24;
   }
   if (activeView === '3d') {
     renderer.render(scene, camera);
@@ -804,6 +822,7 @@ function animate() {
 }
 
 // Initial kickoff
+document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.preset==='lunar')));material.roughness=Number(paramRoughness.value);syncRotation();
 generateProcedural('lunar');
 resizeRenderer();
 animate();

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PBR Surface Normal &amp; Texture Map Synthesizer — Lunar Paradox Products</title>
-  <meta name="description" content="Zero-latency client-side WebGL2 normal, height, roughness, and ambient occlusion map generation from any diffuse source. 100% in-browser with zero server transmission.">
+  <meta name="description" content="Create and inspect normal, height, roughness and ambient-occlusion estimates from an image. Process and export material maps in your browser.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://products.lunarparadox.com/pbr-synth">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
@@ -13,104 +13,79 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Lunar Paradox">
   <meta property="og:title" content="PBR Surface Normal &amp; Texture Map Synthesizer — Lunar Paradox Products">
-  <meta property="og:description" content="Zero-latency client-side WebGL2 normal, height, roughness, and ambient occlusion map generation from any diffuse source.">
+  <meta property="og:description" content="Create and inspect material maps from an image, then export them from your browser.">
   <meta property="og:url" content="https://products.lunarparadox.com/pbr-synth">
   <meta property="og:image" content="https://products.lunarparadox.com/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="PBR Surface Normal &amp; Texture Map Synthesizer — Lunar Paradox Products">
-  <meta name="twitter:description" content="Zero-latency client-side WebGL2 normal, height, roughness, and ambient occlusion map generation from any diffuse source.">
+  <meta name="twitter:description" content="Create and inspect material maps from an image, then export them from your browser.">
   <meta name="twitter:image" content="https://products.lunarparadox.com/assets/og-image.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"PBR Surface Normal & Texture Map Synthesizer","url":"https://products.lunarparadox.com/pbr-synth","operatingSystem":"Any Modern Web Browser with WebGL2","applicationCategory":"DesignApplication","browserRequirements":"Requires WebGL2 and HTML5 Canvas","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Zero-latency client-side WebGL2 normal, height, roughness, and ambient occlusion map generation from any diffuse source with 100% in-browser zero-server privacy.","featureList":["Sobel & Scharr Gradient Convolution Normal Maps","Bilateral Filter Height Field Extraction","Roughness & Inverted Specular Estimation","Ambient Occlusion Cavity Extraction","Packed ORM Textures (R:AO, G:Roughness, B:Metallic)","Real-Time 3D WebGL Light Lab Specimen Inspection","Client-Side ZIP Packaging with Zero Remote Upload"],"publisher":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does client-side PBR texture synthesis work without uploading files?","acceptedAnswer":{"@type":"Answer","text":"PBR Synth executes image processing kernels entirely inside local GPU memory and Canvas2D buffers. Diffuse images never leave your local device."}},{"@type":"Question","name":"What is a packed ORM texture?","acceptedAnswer":{"@type":"Answer","text":"An ORM texture packs Ambient Occlusion into the Red channel, Roughness into Green, and Metallic into Blue. This consolidates three textures into one 32-bit RGBA texture, slashing GPU texture fetch overhead by 66%."}}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"PBR Surface Normal & Texture Map Synthesizer","url":"https://products.lunarparadox.com/pbr-synth","operatingSystem":"Any Modern Web Browser with WebGL2","applicationCategory":"DesignApplication","browserRequirements":"Requires WebGL2 and HTML5 Canvas","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Create and inspect material-map estimates from an image. Working images are processed in your browser.","featureList":["Sobel & Scharr Gradient Convolution Normal Maps","Bilateral Filter Height Field Extraction","Roughness & Inverted Specular Estimation","Ambient Occlusion Cavity Extraction","Packed ORM Textures (R:AO, G:Roughness, B:Metallic)","Real-Time 3D WebGL Light Lab Specimen Inspection","Client-Side ZIP Packaging with Zero Remote Upload"],"publisher":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does client-side PBR texture synthesis work without uploading files?","acceptedAnswer":{"@type":"Answer","text":"Image processing uses local Canvas buffers; the 3D preview uses WebGL. This tool does not upload working images."}},{"@type":"Question","name":"What is a packed ORM texture?","acceptedAnswer":{"@type":"Answer","text":"An ORM texture stores ambient occlusion in the red channel, roughness in green and metallic in blue for compatible material workflows. This tool exports a non-metallic blue channel."}}]}]}</script>
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="../../workspace-shell.css">
+  <link rel="stylesheet" href="./workbench.css">
 </head>
-<body>
+<body class="pbr-workspace">
   <header class="tool-header">
-    <div class="brand-section">
-      <a href="https://products.lunarparadox.com/" class="back-link">← LUNAR PRODUCTS</a>
-      <span class="divider">/</span>
-      <span class="tool-title">PBR Surface Normal & Texture Map Synthesizer</span>
-    </div>
-    <div class="air-gap-pill">
-      <span class="pulse-dot"></span>
-      100% IN-BROWSER / ZERO SERVER TRANSMISSION
-    </div>
-    <div class="telemetry-readout">
-      <span id="telemetry-res">DIM: -- × --</span>
-      <span id="telemetry-gpu">GPU: ACTIVE</span>
-    </div>
+    <div class="brand-section"><a href="../../index.html#/products?product=pbr-synth" class="back-link">← PRODUCTS</a><span class="divider">/</span><h1 class="tool-title">Material maps</h1></div>
+    <div class="telemetry-readout"><span class="workspace-brand">LUNAR PARADOX</span><span id="telemetry-res">—</span></div>
   </header>
-
   <main class="tool-container">
-    <!-- Left Sidebar: Settings -->
-    <aside class="controls-sidebar">
-      <!-- Input Image / Presets -->
-      <section class="section-group">
+    <aside class="controls-sidebar" id="material-controls" tabindex="-1" aria-label="Source and material settings"><a class="mobile-preview-link" href="#canvas-wrapper">Back to preview ↑</a>
+      <section class="section-group source-group">
         <div class="section-title">
-          <span>Source Texture</span>
+          <span>01 / SOURCE</span>
           <span style="font-size: 10px; color: var(--text-muted);">PNG, JPG, WEBP</span>
         </div>
-        <div class="dropzone" id="dropzone">
+        <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Choose a source image">
           <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" style="display:none">
-          <div class="dropzone-icon">⤓</div>
-          <div class="dropzone-label">Drop Diffuse Image Here</div>
-          <div class="dropzone-sub">or click to browse local files</div>
+          <canvas id="source-thumb" width="80" height="80" aria-hidden="true"></canvas>
+          <div class="dropzone-label"><span id="source-name">Lunar regolith</span></div>
+          <div class="dropzone-sub">Drop an image or choose a file ↗</div>
         </div>
 
-        <div class="section-title" style="margin-top: 4px;">Procedural Presets</div>
+        <div class="section-title" style="margin-top: 4px;">Or start with a preset</div>
         <div class="presets-grid">
-          <button type="button" class="btn-preset" data-preset="lunar">Lunar Regolith</button>
-          <button type="button" class="btn-preset" data-preset="carbon">Carbon Weave</button>
-          <button type="button" class="btn-preset" data-preset="hex">Hex Solar Plating</button>
-          <button type="button" class="btn-preset" data-preset="obsidian">Obsidian Basalt</button>
+          <button type="button" class="btn-preset" data-preset="lunar">Lunar</button>
+          <button type="button" class="btn-preset" data-preset="carbon">Carbon</button>
+          <button type="button" class="btn-preset" data-preset="hex">Solar</button>
+          <button type="button" class="btn-preset" data-preset="obsidian">Obsidian</button>
         </div>
-      </section>
+      <p class="source-note">Images stay in your browser. Maps are inferred from image contrast; inspect them before use.</p><p id="source-status" class="source-status" role="status"></p></section>
+      <details class="parameter-group" open><summary><span>02 / Normals</span><b aria-hidden="true">+</b></summary><div class="parameter-body">
 
-      <!-- Normal Map Parameters -->
-      <section class="section-group">
-        <div class="section-title">Normal Generation</div>
-        
+
         <div class="control-row">
-          <div class="control-label">
-            <span>Normal Strength</span>
+          <div class="control-label"><label for="param-strength">Normal Strength</label>
             <span class="control-val" id="val-strength">2.5×</span>
-          </div>
-          <input type="range" id="param-strength" min="0.2" max="8.0" step="0.1" value="2.5">
+          </div><input type="range" id="param-strength" min="0.2" max="8.0" step="0.1" value="2.5">
         </div>
 
         <div class="control-row">
-          <div class="control-label">
-            <span>Filter Kernel</span>
+          <div class="control-label"><label for="param-kernel">Filter Kernel</label>
             <span class="control-val" id="val-kernel">Sobel 3×3</span>
-          </div>
-          <select id="param-kernel" style="background:var(--bg-secondary);color:var(--text-main);border:1px solid var(--border-color);padding:6px;border-radius:4px;font-family:var(--font-mono);font-size:11px;">
-            <option value="sobel">Sobel 3×3 (Balanced)</option>
-            <option value="scharr">Scharr 5×5 (Smooth Edge)</option>
+          </div><select id="param-kernel" style="background:var(--bg-secondary);color:var(--text-main);border:1px solid var(--border-color);padding:6px;border-radius:4px;font-family:var(--font-mono);font-size:11px;">
+            <option value="sobel">Sobel 3×3</option>
+            <option value="scharr">Scharr 3×3 (Strong gradients)</option>
           </select>
         </div>
 
         <div class="control-row">
-          <div class="control-label">
-            <span>Bilateral Edge Smoothing</span>
+          <div class="control-label"><label for="param-bilateral">Bilateral Edge Smoothing</label>
             <span class="control-val" id="val-bilateral">1.0</span>
-          </div>
-          <input type="range" id="param-bilateral" min="0" max="4" step="0.5" value="1.0">
+          </div><input type="range" id="param-bilateral" min="0" max="4" step="0.5" value="1.0">
         </div>
 
         <div class="control-row">
-          <div class="control-label">
-            <span>Micro Surface Detail</span>
+          <div class="control-label"><label for="param-micro-detail">Micro Surface Detail</label>
             <span class="control-val" id="val-micro-detail">1.0×</span>
-          </div>
-          <input type="range" id="param-micro-detail" min="0.0" max="2.5" step="0.1" value="1.0">
+          </div><input type="range" id="param-micro-detail" min="0.0" max="2.5" step="0.1" value="1.0">
         </div>
 
         <div class="control-row">
-          <div class="control-label">
-            <span>Blur / Smoothing</span>
+          <div class="control-label"><label for="param-blur">Blur / Smoothing</label>
             <span class="control-val" id="val-blur">0 px</span>
-          </div>
-          <input type="range" id="param-blur" min="0" max="6" step="1" value="0">
+          </div><input type="range" id="param-blur" min="0" max="6" step="1" value="0">
         </div>
 
         <label class="toggle-row">
@@ -120,18 +95,13 @@
             <span class="slider-round"></span>
           </div>
         </label>
-      </section>
+      </div></details><details class="parameter-group" ><summary><span>03 / Height</span><b aria-hidden="true">+</b></summary><div class="parameter-body">
 
-      <!-- Height / Displacement Parameters -->
-      <section class="section-group">
-        <div class="section-title">Height / Displacement</div>
-        
+
         <div class="control-row">
-          <div class="control-label">
-            <span>Contrast</span>
+          <div class="control-label"><label for="param-height-contrast">Contrast</label>
             <span class="control-val" id="val-height-contrast">1.0×</span>
-          </div>
-          <input type="range" id="param-height-contrast" min="0.2" max="2.5" step="0.05" value="1.0">
+          </div><input type="range" id="param-height-contrast" min="0.2" max="2.5" step="0.05" value="1.0">
         </div>
 
         <label class="toggle-row">
@@ -141,18 +111,13 @@
             <span class="slider-round"></span>
           </div>
         </label>
-      </section>
+      </div></details><details class="parameter-group" ><summary><span>04 / Roughness</span><b aria-hidden="true">+</b></summary><div class="parameter-body">
 
-      <!-- Roughness / Glossiness -->
-      <section class="section-group">
-        <div class="section-title">Roughness / Gloss</div>
-        
+
         <div class="control-row">
-          <div class="control-label">
-            <span>Base Roughness</span>
+          <div class="control-label"><label for="param-roughness">Base Roughness</label>
             <span class="control-val" id="val-roughness">0.65</span>
-          </div>
-          <input type="range" id="param-roughness" min="0.0" max="1.0" step="0.02" value="0.65">
+          </div><input type="range" id="param-roughness" min="0.0" max="1.0" step="0.01" value="0.65">
         </div>
 
         <label class="toggle-row">
@@ -162,95 +127,28 @@
             <span class="slider-round"></span>
           </div>
         </label>
-      </section>
+      </div></details><details class="parameter-group" ><summary><span>05 / Occlusion</span><b aria-hidden="true">+</b></summary><div class="parameter-body">
 
-      <!-- Ambient Occlusion -->
-      <section class="section-group">
-        <div class="section-title">Ambient Occlusion</div>
-        
+
         <div class="control-row">
-          <div class="control-label">
-            <span>Cavity AO Depth</span>
+          <div class="control-label"><label for="param-ao-strength">Cavity AO Depth</label>
             <span class="control-val" id="val-ao-strength">1.4×</span>
-          </div>
-          <input type="range" id="param-ao-strength" min="0.2" max="3.0" step="0.1" value="1.4">
+          </div><input type="range" id="param-ao-strength" min="0.2" max="3.0" step="0.1" value="1.4">
         </div>
-      </section>
+      </div></details>
+      <button type="button" class="reset-parameters" id="btn-reset-parameters">Reset adjustments <span aria-hidden="true">↺</span></button>
     </aside>
-
-    <!-- Main Viewport Area -->
-    <div class="viewport-area">
-      <!-- Tabs for 3D View vs 2D Maps -->
-      <div class="view-tabs">
-        <div class="tabs-group">
-          <button type="button" class="tab-btn active" data-view="3d">3D Specimen Light Lab</button>
-          <button type="button" class="tab-btn" data-view="diffuse">Diffuse (Color)</button>
-          <button type="button" class="tab-btn" data-view="normal">Normal Map</button>
-          <button type="button" class="tab-btn" data-view="height">Height (Disp)</button>
-          <button type="button" class="tab-btn" data-view="roughness">Roughness</button>
-          <button type="button" class="tab-btn" data-view="ao">Ambient Occlusion</button>
-          <button type="button" class="tab-btn" data-view="orm">Packed ORM (R:AO, G:Rough, B:Metal)</button>
-        </div>
-
-        <div class="model-controls" id="model-controls">
-          <button type="button" class="btn-icon active" data-geom="sphere">Sphere</button>
-          <button type="button" class="btn-icon" data-geom="cube">Cube</button>
-          <button type="button" class="btn-icon" data-geom="plane">Plane</button>
-          <button type="button" class="btn-icon" id="btn-toggle-rotate" title="Toggle Auto-Rotation">Auto-Spin: ON</button>
-        </div>
+    <section class="viewport-area" aria-label="Material inspection and export">
+      <div class="stage-toolbar"><a class="mobile-settings-link" href="#material-controls">Source & adjustments <span aria-hidden="true">↓</span></a><div><span class="stage-overline">MATERIAL STUDY</span><p id="view-name">Lit material</p></div><div class="model-controls" id="model-controls" aria-label="Preview geometry"><button type="button" class="btn-icon active" data-geom="sphere" aria-pressed="true">Sphere</button><button type="button" class="btn-icon" data-geom="cube" aria-pressed="false">Cube</button><button type="button" class="btn-icon" data-geom="plane" aria-pressed="false">Plane</button><button type="button" class="btn-icon" id="btn-toggle-rotate" title="Toggle automatic rotation">Pause rotation</button></div></div>
+      <div class="canvas-wrapper" id="canvas-wrapper" role="region" aria-label="Material preview" tabindex="0">
+        <span class="stage-corner stage-corner-tl" aria-hidden="true"></span><span class="stage-corner stage-corner-br" aria-hidden="true"></span>
+        <div id="material-stage" role="tabpanel" aria-labelledby="map-tab-3d"><canvas id="viewport-3d" aria-label="Interactive lit material preview"></canvas><canvas id="preview-2d" aria-label="Selected texture map"></canvas></div>
+        <div class="viewport-hint" id="viewport-hint">Drag to rotate · Scroll to zoom · Arrow keys to rotate</div>
+        <div class="viewport-info" id="viewport-info"><span>MAP GENERATION</span><span id="info-render-time">—</span></div>
       </div>
-
-      <!-- Canvas Viewport -->
-      <div class="canvas-wrapper" id="canvas-wrapper">
-        <canvas id="viewport-3d"></canvas>
-        <canvas id="preview-2d"></canvas>
-
-        <div class="viewport-hint" id="viewport-hint">
-          Drag to rotate specimen · Scroll to zoom
-        </div>
-
-        <div class="viewport-info" id="viewport-info">
-          <div>PIXEL ENGINE: CANVAS2D / WEBGL</div>
-          <div id="info-render-time">TIME: -- ms</div>
-        </div>
-      </div>
-
-      <!-- Footer Bar / Action Row -->
-      <footer class="tool-footer">
-        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-          <span>OUTPUT: </span>
-          <span id="output-meta">1024 × 1024 PNG / 32-BIT RGBA</span>
-        </div>
-
-        <div class="footer-actions">
-          <button type="button" class="btn-secondary" id="btn-export-single">
-            ⤓ Download Active Map (PNG)
-          </button>
-          <button type="button" class="btn-secondary" id="btn-export-orm">
-            ⤓ Export ORM Texture (PNG)
-          </button>
-          <button type="button" class="btn-primary" id="btn-export-all">
-            ⤓ Export PBR Set (.ZIP)
-          </button>
-        </div>
-      </footer>
-      <div class="studio-bridge" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:12px 20px; background:rgba(3,10,24,0.85); border-top:1px solid rgba(255,255,255,0.08); font-size:11px; font-family:var(--font-mono, monospace);">
-        <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-          <span style="color:#718096;">CLIENT TOOLS:</span>
-          <span style="color:#00e5ff;">01 / PBR Synth</span>
-          <a href="../optim-compressor/index.html" style="color:#94a3b8; text-decoration:none;">02 / Media Compressor</a>
-          <a href="../resonance-dsp/index.html" style="color:#94a3b8; text-decoration:none;">03 / Resonance Sound Lab</a>
-          <a href="../cipher-workbench/index.html" style="color:#94a3b8; text-decoration:none;">04 / Cipher Workbench</a>
-        </div>
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="color:#a0aec0;">Need bespoke WebGL/WebGPU shaders or 60 FPS hardening?</span>
-          <a href="https://lunarparadox.com/studio" target="_blank" rel="noopener" style="color:#f5e6c8; border:1px solid rgba(245,230,200,0.35); padding:4px 10px; border-radius:3px; text-decoration:none; font-weight:600;">WORK WITH STUDIO ↗</a>
-        </div>
-      </div>
-    </div>
+      <div class="view-tabs"><div class="tabs-group" role="tablist" aria-label="Material and generated maps"><button type="button" class="tab-btn active" data-view="3d" id="map-tab-3d" role="tab" aria-selected="true" tabindex="0" aria-controls="material-stage"><span class="material-tab-icon" aria-hidden="true">◉</span><span>Material</span></button><button type="button" class="tab-btn " data-view="diffuse" id="map-tab-diffuse" role="tab" aria-selected="false" tabindex="-1" aria-controls="material-stage"><canvas width="64" height="64" data-map-thumb="diffuse" aria-hidden="true"></canvas><span>Colour</span></button><button type="button" class="tab-btn " data-view="normal" id="map-tab-normal" role="tab" aria-selected="false" tabindex="-1" aria-controls="material-stage"><canvas width="64" height="64" data-map-thumb="normal" aria-hidden="true"></canvas><span>Normal</span></button><button type="button" class="tab-btn " data-view="height" id="map-tab-height" role="tab" aria-selected="false" tabindex="-1" aria-controls="material-stage"><canvas width="64" height="64" data-map-thumb="height" aria-hidden="true"></canvas><span>Height</span></button><button type="button" class="tab-btn " data-view="roughness" id="map-tab-roughness" role="tab" aria-selected="false" tabindex="-1" aria-controls="material-stage"><canvas width="64" height="64" data-map-thumb="roughness" aria-hidden="true"></canvas><span>Roughness</span></button><button type="button" class="tab-btn " data-view="ao" id="map-tab-ao" role="tab" aria-selected="false" tabindex="-1" aria-controls="material-stage"><canvas width="64" height="64" data-map-thumb="ao" aria-hidden="true"></canvas><span>Occlusion</span></button><button type="button" class="tab-btn " data-view="orm" id="map-tab-orm" role="tab" aria-selected="false" tabindex="-1" aria-controls="material-stage"><canvas width="64" height="64" data-map-thumb="orm" aria-hidden="true"></canvas><span>ORM</span></button></div></div>
+      <footer class="tool-footer"><div class="output-description"><span>READY TO EXPORT</span><p id="output-meta">—</p><p id="export-status" role="status"></p></div><div class="footer-actions"><details class="export-options"><summary>Individual maps <span aria-hidden="true">⌄</span></summary><div><button type="button" class="btn-secondary" id="btn-export-single">Download normal map</button><button type="button" class="btn-secondary" id="btn-export-orm">Download packed ORM</button></div></details><button type="button" class="btn-primary" id="btn-export-all">Download texture set <span aria-hidden="true">↗</span></button></div></footer>
+    </section>
   </main>
-
-  <script type="module" src="./app.js"></script>
-  <script src="../../workspace-shell.js"></script>
-</body>
-</html>
+  <script type="module" src="./app.js"></script><script src="../../workspace-shell.js"></script>
+</body></html>

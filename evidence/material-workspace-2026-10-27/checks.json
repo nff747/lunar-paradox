@@ -1,0 +1,33 @@
+{
+  "scope": "Local Material maps workspace UI",
+  "automated_tests": {
+    "passed": 97,
+    "failed": 0
+  },
+  "build": "Full hosted build and final Astrolabe export/install passed",
+  "browser_checks": [
+    "Carbon source preset",
+    "Normal-strength adjustment and reset",
+    "Keyboard map selection",
+    "Geometry selection and keyboard rotation",
+    "Guide close and Escape focus return",
+    "390px responsive layout and source/preview jumps",
+    "Individual PNG download",
+    "Texture ZIP download"
+  ],
+  "downloads": {
+    "individual_png_dimensions": [
+      1024,
+      1024
+    ],
+    "zip_crc": "passed",
+    "png_maps": 6,
+    "all_map_dimensions": [
+      1024,
+      1024
+    ],
+    "manifest": true
+  },
+  "deployment": "Not performed",
+  "physical_phone_and_cross_browser": "Not tested"
+}
