@@ -40,6 +40,13 @@
    - Status: **DEPLOYED & ACTIVE**
    - Public URL: `https://nff747.github.io`
    - Hosted on: GitHub Pages (`source` / `main` branch).
-3. **Lift-Verse**:
-   - Status: **BUILD READY, DEPLOYMENT ON HOLD**
-   - Blocker: Requires authorized `firebase login:ci` token to deploy to Firebase hosting project `lift-verse`.
+4. **Product Showcase Action Buttons (Astrolabe)**:
+   - Planned Change: Retire redundant `TRY SAMPLE` modal. Consolidate into dual clean actions: `USE TOOL ↗` (opens standalone workbench) and `GITHUB REPO ↗` (direct repository download).
+
+---
+
+## 3. STRATEGIC ARCHITECTURAL & BUSINESS QUESTIONS
+
+* **Conversion Funnel**: Does a user dropping into `/optim-compressor` or `/pbr-synth` understand that Lunar Paradox is available for $3,500 3-day technical direction spikes, or do they perceive it as an anonymous hobby tool?
+* **First-Run Time-to-Value**: Can a 3D artist export a normal map in fewer than 2 clicks from the moment they hit the landing page?
+* **Moat & Defensibility**: Why would an agency trust Lunar Paradox over established open-source tools or native desktop apps? (Answer: Zero installation, confidential client data remains air-gapped in RAM, guaranteed 60 FPS mobile optimization expertise).

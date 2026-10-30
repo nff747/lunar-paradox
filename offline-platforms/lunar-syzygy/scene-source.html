@@ -12,10 +12,11 @@ body[data-route=realms] .viewport,body[data-route=realms] .viewport:active{curso
 .frame,.readout{transition:opacity .65s ease}body[data-cinematic-busy=true] .frame,body[data-cinematic-busy=true] .readout{opacity:.18}
 @media(prefers-reduced-motion:reduce){.frame,.readout{transition:none}}
 
-.cinematic-cue{position:fixed;left:50%;top:19%;transform:translateX(-50%);margin:0;max-width:70vw;pointer-events:none;z-index:18;opacity:0;text-align:center;color:#e8e4dc;font:10px/1.6 monospace;letter-spacing:.25em;text-transform:uppercase;text-shadow:0 2px 14px #000;}
+.cinematic-cue{position:fixed;left:5%;top:44%;margin:0;width:min(24vw,310px);pointer-events:none;z-index:18;opacity:0;text-align:left;color:#f3eee8;text-shadow:0 2px 22px #000;}
+.cinematic-cue .cue-index{display:flex;align-items:center;gap:10px;color:#c9b79f;font:10px/1.4 monospace;letter-spacing:.18em;text-transform:uppercase}.cinematic-cue .cue-index:before{content:'';display:block;width:25px;height:1px;background:linear-gradient(90deg,#d9b779,transparent)}
+.cinematic-cue .cue-title{display:block;margin-top:13px;font:400 clamp(20px,2.2vw,34px)/1.13 Arial,sans-serif;letter-spacing:-.035em;text-wrap:balance}
 body[data-company-route] .cinematic-cue{display:none}
-@media(max-width:700px){.cinematic-cue{top:24%;font-size:9px;max-width:85vw}}
-@media(prefers-reduced-motion:reduce){.cinematic-cue{display:none}}
+@media(max-width:700px){.cinematic-cue{top:23%;left:7%;width:66vw}.cinematic-cue .cue-title{font-size:20px}}
 
 .inspection-shots{position:fixed;bottom:140px;left:50%;transform:translateX(-50%);z-index:19;display:flex;gap:18px}.inspection-shots[hidden]{display:none}.inspection-shots button{background:none;border:0;border-bottom:1px solid transparent;padding:8px 0;color:#99949f;font:9px monospace;cursor:pointer;letter-spacing:.06em}.inspection-shots button[aria-pressed="true"]{color:#e8dfd0;border-color:#a89b82}@media(max-width:700px){.inspection-shots{bottom:125px;gap:16px}}
 </style><link rel="stylesheet" href="./experience.css"><link rel="stylesheet" href="./company.css"><link rel="stylesheet" href="./commission.css"><script type="module" src="./supabase-client.js"></script>
