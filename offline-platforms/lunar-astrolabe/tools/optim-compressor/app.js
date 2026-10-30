@@ -19,6 +19,7 @@ const valQuality = document.getElementById('val-quality');
 
 // Telemetry & metrics
 const metricOrigSize = document.getElementById('metric-orig-size');
+const originalLabel = document.getElementById('original-label');
 const metricOptSize = document.getElementById('metric-opt-size');
 const metricReduction = document.getElementById('metric-reduction');
 const metricTime = document.getElementById('metric-time');
@@ -26,6 +27,8 @@ const telemetrySavings = document.getElementById('telemetry-savings');
 const telemetrySpeed = document.getElementById('telemetry-speed');
 const indicatorDims = document.getElementById('indicator-dims');
 const btnDownload = document.getElementById('btn-download');
+const sourceStatus = document.getElementById('source-status');
+const qualityNote = document.getElementById('quality-note');
 
 // SSIM & Magnifier Loupe elements
 const metricSsim = document.getElementById('metric-ssim');
@@ -46,6 +49,22 @@ let activePreviewUrl = null;
 let optimizedFileSize = 0;
 let splitPosition = 0.5; // 0 to 1
 let isDraggingHandle = false;
+let sourceDescription = 'Sample image';
+let sourceIsSample = true;
+
+function pending(message) {
+  optimizedBlob = null;
+  btnDownload.disabled = true;
+  sourceStatus.textContent = message;
+  for (const el of [metricOrigSize, metricOptSize, metricReduction, metricTime, metricSsim, metricSsimRating]) el.textContent = '—';
+  telemetrySavings.textContent = 'PROCESSING';
+  telemetrySpeed.textContent = 'SPEED: —';
+}
+function updateQualityControl() {
+  const png = paramFormat.value === 'image/png';
+  paramQuality.disabled = png;
+  qualityNote.textContent = png ? 'PNG encoding ignores the quality slider. Resizing and grayscale still alter the image.' : 'Quality applies to JPEG and WebP.';
+}
 
 // Format helpers
 function formatBytes(bytes) {
@@ -61,6 +80,10 @@ function formatBytes(bytes) {
 function generatePreset(preset) {
   const sourceId = ++latestSourceId;
   ++latestTranscodeId;
+  sourceDescription = 'Sample image';
+  sourceIsSample = true;
+  originalLabel.textContent = 'Sample PNG';
+  pending('Preparing a sample image…');
   const w = 1200, h = 800;
   canvasOrig.width = w;
   canvasOrig.height = h;
@@ -140,7 +163,8 @@ function generatePreset(preset) {
 
   // Estimate uncompressed RAW / PNG baseline size
   canvasOrig.toBlob((blob) => {
-    if (sourceId !== latestSourceId || !blob) return;
+    if (sourceId !== latestSourceId) return;
+    if (!blob) { sourceStatus.textContent = 'Could not prepare the sample image. Try another sample.'; return; }
     originalBlob = blob;
     originalFileSize = blob.size;
     transcode();
@@ -152,14 +176,16 @@ function generatePreset(preset) {
 // -------------------------------------------------------------
 async function transcode() {
   const currentReqId = ++latestTranscodeId;
+  updateQualityControl();
+  pending('Processing image…');
   const startTime = performance.now();
   const scale = parseFloat(paramScale.value);
   const quality = parseInt(paramQuality.value, 10) / 100;
   const format = paramFormat.value;
   const isGrayscale = paramGrayscale.checked;
 
-  const targetW = Math.round(canvasOrig.width * scale);
-  const targetH = Math.round(canvasOrig.height * scale);
+  const targetW = Math.max(1, Math.round(canvasOrig.width * scale));
+  const targetH = Math.max(1, Math.round(canvasOrig.height * scale));
 
   indicatorDims.textContent = `ORIGINAL: ${canvasOrig.width}×${canvasOrig.height} → OPT: ${targetW}×${targetH}`;
 
@@ -176,9 +202,8 @@ async function transcode() {
 
   // Encode to target format blob in RAM
   offscreen.toBlob((blob) => {
-    if (currentReqId !== latestTranscodeId || !blob) return;
-    optimizedBlob = blob;
-    optimizedFileSize = blob.size;
+    if (currentReqId !== latestTranscodeId) return;
+    if (!blob || blob.type !== format) { sourceStatus.textContent = 'This browser could not encode the selected format. Try another format.'; return; }
 
     // Revoke previous preview object URL to prevent memory leaks
     if (activePreviewUrl) {
@@ -202,6 +227,10 @@ async function transcode() {
       canvasOpt.height = canvasOrig.height;
       const optCtx = canvasOpt.getContext('2d');
       optCtx.drawImage(img, 0, 0, canvasOrig.width, canvasOrig.height);
+      optimizedBlob = blob;
+      optimizedFileSize = blob.size;
+      btnDownload.disabled = false;
+      sourceStatus.textContent = `${sourceDescription} ready. Compare the result and download when satisfied.`;
       updateSplitView();
 
       const duration = (performance.now() - startTime).toFixed(1);
@@ -212,6 +241,7 @@ async function transcode() {
       if (activePreviewUrl === previewUrl) {
         activePreviewUrl = null;
       }
+      if (currentReqId === latestTranscodeId) sourceStatus.textContent = 'Could not preview the encoded image. Try another format.';
     };
     img.src = previewUrl;
   }, format, quality);
@@ -221,7 +251,7 @@ async function transcode() {
 // SSIM (STRUCTURAL SIMILARITY INDEX) CALCULATOR
 // -------------------------------------------------------------
 function calculateSSIM(origCtx, optCtx, width, height) {
-  if (width < 8 || height < 8) return 1.0;
+  if (width < 8 || height < 8) return null;
   const stepX = Math.max(4, Math.floor(width / 60));
   const stepY = Math.max(4, Math.floor(height / 45));
 
@@ -274,11 +304,11 @@ function calculateSSIM(origCtx, optCtx, width, height) {
     }
   }
 
-  return blocks > 0 ? Math.max(0.0, Math.min(1.0, totalSsim / blocks)) : 1.0;
+  return blocks > 0 ? Math.max(0.0, Math.min(1.0, totalSsim / blocks)) : null;
 }
 
 function updateTelemetry(durationMs) {
-  recordFunnelStep('optim-compressor', 'complete');
+  if (!sourceIsSample) recordFunnelStep('optim-compressor', 'complete');
   if (!window.__optimReadyMarked) {
     window.__optimReadyMarked = true;
     try {
@@ -292,25 +322,17 @@ function updateTelemetry(durationMs) {
   const diff = originalFileSize - optimizedFileSize;
   const percent = originalFileSize > 0 ? ((diff / originalFileSize) * 100).toFixed(1) : 0;
 
-  metricReduction.textContent = `${percent > 0 ? '-' : '+'}${Math.abs(percent)}%`;
+  metricReduction.textContent = `${percent > 0 ? '-' : percent < 0 ? '+' : ''}${Math.abs(percent)}%`;
   metricTime.textContent = `${durationMs} ms`;
 
-  telemetrySavings.textContent = `SAVED: ${formatBytes(Math.max(0, diff))} (${percent}%)`;
+  telemetrySavings.textContent = diff >= 0 ? `SAVED: ${formatBytes(diff)} (${percent}%)` : `LARGER: ${formatBytes(-diff)} (${Math.abs(percent)}%)`;
   telemetrySpeed.textContent = `SPEED: ${durationMs} ms`;
 
   // Compute SSIM
   if (canvasOrig.width && canvasOrig.height) {
     const ssimVal = calculateSSIM(canvasOrig.getContext('2d'), canvasOpt.getContext('2d'), canvasOrig.width, canvasOrig.height);
-    metricSsim.textContent = ssimVal.toFixed(3);
-
-    let rating = 'NEAR-LOSSLESS';
-    let color = 'var(--accent-emerald)';
-    if (ssimVal < 0.90) { rating = 'PERCEPTIBLE LOSS'; color = '#f43f5e'; }
-    else if (ssimVal < 0.95) { rating = 'BALANCED'; color = 'var(--accent-gold)'; }
-    else if (ssimVal < 0.98) { rating = 'HIGH FIDELITY'; color = 'var(--accent-cyan)'; }
-
-    metricSsimRating.textContent = rating;
-    metricSsimRating.style.color = color;
+    metricSsim.textContent = ssimVal === null ? 'Unavailable' : ssimVal.toFixed(3);
+    metricSsimRating.textContent = ssimVal === null ? 'Image too small' : 'Inspect visually';
   }
 }
 
@@ -366,7 +388,6 @@ paramGrayscale.addEventListener('change', () => transcode());
 // Presets
 document.querySelectorAll('.btn-preset').forEach(btn => {
   btn.addEventListener('click', () => {
-    recordFunnelStep('optim-compressor', 'start');
     generatePreset(btn.dataset.preset);
   });
 });
@@ -396,10 +417,13 @@ fileInput.addEventListener('change', () => {
 });
 
 function loadFile(file) {
-  if (!file.type.startsWith('image/')) return;
+  if (!file.type.startsWith('image/')) { sourceStatus.textContent = 'Choose a supported image file.'; return; }
   recordFunnelStep('optim-compressor', 'start');
+  sourceIsSample = false;
   const sourceId = ++latestSourceId;
   ++latestTranscodeId;
+  pending('Opening image…');
+  originalLabel.textContent = 'Original file';
 
   const reader = new FileReader();
   reader.onload = (e) => {
@@ -410,6 +434,7 @@ function loadFile(file) {
       originalFileSize = file.size;
       // Memory safety cap
       let w = img.width, h = img.height;
+      const resized = w > 4096 || h > 4096;
       if (w > 4096 || h > 4096) {
         const aspect = w / h;
         if (w > h) { w = 4096; h = Math.round(4096 / aspect); }
@@ -419,22 +444,25 @@ function loadFile(file) {
       canvasOrig.height = h;
       const ctx = canvasOrig.getContext('2d');
       ctx.drawImage(img, 0, 0, w, h);
+      sourceDescription = resized ? `Image limited to ${w} × ${h} pixels` : 'Your image';
       transcode();
     };
     img.onerror = () => {
       recordFunnelStep('optim-compressor', 'error');
+      if (sourceId === latestSourceId) sourceStatus.textContent = 'Could not open this image. Try a different file.';
     };
     img.src = e.target.result;
   };
+  reader.onerror = () => { if (sourceId === latestSourceId) sourceStatus.textContent = 'Could not read this file. Try again.'; };
   reader.readAsDataURL(file);
 }
 
 // Download optimized asset
 btnDownload.addEventListener('click', () => {
   if (!optimizedBlob) return;
-  recordFunnelStep('optim-compressor', 'export');
-  const ext = paramFormat.value === 'image/webp' ? 'webp' :
-              paramFormat.value === 'image/jpeg' ? 'jpg' : 'png';
+  if (!sourceIsSample) recordFunnelStep('optim-compressor', 'export');
+  const ext = optimizedBlob.type === 'image/webp' ? 'webp' :
+              optimizedBlob.type === 'image/jpeg' ? 'jpg' : 'png';
   const url = URL.createObjectURL(optimizedBlob);
   const a = document.createElement('a');
   a.href = url;

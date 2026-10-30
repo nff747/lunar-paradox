@@ -525,6 +525,7 @@ input:checked + .slider-round:before {
 .btn-primary:hover {
   opacity: 0.9;
 }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
 
 @media (max-width: 900px) {
   .tool-container {

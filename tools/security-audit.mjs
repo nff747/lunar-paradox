@@ -7,8 +7,8 @@
  * 1. Cloudflare Security Audit Skill Integrity & Schema Verification
  * 2. Secret & Credential Leak Detection (Cloud & Deployment)
  * 3. Client-Side CSP & DOM Injection Audit (Web Protocol & Auth)
- * 4. Zero-Server Privacy & Network Boundary Verification (Data Isolation)
- * 5. Pre-Deployment Gate: Blocks deployment if any critical/high vulnerability is found
+ * 4. Check tool HTML for a short list of third-party tracking domains
+ * 5. Block on critical/high findings detected by these checks
  */
 
 import fs from 'node:fs/promises';
@@ -133,7 +133,7 @@ try {
 // -----------------------------------------------------------------------------
 // CHECK 4: Zero-Server Client Privacy Boundary (Cloudflare DATA-ISOLATION)
 // -----------------------------------------------------------------------------
-console.log('\n[4/4] Verifying Zero-Server isolation boundaries for client suites...');
+console.log('\n[4/4] Checking client tool HTML for listed third-party tracking domains...');
 const clientToolDirs = [
   path.join(ROOT, 'offline-platforms/lunar-astrolabe/tools/pbr-synth'),
   path.join(ROOT, 'offline-platforms/lunar-astrolabe/tools/optim-compressor'),
@@ -153,7 +153,7 @@ for (const toolDir of clientToolDirs) {
     if (err.code !== 'ENOENT') throw err;
   }
 }
-console.log('  ✔ All 4 Astrolabe client suites verified: 100% air-gapped, zero external telemetry.');
+console.log('  HTML domain-pattern check complete. This does not inspect all scripts or establish network isolation.');
 
 // -----------------------------------------------------------------------------
 // AUDIT SUMMARY & DEPLOY GATE
@@ -164,7 +164,7 @@ if (failedChecks > 0) {
   console.error('Deployment aborted to prevent security regression.');
   process.exit(1);
 } else {
-  console.log('✔ CLOUDFLARE SECURITY AUDIT PASSED: 0 critical/high findings.');
-  console.log('Platform certified secure for production deployment.');
+  console.log('✔ Automated checks passed: no critical/high findings detected by these rules.');
+  console.log('This is not a security certification or a substitute for independent review.');
   console.log('=================================================================\n');
 }

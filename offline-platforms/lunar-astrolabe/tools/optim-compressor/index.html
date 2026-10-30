@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>In-RAM Media Compressor &amp; Transcoder — Lunar Paradox Products</title>
-  <meta name="description" content="Lossless and perceptual client-side image compression, format transcoding, and metadata stripping directly in browser memory. Zero server transmission.">
+  <title>Image Compressor — Lunar Paradox Products</title>
+  <meta name="description" content="Compress, resize and compare images in your browser, then download the result.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://products.lunarparadox.com/optim-compressor">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
@@ -12,15 +12,15 @@
   <link rel="apple-touch-icon" href="../../assets/favicon.svg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Lunar Paradox">
-  <meta property="og:title" content="In-RAM Media Compressor &amp; Transcoder — Lunar Paradox Products">
-  <meta property="og:description" content="Lossless and perceptual client-side image compression, format transcoding, and metadata stripping directly in browser memory.">
+  <meta property="og:title" content="Image Compressor — Lunar Paradox Products">
+  <meta property="og:description" content="Compress, resize and compare images in your browser, then download the result.">
   <meta property="og:url" content="https://products.lunarparadox.com/optim-compressor">
   <meta property="og:image" content="https://products.lunarparadox.com/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="In-RAM Media Compressor &amp; Transcoder — Lunar Paradox Products">
-  <meta name="twitter:description" content="Lossless and perceptual client-side image compression, format transcoding, and metadata stripping directly in browser memory.">
+  <meta name="twitter:title" content="Image Compressor — Lunar Paradox Products">
+  <meta name="twitter:description" content="Compress, resize and compare images in your browser, then download the result.">
   <meta name="twitter:image" content="https://products.lunarparadox.com/assets/og-image.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"In-RAM Media Compressor & Transcoder","url":"https://products.lunarparadox.com/optim-compressor","operatingSystem":"Any Modern Web Browser","applicationCategory":"UtilitiesApplication","browserRequirements":"Requires HTML5 Canvas and Web Worker support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Private, zero-server image compression and format transcoding running entirely in local browser memory with live SSIM perceptual scoring and metadata scrubbing.","featureList":["In-RAM Lossless and Lossy WebP, JPEG, PNG Transcoding","Interactive Split-Curtain Loupe Inspection","Structural Similarity Index (SSIM) Score Calculation","Automated EXIF and Geolocation Privacy Scrubbing","Zero Server Upload — 100% Client-Side Privacy"],"publisher":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are images uploaded to a server during compression?","acceptedAnswer":{"@type":"Answer","text":"No. All encoding, transcoding, and compression operations run strictly in local RAM inside your browser via Web Workers. Zero bytes leave your machine."}},{"@type":"Question","name":"What is the SSIM index in image compression?","acceptedAnswer":{"@type":"Answer","text":"SSIM (Structural Similarity Index) measures perceptual image fidelity by comparing luminance, contrast, and structure between the original and compressed image, ensuring imperceptible visual loss."}}]}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Image Compressor","url":"https://products.lunarparadox.com/optim-compressor","applicationCategory":"UtilitiesApplication","description":"Compress, resize and compare images in your browser.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}}</script>
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="../../workspace-shell.css">
 </head>
@@ -29,11 +29,11 @@
     <div class="brand-section">
       <a href="https://products.lunarparadox.com/" class="back-link">← LUNAR PRODUCTS</a>
       <span class="divider">/</span>
-      <span class="tool-title">In-RAM Media Compressor & Transcoder</span>
+      <span class="tool-title">Image compressor</span>
     </div>
     <div class="air-gap-pill">
       <span class="pulse-dot"></span>
-      100% IN-BROWSER / ZERO NETWORK TRANSMISSION
+      IMAGE PROCESSING IN YOUR BROWSER
     </div>
     <div class="telemetry-readout">
       <span id="telemetry-savings">SAVED: 0.00 KB (0%)</span>
@@ -55,6 +55,7 @@
           <div class="dropzone-label">Drop Source Image Here</div>
           <div class="dropzone-sub">or click to browse local files</div>
         </button>
+        <p id="source-status" role="status" aria-live="polite" style="font-size:12px;line-height:1.5;color:var(--text-muted);margin:8px 0">Preparing a sample image…</p>
 
         <div class="section-title" style="margin-top: 4px;">Preset Demonstrations</div>
         <div class="presets-grid">
@@ -74,7 +75,7 @@
           <select id="param-format">
             <option value="image/webp" selected>WebP (Modern Standard)</option>
             <option value="image/jpeg">JPEG (Universal Fallback)</option>
-            <option value="image/png">PNG (Lossless Quantized)</option>
+            <option value="image/png">PNG (lossless encoding)</option>
           </select>
         </div>
 
@@ -84,6 +85,7 @@
             <span class="control-val" id="val-quality">80%</span>
           </label>
           <input type="range" id="param-quality" min="5" max="100" step="1" value="80">
+          <span id="quality-note" style="font-size:11px;color:var(--text-muted)">Quality applies to JPEG and WebP.</span>
         </div>
 
         <div class="control-row">
@@ -99,7 +101,7 @@
         <div class="control-row" style="padding: 8px 0; border-top: 1px solid var(--border-color); font-size: 11px;">
           <div style="display:flex; flex-direction:column; gap:2px;">
             <span style="font-weight:600; color:var(--text-main);">Metadata Policy</span>
-            <span style="color:var(--accent-emerald);">EXIF & Telemetry stripped automatically on Canvas export</span>
+            <span style="color:var(--text-muted);">Canvas export creates a new image and does not retain the source file’s metadata.</span>
           </div>
         </div>
 
@@ -117,7 +119,7 @@
         <div class="section-title">Compression Performance</div>
         <div class="metric-box">
           <div class="metric-item">
-            <span class="metric-label">Original</span>
+            <span class="metric-label" id="original-label">Original</span>
             <span class="metric-number" id="metric-orig-size">-- KB</span>
           </div>
           <div class="metric-item">
@@ -129,26 +131,19 @@
             <span class="metric-number metric-gain" id="metric-reduction">-- %</span>
           </div>
           <div class="metric-item">
-            <span class="metric-label">Encoding</span>
+            <span class="metric-label">Processing</span>
             <span class="metric-number" id="metric-time">-- ms</span>
           </div>
           <div class="metric-item">
-            <span class="metric-label">SSIM Index</span>
+            <span class="metric-label">Sampled similarity</span>
             <span class="metric-number" id="metric-ssim" style="color:var(--accent-cyan);">--</span>
           </div>
           <div class="metric-item">
-            <span class="metric-label">Perceptual Quality</span>
+            <span class="metric-label">Comparison</span>
             <span class="metric-number" id="metric-ssim-rating" style="font-size:11px; color:var(--accent-emerald);">--</span>
           </div>
         </div>
-        <div class="benchmark-callout" style="margin-top: 10px; padding: 8px 10px; background: rgba(0, 229, 255, 0.04); border: 1px solid rgba(0, 229, 255, 0.18); border-radius: 4px; font-size: 11px; font-family: var(--font-mono, monospace); line-height: 1.45;">
-          <div style="font-weight: 600; color: var(--accent-cyan); margin-bottom: 3px; display: flex; align-items: center; gap: 6px;">
-            <span>⚡ REPRODUCIBLE BENCHMARK</span>
-          </div>
-          <div style="color: var(--text-muted);">
-            In-RAM Web Worker encoding achieves <span style="color: var(--accent-emerald); font-weight: 600;">SSIM 0.997</span> with up to <span style="color: var(--accent-emerald); font-weight: 600;">68% size reduction</span> at 80% quality factor. 100% volatile memory, zero external telemetry.
-          </div>
-        </div>
+        <p class="comparison-note" style="font-size:11px;line-height:1.5;color:var(--text-muted)">Similarity is an estimate sampled from the current image. Inspect the result: a high score does not guarantee imperceptible changes.</p>
       </section>
     </aside>
 
@@ -193,8 +188,8 @@
       <footer class="tool-footer">
         <div style="display:flex; flex-direction:column; gap:6px;">
           <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-            <span>SECURITY: </span>
-            <span style="color: var(--accent-emerald);">ENCODED IN VOLATILE RAM · 0 BYTES EXFILTRATED</span>
+            <span>PRIVACY: </span>
+            <span>Images are processed in this browser. Optional usage sharing is controlled below.</span>
           </div>
           <div class="feedback-strip" id="feedback-strip" style="display:flex; align-items:center; gap:8px; font-family:var(--font-mono, monospace); font-size:11px;">
             <span style="color:var(--text-muted);">Did this solve your problem?</span>
@@ -204,7 +199,7 @@
           </div>
         </div>
 
-        <button type="button" class="btn-primary" id="btn-download">
+        <button type="button" class="btn-primary" id="btn-download" disabled>
           ⤓ Download Optimized Asset
         </button>
       </footer>
