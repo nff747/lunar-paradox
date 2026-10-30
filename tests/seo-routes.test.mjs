@@ -42,8 +42,8 @@ test('canonical redirects do not leave legacy scene aliases as rewrites',()=>{
     ['/gravity','https://labs.lunarparadox.com'],
     ['/astrolabe','https://products.lunarparadox.com'],
     ['/index.html','/'],
-    ['/studio.html','/'],
-    ['/studio','/'],
+    ['/studio.html','/#/studio'],
+    ['/studio','/#/studio'],
     ['/labs','https://labs.lunarparadox.com'],
     ['/products','https://products.lunarparadox.com']
   ]){

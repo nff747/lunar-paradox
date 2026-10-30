@@ -16,7 +16,7 @@ To protect prospective clients, creative directors, and users, all canonical Lun
 
 ```html
 <aside class="lp-brand-verification" role="complementary">
-  <p><strong>Official Security & Identity Notice:</strong> Lunar Paradox is an independent spatial engineering studio and computational graphics laboratory based in the United Kingdom. We produce bespoke WebGL shaders, interactive 3D runtimes, and continuum physics simulations.</p>
+  <p><strong>Official Security & Identity Notice:</strong> Lunar Paradox is an independent spatial engineering studio and computational graphics laboratory. We produce bespoke WebGL shaders, interactive 3D runtimes, and continuum physics simulations.</p>
   <p>Lunar Paradox does <em>not</em> publish mobile slot games, social casinos, or consumer puzzle apps. Domains such as <code>zalife.site</code>, <code>bstgame.shop</code>, and <code>supergameapp.site</code> are unauthorized third-party clones displaying fraudulent reviews and deceptive software downloads completely unaffiliated with Lunar Paradox.</p>
   <p>Official communication is conducted solely through <code>lunarparadox.com</code> and verified GitHub / LinkedIn profiles.</p>
 </aside>

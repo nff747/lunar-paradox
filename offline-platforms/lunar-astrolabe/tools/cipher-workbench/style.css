@@ -120,7 +120,15 @@ body {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
   display: flex;
-  padding: 0 20px;
+  padding: 0 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.workbench-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-tab {
@@ -130,12 +138,14 @@ body {
   color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 12px;
-  padding: 12px 18px;
+  padding: 12px 16px;
   cursor: pointer;
   transition: all 0.15s;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .nav-tab:hover {
@@ -359,27 +369,5 @@ textarea {
   .card-grid {
     grid-template-columns: 1fr;
   }
-}
-
-/* Air-Gap QR Modal */
-.qr-modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(7, 9, 14, 0.85);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.qr-dialog {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 16px;
-  width: 90%;
-  max-width: 320px;
-  box-shadow: 0 16px 36px rgba(0,0,0,0.6);
 }
 

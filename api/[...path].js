@@ -218,7 +218,7 @@ async function handle(req, res) {
     await db.query('INSERT INTO lunar_admin_audit(principal,action,target,outcome) VALUES($1,$2,$3,$4)',[req.lunarAdmin.principal,method+' '+path.split('/').slice(0,2).join('/'),path.split('/')[2]||'','attempt']);
   }
 
-  if(path.startsWith('/operations')||path==='/product-reviews'){const result=await operationsRoute({db,req,path,method,readBody,rateLimit,content:CANONICAL_CONTENT});return send(res,200,result);}
+  if(path.startsWith('/operations')||path==='/product-reviews'||path==='/telemetry/event'){const result=await operationsRoute({db,req,path,method,readBody,rateLimit,content:CANONICAL_CONTENT});return send(res,200,result);}
 
   if ((path === '/applications' || path === '/pricing') && method === 'GET') {
     if (path === '/pricing') {

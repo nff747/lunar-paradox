@@ -1,7 +1,7 @@
 # COMMERCIAL DRAFTING PACK (INTERNAL DRAFT FOR PROFESSIONAL LEGAL REVIEW)
 
 > [!WARNING]
-> This document contains drafting templates and baseline commercial clauses for Lunar Paradox. It does **not** constitute formal legal advice. All agreements and tax classifications must be reviewed by qualified UK legal and accounting counsel prior to execution with third-party clients.
+> This document contains drafting templates and baseline commercial clauses for Lunar Paradox. It does **not** constitute formal legal advice. All agreements and tax classifications must be reviewed by qualified legal and accounting counsel prior to execution with third-party clients.
 
 ---
 
@@ -20,7 +20,7 @@ The 3-day turnaround clock for any Technical Direction Spike begins **if and onl
 ## 2. STANDARD SHORT SERVICES AGREEMENT (TEMPLATE)
 
 ### Parties
-- **Service Provider:** Lunar Paradox (Operating under designated UK sole trader / entity status).
+- **Service Provider:** Lunar Paradox (Operating under designated sole proprietorship / studio entity).
 - **Client:** [Client Legal Entity Name], [Jurisdiction / Registered Address].
 
 ### Key Operative Terms

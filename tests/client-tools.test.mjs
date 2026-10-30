@@ -100,9 +100,9 @@ test('client tools: resonance-dsp has stereo widener delay and dynamic patch ban
   assert.match(appJs, /PHOSPHOR_TRACE_COUNT/);
 });
 
-test('client tools: cipher-workbench generates standalone Python decrypt CLI and air-gap matrix', () => {
+test('client tools: cipher-workbench generates standalone Python decrypt CLI and clean keypair export', () => {
   const appJs = fs.readFileSync(path.join(root, 'offline-platforms', 'lunar-astrolabe', 'tools', 'cipher-workbench', 'app.js'), 'utf8');
-  assert.match(appJs, /drawAirGapMatrix/);
+  assert.match(appJs, /lastPublicExport/);
   assert.match(appJs, /from cryptography\.hazmat\.primitives\.ciphers\.aead import AESGCM/);
 });
 
@@ -118,6 +118,21 @@ test('client tools: company load protects canonical products from empty server r
     const code = fs.readFileSync(path.join(root, 'offline-platforms', `lunar-${scene}`, 'company.js'), 'utf8');
     assert.match(code, /if\(\(!validated\.products\|\|!validated\.products\.length\)&&fallback\.products\?\.length\)validated\.products=fallback\.products;/, scene);
   }
-});
+});test('client tools: optim-compressor and pbr-synth integrate telemetry, feedback widgets and benchmarks', () => {
+  for (const id of ['optim-compressor', 'pbr-synth']) {
+    const html = fs.readFileSync(path.join(root, 'offline-platforms', 'lunar-astrolabe', 'tools', id, 'index.html'), 'utf8');
+    const appJs = fs.readFileSync(path.join(root, 'offline-platforms', 'lunar-astrolabe', 'tools', id, 'app.js'), 'utf8');
 
+    assert.match(html, /feedback-strip/, `${id} must contain feedback widget`);
+    assert.match(html, /feedback-yes/, `${id} must contain feedback yes button`);
+    assert.match(html, /feedback-no/, `${id} must contain feedback no button`);
+    assert.match(html, /benchmark-callout/, `${id} must contain reproducible benchmark callout`);
+    assert.match(html, /studio-bridge/, `${id} must contain cross-tool studio bridge`);
+
+    assert.match(appJs, /recordFunnelStep/, `${id} must record zero-knowledge funnel steps`);
+    assert.match(appJs, /recordToolFeedback/, `${id} must record aggregate user feedback`);
+    assert.match(appJs, /performance\.mark/, `${id} must record startup performance marks`);
+    assert.match(appJs, /time-to-usable/, `${id} must measure time to usable metric`);
+  }
+});
 

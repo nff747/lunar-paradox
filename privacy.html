@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#020306">
-  <title>Privacy Policy — Lunar Paradox</title>
-  <meta name="description" content="Lunar Paradox Zero-Server Privacy Policy: 100% on-device compute, zero remote telemetry, zero cookies, and air-gapped cryptographic execution.">
+  <title>Privacy & Architecture Notice — Lunar Paradox</title>
+  <meta name="description" content="Lunar Paradox Sovereign Privacy & Architecture: Zero-knowledge on-device compute, cryptographic isolation, zero tracking networks, and strict minimal data stewardship.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://lunarparadox.com/privacy">
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
@@ -27,6 +27,7 @@
     p:last-child { margin-bottom: 0; }
     ul { list-style: square; padding-left: 20px; color: #c4c2cb; font-size: 14px; margin-bottom: 14px; }
     li { margin-bottom: 6px; }
+    code { font-family: monospace; font-size: 13px; background: #ffffff0d; padding: 2px 6px; border-radius: 4px; }
     a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
     a:hover { color: #fff; }
     .footer { margin-top: 60px; text-align: center; font-size: 12px; color: var(--muted); font-family: monospace; }
@@ -36,45 +37,57 @@
   <div class="container">
     <header class="header">
       <a href="https://lunarparadox.com/" class="brand">Lunar Paradox</a>
-      <span class="date">EFFECTIVE: OCTOBER 2026</span>
+      <span class="date">ARCHITECTURE REVISION: OCTOBER 2026</span>
     </header>
 
     <main>
-      <h1>Zero-Server Privacy Policy</h1>
+      <h1>Privacy & Architectural Integrity</h1>
       <p class="summary">
-        Lunar Paradox operates under a sovereign, privacy-first technical architecture. Our interactive 3D simulations, WebGL runtimes, and zero-server tools execute 100% locally on your hardware. We do not track you, we do not set tracking cookies, and we do not store your data.
+        Lunar Paradox is engineered as an applied spatial computing laboratory and decentralized graphics initiative. We uphold strict architectural sovereignty: compute belongs to the user, tracking networks are fundamentally barred, and intentional project inquiries are handled with absolute cryptographic isolation and minimal retention.
       </p>
 
       <section>
-        <h2>1. Zero Telemetry & On-Device Processing</h2>
-        <p>All client tools hosted on our platform—including <strong>PBR Synth</strong>, <strong>Optim Compressor</strong>, <strong>Resonance DSP</strong>, and <strong>Cipher Workbench</strong>—execute entirely within your device's browser memory (V8/JavaScript, WebAssembly, HTML5 Canvas, WebGL, and WebCrypto).</p>
+        <h2>1. Zero-Knowledge On-Device Compute</h2>
+        <p>All client tools hosted on our platform—including <strong>PBR Synth</strong>, <strong>Optim Compressor</strong>, <strong>Resonance DSP</strong>, and <strong>Cipher Workbench</strong>—execute with mathematical finality inside your device's browser memory (V8/JavaScript, WebAssembly, HTML5 Canvas, WebGL2/WebGPU, and standard WebCrypto APIs).</p>
         <ul>
-          <li>Zero image, audio, or document data is uploaded to remote servers.</li>
-          <li>Cryptographic key generation and symmetric encryption occur strictly within standard hardware CSPRNG and WebCrypto isolation.</li>
-          <li>All tools are air-gap capable and function completely offline without internet connectivity.</li>
+          <li><strong>Zero Payload Ingestion:</strong> Images, audio stems, 3D meshes, and binary files loaded into tools are processed in volatile client RAM and are never streamed, cached, or transmitted to any remote network.</li>
+          <li><strong>Cryptographic Isolation:</strong> Symmetric key derivation, AES-GCM operations, and entropy harvesting execute through standard hardware CSPRNG primitives. Your encryption keys never touch network packets.</li>
+          <li><strong>Air-Gap Capable:</strong> The entire toolchain functions completely offline without internet connectivity.</li>
         </ul>
       </section>
 
       <section>
-        <h2>2. Cookies & Local Storage</h2>
-        <p>We do not use advertising, marketing, or third-party tracking cookies.</p>
-        <p>Our applications utilize the browser's native <code>localStorage</code> API exclusively for maintaining client-side application state (such as UI preferences, audio volume level, draft review submissions, and camera perspective presets). This data never leaves your device and can be cleared at any time through your browser settings.</p>
+        <h2>2. Browser Storage & Zero Advertising Networks</h2>
+        <p>We operate zero marketing trackers, behavioral pixels, fingerprinting scripts, or third-party ad exchanges. Your attention and navigation history are never monetized.</p>
+        <p>Browser storage mechanisms are strictly technical and ephemeral:</p>
+        <ul>
+          <li><code>localStorage</code> is utilized solely to preserve client-side parameters you explicitly control (such as tool presets, audio monitoring volume, camera viewpoints, and draft project briefs). This data remains strictly local to your machine.</li>
+          <li><code>sessionStorage</code> holds transient access credentials for active project inquiries, cleared upon closing the session.</li>
+          <li>We set no commercial tracking cookies. Authenticated administrative consoles enforce security via scoped, hardened HTTP-only authentication tokens (<code>__Host-</code> prefixed).</li>
+        </ul>
       </section>
 
       <section>
-        <h2>3. Third-Party Dependencies & CDNs</h2>
-        <p>Lunar Paradox adheres to a strict self-hosting standard. All scripts, fonts, stylesheets, and Three.js 3D libraries are served directly from our origin domain with locked Subresource Integrity (SRI) hashes and strict Content Security Policies (CSP). We do not load remote analytics trackers, Google Tag Manager, Meta pixels, or external ad networks.</p>
+        <h2>3. Voluntary Communication & Project Inquiries</h2>
+        <p>When you voluntarily initiate a studio commission, submit a project brief, or provide peer feedback:</p>
+        <ul>
+          <li><strong>Direct Purpose:</strong> We record the supplied contact details (name, email) and project scope exclusively to evaluate engineering feasibility, calculate architectural estimates, and maintain direct technical dialogue.</li>
+          <li><strong>Cryptographic Access:</strong> Project inquiries receive a unique identifier and a high-entropy private access key. Only a secure SHA-256 hash of your credential is held on our secure database infrastructure; raw keys are never stored.</li>
+          <li><strong>Zero Third-Party Dissemination:</strong> Inquiries are never sold, syndicated, or shared with external data brokers or automated marketing networks.</li>
+          <li><strong>Right of Erasure:</strong> You retain complete control over your communications. An inquiry, brief, or feedback record can be permanently expunged upon verified request.</li>
+        </ul>
       </section>
 
       <section>
-        <h2>4. Communication & Commission Inquiries</h2>
-        <p>If you voluntarily apply for a studio commission or contact us via email, we use the information you provide solely to evaluate technical fit, scope deliverables, and respond to your inquiry. We never sell, lease, or distribute applicant information to third parties.</p>
+        <h2>4. Infrastructure & Origin Verification</h2>
+        <p>Lunar Paradox enforces rigorous origin controls. All assets, stylesheets, fonts, and WebGL modules are served directly from canonical infrastructure with locked Content Security Policies (CSP) and Subresource Integrity (SRI) hashes. Connections require verified Transport Layer Security (TLS 1.3).</p>
       </section>
 
       <section>
-        <h2>5. Compliance & Security Contact</h2>
-        <p>For questions regarding our privacy commitments, cryptographic audits, or technical vulnerability disclosures under our <a href="/.well-known/security.txt">security.txt</a> policy, contact:</p>
-        <p><strong>Security & Privacy Desk:</strong> <a href="mailto:security@lunarparadox.com">security@lunarparadox.com</a></p>
+        <h2>5. Direct Contact & Security Disclosures</h2>
+        <p>For architectural verification, privacy requests, or vulnerability reports under our <a href="/.well-known/security.txt">security.txt</a> policy, communicate directly with the laboratory desk:</p>
+        <p><strong>Direct Inquiries:</strong> <a href="mailto:hello@lunarparadox.com">hello@lunarparadox.com</a></p>
+        <p><strong>Security Desk:</strong> <a href="mailto:security@lunarparadox.com">security@lunarparadox.com</a></p>
       </section>
     </main>
 

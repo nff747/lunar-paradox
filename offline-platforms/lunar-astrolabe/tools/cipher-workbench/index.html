@@ -42,15 +42,15 @@
   </header>
 
   <!-- Navigation Sub-header -->
-  <nav class="workbench-tabs">
-    <button type="button" class="nav-tab active" data-tab="keygen">
-      <span>01 /</span> Keypair Generator
+  <nav class="workbench-tabs" role="tablist" aria-label="Cipher Workbench tasks">
+    <button type="button" class="nav-tab active" data-tab="keygen" role="tab" aria-selected="true" aria-controls="panel-keygen" id="tab-keygen">
+      <span>01 /</span> Key Generator
     </button>
-    <button type="button" class="nav-tab" data-tab="cipher">
-      <span>02 /</span> AES-256-GCM Encryptor / Decryptor
+    <button type="button" class="nav-tab" data-tab="cipher" role="tab" aria-selected="false" aria-controls="panel-cipher" id="tab-cipher">
+      <span>02 /</span> File & Text Cipher
     </button>
-    <button type="button" class="nav-tab" data-tab="hasher">
-      <span>03 /</span> Cryptographic Hasher & Checksum
+    <button type="button" class="nav-tab" data-tab="hasher" role="tab" aria-selected="false" aria-controls="panel-hasher" id="tab-hasher">
+      <span>03 /</span> Checksums
     </button>
   </nav>
 
@@ -66,7 +66,7 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">Asymmetric Algorithm</label>
+            <label class="control-label" for="param-key-algo">Asymmetric Algorithm</label>
             <select id="param-key-algo">
               <option value="Ed25519" selected>Ed25519 (Fast High-Security Signature)</option>
               <option value="ECDSA-P256">ECDSA NIST P-256 (FIPS 186-4)</option>
@@ -77,7 +77,7 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">Export Encoding</label>
+            <label class="control-label" for="param-key-format">Export Encoding</label>
             <select id="param-key-format">
               <option value="pem" selected>PEM (PKCS#8 / SPKI Base64)</option>
               <option value="jwk">JSON Web Key (JWK RFC 7517)</option>
@@ -108,7 +108,6 @@
           <div class="card-header">
             <span>Public Key</span>
             <div style="display:flex; gap:6px;">
-              <button type="button" class="btn-secondary" id="btn-qr-public" style="padding: 4px 10px; font-size: 11px;">Air-Gap QR</button>
               <button type="button" class="btn-secondary" id="btn-copy-public" style="padding: 4px 10px; font-size: 11px;">Copy</button>
             </div>
           </div>
@@ -123,20 +122,6 @@
           </div>
           <div class="key-box" id="output-private-key" style="color: #fca5a5;">Click "Generate Keypair" to initialize...</div>
           <button type="button" class="btn-secondary" id="btn-download-private">⤓ Download Private Key (.pem)</button>
-        </div>
-      </div>
-
-      <!-- Air-Gap QR Modal (Inline pure DOM) -->
-      <div id="qr-modal" class="qr-modal" style="display:none;">
-        <div class="qr-dialog">
-          <div class="card-header" style="margin-bottom:12px;">
-            <span>Optical Air-Gap Handoff (Key Fingerprint)</span>
-            <button type="button" id="btn-close-qr" class="btn-secondary" style="padding:2px 8px;">✕</button>
-          </div>
-          <div id="qr-canvas-container" style="display:flex; justify-content:center; padding:16px; background:#fff; border-radius:6px;">
-            <canvas id="qr-canvas" width="200" height="200"></canvas>
-          </div>
-          <div id="qr-meta-text" style="margin-top:10px; font-family:var(--font-mono); font-size:11px; text-align:center; color:var(--text-muted); word-break:break-all;"></div>
         </div>
       </div>
     </section>
@@ -160,25 +145,25 @@
           </div>
 
           <div class="control-group">
-            <label class="control-label">
+            <label class="control-label" for="cipher-passphrase">
               <span>Passphrase (Derives Key via PBKDF2 100k)</span>
               <button type="button" id="btn-rand-pass" style="background:none;border:none;color:var(--accent-cyan);cursor:pointer;font-family:var(--font-mono);font-size:10px;">Generate Random</button>
             </label>
             <input type="password" id="cipher-passphrase" placeholder="Enter confidential passphrase..." autocomplete="off">
           </div>
 
-          <div class="dropzone" id="cipher-dropzone">
+          <button type="button" class="dropzone" id="cipher-dropzone" aria-label="Upload file to encrypt or decrypt">
             <input type="file" id="cipher-file-input" style="display:none">
-            <div style="font-size: 20px; color: var(--text-muted);">⤓</div>
+            <div style="font-size: 20px; color: var(--text-muted);" aria-hidden="true">⤓</div>
             <div style="font-size: 12px; color: var(--text-muted);" id="dropzone-text">Drop file to Encrypt / Decrypt in RAM</div>
             <div style="font-size: 10px; font-family: var(--font-mono); color: var(--text-muted); opacity: 0.7;">or paste text message below</div>
-          </div>
+          </button>
         </div>
 
         <!-- Text Message Input / Output -->
         <div class="card">
           <div class="card-header">
-            <span id="cipher-io-label">Plaintext Message</span>
+            <label id="cipher-io-label" for="cipher-input-text" style="font-weight:600; cursor:pointer;">Plaintext Message</label>
             <button type="button" class="btn-secondary" id="btn-cipher-clear" style="padding: 4px 8px; font-size: 11px;">Clear RAM</button>
           </div>
           <textarea id="cipher-input-text" placeholder="Type or paste payload here..."></textarea>
@@ -192,7 +177,7 @@
       <!-- Cipher Result Box -->
       <div class="card">
         <div class="card-header">
-          <span>Cryptographic Output Buffer</span>
+          <label for="cipher-output-text" style="font-weight:600; cursor:pointer;">Cryptographic Output Buffer</label>
           <div class="action-row">
             <button type="button" class="btn-secondary" id="btn-copy-cipher" style="padding: 4px 10px; font-size: 11px;">Copy Output</button>
             <button type="button" class="btn-secondary" id="btn-download-cipher" style="padding: 4px 10px; font-size: 11px;">Download (.enc)</button>
@@ -215,7 +200,7 @@
     <section class="tool-panel" id="panel-hasher">
       <div class="card">
         <div class="card-header">
-          <span>Input Payload for Digest Verification</span>
+          <label for="hasher-input" style="font-weight:600; cursor:pointer;">Input Payload for Digest Verification</label>
           <span style="color:var(--accent-emerald);">FIPS 180-4 Standard</span>
         </div>
         <textarea id="hasher-input" placeholder="Type text to hash, or drag and drop any local file..."></textarea>
@@ -227,22 +212,22 @@
         </div>
 
         <div class="control-group">
-          <label class="control-label">SHA-256 (256-bit Digest)</label>
+          <label class="control-label" for="hash-sha256">SHA-256 (256-bit Digest)</label>
           <input type="text" id="hash-sha256" readonly style="font-size:11px; color:#a7f3d0;">
         </div>
 
         <div class="control-group">
-          <label class="control-label">SHA-384 (384-bit Digest)</label>
+          <label class="control-label" for="hash-sha384">SHA-384 (384-bit Digest)</label>
           <input type="text" id="hash-sha384" readonly style="font-size:11px; color:#93c5fd;">
         </div>
 
         <div class="control-group">
-          <label class="control-label">SHA-512 (512-bit Digest)</label>
+          <label class="control-label" for="hash-sha512">SHA-512 (512-bit Digest)</label>
           <input type="text" id="hash-sha512" readonly style="font-size:11px; color:#c4b5fd;">
         </div>
 
         <div class="control-group" style="margin-top: 10px;">
-          <label class="control-label">Integrity Match Check (Paste Expected Hash)</label>
+          <label class="control-label" for="hash-compare-input">Integrity Match Check (Paste Expected Hash)</label>
           <div style="display:flex; gap: 8px;">
             <input type="text" id="hash-compare-input" placeholder="Paste checksum to compare...">
             <span class="badge-match" id="hash-match-status" style="display:none;"></span>
@@ -260,7 +245,7 @@
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
         <span style="color:#a0aec0;">Need bespoke WebGL/WebGPU graphics or 60 FPS hardening?</span>
-        <a href="https://lunarparadox.com/studio" target="_blank" rel="noopener" style="color:#f5e6c8; border:1px solid rgba(245,230,200,0.35); padding:4px 10px; border-radius:3px; text-decoration:none; font-weight:600;">WORK WITH STUDIO ↗</a>
+        <a href="https://lunarparadox.com/#/studio" target="_blank" rel="noopener" style="color:#f5e6c8; border:1px solid rgba(245,230,200,0.35); padding:4px 10px; border-radius:3px; text-decoration:none; font-weight:600;">WORK WITH STUDIO ↗</a>
       </div>
     </div>
   </main>

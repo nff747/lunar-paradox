@@ -1,7 +1,7 @@
 # COMMERCIAL PROSPECTING PIPELINE (TRACK D)
 
 > [!NOTE]
-> All outbound prospecting adheres to UK PECR / GDPR compliance: targeted corporate business addresses, verified public roles, lawful B2B direct interest, and mandatory opt-out mechanisms. No claims of internal site failure are made unless publicly documented.
+> All outbound prospecting adheres to applicable international B2B privacy regulations (e.g. GDPR, PECR, CAN-SPAM): targeted corporate business addresses, verified public roles, lawful B2B direct interest, and mandatory opt-out mechanisms. No claims of internal site failure are made unless publicly documented.
 
 ---
 

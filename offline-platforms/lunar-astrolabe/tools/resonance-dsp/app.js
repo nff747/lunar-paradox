@@ -274,17 +274,24 @@ btnPlay.addEventListener('click', async () => {
     await audioCtx.resume();
   }
 
+  const telemetryDsp = document.getElementById('telemetry-dsp');
+  const telemetryLimiter = document.getElementById('telemetry-limiter');
+
   if (isPlaying) {
     masterGain.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.05);
     btnPlay.textContent = '▶ START SYNTHESIZER';
     btnPlay.classList.remove('playing');
     isPlaying = false;
+    if (telemetryDsp) telemetryDsp.textContent = 'DSP: PAUSED';
+    if (telemetryLimiter) telemetryLimiter.textContent = 'LIMITER: STANDBY';
   } else {
     const targetGain = Math.min(0.8, parseFloat(paramMasterGain.value));
     masterGain.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.05);
     btnPlay.textContent = '■ PAUSE AUDIO ENGINE';
     btnPlay.classList.add('playing');
     isPlaying = true;
+    if (telemetryDsp) telemetryDsp.textContent = `DSP: ${(audioCtx.sampleRate / 1000).toFixed(1)} kHz / 32-BIT`;
+    if (telemetryLimiter) telemetryLimiter.textContent = 'LIMITER: ENGAGED (-3dB)';
   }
 });
 
@@ -602,6 +609,8 @@ function drawVisualizers() {
 
     const peakDb = maxVal > 0 ? (20 * Math.log10(maxVal / 255)).toFixed(1) : '-96.0';
     valPeakDb.textContent = `${peakDb} dB`;
+  } else {
+    valPeakDb.textContent = 'NOT MEASURED';
   }
 }
 

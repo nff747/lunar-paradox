@@ -37,7 +37,7 @@ class Preview(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = urlsplit(self.path).path.rstrip('/') or '/'
-        aliases = {'/gravity': '/labs', '/astrolabe': '/products', '/index.html': '/', '/studio.html': '/studio'}
+        aliases = {'/gravity': '/labs', '/astrolabe': '/products', '/index.html': '/', '/studio.html': '/#/studio', '/studio': '/#/studio'}
         alias = aliases.get(path)
         if alias is None:
             for old, new in (('/gravity/', '/labs/'), ('/astrolabe/', '/products/')):

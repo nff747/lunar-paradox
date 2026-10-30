@@ -13,11 +13,6 @@ const btnCopyPublic = document.getElementById('btn-copy-public');
 const btnCopyPrivate = document.getElementById('btn-copy-private');
 const btnDownloadPublic = document.getElementById('btn-download-public');
 const btnDownloadPrivate = document.getElementById('btn-download-private');
-const btnQrPublic = document.getElementById('btn-qr-public');
-const qrModal = document.getElementById('qr-modal');
-const btnCloseQr = document.getElementById('btn-close-qr');
-const qrCanvas = document.getElementById('qr-canvas');
-const qrMetaText = document.getElementById('qr-meta-text');
 
 // Panel 2: Cipher elements
 const btnModeEncrypt = document.getElementById('btn-mode-encrypt');
@@ -58,9 +53,13 @@ let binaryCipherPayload = null; // Uint8Array if file was loaded
 // -------------------------------------------------------------
 navTabs.forEach(tab => {
   tab.addEventListener('click', () => {
-    navTabs.forEach(t => t.classList.remove('active'));
+    navTabs.forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
     panels.forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
     currentTab = tab.dataset.tab;
     document.getElementById(`panel-${currentTab}`).classList.add('active');
   });
@@ -198,78 +197,6 @@ btnCopyPublic.addEventListener('click', () => copyText(lastPublicExport, btnCopy
 btnCopyPrivate.addEventListener('click', () => copyText(lastPrivateExport, btnCopyPrivate));
 btnDownloadPublic.addEventListener('click', () => downloadFile(lastPublicExport, 'key.pub'));
 btnDownloadPrivate.addEventListener('click', () => downloadFile(lastPrivateExport, 'key.pem'));
-
-// Optical Air-Gap QR Matrix Generator (Self-contained 2D Canvas QR Renderer)
-function drawAirGapMatrix(canvas, text) {
-  const ctx = canvas.getContext('2d');
-  const size = canvas.width;
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, size, size);
-
-  // Deterministic pseudo-random 25x25 matrix based on payload hash for optical scannable representation
-  const grid = 25;
-  const cellSize = Math.floor(size / (grid + 4));
-  const offset = Math.floor((size - (grid * cellSize)) / 2);
-
-  // Simple hash to seed grid bits
-  let h = 0x811c9dc5;
-  for (let i = 0; i < text.length; i++) {
-    h ^= text.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-
-  ctx.fillStyle = '#07090e';
-  // Finder patterns at corners
-  function drawFinder(gx, gy) {
-    for (let r = 0; r < 7; r++) {
-      for (let c = 0; c < 7; c++) {
-        if (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4)) {
-          ctx.fillRect(offset + (gx + c) * cellSize, offset + (gy + r) * cellSize, cellSize, cellSize);
-        }
-      }
-    }
-  }
-  drawFinder(0, 0);
-  drawFinder(grid - 7, 0);
-  drawFinder(0, grid - 7);
-
-  // Fill data cells
-  let seed = Math.abs(h);
-  for (let r = 0; r < grid; r++) {
-    for (let c = 0; c < grid; c++) {
-      // Skip finder zones
-      if ((r < 8 && c < 8) || (r < 8 && c >= grid - 8) || (r >= grid - 8 && c < 8)) continue;
-      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-      if (seed % 2 === 0) {
-        ctx.fillRect(offset + c * cellSize, offset + r * cellSize, cellSize, cellSize);
-      }
-    }
-  }
-}
-
-if (btnQrPublic) {
-  btnQrPublic.addEventListener('click', () => {
-    if (!lastPublicExport) {
-      alert('Generate a keypair first.');
-      return;
-    }
-    const fp = keyFingerprint.textContent;
-    drawAirGapMatrix(qrCanvas, fp);
-    qrMetaText.textContent = `SHA-256 FINGERPRINT: ${fp}`;
-    qrModal.style.display = 'flex';
-  });
-}
-
-if (btnCloseQr) {
-  btnCloseQr.addEventListener('click', () => {
-    qrModal.style.display = 'none';
-  });
-}
-if (qrModal) {
-  qrModal.addEventListener('click', (e) => {
-    if (e.target === qrModal) qrModal.style.display = 'none';
-  });
-}
 
 // -------------------------------------------------------------
 // 2. AES-256-GCM CIPHER ENGINE

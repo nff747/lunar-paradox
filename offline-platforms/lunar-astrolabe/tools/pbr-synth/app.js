@@ -1,4 +1,6 @@
+try { performance.mark('pbr:init-start'); } catch (_) {}
 import * as THREE from '../../vendor/three.module.js';
+import { recordFunnelStep, recordToolFeedback, setupToolAnalytics } from '../telemetry-client.js';
 
 // DOM Elements
 const canvas3D = document.getElementById('viewport-3d');
@@ -442,6 +444,14 @@ function recomputeMaps() {
   const sourceThumbnail=document.getElementById('source-thumb');sourceThumbnail.getContext('2d').drawImage(maps.diffuse,0,0,sourceThumbnail.width,sourceThumbnail.height);
   const duration = (performance.now() - startTime).toFixed(1);
   infoRenderTime.textContent = `${duration} ms`;
+  recordFunnelStep('pbr-synth', 'complete');
+  if (!window.__pbrReadyMarked) {
+    window.__pbrReadyMarked = true;
+    try {
+      performance.mark('pbr:ready');
+      performance.measure('pbr:time-to-usable', 'pbr:init-start', 'pbr:ready');
+    } catch (_) {}
+  }
 }
 
 // -------------------------------------------------------------
@@ -484,13 +494,14 @@ fileInput.addEventListener('change', () => {
 });
 
 function handleFile(file) {
-  if (!['image/png','image/jpeg','image/webp'].includes(file.type)){sourceStatus.textContent='Choose a PNG, JPEG or WebP image.';return;}
+  if (!['image/png','image/jpeg','image/webp'].includes(file.type)){sourceStatus.textContent='Choose a PNG, JPEG or WebP image.';recordFunnelStep('pbr-synth', 'error');return;}
+  recordFunnelStep('pbr-synth', 'start');
   sourceStatus.textContent='Reading image…';
   const reader = new FileReader();
-  reader.onerror=()=>{sourceStatus.textContent='This file could not be read. Try another image.';};
+  reader.onerror=()=>{sourceStatus.textContent='This file could not be read. Try another image.';recordFunnelStep('pbr-synth', 'error');};
   reader.onload = (event) => {
     const img = new Image();
-    img.onerror=()=>{sourceStatus.textContent='This image could not be decoded. Try another image.';};
+    img.onerror=()=>{sourceStatus.textContent='This image could not be decoded. Try another image.';recordFunnelStep('pbr-synth', 'error');};
     img.onload = () => {
       // Memory protection: clamp to max 4096px
       let w = img.width;
@@ -516,6 +527,7 @@ function handleFile(file) {
 // Preset Buttons
 document.querySelectorAll('.btn-preset').forEach(btn => {
   btn.addEventListener('click', () => {
+    recordFunnelStep('pbr-synth', 'start');
     clearTimeout(computationTimer);sourceName.textContent=btn.textContent;sourceStatus.textContent='';document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed',String(button===btn)));generateProcedural(btn.dataset.preset);
   });
 });
@@ -646,7 +658,7 @@ function downloadBlob(blob, filename) {
 }
 
 // Individual map downloads report encoding failures beside the export controls.
-async function exportPNG(mapKey,filename){try{const data=await canvasToBuffer(maps[mapKey]);downloadBlob(new Blob([data],{type:'image/png'}),filename);exportStatus.textContent='PNG prepared. Check your browser downloads.';document.querySelector('.export-options').open=false;}catch(error){exportStatus.textContent='Export failed: '+error.message;}}
+async function exportPNG(mapKey,filename){try{const data=await canvasToBuffer(maps[mapKey]);downloadBlob(new Blob([data],{type:'image/png'}),filename);recordFunnelStep('pbr-synth', 'export');exportStatus.textContent='PNG prepared. Check your browser downloads.';document.querySelector('.export-options').open=false;}catch(error){recordFunnelStep('pbr-synth', 'error');exportStatus.textContent='Export failed: '+error.message;}}
 btnExportSingle.addEventListener('click',()=>{const mapKey=activeView==='3d'?'normal':activeView;void exportPNG(mapKey,'pbr_'+mapKey+'.png');});
 btnExportOrm?.addEventListener('click',()=>void exportPNG('orm','pbr_orm_packed.png'));
 
@@ -778,9 +790,12 @@ btnExportAll.addEventListener('click', async () => {
     ];
 
     const zipBlob = createZip(files);
-    downloadBlob(zipBlob, `lunar_pbr_bundle_${Date.now()}.zip`);exportStatus.textContent='Texture set prepared. Check your browser downloads.';
+    downloadBlob(zipBlob, `lunar_pbr_bundle_${Date.now()}.zip`);
+    recordFunnelStep('pbr-synth', 'export');
+    exportStatus.textContent='Texture set prepared. Check your browser downloads.';
   } catch (err) {
     console.error('Export failed:', err);
+    recordFunnelStep('pbr-synth', 'error');
     exportStatus.textContent='Export failed: '+err.message;
   } finally {
     btnExportAll.textContent = 'Download texture set ↗';
@@ -821,8 +836,24 @@ function animate(now=performance.now()) {
   }
 }
 
+// Feedback handlers
+const feedbackStrip = document.getElementById('feedback-strip');
+const feedbackAck = document.getElementById('feedback-ack');
+document.getElementById('feedback-yes')?.addEventListener('click', () => {
+  recordToolFeedback('pbr-synth', true);
+  if (feedbackStrip) feedbackStrip.style.display = 'none';
+  if (feedbackAck) feedbackAck.style.display = 'inline-block';
+});
+document.getElementById('feedback-no')?.addEventListener('click', () => {
+  recordToolFeedback('pbr-synth', false);
+  if (feedbackStrip) feedbackStrip.style.display = 'none';
+  if (feedbackAck) feedbackAck.style.display = 'inline-block';
+});
+
 // Initial kickoff
 document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.preset==='lunar')));material.roughness=Number(paramRoughness.value);syncRotation();
+setupToolAnalytics('pbr-synth');
+recordFunnelStep('pbr-synth', 'view');
 generateProcedural('lunar');
 resizeRenderer();
 animate();

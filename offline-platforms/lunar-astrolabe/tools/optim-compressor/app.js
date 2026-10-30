@@ -1,3 +1,6 @@
+try { performance.mark('optim:init-start'); } catch (_) {}
+import { recordFunnelStep, recordToolFeedback, setupToolAnalytics } from '../telemetry-client.js';
+
 // DOM Elements
 const canvasOrig = document.getElementById('canvas-original');
 const canvasOptWrapper = document.getElementById('canvas-optimized-wrapper');
@@ -11,7 +14,6 @@ const fileInput = document.getElementById('file-input');
 const paramFormat = document.getElementById('param-format');
 const paramQuality = document.getElementById('param-quality');
 const paramScale = document.getElementById('param-scale');
-const paramStripExif = document.getElementById('param-strip-exif');
 const paramGrayscale = document.getElementById('param-grayscale');
 const valQuality = document.getElementById('val-quality');
 
@@ -38,6 +40,9 @@ let loupeActive = false;
 let originalBlob = null;
 let optimizedBlob = null;
 let originalFileSize = 0;
+let latestTranscodeId = 0;
+let latestSourceId = 0;
+let activePreviewUrl = null;
 let optimizedFileSize = 0;
 let splitPosition = 0.5; // 0 to 1
 let isDraggingHandle = false;
@@ -54,6 +59,8 @@ function formatBytes(bytes) {
 // PROCEDURAL TEST IMAGES
 // -------------------------------------------------------------
 function generatePreset(preset) {
+  const sourceId = ++latestSourceId;
+  ++latestTranscodeId;
   const w = 1200, h = 800;
   canvasOrig.width = w;
   canvasOrig.height = h;
@@ -133,6 +140,7 @@ function generatePreset(preset) {
 
   // Estimate uncompressed RAW / PNG baseline size
   canvasOrig.toBlob((blob) => {
+    if (sourceId !== latestSourceId || !blob) return;
     originalBlob = blob;
     originalFileSize = blob.size;
     transcode();
@@ -143,6 +151,7 @@ function generatePreset(preset) {
 // TRANSCODING ENGINE
 // -------------------------------------------------------------
 async function transcode() {
+  const currentReqId = ++latestTranscodeId;
   const startTime = performance.now();
   const scale = parseFloat(paramScale.value);
   const quality = parseInt(paramQuality.value, 10) / 100;
@@ -167,13 +176,28 @@ async function transcode() {
 
   // Encode to target format blob in RAM
   offscreen.toBlob((blob) => {
-    if (!blob) return;
+    if (currentReqId !== latestTranscodeId || !blob) return;
     optimizedBlob = blob;
     optimizedFileSize = blob.size;
+
+    // Revoke previous preview object URL to prevent memory leaks
+    if (activePreviewUrl) {
+      URL.revokeObjectURL(activePreviewUrl);
+      activePreviewUrl = null;
+    }
+    const previewUrl = URL.createObjectURL(blob);
+    activePreviewUrl = previewUrl;
 
     // Load into optimized preview canvas
     const img = new Image();
     img.onload = () => {
+      if (currentReqId !== latestTranscodeId) {
+        URL.revokeObjectURL(previewUrl);
+        if (activePreviewUrl === previewUrl) {
+          activePreviewUrl = null;
+        }
+        return;
+      }
       canvasOpt.width = canvasOrig.width;
       canvasOpt.height = canvasOrig.height;
       const optCtx = canvasOpt.getContext('2d');
@@ -183,7 +207,13 @@ async function transcode() {
       const duration = (performance.now() - startTime).toFixed(1);
       updateTelemetry(duration);
     };
-    img.src = URL.createObjectURL(blob);
+    img.onerror = () => {
+      URL.revokeObjectURL(previewUrl);
+      if (activePreviewUrl === previewUrl) {
+        activePreviewUrl = null;
+      }
+    };
+    img.src = previewUrl;
   }, format, quality);
 }
 
@@ -248,6 +278,14 @@ function calculateSSIM(origCtx, optCtx, width, height) {
 }
 
 function updateTelemetry(durationMs) {
+  recordFunnelStep('optim-compressor', 'complete');
+  if (!window.__optimReadyMarked) {
+    window.__optimReadyMarked = true;
+    try {
+      performance.mark('optim:ready');
+      performance.measure('optim:time-to-usable', 'optim:init-start', 'optim:ready');
+    } catch (_) {}
+  }
   metricOrigSize.textContent = formatBytes(originalFileSize);
   metricOptSize.textContent = formatBytes(optimizedFileSize);
 
@@ -324,11 +362,11 @@ paramQuality.addEventListener('input', (e) => {
 paramFormat.addEventListener('change', () => transcode());
 paramScale.addEventListener('change', () => transcode());
 paramGrayscale.addEventListener('change', () => transcode());
-paramStripExif.addEventListener('change', () => transcode());
 
 // Presets
 document.querySelectorAll('.btn-preset').forEach(btn => {
   btn.addEventListener('click', () => {
+    recordFunnelStep('optim-compressor', 'start');
     generatePreset(btn.dataset.preset);
   });
 });
@@ -359,12 +397,17 @@ fileInput.addEventListener('change', () => {
 
 function loadFile(file) {
   if (!file.type.startsWith('image/')) return;
-  originalFileSize = file.size;
+  recordFunnelStep('optim-compressor', 'start');
+  const sourceId = ++latestSourceId;
+  ++latestTranscodeId;
 
   const reader = new FileReader();
   reader.onload = (e) => {
+    if (sourceId !== latestSourceId) return;
     const img = new Image();
     img.onload = () => {
+      if (sourceId !== latestSourceId) return;
+      originalFileSize = file.size;
       // Memory safety cap
       let w = img.width, h = img.height;
       if (w > 4096 || h > 4096) {
@@ -378,6 +421,9 @@ function loadFile(file) {
       ctx.drawImage(img, 0, 0, w, h);
       transcode();
     };
+    img.onerror = () => {
+      recordFunnelStep('optim-compressor', 'error');
+    };
     img.src = e.target.result;
   };
   reader.readAsDataURL(file);
@@ -386,6 +432,7 @@ function loadFile(file) {
 // Download optimized asset
 btnDownload.addEventListener('click', () => {
   if (!optimizedBlob) return;
+  recordFunnelStep('optim-compressor', 'export');
   const ext = paramFormat.value === 'image/webp' ? 'webp' :
               paramFormat.value === 'image/jpeg' ? 'jpg' : 'png';
   const url = URL.createObjectURL(optimizedBlob);
@@ -456,6 +503,31 @@ canvasContainer.addEventListener('pointermove', (e) => {
 canvasContainer.addEventListener('pointerleave', () => {
   if (loupeActive) magnifierLoupe.style.display = 'none';
 });
+
+// Feedback handlers
+const feedbackStrip = document.getElementById('feedback-strip');
+const feedbackAck = document.getElementById('feedback-ack');
+document.getElementById('feedback-yes')?.addEventListener('click', () => {
+  recordToolFeedback('optim-compressor', true);
+  if (feedbackStrip) feedbackStrip.style.display = 'none';
+  if (feedbackAck) feedbackAck.style.display = 'inline-block';
+});
+document.getElementById('feedback-no')?.addEventListener('click', () => {
+  recordToolFeedback('optim-compressor', false);
+  if (feedbackStrip) feedbackStrip.style.display = 'none';
+  if (feedbackAck) feedbackAck.style.display = 'inline-block';
+});
+
+// Pause loupe when tab is hidden
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && loupeActive) {
+    magnifierLoupe.style.display = 'none';
+  }
+});
+
+// Record initial view
+setupToolAnalytics('optim-compressor');
+recordFunnelStep('optim-compressor', 'view');
 
 // Kick off with default nebula preset
 generatePreset('nebula');
