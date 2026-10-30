@@ -1,7 +1,7 @@
 # LUNAR PARADOX — COMMERCIAL OUTREACH EXECUTION LEDGER
 **Document Reference:** LP-LEDGER-V1  
 **Status:** Ready to Dispatch  
-**Standard Engagement Retainer:** ,500 USD (3-Day Spike) / ,500 USD (5-Day Hardening Sprint)  
+**Standard Engagement Retainer:** $3,500 USD (3-Day Spike) / $4,500 USD (5-Day Hardening Sprint)  
 **Governing Protocols:** commercial/PROSPECT_PIPELINE.md & commercial/CONTRACT_TEMPLATES.md  
 
 ---
@@ -211,7 +211,7 @@ https://products.lunarparadox.com/
 
 I run Lunar Paradox, specializing in bounded WebGL technical direction, complex shader mechanics, and frame-time optimization for digital agencies.
 
-Jam3 has consistently defined what experiential web looks like. If your creative or tech teams are preparing a high-stakes pitch or interactive brand world where bespoke 3D mechanics need to be proven in 72 hours before client presentation, I have calendar capacity for a 3-day Prototype Spike (,500 fixed fee, standalone sandbox + documentation).
+Jam3 has consistently defined what experiential web looks like. If your creative or tech teams are preparing a high-stakes pitch or interactive brand world where bespoke 3D mechanics need to be proven in 72 hours before client presentation, I have calendar capacity for a 3-day Prototype Spike ($3,500 fixed fee, standalone sandbox + documentation).
 
 Best regards,
 Lead Technical Director — Lunar Paradox
@@ -313,10 +313,10 @@ hello@lunarparadox.com
 Following outreach response, execute the conversion conduit per commercial/CONTRACT_TEMPLATES.md:
 
 1. Discovery & Alignment Call (15 min)
-2. Transmit Standard SOW (SOW A Prototype Spike ,500 OR SOW B Performance Spike ,500)
+2. Transmit Standard SOW (SOW A Prototype Spike $3,500 OR SOW B Performance Spike $4,500)
 3. Verification of 5 Intake Prerequisites:
    - Executed SOW (Both Parties)
-   - Cleared 100% Retainer (,500 USD)
+   - Cleared 100% Retainer ($3,500 - $4,500 USD)
    - Asset & Repo Intake Frozen
    - Working Credentials Verified
    - Exactly One Designated Sign-Off Authority
