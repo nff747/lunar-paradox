@@ -20,6 +20,8 @@ class Preview(SimpleHTTPRequestHandler):
             parts = ['studio.html']
         elif parts == ['privacy']:
             parts = ['privacy.html']
+        elif parts == ['.well-known', 'security.txt'] or parts == ['security.txt']:
+            parts = ['security.txt']
         elif parts[0] == 'platforms' and len(parts) >= 2 and parts[1] in SCENES:
             parts = ['lunar-' + parts[1], *parts[2:]]
         elif parts[0] == 'tools':

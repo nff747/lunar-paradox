@@ -77,11 +77,17 @@ for(const name of names){
 }
 if(!selected||selected==='syzygy'){
   const hostedRoot=path.join(root,'build','hosted');
-  for(const file of ['robots.txt','sitemap.xml','privacy.html','LICENSE','NOTICE','2f14973382e9477eaff927a5e0820004.txt']) {
+  for(const file of ['robots.txt','sitemap.xml','privacy.html','security.txt','LICENSE','NOTICE','2f14973382e9477eaff927a5e0820004.txt']) {
     const srcFile = path.join(root, file);
     if(await fs.stat(srcFile).catch(()=>null)) {
       await fs.copyFile(srcFile, path.join(hostedRoot, file));
     }
+  }
+  const secFile = path.join(root, 'security.txt');
+  if(await fs.stat(secFile).catch(()=>null)) {
+    const wellKnownDir = path.join(hostedRoot, '.well-known');
+    await fs.mkdir(wellKnownDir, { recursive: true });
+    await fs.copyFile(secFile, path.join(wellKnownDir, 'security.txt'));
   }
   for(const asset of ['favicon.ico','favicon.svg','og-image.png','site.webmanifest']) {
     const srcAsset = path.join(root, 'assets', asset);
