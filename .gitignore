@@ -26,5 +26,8 @@ Thumbs.db
 .env*
 /.local-backups/
 /build/
+dist/
+offline-platforms/Start-mastery.sh
+offline-platforms/lunar-mastery/
 *.sqlite3-wal
 *.sqlite3-shm
