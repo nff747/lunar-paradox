@@ -21,3 +21,79 @@
 #lunar-company .lpe-open{font:10px/1.5 monospace;letter-spacing:.035em}
 #lunar-company .lpe-sample-heading button{font:9px/1.5 monospace}
 @media(max-width:650px){#lunar-company .lpe-masthead button{font-size:8px}#lunar-company .lpe-open{font-size:10px}}
+
+/* A practical example and explicit navigation sit within the instrument layer. */
+.lpe-feature .lpx-description .lpe-workflow{margin-top:18px;padding-left:13px;border-left:1px solid #d4c09899;color:#d5c9b8;font-size:12px;line-height:1.65}
+.lpe-workflow span{display:block;margin-bottom:5px;color:#a897aa;font:9px/1.4 monospace;letter-spacing:.1em}
+.lpe-sequence-controls{display:flex;align-items:center;gap:20px;font:10px/1.5 monospace;letter-spacing:.04em}
+.lpe-sequence-controls a{display:inline-flex;align-items:center;gap:7px;color:#e4d5be!important;min-height:32px;text-decoration:none}
+.lpe-sequence-controls a:hover,.lpe-sequence-controls a:focus-visible{color:#fff!important;text-decoration:underline;text-underline-offset:4px}
+.lpe-sequence-controls>span{color:#77717e}
+@media(max-width:650px){.lpe-sequence-controls{gap:14px;font-size:9px}.lpe-feature .lpx-description .lpe-workflow{margin-top:14px}}
+
+/* Quiet interaction details: readable navigation and an honest native scroll affordance. */
+.lpe-sequence{scrollbar-width:thin;scrollbar-color:#b7a78b66 transparent;overscroll-behavior-x:contain;overscroll-behavior-y:auto;padding-bottom:8px}
+.lpe-sequence::-webkit-scrollbar{display:block;height:3px}
+.lpe-sequence::-webkit-scrollbar-thumb{background:#b7a78b66;border-radius:3px}
+.lpe-sequence>a strong{font-size:13px;line-height:1.45}
+.lpe-sequence>a small{font-size:9px;line-height:1.5;color:#a49bad}
+.lpe-sequence-heading,.lpe-sequence-heading>span{font-size:10px;line-height:1.5;color:#bbb1c0}
+.lpe-kicker,.lpe-workflow span{font-size:10px}
+.lpe-sequence>a:focus-visible,.lpe-masthead button:focus-visible,.lpe-action-row :is(a,button):focus-visible,.lpe-directory :is(a,button,select):focus-visible{outline:2px solid #ddc69f;outline-offset:4px}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){
+ .lpe-sequence>a,.lpe-directory-grid>a{transition:color .22s ease,border-color .22s ease}
+ .lpe-sequence>a strong{transition:transform .22s ease}
+ .lpe-sequence>a:hover strong{transform:translateY(-2px)}
+}
+@media(prefers-reduced-motion:no-preference){
+ .lpe-feature .lpx-description{animation:lpe-arrive .42s cubic-bezier(.2,.7,.2,1) both}
+ @keyframes lpe-arrive{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+}
+
+/* Editorial hierarchy: give the selected work a clear foreground without
+   obscuring the instrument or adding another panel over it. */
+@media(min-width:901px){
+ .lpe-exhibition.lpx-showcase{grid-template-columns:minmax(310px,.92fr) minmax(240px,1.7fr) 64px;gap:18px 3.2vw;background:linear-gradient(90deg,rgba(5,8,14,.82) 0%,rgba(5,8,14,.38) 26%,transparent 49%),linear-gradient(0deg,#070a11eb,transparent 26%)}
+ .lpe-exhibition .lpe-feature{align-self:center;margin:22px 0 0;max-width:400px;gap:24px}
+ #lunar-company .lpe-feature .lpx-description h1{font-size:clamp(42px,4.1vw,64px);line-height:1.04;max-width:390px;margin-bottom:20px}
+ .lpe-feature .lpx-description>p{max-width:320px;font-size:15px;line-height:1.75;color:#c9c5ce}
+ .lpe-sequence-wrap{padding-top:18px;border-top-color:#d9cbb34a}
+}
+#lunar-company .lpe-open{min-width:168px;min-height:48px;padding:13px 16px;box-sizing:border-box;border:1px solid #e1d5c1;background:#e9e1d4;color:#141219!important;font:11px/1.3 monospace;letter-spacing:.055em;transition:background .2s,color .2s,border-color .2s}
+#lunar-company .lpe-open:hover,#lunar-company .lpe-open:focus-visible{background:#fffaf0;border-color:#fffaf0;color:#09090c!important}
+.lpe-action-row{gap:18px 24px}
+.lpe-kicker{color:#c6bdc8;letter-spacing:.1em}
+.lpe-kicker i{width:34px;background:#c9b79c88}
+.lpe-feature .lpx-description .lpe-workflow{border-left-color:#d4c098;max-width:315px;color:#e0d6c7}
+.lpe-sequence>a{flex-basis:190px;padding-top:12px}
+.lpe-sequence>a[aria-current]:after{top:0;width:40px;height:2px}
+.lpe-sequence>a strong{font-size:14px}
+.lpe-sequence>a small{color:#afa8b7}
+@media(max-width:650px){#lunar-company .lpe-open{min-width:160px}.lpe-feature .lpx-description .lpe-workflow{max-width:100%}.lpe-sequence>a{flex-basis:175px}}
+@media(prefers-reduced-motion:reduce){#lunar-company .lpe-open{transition:none}}
+@media(max-width:650px){
+ #lunar-company .lpe-masthead button{font-size:10px;min-height:36px;padding:6px 0}
+ .lpe-exhibition .lpe-masthead>p{font-size:10px}
+ .lpe-about summary{font-size:10px;min-height:36px}
+ .lpe-sequence-heading,.lpe-sequence-heading>span{font-size:10px}
+}
+
+/* Collection and directory share the same type scale as the selected work. */
+.lpe-masthead>p,.lpe-masthead button,.lpe-kicker,.lpe-workflow span{font-size:11px;line-height:1.5}
+.lpe-directory{border-color:#d1bfaa38;background:rgba(9,12,20,.97);padding:clamp(24px,3vw,44px)}
+.lpe-directory-head p,.lpe-directory-filters label,.lpe-directory-grid>a>span{font-size:11px;line-height:1.5}
+.lpe-directory-head h2{color:#f0ebe3;max-width:18ch;line-height:1.08}
+.lpe-directory-grid{column-gap:clamp(24px,3vw,48px)}
+.lpe-directory-grid>a{padding:27px 0;transition:border-color .2s,color .2s}
+.lpe-directory-grid h3{font-size:clamp(19px,1.55vw,24px);line-height:1.18;color:#eee8de}
+.lpe-directory-grid p{font-size:14px;line-height:1.65;max-width:32ch;color:#c3bbc8}
+.lpe-directory-grid>a:hover,.lpe-directory-grid>a:focus-visible{border-bottom-color:#d6bb8a}
+.lpe-directory-filters select{min-height:44px;font-size:14px;color:#eee8de}
+.lpe-exhibition .lpx-chevron-control:focus-visible{outline:2px solid #ddc69f;outline-offset:6px}
+@media(max-width:650px){
+ .lpe-directory{inset:85px 12px 15px;padding:24px 20px}
+ .lpe-directory-head p,.lpe-directory-filters label,.lpe-directory-grid>a>span{font-size:10px}
+ .lpe-directory-grid h3{font-size:20px}
+ .lpe-directory-grid p{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){.lpe-directory-grid>a{transition:none}}

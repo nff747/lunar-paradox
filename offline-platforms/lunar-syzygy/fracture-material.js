@@ -30,6 +30,10 @@ void main(){
  vec3 color=stone*pocket*(.22+direct*2.8+viewFill*.18)*(.78+strata*.10);
  // Low-energy cross-canyon bounce reveals the broken walls without flattening them.
  color+=stone*pocket*max(dot(N,bounce),0.)*mix(vec3(.30,.22,.13),vec3(.16,.12,.27),side);
+ // Soft indirect illumination from the opposing mass lifts the canyon wall
+ // without turning the fracture into a uniformly emissive surface.
+ float canyonFill=(.16+.34*pow(max(dot(N,V),0.),1.3))*(.55+.45*fractured);
+ color+=stone*pocket*canyonFill*mix(vec3(.90,.66,.39),vec3(.45,.36,.72),side);
  // Sparse inclusions catch the grazing source; the entire cut is not metallic.
  float mineral=smoothstep(.69,.87,aggregate)*pow(max(dot(N,normalize(L+V)),0.),22.);
  color+=vec3(.14,.12,.087)*mineral*direct;

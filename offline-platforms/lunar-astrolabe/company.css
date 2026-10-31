@@ -186,3 +186,10 @@ body.company-ready:not(.company-open) .type .back{opacity:calc(1 - var(--hold-re
 .lpj-list{scrollbar-width:none}.lpj-list::-webkit-scrollbar{display:none}.lpj-group>a{padding:9px 0}.lpj-group>a strong{font-size:14px}.lpj-browse-mobile{display:none!important}
 .lpd-hero:not(:has(.lpd-image)){grid-template-columns:1fr;max-width:950px}
 @media(max-width:650px){.lpj-browse-mobile{display:inline-flex!important;margin-top:8px}.lpj-group>a{padding:15px 0}.lpj-group>a strong{font-size:15px}}
+
+/* Shared company pages: consistent reading rhythm and usable control targets. */
+#lunar-company :is(.lc-deck,.lc-prose p){max-width:64ch;line-height:1.75;text-wrap:pretty}
+#lunar-company :is(.lc-button,.lc-link){min-height:44px;display:inline-flex;align-items:center;gap:10px}
+#lunar-company :is(input,textarea,select){line-height:1.5}
+#lunar-company :is(input,textarea,select):focus-visible{outline:2px solid #dfcca9;outline-offset:3px}
+@media(max-width:650px){#lunar-company :is(.lc-deck,.lc-prose p){font-size:15px;line-height:1.7}#lunar-company .lc-eyebrow{font-size:10px;line-height:1.5}}

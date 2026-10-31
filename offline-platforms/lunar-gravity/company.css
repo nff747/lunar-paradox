@@ -68,6 +68,31 @@ body.company-ready:not(.company-open) .type .back{opacity:calc(1 - var(--hold-re
 .lc-catalogue-intro{position:absolute;left:0;bottom:35px;top:auto;max-width:330px;padding:24px 0 24px 4vw;min-height:0!important;width:340px;background:linear-gradient(90deg,#06090ddd,transparent);text-shadow:0 1px 5px #000}
 #lunar-company .lc-catalogue-intro h1{font-size:32px!important;line-height:1.1;margin:0 0 8px;letter-spacing:-.025em}
 .lc-catalogue-intro .lc-eyebrow{margin-bottom:12px;font-size:9px}.lc-catalogue-status{font:12px/1.7 monospace;color:#b5b4ba;margin:0 0 12px}.lc-catalogue-intro .lc-link{font-size:12px}
+
+/* Labs: a quiet editorial index that belongs to the monochrome environment. */
+.lc-page-labs .lc-catalogue-intro{width:min(390px,38vw);max-width:none;padding:30px 32px 32px 4vw;background:linear-gradient(90deg,#071015e8 0%,#071015ad 70%,transparent);border-left:2px solid #c1d9e0a6}
+#lunar-company.lc-page-labs .lc-catalogue-intro h1{font-size:clamp(38px,4vw,62px)!important;letter-spacing:-.055em;line-height:.98;margin-bottom:15px}
+.lc-page-labs .lc-catalogue-intro .lc-eyebrow{color:#c5d7dd;font-size:10px;letter-spacing:.15em}
+.lc-page-labs .lc-catalogue-status{font:13px/1.5 Arial,sans-serif;color:#c5d0d5;margin-bottom:17px}
+.lc-page-labs .lc-catalogue-intro .lc-link{display:inline-block;color:#edf5f6;font:11px/1.4 monospace;letter-spacing:.06em;border-bottom:1px solid #b2c9d16b;padding:8px 0;transition:border-color .2s,color .2s}
+.lc-page-labs .lc-catalogue-intro .lc-link:hover{color:#fff;border-color:#eef9fb}
+.lc-page-labs .lc-collection{background:linear-gradient(145deg,#101b20ed,#091115f5);border:1px solid #b9d0d542;border-radius:0;box-shadow:0 18px 50px #0008;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);scrollbar-width:thin;scrollbar-color:#a6bdc3 #101b20}
+.lc-page-labs .lc-collection::-webkit-scrollbar{display:block;width:5px}.lc-page-labs .lc-collection::-webkit-scrollbar-thumb{background:#8aa3aa}
+.lc-page-labs .lc-hologram-rail{display:none}
+.lc-page-labs .lc-collection-head h2{font:400 30px/1.1 LunarInter,Arial,sans-serif!important;letter-spacing:-.04em;color:#edf4f5}
+.lc-page-labs .lc-collection label{font:10px/1.5 monospace;color:#bdcdd2;letter-spacing:.05em}
+.lc-page-labs .lc-collection select{background:#101b20;border:1px solid #829da66b;border-radius:0;color:#e1eaec;min-height:42px}
+.lc-page-labs .lc-live-pulse{background:#bfd7da;box-shadow:none}
+.lc-page-labs .lc-record{margin:0;padding:22px 0;background:none;border:0;border-top:1px solid #b3cbd13b;border-radius:0;box-shadow:none;transition:border-color .2s ease}
+.lc-page-labs .lc-record:hover{transform:none;background:none;border-color:#d2e5e7;box-shadow:none}
+.lc-page-labs .lc-record-meta{gap:14px;margin-bottom:12px}
+.lc-page-labs .lc-cat,.lc-page-labs .lc-stage-badge{padding:0;border:0;background:none;border-radius:0;color:#adc4c9;font:10px/1.4 monospace;letter-spacing:.08em}
+.lc-page-labs .lc-record h2{font:500 21px/1.2 LunarInter,Arial,sans-serif!important;letter-spacing:-.03em;color:#f0f5f5}
+.lc-page-labs .lc-record p{font:13px/1.65 Arial,sans-serif;color:#b6c6ca}
+.lc-page-labs .lc-record .lc-button{min-height:40px;padding:9px 14px;background:transparent;border:1px solid #a7c0c77a;border-radius:0;box-shadow:none;color:#e4eff0!important}
+.lc-page-labs .lc-record .lc-button:hover{background:#e1ebec;border-color:#e1ebec;color:#101719!important;box-shadow:none}
+@media(max-width:650px){.lc-page-labs .lc-catalogue-intro{width:auto;max-width:calc(100% - 36px);padding:22px 24px;margin:0 18px 20px}.lc-page-labs .lc-collection{margin:28px 18px;padding:22px}.lc-page-labs .lc-record h2{font-size:20px!important}}
+@media(prefers-reduced-motion:reduce){.lc-page-labs .lc-record,.lc-page-labs .lc-catalogue-intro .lc-link{transition:none}}
 @media(max-width:650px){.lc-catalogue-intro{bottom:20px;padding:18px 22px;max-width:260px}#lunar-company .lc-catalogue-intro h1{font-size:28px!important}.lc-page-labs .lc-collection,.lc-page-products .lc-collection{margin-top:35px}}
 
 .lc-collection-head{flex-wrap:wrap;gap:12px}.lc-collection-head label{min-width:120px}.lc-prose p{white-space:pre-line}.lc-prose h2{font-size:22px;line-height:1.4;margin:32px 0 14px}.lc-refresh-notice{margin:12px 4vw;max-width:420px;font:11px/1.6 monospace;color:#c6c1ce}.lc-refresh-notice button{margin-left:10px}:where(.lc-button,.lc-link,.inspection-shots button):focus-visible{outline:2px solid currentColor;outline-offset:5px}
@@ -86,3 +111,10 @@ body.company-ready:not(.company-open) .type .back{opacity:calc(1 - var(--hold-re
 .lc-tb-btn:hover,.lc-tb-btn[data-active=true]{background:var(--lc-accent);color:#0d0b10}
 .lc-tb-glass-demo{height:180px;display:flex;align-items:center;justify-content:center;perspective:800px;background:#06080d;border:1px solid #ffffff14;border-radius:2px}
 .lc-tb-glass-card{width:280px;height:120px;background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.22);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#eeeae3;font:11px/1.6 monospace;letter-spacing:.08em;transition:transform .1s ease-out;user-select:none;cursor:pointer}
+
+/* Shared company pages: consistent reading rhythm and usable control targets. */
+#lunar-company :is(.lc-deck,.lc-prose p){max-width:64ch;line-height:1.75;text-wrap:pretty}
+#lunar-company :is(.lc-button,.lc-link){min-height:44px;display:inline-flex;align-items:center;gap:10px}
+#lunar-company :is(input,textarea,select){line-height:1.5}
+#lunar-company :is(input,textarea,select):focus-visible{outline:2px solid #dfcca9;outline-offset:3px}
+@media(max-width:650px){#lunar-company :is(.lc-deck,.lc-prose p){font-size:15px;line-height:1.7}#lunar-company .lc-eyebrow{font-size:10px;line-height:1.5}}

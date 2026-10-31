@@ -134,3 +134,17 @@ body[data-route=telemetry] #ocean-wayfinding,body[data-route=archive] #ocean-way
 #gravity-experience .gx-archive-sheet .gx-button{font-size:8px;padding:10px;min-height:35px}
 body[data-route=archive] #viewport{pointer-events:auto}
 @media(max-width:540px){.gx-archive-sheet{margin-top:38vh}.gx-archive-page .gx-annotation{top:18px}.gx-archive-sheet .gx-intro .gx-heading{font-size:34px}body[data-route=archive] #viewport{height:calc(42vh + 10px);bottom:auto}}
+
+/* Reading surfaces sit within the scene, with a restrained instrument palette. */
+#gravity-experience .gx-sheet{background:linear-gradient(115deg,#0b151ae8,#091216f5);border-color:#bed2d83d;box-shadow:-24px 0 56px #0206094d}
+#gravity-experience .gx-heading{color:#eef4f3;letter-spacing:-.045em;text-wrap:balance}
+#gravity-experience .gx-copy{font-size:13px;line-height:1.7;color:#c2cdd0}
+#gravity-experience .gx-kicker{font-size:10px;letter-spacing:.12em;color:#b5cbd0}
+#gravity-experience .gx-annotation strong{color:#edf4f4;letter-spacing:-.025em}
+#gravity-experience .gx-annotation span{font-size:10px;color:#bed0d3}
+#gravity-experience .gx-button{min-height:44px;transition:background-color .2s,border-color .2s,color .2s}
+#gravity-experience .gx-button:focus-visible,#gravity-experience .gx-back:focus-visible,#gravity-experience input:focus-visible,#ocean-wayfinding button:focus-visible{outline:2px solid #dbf0f2;outline-offset:4px}
+#ocean-wayfinding{font-size:10px;letter-spacing:.07em;color:#d0dfe2;border-color:#afc7cf55}
+#ocean-wayfinding button{min-height:32px;font-size:10px;color:#f0f7f7}
+@media(max-width:540px){#gravity-experience .gx-copy{font-size:14px;line-height:1.65}#gravity-experience .gx-sheet{padding:28px 22px}#ocean-wayfinding{font-size:9px}#ocean-wayfinding button{font-size:9px}}
+@media(prefers-reduced-motion:reduce){#gravity-experience .gx-button{transition:none}}

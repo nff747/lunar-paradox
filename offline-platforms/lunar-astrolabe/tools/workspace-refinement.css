@@ -1,0 +1,54 @@
+/* Shared finishing layer for the product workspaces. The tool-specific
+   layouts remain in their own stylesheets. */
+body {
+  color: #f3eee7;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+.tool-header {
+  border-bottom: 1px solid rgba(216, 201, 181, .18);
+  background: linear-gradient(110deg, #101119, #0c0d13 68%, #17121e);
+}
+.tool-title {
+  color: #f6f1e9;
+  font-weight: 550;
+  letter-spacing: -.025em;
+}
+.back-link { color: #d9c8af; font-size: 11px; }
+.back-link:hover { color: #fff5e3; }
+.section-group, .card {
+  border-color: rgba(218, 205, 188, .16);
+  background: linear-gradient(145deg, rgba(27, 27, 35, .92), rgba(13, 15, 21, .95));
+  box-shadow: 0 1px 0 rgba(255,255,255,.025) inset;
+}
+.section-title {
+  color: #d8c2a0;
+  letter-spacing: .09em;
+  line-height: 1.5;
+}
+.control-label, .dropzone-sub { line-height: 1.5; }
+.dropzone {
+  border-color: rgba(216, 198, 175, .36);
+  background: rgba(11, 12, 19, .6);
+  transition: border-color .18s ease, background-color .18s ease;
+}
+.dropzone:hover, .dropzone.dragover {
+  border-color: #dbc29d;
+  background: rgba(219, 194, 157, .06);
+}
+button, a, input, select, textarea, summary { -webkit-tap-highlight-color: transparent; }
+:where(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid #ead5b3;
+  outline-offset: 3px;
+}
+button:disabled { cursor: not-allowed; }
+@media (max-width: 650px) {
+  .tool-header { min-height: 68px; }
+  .back-link { font-size: 11px; }
+  .section-title { font-size: 11px; }
+  .controls-sidebar { min-width: 0; }
+  .lpw-help-links button { min-height: 44px; font-size: 11px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dropzone { transition: none; }
+}

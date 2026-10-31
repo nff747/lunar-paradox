@@ -13,10 +13,10 @@ header{height:38px;padding:0 14px;gap:20px}.brand{font-size:22px;font-weight:300
 .nav,.chapters,footer,.node-overlay text{font-family:'Barlow Condensed','Arial Narrow',Arial,sans-serif}
 /* Readable reference-scale microtype: metrics use normal-width monospace. */
 .brand{display:inline-block;transform:scaleX(1.02);transform-origin:left center;margin-right:4px;letter-spacing:.4px}
-.chapters{font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:2.25;letter-spacing:-.15px}.feed{font-family:monospace;font-size:5.7px;line-height:1.40;height:90px}.data-note,.chart-label{font-size:5.2px}.coordinates{font-size:6.3px}.radar-title{font-size:6px}.nav button{font-family:Arial,Helvetica,sans-serif;font-size:9px}.node-overlay text{font-family:Arial,Helvetica,sans-serif;font-size:6.8px;letter-spacing:-.12px}
+.chapters{font-family:Arial,Helvetica,sans-serif;font-size:10px;line-height:2.25;letter-spacing:-.15px}.feed{font-family:monospace;font-size:5.7px;line-height:1.40;height:90px}.data-note,.chart-label{font-size:5.2px}.coordinates{font-size:6.3px}.radar-title{font-size:6px}.nav button{font-family:Arial,Helvetica,sans-serif;font-size:9px}.node-overlay text{font-family:Arial,Helvetica,sans-serif;font-size:8px;letter-spacing:-.12px}
 @media(min-width:1400px){.chapters{font-size:12px}.feed{font-size:7.5px;height:125px}.coordinates{font-size:8px}.chart-label,.data-note{font-size:6.5px}.radar-title{font-size:7px}}
 @media(max-width:750px){.chapters{font-size:8px}.feed{font-size:5px}.coordinates{font-size:5.5px}.nav button{font-size:8px}}
-@media(max-width:540px){.chapters{font-size:8px;line-height:2.5;max-width:160px}.nav button{font-size:6px}.node-overlay text{font-size:5.7px}.radar-title{font-size:5.4px}}
+@media(max-width:540px){.chapters{font-size:8px;line-height:2.5;max-width:160px}.nav button{font-size:6px}.node-overlay text{font-size:7px}.radar-title{font-size:5.4px}}
 /* Keep the survey panel proportionate on tall displays. */
 .telemetry{max-height:630px}.feed{font-size:6.5px}.mini-wave{position:relative}.wave-label{position:absolute;inset:3px 4px auto;display:flex;justify-content:space-between;font:5.6px monospace;letter-spacing:.15px;color:#9eafb6}.mini-wave svg{position:absolute;left:0;bottom:0;height:calc(100% - 13px)}
 @media(min-width:1400px){.feed{font-size:8px}.wave-label{font-size:7px}}
@@ -34,11 +34,20 @@ header{height:38px;padding:0 14px;gap:20px}.brand{font-size:22px;font-weight:300
 @media(max-width:540px){.telemetry{width:96px}.radar-title{font-size:5.5px}}
 
 .cinematic-cue{position:fixed;left:50%;top:19%;transform:translateX(-50%);margin:0;max-width:70vw;pointer-events:none;z-index:18;opacity:0;text-align:center;color:#e8e4dc;font:10px/1.6 monospace;letter-spacing:.25em;text-transform:uppercase;text-shadow:0 2px 14px #000;}
-body[data-company-route] .cinematic-cue{display:none}
+body[data-company-route]:not([data-company-route=""]) .cinematic-cue{display:none}
 @media(max-width:700px){.cinematic-cue{top:24%;font-size:9px;max-width:85vw}}
 @media(prefers-reduced-motion:reduce){.cinematic-cue{display:none}}
 
-.return-inspection{position:fixed;bottom:68px;left:22px;z-index:20;color:#d6e0e7;background:#0a1018c9;border:1px solid #8c9aa655;font:10px monospace;padding:10px;cursor:pointer}.return-inspection[hidden],body.company-open .return-inspection{display:none}
+.node-overlay g[role=button]:hover rect,.node-overlay g[role=button]:focus-visible rect{fill:#182c35e8;stroke:#d5edf6;stroke-width:1}.node-overlay g[role=button]:focus-visible{outline:none}.node-overlay g[role=button]:hover circle,.node-overlay g[role=button]:focus-visible circle{r:3.5;filter:drop-shadow(0 0 6px #d4f5ff)}
+.return-inspection{position:fixed;bottom:68px;left:22px;z-index:20;color:#e4edf0;background:#0a1018e8;border:1px solid #9aadb777;font:11px/1.3 monospace;letter-spacing:.04em;padding:11px 14px;cursor:pointer;transition:background-color 180ms ease,border-color 180ms ease}
+.return-inspection:hover,.return-inspection:focus-visible{background:#182b34;border-color:#d3e8ef}
+.return-inspection[hidden],body.company-open .return-inspection{display:none}
+/* Text and controls stay legible as the composition becomes narrower. */
+.chapters .chapter{min-height:32px;text-align:left;transition:color 180ms ease}
+.chapters .chapter:hover,.chapters .chapter:focus-visible{color:#fff}
+.nav button{min-height:32px;transition:color 180ms ease,border-color 180ms ease}
+@media(max-width:540px){.return-inspection{bottom:74px;left:12px;min-height:44px}.chapters .chapter{min-height:30px}.nav button{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.return-inspection,.chapters .chapter,.nav button{transition:none}}
 </style><link rel="stylesheet" href="./experience.css"><link rel="stylesheet" href="./company.css"><link rel="stylesheet" href="./commission.css"><script type="module" src="./supabase-client.js"></script>
 <script type="module" src="./firebase-config.js"></script>
 </head><body data-scene="gravity">
@@ -55,6 +64,7 @@ body[data-company-route] .cinematic-cue{display:none}
 <aside class="view-panel" id="archive-panel" hidden><button id="archive-close" aria-label="Close archive">×</button><h2>GRAVITY / ARCHIVE 03</h2><p>SECTOR 07 · INVERTED OCEAN<br>24.06° N / 43.20° W</p><p>A suspended mercury field. Basalt monoliths extend downward across the local lunar horizon. 160 liquid bodies stream against the gravitational vector.</p><p>PROCEDURAL SIMULATION · LIVE WEBGL<br>Surface relief: NASA LROC / LOLA<br>All coordinates describe this scene.</p></aside><div class="loading" id="loading" role="status" aria-label="Rendering 3D scene"></div>
 <script type="module">
 import {createSceneCue} from './scene-cue.js';
+import {layoutCallouts} from './label-layout.js';
 import * as THREE from './vendor/three.module.js';
 import { EffectComposer } from './vendor/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from './vendor/addons/postprocessing/RenderPass.js';
@@ -307,7 +317,19 @@ const secondaryAnchors=[new THREE.Vector3(.4,-4.65+terrainHeight(.4,-2.6)+.035,-
 const secondaryNames=['NODE 04 // CRATER BASIN','NODE 05 // BASALT FAULT','NODE 06 // FIELD HORIZON'];
 const secondaryNodes=secondaryNames.map((name,i)=>{const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.id='node'+(i+4);g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label',name);g.innerHTML='<path/><circle r="2.3"/><rect height="15"/><text>'+name+'</text>';document.querySelector('#nodes').appendChild(g);return g;});
 const labelGroups=[...document.querySelectorAll('#nodes > g')];anchors.push(...secondaryAnchors);const projected=anchors.map(()=>new THREE.Vector3());let width=1,height=1;
-function updateLabels(){const mobile=width<600;const reserve=width<540?10:width<750?115:132;for(let i=0;i<anchors.length;i++){const p=projected[i].copy(anchors[i]).project(camera),x=(p.x*.5+.5)*width,y=(-p.y*.5+.5)*height;const labelWidth=mobile?[104,128,119,111,112,114][i]:[92,121,106,102,103,104][i];let lx=x+(i===1?33:i===4?-128:35),ly=y+(i===1?18:i===2?-31:i===3?-23:-32);lx=THREE.MathUtils.clamp(lx,mobile?55:150,width-reserve-labelWidth-6);ly=THREE.MathUtils.clamp(ly,70,height-40);const g=labelGroups[i],secondaryHidden=i>2&&!simulation&&!orbiting;const hidden=secondaryHidden||p.z>1||p.z< -1||x<0||x>width||y<0||y>height;g.style.opacity=hidden?'0':'1';g.style.pointerEvents=hidden?'none':'all';if(g.getAttribute('aria-hidden')!==String(hidden)){g.setAttribute('aria-hidden',String(hidden));g.setAttribute('tabindex',hidden?'-1':'0');}g.querySelector('path').setAttribute('d',`M${x.toFixed(1)},${y.toFixed(1)} L${lx-7},${ly+8} L${lx+labelWidth},${ly+8}`);const c=g.querySelector('circle');c.setAttribute('cx',x);c.setAttribute('cy',y);const r=g.querySelector('rect');r.setAttribute('x',lx);r.setAttribute('y',ly);r.setAttribute('width',labelWidth);const t=g.querySelector('text');t.setAttribute('x',lx+4);t.setAttribute('y',ly+10);}const link=document.querySelector('#node-link');link.style.visibility=labelGroups[1].getAttribute('aria-hidden')==='true'||labelGroups[2].getAttribute('aria-hidden')==='true'?'hidden':'visible';const a=projected[1],b=projected[2];document.querySelector('#node-link').setAttribute('d',`M${(a.x*.5+.5)*width},${(-a.y*.5+.5)*height} L${(b.x*.5+.5)*width},${(-b.y*.5+.5)*height}`);}
+function updateLabels(){
+ const mobile=width<600,reserve=width<540?10:width<750?115:132;
+ const labelWidths=mobile?[104,128,119,111,112,114]:[112,145,127,123,126,126];
+ const items=anchors.map((anchor,i)=>{const p=projected[i].copy(anchor).project(camera),x=(p.x*.5+.5)*width,y=(-p.y*.5+.5)*height;return{id:i,x,y,width:labelWidths[i],height:17,hidden:(i>2&&!simulation&&!orbiting)||p.z>1||p.z< -1||x<0||x>width||y<0||y>height};});
+ const bounds={left:mobile?18:150,right:Math.max(mobile?19:151,width-reserve-6),top:70,bottom:Math.max(87,height-40)};
+ const layout=layoutCallouts(items,bounds);
+ for(const item of items){const i=item.id,g=labelGroups[i],hidden=item.hidden;g.style.opacity=hidden?'0':'1';g.style.pointerEvents=hidden?'none':'all';if(g.getAttribute('aria-hidden')!==String(hidden)){g.setAttribute('aria-hidden',String(hidden));g.setAttribute('tabindex',hidden?'-1':'0');}if(hidden)continue;
+ const rect=layout.get(i),lx=rect.x,ly=rect.y,edgeX=item.x<lx?lx:item.x>lx+rect.width?lx+rect.width:THREE.MathUtils.clamp(item.x,lx,lx+rect.width),edgeY=ly+rect.height/2;
+ g.querySelector('path').setAttribute('d',`M${item.x.toFixed(1)},${item.y.toFixed(1)} L${edgeX.toFixed(1)},${edgeY.toFixed(1)}`);
+ const c=g.querySelector('circle');c.setAttribute('cx',item.x);c.setAttribute('cy',item.y);const r=g.querySelector('rect');r.setAttribute('x',lx);r.setAttribute('y',ly);r.setAttribute('width',rect.width);r.setAttribute('height',rect.height);const t=g.querySelector('text');t.setAttribute('x',lx+5);t.setAttribute('y',ly+11.5);
+ }
+ const link=document.querySelector('#node-link');link.style.visibility=labelGroups[1].getAttribute('aria-hidden')==='true'||labelGroups[2].getAttribute('aria-hidden')==='true'?'hidden':'visible';const a=projected[1],b=projected[2];link.setAttribute('d',`M${(a.x*.5+.5)*width},${(-a.y*.5+.5)*height} L${(b.x*.5+.5)*width},${(-b.y*.5+.5)*height}`);
+}
 function resize(){width=host.clientWidth;height=host.clientHeight;const rect=host.getBoundingClientRect(),overlay=document.querySelector('#nodes');Object.assign(overlay.style,{top:rect.top+'px',left:rect.left+'px',bottom:'auto',width:width+'px',height:height+'px'});renderer.setSize(width,height,false);camera.aspect=width/height;camera.fov=width<540?62:49;camera.updateProjectionMatrix();}window.addEventListener('resize',resize);resize();
 function toast(message){const n=document.querySelector('#notice');n.textContent=message;n.classList.add('show');clearTimeout(toast.timeout);toast.timeout=setTimeout(()=>n.classList.remove('show'),2400);}
 function syncPlay(){document.body.dataset.paused=String(!playing);document.querySelector('#play').textContent=playing?'Ⅱ':'▶';document.querySelector('#play').setAttribute('aria-label',playing?'Pause animation':'Play animation');}

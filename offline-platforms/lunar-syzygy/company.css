@@ -95,3 +95,47 @@ body[data-scene="syzygy"].company-ready:not(.company-open) #viewport,body[data-s
 .lc-tb-btn:hover,.lc-tb-btn[data-active=true]{background:var(--lc-accent);color:#0d0b10}
 .lc-tb-glass-demo{height:180px;display:flex;align-items:center;justify-content:center;perspective:800px;background:#06080d;border:1px solid #ffffff14;border-radius:2px}
 .lc-tb-glass-card{width:280px;height:120px;background:linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.22);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,0.6);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#eeeae3;font:11px/1.6 monospace;letter-spacing:.08em;transition:transform .1s ease-out;user-select:none;cursor:pointer}
+
+/* Shared company pages: consistent reading rhythm and usable control targets. */
+#lunar-company :is(.lc-deck,.lc-prose p){max-width:64ch;line-height:1.75;text-wrap:pretty}
+#lunar-company :is(.lc-button,.lc-link){min-height:44px;display:inline-flex;align-items:center;gap:10px}
+#lunar-company :is(input,textarea,select){line-height:1.5}
+#lunar-company :is(input,textarea,select):focus-visible{outline:2px solid #dfcca9;outline-offset:3px}
+@media(max-width:650px){#lunar-company :is(.lc-deck,.lc-prose p){font-size:15px;line-height:1.7}#lunar-company .lc-eyebrow{font-size:10px;line-height:1.5}}
+
+/* Syzygy: restrained editorial hierarchy for the brand and commission journey. */
+body[data-scene="syzygy"] .lc-nav{font-size:11px!important;letter-spacing:.08em!important;color:#ddd9dc!important}
+body[data-scene="syzygy"] .lc-nav .lc-enter{border-color:#d8d0cb8c!important;padding:11px 17px!important}
+body[data-scene="syzygy"] .lc-nav a[aria-current=page]{text-decoration-color:#d4bb91!important}
+body[data-scene="syzygy"] .gate-note{font-size:9px;letter-spacing:.12em;color:#b5adb5;text-align:center}
+body[data-scene="syzygy"] .inspection-shots button{font-size:10px;letter-spacing:.11em;color:#c7bfc9}
+body[data-scene="syzygy"] #lunar-company .lc-brand-intro{max-width:780px;padding-top:clamp(72px,12vh,144px)}
+body[data-scene="syzygy"] #lunar-company .lc-brand-intro h1{font-size:clamp(48px,6vw,92px)!important;line-height:.99;max-width:720px;letter-spacing:-.055em;text-wrap:balance}
+body[data-scene="syzygy"] .lc-brand-intro .lc-deck{font-size:clamp(16px,1.25vw,19px);line-height:1.65;max-width:510px;color:#d4d0d1}
+body[data-scene="syzygy"] .lc-realms{max-width:590px;gap:40px;margin-top:clamp(42px,7vh,90px);padding-top:24px}
+body[data-scene="syzygy"] .lc-realms span{font-size:10px;letter-spacing:.13em}
+body[data-scene="syzygy"] .lc-realms p{font-size:14px;color:#beb9bc}
+body[data-scene="syzygy"] .lc-studio{max-width:1320px;padding:clamp(50px,7vw,100px) clamp(24px,6vw,100px) 110px}
+body[data-scene="syzygy"] #lunar-company .lc-studio h1{max-width:1000px;font-size:clamp(52px,7.2vw,110px)!important;line-height:.98;letter-spacing:-.055em;text-wrap:balance}
+body[data-scene="syzygy"] .lc-studio .lc-deck{font-size:clamp(16px,1.25vw,19px);line-height:1.65;max-width:650px;color:#d1ccce}
+body[data-scene="syzygy"] .lc-offers{gap:clamp(24px,3vw,50px);margin:clamp(60px,8vw,110px) 0 70px;padding-top:0;border:0}
+body[data-scene="syzygy"] .lc-offers article{border-top:1px solid #ddd1c457;padding-top:22px}
+body[data-scene="syzygy"] .lc-offers span{font-size:10px;letter-spacing:.12em}
+body[data-scene="syzygy"] .lc-offers h2{font-size:clamp(22px,2vw,29px)!important;margin:24px 0 14px!important}
+body[data-scene="syzygy"] .lc-offers p,body[data-scene="syzygy"] .lc-process p{font-size:15px;line-height:1.7;color:#c0bbbf;max-width:58ch}
+body[data-scene="syzygy"] .lc-process{padding:32px 0 10px;max-width:780px}
+body[data-scene="syzygy"] .lc-process h2{font-size:clamp(25px,2.4vw,34px)!important}
+body[data-scene="syzygy"] .lc-button{font-size:11px!important;letter-spacing:.08em;min-height:48px}
+@media(max-width:650px){
+ body[data-scene="syzygy"] .lc-nav{font-size:10px!important;gap:8px!important}
+ body[data-scene="syzygy"] .lc-nav .lc-enter{padding:8px 10px!important}
+ body[data-scene="syzygy"] .gate-note{bottom:5.6%;font-size:8px;max-width:85vw;white-space:normal}
+ body[data-scene="syzygy"] #lunar-company .lc-brand-intro{padding:52px 22px 36px;min-height:0}
+ body[data-scene="syzygy"] #lunar-company .lc-brand-intro h1{font-size:clamp(40px,11vw,58px)!important}
+ body[data-scene="syzygy"] .lc-brand-intro .lc-deck{font-size:16px}
+ body[data-scene="syzygy"] .lc-studio{padding:45px 22px 80px}
+ body[data-scene="syzygy"] #lunar-company .lc-studio h1{font-size:clamp(43px,11vw,60px)!important}
+ body[data-scene="syzygy"] .lc-offers{gap:24px;margin:55px 0}
+ body[data-scene="syzygy"] .lc-offers article{border-bottom:0;padding:20px 0 0}
+}
+@media(prefers-reduced-motion:reduce){body[data-scene="syzygy"] .lc-nav a,body[data-scene="syzygy"] .lc-button{transition:none!important}}
