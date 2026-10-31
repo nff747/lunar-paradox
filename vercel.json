@@ -623,10 +623,6 @@
     {
       "source": "/tools/:path*",
       "destination": "/lunar-astrolabe/tools/:path*"
-    },
-    {
-      "source": "/security.txt",
-      "destination": "/.well-known/security.txt"
     }
   ],
   "buildCommand": "npm run build -- --hosted-only",
