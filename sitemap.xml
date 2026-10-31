@@ -2,85 +2,76 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://lunarparadox.com/</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://lunarparadox.com/privacy</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.50</priority>
   </url>
   <url>
     <loc>https://products.lunarparadox.com/</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
   <url>
     <loc>https://products.lunarparadox.com/pbr-synth</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://products.lunarparadox.com/optim-compressor</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://products.lunarparadox.com/resonance-dsp</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
     <loc>https://products.lunarparadox.com/cipher-workbench</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://products.lunarparadox.com/products/hyper-splat-engine</loc>
-    <lastmod>2026-10-26</lastmod>
+    <loc>https://products.lunarparadox.com/hyper-splat-engine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://products.lunarparadox.com/products/neural-texture-engine</loc>
-    <lastmod>2026-10-26</lastmod>
+    <loc>https://products.lunarparadox.com/neural-texture-engine</loc>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://products.lunarparadox.com/products/turbo-ring-ipc</loc>
-    <lastmod>2026-10-26</lastmod>
+    <loc>https://products.lunarparadox.com/turbo-ring-ipc</loc>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://products.lunarparadox.com/products/spatial-glass-ui</loc>
-    <lastmod>2026-10-26</lastmod>
+    <loc>https://products.lunarparadox.com/spatial-glass-ui</loc>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://products.lunarparadox.com/products/tensor-cloth-wgsl</loc>
-    <lastmod>2026-10-26</lastmod>
+    <loc>https://products.lunarparadox.com/tensor-cloth-wgsl</loc>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
   <url>
-    <loc>https://products.lunarparadox.com/products/meshlet-culling-wgsl</loc>
-    <lastmod>2026-10-26</lastmod>
+    <loc>https://products.lunarparadox.com/meshlet-culling-wgsl</loc>
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://products.lunarparadox.com/the-lazy-billionaire</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://labs.lunarparadox.com/</loc>
-    <lastmod>2026-10-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.90</priority>
   </url>

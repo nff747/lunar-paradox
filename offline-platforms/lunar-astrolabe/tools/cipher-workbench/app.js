@@ -46,7 +46,9 @@ let cipherMode = 'encrypt'; // 'encrypt' | 'decrypt'
 let activeKeypair = null;
 let lastPublicExport = '';
 let lastPrivateExport = '';
+let lastKeyFormat = 'pem';
 let binaryCipherPayload = null; // Uint8Array if file was loaded
+let decryptedPayload = null;
 
 // -------------------------------------------------------------
 // TAB NAVIGATION
@@ -104,6 +106,11 @@ function toPem(base64, label) {
 btnGenerateKeys.addEventListener('click', async () => {
   btnGenerateKeys.textContent = 'Generating Secure Keypair...';
   btnGenerateKeys.disabled = true;
+  lastPublicExport = '';
+  lastPrivateExport = '';
+  outputPublicKey.textContent = 'Generating…';
+  outputPrivateKey.textContent = 'Generating…';
+  keyFingerprint.textContent = '--:--:--:--';
 
   try {
     const algoChoice = paramKeyAlgo.value;
@@ -163,22 +170,26 @@ btnGenerateKeys.addEventListener('click', async () => {
 
     outputPublicKey.textContent = lastPublicExport;
     outputPrivateKey.textContent = lastPrivateExport;
+    lastKeyFormat = format;
   } catch (err) {
     console.error('Key generation error:', err);
+    outputPublicKey.textContent = 'Key generation failed.';
+    outputPrivateKey.textContent = 'Key generation failed.';
     alert('Key generation failed: ' + err.message);
   } finally {
-    btnGenerateKeys.textContent = '⚡ Generate Hardware-Random Keypair';
+    btnGenerateKeys.textContent = '⚡ Generate Keypair';
     btnGenerateKeys.disabled = false;
   }
 });
 
 // Copy / Download handlers
 function copyText(text, btn) {
+  if (!text) return;
   navigator.clipboard.writeText(text).then(() => {
     const orig = btn.textContent;
     btn.textContent = 'Copied!';
     setTimeout(() => { btn.textContent = orig; }, 1500);
-  });
+  }).catch(() => alert('Copy failed. Please select and copy the text manually.'));
 }
 
 function downloadFile(content, filename, type = 'text/plain') {
@@ -195,14 +206,18 @@ function downloadFile(content, filename, type = 'text/plain') {
 
 btnCopyPublic.addEventListener('click', () => copyText(lastPublicExport, btnCopyPublic));
 btnCopyPrivate.addEventListener('click', () => copyText(lastPrivateExport, btnCopyPrivate));
-btnDownloadPublic.addEventListener('click', () => downloadFile(lastPublicExport, 'key.pub'));
-btnDownloadPrivate.addEventListener('click', () => downloadFile(lastPrivateExport, 'key.pem'));
+btnDownloadPublic.addEventListener('click', () => { if (lastPublicExport) downloadFile(lastPublicExport, lastKeyFormat === 'jwk' ? 'public-key.json' : 'public-key.pem'); });
+btnDownloadPrivate.addEventListener('click', () => { if (lastPrivateExport) downloadFile(lastPrivateExport, lastKeyFormat === 'jwk' ? 'private-key.json' : 'private-key.pem'); });
 
 // -------------------------------------------------------------
 // 2. AES-256-GCM CIPHER ENGINE
 // -------------------------------------------------------------
 btnModeEncrypt.addEventListener('click', () => {
   cipherMode = 'encrypt';
+  binaryCipherPayload = null;
+  decryptedPayload = null;
+  cipherInputText.value = '';
+  cipherOutputText.value = '';
   btnModeEncrypt.classList.add('active');
   btnModeDecrypt.classList.remove('active');
   cipherIoLabel.textContent = 'Plaintext Message';
@@ -212,6 +227,10 @@ btnModeEncrypt.addEventListener('click', () => {
 
 btnModeDecrypt.addEventListener('click', () => {
   cipherMode = 'decrypt';
+  binaryCipherPayload = null;
+  decryptedPayload = null;
+  cipherInputText.value = '';
+  cipherOutputText.value = '';
   btnModeDecrypt.classList.add('active');
   btnModeEncrypt.classList.remove('active');
   cipherIoLabel.textContent = 'Encrypted Base64 Payload';
@@ -230,6 +249,10 @@ btnCipherClear.addEventListener('click', () => {
   cipherOutputText.value = '';
   cipherPassphrase.value = '';
   binaryCipherPayload = null;
+  decryptedPayload = null;
+  cipherFileInput.value = '';
+  cliScriptOutput.textContent = 'Run encryption to generate a recovery script.';
+  dropzoneText.textContent = 'Drop a file or select one';
 });
 
 // PBKDF2 Key Derivation (100,000 iterations)
@@ -264,6 +287,8 @@ btnRunCipher.addEventListener('click', async () => {
     return;
   }
 
+  decryptedPayload = null;
+  cipherOutputText.value = '';
   try {
     if (cipherMode === 'encrypt') {
       // 1. Get raw input data
@@ -301,19 +326,21 @@ btnRunCipher.addEventListener('click', async () => {
 
       // Generate Standalone Zero-Trust Python CLI Decryption Script
       if (cliScriptOutput) {
-        const pythonScript = `# --- Lunar Air-Gapped Standalone Decryptor ---
+        const pythonScript = `# Lunar decryptor: python decrypt.py payload.enc output.bin
 # Requires: pip install cryptography
 import base64
+import getpass
+import sys
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
-raw = base64.b64decode("${b64.slice(0, 48)}...") # Replace with full payload or pass via file
+raw = base64.b64decode(open(sys.argv[1], 'rb').read(), validate=True)
 salt = raw[0:16]
 iv = raw[16:28]
 ciphertext_with_tag = raw[28:]
 
-passphrase = b"${pass.replace(/"/g, '\\"')}"
+passphrase = getpass.getpass('Passphrase: ').encode('utf-8')
 
 kdf = PBKDF2HMAC(
     algorithm=hashes.SHA256(),
@@ -324,7 +351,8 @@ kdf = PBKDF2HMAC(
 key = kdf.derive(passphrase)
 aesgcm = AESGCM(key)
 plaintext = aesgcm.decrypt(iv, ciphertext_with_tag, None)
-print(plaintext.decode('utf-8', errors='replace'))
+with open(sys.argv[2], 'wb') as output:
+    output.write(plaintext)
 `;
         cliScriptOutput.textContent = pythonScript;
       }
@@ -332,15 +360,15 @@ print(plaintext.decode('utf-8', errors='replace'))
       // Decrypt mode
       let rawBytes;
       if (binaryCipherPayload) {
-        rawBytes = binaryCipherPayload;
+        rawBytes = base64ToBuf(new TextDecoder().decode(binaryCipherPayload));
       } else {
         const text = cipherInputText.value.trim();
         if (!text) { alert('Paste Base64 payload or drop .enc file.'); return; }
         rawBytes = base64ToBuf(text);
       }
 
-      if (rawBytes.length < 28) {
-        throw new Error('Encrypted payload too short (minimum 28 bytes required).');
+      if (rawBytes.length < 44) {
+        throw new Error('Encrypted payload too short (minimum 44 bytes required).');
       }
 
       // Unpack container
@@ -354,6 +382,7 @@ print(plaintext.decode('utf-8', errors='replace'))
         key,
         ciphertext
       );
+      decryptedPayload = new Uint8Array(decrypted);
 
       // Try UTF-8 string conversion
       try {
@@ -362,7 +391,6 @@ print(plaintext.decode('utf-8', errors='replace'))
       } catch {
         // Binary output
         cipherOutputText.value = `[Binary Payload Decrypted: ${decrypted.byteLength} bytes. Use 'Download' button.]`;
-        binaryCipherPayload = new Uint8Array(decrypted);
       }
     }
   } catch (err) {
@@ -388,11 +416,20 @@ function loadCipherFile(file) {
   const reader = new FileReader();
   reader.onload = (e) => {
     binaryCipherPayload = new Uint8Array(e.target.result);
+    decryptedPayload = null;
+    cipherOutputText.value = '';
     dropzoneText.textContent = `Loaded File: ${file.name} (${file.size} bytes)`;
     cipherInputText.value = `[Binary file loaded: ${file.name} / ${file.size} bytes]`;
   };
   reader.readAsArrayBuffer(file);
 }
+
+cipherInputText.addEventListener('input', () => {
+  binaryCipherPayload = null;
+  decryptedPayload = null;
+  cipherOutputText.value = '';
+  dropzoneText.textContent = 'Drop a file or select one';
+});
 
 btnCopyCipher.addEventListener('click', () => copyText(cipherOutputText.value, btnCopyCipher));
 if (btnCopyCli && cliScriptOutput) {
@@ -401,8 +438,8 @@ if (btnCopyCli && cliScriptOutput) {
 btnDownloadCipher.addEventListener('click', () => {
   const content = cipherOutputText.value;
   if (!content) return;
-  if (binaryCipherPayload && cipherMode === 'decrypt') {
-    downloadFile(binaryCipherPayload, 'decrypted_file.bin', 'application/octet-stream');
+  if (decryptedPayload && cipherMode === 'decrypt') {
+    downloadFile(decryptedPayload, 'decrypted_file.bin', 'application/octet-stream');
   } else {
     downloadFile(content, cipherMode === 'encrypt' ? 'payload.enc' : 'decrypted.txt');
   }
@@ -412,6 +449,7 @@ btnDownloadCipher.addEventListener('click', () => {
 // 3. CRYPTOGRAPHIC HASHER & CHECKSUM
 // -------------------------------------------------------------
 async function updateHashes() {
+  const version = ++hashUpdateVersion;
   const text = hasherInput.value;
   if (!text) {
     hashSha256.value = '';
@@ -428,6 +466,7 @@ async function updateHashes() {
     crypto.subtle.digest('SHA-384', data),
     crypto.subtle.digest('SHA-512', data)
   ]);
+  if (version !== hashUpdateVersion) return;
 
   hashSha256.value = bufToHex(h256);
   hashSha384.value = bufToHex(h384);
@@ -436,6 +475,7 @@ async function updateHashes() {
   verifyHashMatch();
 }
 
+let hashUpdateVersion = 0;
 hasherInput.addEventListener('input', updateHashes);
 
 function verifyHashMatch() {

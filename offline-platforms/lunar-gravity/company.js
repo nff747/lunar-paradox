@@ -110,6 +110,7 @@ async function navigate(){
 }
 motion.addEventListener('change',()=>{stopMotion();setTravel(0);document.body.style.removeProperty('--hold-reveal');});
 window.addEventListener('hashchange',navigate);document.body.classList.add('company-ready');const brand=document.querySelector('header .brand');if(brand){brand.removeAttribute('data-route');brand.setAttribute('aria-label','Lunar Paradox home');brand.href=href('syzygy','realms');}if(location.hostname==='products.lunarparadox.com'&&/^\/products\/?$/.test(location.pathname))history.replaceState(null,'','/#'+(route()||'products'));if(location.hostname==='labs.lunarparadox.com'&&/^\/labs\/?$/.test(location.pathname))history.replaceState(null,'','/#'+(route()||'labs'));if(scene==='syzygy'&&route()==='mission')history.replaceState(null,'','#/home');if(!location.hash&&!pathRoute())history.replaceState(null,'','#/'+landing);render();load(route()==='manage'&&local).then(()=>{if(!host.contains(document.activeElement))render();});
+if(typeof document!=='undefined'){document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&owns()){load().then(()=>{if(!host.contains(document.activeElement))render();});}});setInterval(()=>{if(document.visibilityState==='visible'&&owns()){load().then(()=>{if(!host.contains(document.activeElement))render();});}},60000);}
 window.addEventListener('lunar:spatial',e=>{
  if(scene!=='syzygy')return;
  const p=Math.max(0,Math.min(1,Number(e.detail?.charge)||0));

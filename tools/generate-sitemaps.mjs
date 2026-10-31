@@ -3,7 +3,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const today = new Date().toISOString().split('T')[0];
 
 const masterUrls = [
   { loc: 'https://lunarparadox.com/', priority: '1.0', changefreq: 'weekly' },
@@ -14,12 +13,13 @@ const masterUrls = [
   { loc: 'https://products.lunarparadox.com/optim-compressor', priority: '0.85', changefreq: 'monthly' },
   { loc: 'https://products.lunarparadox.com/resonance-dsp', priority: '0.85', changefreq: 'monthly' },
   { loc: 'https://products.lunarparadox.com/cipher-workbench', priority: '0.85', changefreq: 'monthly' },
-  { loc: 'https://products.lunarparadox.com/products/hyper-splat-engine', priority: '0.80', changefreq: 'monthly' },
-  { loc: 'https://products.lunarparadox.com/products/neural-texture-engine', priority: '0.80', changefreq: 'monthly' },
-  { loc: 'https://products.lunarparadox.com/products/turbo-ring-ipc', priority: '0.80', changefreq: 'monthly' },
-  { loc: 'https://products.lunarparadox.com/products/spatial-glass-ui', priority: '0.80', changefreq: 'monthly' },
-  { loc: 'https://products.lunarparadox.com/products/tensor-cloth-wgsl', priority: '0.80', changefreq: 'monthly' },
-  { loc: 'https://products.lunarparadox.com/products/meshlet-culling-wgsl', priority: '0.80', changefreq: 'monthly' },
+  { loc: 'https://products.lunarparadox.com/hyper-splat-engine', priority: '0.80', changefreq: 'monthly' },
+  { loc: 'https://products.lunarparadox.com/neural-texture-engine', priority: '0.80', changefreq: 'monthly' },
+  { loc: 'https://products.lunarparadox.com/turbo-ring-ipc', priority: '0.80', changefreq: 'monthly' },
+  { loc: 'https://products.lunarparadox.com/spatial-glass-ui', priority: '0.80', changefreq: 'monthly' },
+  { loc: 'https://products.lunarparadox.com/tensor-cloth-wgsl', priority: '0.80', changefreq: 'monthly' },
+  { loc: 'https://products.lunarparadox.com/meshlet-culling-wgsl', priority: '0.80', changefreq: 'monthly' },
+  { loc: 'https://products.lunarparadox.com/the-lazy-billionaire', priority: '0.85', changefreq: 'monthly' },
   
   { loc: 'https://labs.lunarparadox.com/', priority: '0.90', changefreq: 'weekly' }
 ];
@@ -30,7 +30,6 @@ function buildXml(urls) {
   for (const item of urls) {
     xml += '  <url>\n';
     xml += `    <loc>${item.loc}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
     xml += `    <changefreq>${item.changefreq}</changefreq>\n`;
     xml += `    <priority>${item.priority}</priority>\n`;
     xml += '  </url>\n';

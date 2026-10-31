@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resonance Procedural Cosmic Sound Lab — Lunar Paradox Products</title>
-  <meta name="description" content="Pure client-side Web Audio API modular synthesizer for cosmic drones, binaural frequencies, and harmonic soundscapes with 32-bit WAV export. Zero server transmission.">
+  <meta name="description" content="Pure client-side Web Audio API modular synthesizer for cosmic drones, binaural frequencies, and harmonic soundscapes with 16-bit PCM WAV export.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://products.lunarparadox.com/resonance-dsp">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
@@ -20,7 +20,7 @@
   <meta name="twitter:title" content="Resonance Procedural Cosmic Sound Lab — Lunar Paradox Products">
   <meta name="twitter:description" content="Pure client-side Web Audio API modular synthesizer for cosmic drones, binaural frequencies, and harmonic soundscapes.">
   <meta name="twitter:image" content="https://products.lunarparadox.com/assets/og-image.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Resonance Procedural Cosmic Sound Lab","url":"https://products.lunarparadox.com/resonance-dsp","operatingSystem":"Any Modern Web Browser","applicationCategory":"AudioApplication","browserRequirements":"Requires Web Audio API support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Real-time client-side procedural acoustic synthesizer powered by the Web Audio API graph with hardware-grade brickwall acoustic limiter and 32-bit WAV recording.","featureList":["Quadruple Band-Limited Oscillators & FM Modulation","Bi-Quad Resonant Lowpass and Bandpass Filters","Stereo Delay & Spatial Widener Network","Hardware-Grade DynamicsCompressor Limiter & Clamped Master","Real-Time FFT Spectrum Visualizer","One-Click 32-bit Lossless WAV Audio Export"],"publisher":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does procedural Web Audio synthesis work in the browser?","acceptedAnswer":{"@type":"Answer","text":"Resonance constructs an interactive DSP node graph using the native Web Audio API, routing oscillators through gain, biquad filters, and stereo delay lines directly to your sound hardware without downloading large static audio files."}},{"@type":"Question","name":"How is audio clipping prevented?","acceptedAnswer":{"@type":"Answer","text":"A hardware-grade DynamicsCompressorNode acts as a brickwall limiter, and master amplitude is clamped below 0.85 to guarantee zero acoustic distortion or speaker clipping."}}]}]}</script>
+
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="../../workspace-shell.css">
 </head>
@@ -33,11 +33,11 @@
     </div>
     <div class="air-gap-pill">
       <span class="pulse-dot"></span>
-      100% IN-BROWSER / ZERO SERVER TRANSMISSION
+      AUDIO SYNTHESIZED IN YOUR BROWSER
     </div>
     <div class="telemetry-readout">
       <span id="telemetry-dsp">DSP: STANDBY (AWAITING START)</span>
-      <span id="telemetry-limiter" style="color:var(--accent-emerald);">LIMITER: READY (-3dB CEILING)</span>
+      <span id="telemetry-limiter" style="color:var(--accent-emerald);">COMPRESSOR: READY</span>
     </div>
   </header>
 
@@ -134,14 +134,14 @@
         <div class="osc-box">
           <div class="osc-header">
             <span>NODE 3: BINAURAL BEAT DETUNE</span>
-            <span id="val-binaural-beat">4.5 Hz (Theta)</span>
+            <span id="val-binaural-beat">4.5 Hz</span>
           </div>
           <div class="osc-row">
             <select id="param-binaural-preset" aria-label="Node 3 Binaural Frequency">
               <option value="2.0">2.0 Hz (Delta Deep)</option>
-              <option value="4.5" selected>4.5 Hz (Theta Lucid)</option>
-              <option value="10.0">10.0 Hz (Alpha Calm)</option>
-              <option value="40.0">40.0 Hz (Gamma Focus)</option>
+              <option value="4.5" selected>4.5 Hz</option>
+              <option value="10.0">10.0 Hz</option>
+              <option value="40.0">40.0 Hz</option>
             </select>
             <input type="range" id="param-binaural-gain" min="0" max="0.5" step="0.02" value="0.3" aria-label="Node 3 Binaural Gain">
           </div>
@@ -194,7 +194,7 @@
           <span>AUDIO ENGINE: WEB AUDIO API STEREO GRAPH</span>
         </div>
         <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-violet);">
-          DYNAMICS LIMITER: PEAK COMPRESSION
+          DYNAMICS COMPRESSOR
         </div>
       </div>
 
@@ -222,12 +222,12 @@
       <footer class="tool-footer">
         <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
           <span>PROCESSING: </span>
-          <span style="color: var(--accent-emerald);">DYNAMICS LIMITER ACTIVE (WEB AUDIO PEAK COMPRESSION)</span>
+          <span style="color: var(--accent-emerald);">WEB AUDIO DYNAMICS COMPRESSION</span>
         </div>
 
         <button type="button" class="btn-record" id="btn-record-wav">
           <span style="width:8px; height:8px; border-radius:50%; background:#f43f5e; display:inline-block;"></span>
-          <span id="record-label">Record Lossless WAV (10s)</span>
+          <span id="record-label">Record 16-bit WAV (10s)</span>
         </button>
       </footer>
       <div class="studio-bridge" style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:12px 20px; background:rgba(3,10,24,0.85); border-top:1px solid rgba(255,255,255,0.08); font-size:11px; font-family:var(--font-mono, monospace);">
@@ -239,7 +239,7 @@
           <a href="../cipher-workbench/index.html" style="color:#94a3b8; text-decoration:none;">04 / Cipher Workbench</a>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
-          <span style="color:#a0aec0;">Need bespoke WebGL/WebGPU graphics or 60 FPS hardening?</span>
+          <span style="color:#a0aec0;">Need help with an interactive project?</span>
           <a href="https://lunarparadox.com/#/studio" target="_blank" rel="noopener" style="color:#f5e6c8; border:1px solid rgba(245,230,200,0.35); padding:4px 10px; border-radius:3px; text-decoration:none; font-weight:600;">WORK WITH STUDIO ↗</a>
         </div>
       </div>

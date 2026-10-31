@@ -7,6 +7,32 @@ import { fileURLToPath } from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const read=file=>fs.readFileSync(path.join(root,file),'utf8');
 
+test('home metadata is valid and avoids unsupported guarantees',()=>{
+  const html=read('offline-platforms/lunar-syzygy/scene-source.html');
+  const json=html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s);
+  assert.ok(json);
+  const data=JSON.parse(json[1]);
+  assert.ok(data['@graph'].some(item=>item['@type']==='Organization'));
+  assert.doesNotMatch(json[1],/60 FPS|air.gapped|zero.server|zero remote data|performance hardening sprint/i);
+  const descriptions=[...html.matchAll(/<meta (?:name="description"|property="og:description"|name="twitter:description") content="([^"]*)">/g)].map(m=>m[1]);
+  assert.equal(descriptions.length,3);
+  assert.equal(new Set(descriptions).size,1);
+});
+
+test('product sitemap uses the canonical URL of each product page',()=>{
+  const sitemap=read('sitemap-products.xml');
+  const tools=['pbr-synth','optim-compressor','resonance-dsp','cipher-workbench'];
+  const libraries=['hyper-splat-engine','neural-texture-engine','turbo-ring-ipc','spatial-glass-ui','tensor-cloth-wgsl','meshlet-culling-wgsl'];
+  const games=['the-lazy-billionaire'];
+  for(const id of [...tools,...libraries,...games]){
+    const url=`https://products.lunarparadox.com/${id}`;
+    const page=read(`offline-platforms/lunar-astrolabe/${tools.includes(id)?'tools':'products'}/${id}/index.html`);
+    assert.ok(sitemap.includes(`<loc>${url}</loc>`),id);
+    assert.ok(page.includes(`<link rel="canonical" href="${url}">`),id);
+  }
+  assert.doesNotMatch(sitemap,/<lastmod>/,'generation time is not a content modification date');
+});
+
 test('search metadata exposes only useful, canonical public pages',()=>{
   const robots=read('robots.txt');
   const sitemap=read('sitemap.xml');

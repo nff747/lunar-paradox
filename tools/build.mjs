@@ -70,6 +70,8 @@ for(const name of names){
       for(const file of await fs.readdir(src))if(/\.(js|css)$/.test(file))await fs.copyFile(path.join(src,file),path.join(offline,file));
       const toolsSrc=path.join(src,'tools');
       if(await fs.stat(toolsSrc).then(s=>s.isDirectory()).catch(()=>false))await fs.cp(toolsSrc,path.join(offline,'tools'),{recursive:true});
+      const productsSrc=path.join(src,'products');
+      if(await fs.stat(productsSrc).then(s=>s.isDirectory()).catch(()=>false))await fs.cp(productsSrc,path.join(offline,'products'),{recursive:true});
     }
   }finally{await fs.rm(staging,{recursive:true,force:true});}
 }

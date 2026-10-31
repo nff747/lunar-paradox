@@ -50,7 +50,11 @@ let currentTextureSize = { width: 1024, height: 1024 };
 const viewNames={ '3d':'Lit material',diffuse:'Colour',normal:'Normal',height:'Height',roughness:'Roughness',ao:'Occlusion',orm:'Packed ORM' };
 const sourceName=document.getElementById('source-name'),sourceStatus=document.getElementById('source-status'),exportStatus=document.getElementById('export-status');
 let computationTimer=0;
-function scheduleMaps(){clearTimeout(computationTimer);computationTimer=setTimeout(recomputeMaps,80);}
+let sourceRequest=0;
+let userSource=false;
+let userCompletionPending=false;
+function scheduleMaps(){clearTimeout(computationTimer);computationTimer=setTimeout(()=>{computationTimer=0;recomputeMaps();},80);}
+function flushMaps(){if(computationTimer){clearTimeout(computationTimer);computationTimer=0;recomputeMaps();}}
 function syncRotation(){btnToggleRotate.textContent=autoRotate?'Pause rotation':'Resume rotation';btnToggleRotate.removeAttribute('aria-pressed');btnToggleRotate.classList.toggle('active',autoRotate);}
 
 
@@ -444,7 +448,7 @@ function recomputeMaps() {
   const sourceThumbnail=document.getElementById('source-thumb');sourceThumbnail.getContext('2d').drawImage(maps.diffuse,0,0,sourceThumbnail.width,sourceThumbnail.height);
   const duration = (performance.now() - startTime).toFixed(1);
   infoRenderTime.textContent = `${duration} ms`;
-  recordFunnelStep('pbr-synth', 'complete');
+  if (userCompletionPending) { recordFunnelStep('pbr-synth', 'complete'); userCompletionPending=false; }
   if (!window.__pbrReadyMarked) {
     window.__pbrReadyMarked = true;
     try {
@@ -490,19 +494,24 @@ dropzone.addEventListener('drop', (e) => {
 fileInput.addEventListener('change', () => {
   if (fileInput.files?.length) {
     handleFile(fileInput.files[0]);
+    fileInput.value='';
   }
 });
 
 function handleFile(file) {
+  const request=++sourceRequest;
   if (!['image/png','image/jpeg','image/webp'].includes(file.type)){sourceStatus.textContent='Choose a PNG, JPEG or WebP image.';recordFunnelStep('pbr-synth', 'error');return;}
   recordFunnelStep('pbr-synth', 'start');
   sourceStatus.textContent='Reading image…';
   const reader = new FileReader();
-  reader.onerror=()=>{sourceStatus.textContent='This file could not be read. Try another image.';recordFunnelStep('pbr-synth', 'error');};
+  reader.onerror=()=>{if(request!==sourceRequest)return;sourceStatus.textContent='This file could not be read. Try another image.';recordFunnelStep('pbr-synth', 'error');};
   reader.onload = (event) => {
+    if(request!==sourceRequest)return;
     const img = new Image();
-    img.onerror=()=>{sourceStatus.textContent='This image could not be decoded. Try another image.';recordFunnelStep('pbr-synth', 'error');};
+    img.onerror=()=>{if(request!==sourceRequest)return;sourceStatus.textContent='This image could not be decoded. Try another image.';recordFunnelStep('pbr-synth', 'error');};
     img.onload = () => {
+      if(request!==sourceRequest)return;
+      clearTimeout(computationTimer);computationTimer=0;
       // Memory protection: clamp to max 4096px
       let w = img.width;
       let h = img.height;
@@ -511,12 +520,14 @@ function handleFile(file) {
         if (w > h) { w = 4096; h = Math.round(4096 / aspect); }
         else { h = 4096; w = Math.round(4096 * aspect); }
       }
+      w=Math.max(1,w);h=Math.max(1,h);
       maps.diffuse.width = w;
       maps.diffuse.height = h;
       const ctx = maps.diffuse.getContext('2d');
       ctx.drawImage(img, 0, 0, w, h);
       sourceName.textContent=file.name;sourceStatus.textContent=w!==img.width||h!==img.height?'Resized to fit the 4096px processing limit.':'';
       document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed','false'));
+      userSource=true;userCompletionPending=true;
       recomputeMaps();
     };
     img.src = event.target.result;
@@ -527,8 +538,8 @@ function handleFile(file) {
 // Preset Buttons
 document.querySelectorAll('.btn-preset').forEach(btn => {
   btn.addEventListener('click', () => {
-    recordFunnelStep('pbr-synth', 'start');
-    clearTimeout(computationTimer);sourceName.textContent=btn.textContent;sourceStatus.textContent='';document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed',String(button===btn)));generateProcedural(btn.dataset.preset);
+    ++sourceRequest;userSource=false;userCompletionPending=false;
+    clearTimeout(computationTimer);computationTimer=0;sourceName.textContent=btn.textContent;sourceStatus.textContent='';document.querySelectorAll('.btn-preset').forEach(button=>button.setAttribute('aria-pressed',String(button===btn)));generateProcedural(btn.dataset.preset);
   });
 });
 
@@ -658,7 +669,7 @@ function downloadBlob(blob, filename) {
 }
 
 // Individual map downloads report encoding failures beside the export controls.
-async function exportPNG(mapKey,filename){try{const data=await canvasToBuffer(maps[mapKey]);downloadBlob(new Blob([data],{type:'image/png'}),filename);recordFunnelStep('pbr-synth', 'export');exportStatus.textContent='PNG prepared. Check your browser downloads.';document.querySelector('.export-options').open=false;}catch(error){recordFunnelStep('pbr-synth', 'error');exportStatus.textContent='Export failed: '+error.message;}}
+async function exportPNG(mapKey,filename){try{flushMaps();const fromUser=userSource;const data=await canvasToBuffer(maps[mapKey]);downloadBlob(new Blob([data],{type:'image/png'}),filename);if(fromUser)recordFunnelStep('pbr-synth', 'export');exportStatus.textContent='PNG prepared. Check your browser downloads.';document.querySelector('.export-options').open=false;}catch(error){recordFunnelStep('pbr-synth', 'error');exportStatus.textContent='Export failed: '+error.message;}}
 btnExportSingle.addEventListener('click',()=>{const mapKey=activeView==='3d'?'normal':activeView;void exportPNG(mapKey,'pbr_'+mapKey+'.png');});
 btnExportOrm?.addEventListener('click',()=>void exportPNG('orm','pbr_orm_packed.png'));
 
@@ -769,29 +780,25 @@ function canvasToBuffer(canvas) {
 }
 
 btnExportAll.addEventListener('click', async () => {
+  flushMaps();
+  const fromUser=userSource;
   btnExportAll.textContent = 'Preparing texture set…';
   exportStatus.textContent='Encoding six PNG maps…';
   btnExportAll.disabled = true;
 
   try {
-    const files = [
-      { name: 'diffuse.png', data: await canvasToBuffer(maps.diffuse) },
-      { name: 'normal.png', data: await canvasToBuffer(maps.normal) },
-      { name: 'height.png', data: await canvasToBuffer(maps.height) },
-      { name: 'roughness.png', data: await canvasToBuffer(maps.roughness) },
-      { name: 'ao.png', data: await canvasToBuffer(maps.ao) },
-      { name: 'orm_packed.png', data: await canvasToBuffer(maps.orm) },
-      { 
-        name: 'manifest.txt',
-        data: new TextEncoder().encode(
-          `LUNAR PARADOX — PBR SYNTHESIZER EXPORT\nGenerated: ${new Date().toISOString()}\nResolution: ${currentTextureSize.width}x${currentTextureSize.height}\nKernel: ${paramKernel.value}\nStrength: ${paramStrength.value}\nFormat: Standard PBR + ORM Packed (R:AO, G:Roughness, B:Metallic)\n100% In-Browser Execution`
-        )
-      }
-    ];
+    // Start all encodes before yielding so every map and the manifest describe the same generation.
+    const keys=['diffuse','normal','height','roughness','ao','orm'];
+    const names=['diffuse.png','normal.png','height.png','roughness.png','ao.png','orm_packed.png'];
+    const encoded=keys.map(key=>canvasToBuffer(maps[key]));
+    const manifest=`LUNAR PARADOX — MATERIAL MAP EXPORT\nGenerated: ${new Date().toISOString()}\nResolution: ${currentTextureSize.width}x${currentTextureSize.height}\nKernel: ${paramKernel.value}\nStrength: ${paramStrength.value}\nNormal green channel inverted: ${paramInvertY.checked ? 'yes' : 'no'}\nORM: R occlusion, G roughness, B metallic (0)\nMaps are estimates derived from image brightness.`;
+    const buffers=await Promise.all(encoded);
+    const files=buffers.map((data,index)=>({name:names[index],data}));
+    files.push({name:'manifest.txt',data:new TextEncoder().encode(manifest)});
 
     const zipBlob = createZip(files);
     downloadBlob(zipBlob, `lunar_pbr_bundle_${Date.now()}.zip`);
-    recordFunnelStep('pbr-synth', 'export');
+    if(fromUser)recordFunnelStep('pbr-synth', 'export');
     exportStatus.textContent='Texture set prepared. Check your browser downloads.';
   } catch (err) {
     console.error('Export failed:', err);

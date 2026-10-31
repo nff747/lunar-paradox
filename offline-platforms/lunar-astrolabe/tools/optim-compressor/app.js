@@ -187,7 +187,7 @@ async function transcode() {
   const targetW = Math.max(1, Math.round(canvasOrig.width * scale));
   const targetH = Math.max(1, Math.round(canvasOrig.height * scale));
 
-  indicatorDims.textContent = `ORIGINAL: ${canvasOrig.width}×${canvasOrig.height} → OPT: ${targetW}×${targetH}`;
+  indicatorDims.textContent = `WORKING: ${canvasOrig.width}×${canvasOrig.height} → EXPORT: ${targetW}×${targetH}`;
 
   // Offscreen canvas for processing
   const offscreen = document.createElement('canvas');

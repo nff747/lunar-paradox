@@ -51,15 +51,8 @@
           <button type="button" class="btn-preset" data-preset="hex">Solar</button>
           <button type="button" class="btn-preset" data-preset="obsidian">Obsidian</button>
         </div>
-      <p class="source-note">Images stay in your browser. Maps are inferred from image contrast; inspect them before use.</p>
-      <div class="benchmark-callout" style="margin-top: 8px; padding: 8px 10px; background: rgba(0, 229, 255, 0.04); border: 1px solid rgba(0, 229, 255, 0.18); border-radius: 4px; font-size: 11px; font-family: var(--font-mono, monospace); line-height: 1.45;">
-        <div style="font-weight: 600; color: var(--accent-cyan); margin-bottom: 3px; display: flex; align-items: center; gap: 6px;">
-          <span>⚡ REPRODUCIBLE BENCHMARK</span>
-        </div>
-        <div style="color: var(--text-muted);">
-          Local Sobel/Scharr convolution executes in <span style="color: var(--accent-emerald); font-weight: 600;">&lt;25ms</span> on 1024×1024 diffuse maps with real-time WebGL2 lighting. 100% in-browser processing, zero external telemetry.
-        </div>
-      </div>
+      <p class="source-note">Your image is processed in this browser. These maps estimate surface detail from brightness; check the results in your target application. Optional usage sharing is controlled below.</p>
+      <p class="source-note">Normal-map conventions vary by renderer. Use “Invert Green” if lighting appears inverted in your target application. ORM packs occlusion, roughness and a non-metallic blue channel.</p>
       <p id="source-status" class="source-status" role="status"></p></section>
       <details class="parameter-group" open><summary><span>02 / Normals</span><b aria-hidden="true">+</b></summary><div class="parameter-body">
 
@@ -98,7 +91,7 @@
         </div>
 
         <label class="toggle-row">
-          <span>Invert Green (-Y / DirectX)</span>
+          <span>Invert normal green channel</span>
           <div class="toggle-switch">
             <input type="checkbox" id="param-invert-y">
             <span class="slider-round"></span>
@@ -179,7 +172,7 @@
           <a href="../cipher-workbench/index.html" style="color:#94a3b8; text-decoration:none;">04 / Cipher Workbench</a>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
-          <span style="color:#a0aec0;">Need bespoke WebGL/WebGPU graphics or 60 FPS hardening?</span>
+          <span style="color:#a0aec0;">Need help with an interactive project?</span>
           <a href="https://lunarparadox.com/#/studio" target="_blank" rel="noopener" style="color:#f5e6c8; border:1px solid rgba(245,230,200,0.35); padding:4px 10px; border-radius:3px; text-decoration:none; font-weight:600;">WORK WITH STUDIO ↗</a>
         </div>
       </div>

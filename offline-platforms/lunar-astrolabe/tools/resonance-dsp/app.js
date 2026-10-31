@@ -92,7 +92,7 @@ function initAudio() {
   limiter = audioCtx.createDynamicsCompressor();
   limiter.threshold.setValueAtTime(-3.0, audioCtx.currentTime); // -3dB
   limiter.knee.setValueAtTime(0, audioCtx.currentTime);         // Hard knee
-  limiter.ratio.setValueAtTime(20.0, audioCtx.currentTime);     // 20:1 brickwall
+  limiter.ratio.setValueAtTime(20.0, audioCtx.currentTime);     // 20:1 compression
   limiter.attack.setValueAtTime(0.002, audioCtx.currentTime);   // 2ms ultra-fast clamp
   limiter.release.setValueAtTime(0.05, audioCtx.currentTime);   // 50ms smooth recovery
 
@@ -283,7 +283,7 @@ btnPlay.addEventListener('click', async () => {
     btnPlay.classList.remove('playing');
     isPlaying = false;
     if (telemetryDsp) telemetryDsp.textContent = 'DSP: PAUSED';
-    if (telemetryLimiter) telemetryLimiter.textContent = 'LIMITER: STANDBY';
+    if (telemetryLimiter) telemetryLimiter.textContent = 'COMPRESSOR: STANDBY';
   } else {
     const targetGain = Math.min(0.8, parseFloat(paramMasterGain.value));
     masterGain.gain.setTargetAtTime(targetGain, audioCtx.currentTime, 0.05);
@@ -291,7 +291,7 @@ btnPlay.addEventListener('click', async () => {
     btnPlay.classList.add('playing');
     isPlaying = true;
     if (telemetryDsp) telemetryDsp.textContent = `DSP: ${(audioCtx.sampleRate / 1000).toFixed(1)} kHz / 32-BIT`;
-    if (telemetryLimiter) telemetryLimiter.textContent = 'LIMITER: ENGAGED (-3dB)';
+    if (telemetryLimiter) telemetryLimiter.textContent = 'COMPRESSOR: ENGAGED';
   }
 });
 
@@ -644,7 +644,7 @@ function stopRecording() {
   if (!isRecording) return;
   isRecording = false;
   btnRecordWav.classList.remove('recording');
-  recordLabel.textContent = 'Record Lossless WAV (10s)';
+  recordLabel.textContent = 'Record 16-bit WAV (10s)';
 
   // Combine Float32 chunks
   const totalSamples = recordSampleCount;

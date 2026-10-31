@@ -50,7 +50,7 @@ test('client tools: published content registry passes strict production validati
   const data = JSON.parse(jsonStr);
 
   const cleaned = cleanContent(data);
-  assert.equal(cleaned.products.length, 10, 'Must register 10 products (4 tools + 6 open-source projects)');
+  assert.equal(cleaned.products.length, 11, 'Must register 11 products (4 tools + 6 open-source projects + 1 web game)');
 
   const registeredIds = cleaned.products.map(p => p.id);
   for (const id of TOOL_IDS) {
@@ -106,9 +106,9 @@ test('client tools: cipher-workbench generates standalone Python decrypt CLI and
   assert.match(appJs, /from cryptography\.hazmat\.primitives\.ciphers\.aead import AESGCM/);
 });
 
-test('client tools: CANONICAL_CONTENT exports 10 products and matches published snapshot', async () => {
+test('client tools: CANONICAL_CONTENT exports 11 products and matches published snapshot', async () => {
   const { CANONICAL_CONTENT } = await import('../lib/canonical-content.js');
-  assert.equal(CANONICAL_CONTENT.products.length, 10);
+  assert.equal(CANONICAL_CONTENT.products.length, 11);
   assert.equal(CANONICAL_CONTENT.revision, 0);
   assert.ok(CANONICAL_CONTENT.products.every(p => p.status === 'published'));
 });

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Air-Gapped Cryptographic Key &amp; Cipher Workbench — Lunar Paradox Products</title>
-  <meta name="description" content="Local hardware-accelerated WebCrypto keypair generation, symmetric file encryption, and cryptographic digest verification with zero server transmission.">
+  <title>Cryptographic Key &amp; Cipher Workbench — Lunar Paradox Products</title>
+  <meta name="description" content="Browser-based key generation, authenticated encryption and checksums using Web Crypto.">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://products.lunarparadox.com/cipher-workbench">
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
@@ -12,15 +12,15 @@
   <link rel="apple-touch-icon" href="../../assets/favicon.svg">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Lunar Paradox">
-  <meta property="og:title" content="Air-Gapped Cryptographic Key &amp; Cipher Workbench — Lunar Paradox Products">
-  <meta property="og:description" content="Local hardware-accelerated WebCrypto keypair generation, symmetric file encryption, and cryptographic digest verification.">
+  <meta property="og:title" content="Cryptographic Key &amp; Cipher Workbench — Lunar Paradox Products">
+  <meta property="og:description" content="Browser-based key generation, authenticated encryption and checksums using Web Crypto.">
   <meta property="og:url" content="https://products.lunarparadox.com/cipher-workbench">
   <meta property="og:image" content="https://products.lunarparadox.com/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Air-Gapped Cryptographic Key &amp; Cipher Workbench — Lunar Paradox Products">
-  <meta name="twitter:description" content="Local hardware-accelerated WebCrypto keypair generation, symmetric file encryption, and cryptographic digest verification.">
+  <meta name="twitter:title" content="Cryptographic Key &amp; Cipher Workbench — Lunar Paradox Products">
+  <meta name="twitter:description" content="Browser-based key generation, authenticated encryption and checksums using Web Crypto.">
   <meta name="twitter:image" content="https://products.lunarparadox.com/assets/og-image.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebApplication","name":"Air-Gapped Cryptographic Key & Cipher Workbench","url":"https://products.lunarparadox.com/cipher-workbench","operatingSystem":"Any Modern Web Browser","applicationCategory":"SecurityApplication","browserRequirements":"Requires standard Web Cryptography API (crypto.subtle)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Air-gapped, zero-server cryptographic suite executing WebCrypto keypair generation, authenticated AES-256-GCM symmetric encryption, and digest calculations entirely in local memory.","featureList":["Hardware CSPRNG Keypair Generation (Ed25519, ECDSA, RSA-4096)","Authenticated AES-256-GCM File & Message Encryption","PBKDF2 Password Key Derivation with 250,000 Iterations","SHA-256, SHA-384, and SHA-512 Cryptographic Digest Checksums","Standalone Offline Python Decryptor CLI Script Generation","Printable Paper Key Backup Matrix with Base64 Split Encoding"],"publisher":{"@type":"Organization","name":"Lunar Paradox","url":"https://lunarparadox.com/"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this tool truly air-gapped and safe for sensitive keys?","acceptedAnswer":{"@type":"Answer","text":"Yes. Cipher Workbench runs strictly via standard WebCrypto (crypto.subtle) in your local browser sandbox. You can disconnect your network cable or disable Wi-Fi and the tool remains 100% functional."}},{"@type":"Question","name":"How can I decrypt an encrypted payload without this tool?","acceptedAnswer":{"@type":"Answer","text":"Cipher Workbench auto-generates a standalone, zero-dependency Python 3 decryption CLI script based on the standard cryptography library so you can recover data anywhere without relying on proprietary services."}}]}]}</script>
+
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="../../workspace-shell.css">
 </head>
@@ -29,14 +29,14 @@
     <div class="brand-section">
       <a href="https://products.lunarparadox.com/" class="back-link">← LUNAR PRODUCTS</a>
       <span class="divider">/</span>
-      <span class="tool-title">Air-Gapped Cryptographic Workbench</span>
+      <span class="tool-title">Cryptographic Workbench</span>
     </div>
     <div class="air-gap-pill">
       <span class="pulse-dot"></span>
-      100% IN-BROWSER / ZERO SERVER TRANSMISSION
+      CRYPTOGRAPHY RUNS IN YOUR BROWSER
     </div>
     <div class="telemetry-readout">
-      <span>CSPRNG: HARDWARE RANDOM</span>
+      <span>RANDOMNESS: WEB CRYPTO</span>
       <span style="color:var(--accent-emerald);">ENGINE: CRYPTO.SUBTLE</span>
     </div>
   </header>
@@ -85,7 +85,7 @@
           </div>
 
           <button type="button" class="btn-primary" id="btn-generate-keys">
-            ⚡ Generate Hardware-Random Keypair
+            ⚡ Generate Keypair
           </button>
         </div>
 
@@ -97,7 +97,7 @@
             <span id="key-fingerprint" style="color: var(--text-main); font-weight: 600;">--:--:--:--</span>
           </div>
           <p style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); line-height: 1.6;">
-            Keys are derived using your device's cryptographically secure pseudo-random number generator (CSPRNG). No private keys or seeds are ever transmitted across any network boundary.
+            Keys are generated with Web Crypto. This page and its scripts are delivered over the network; browser extensions, device compromise, and copied or downloaded keys can expose sensitive data. This experimental tool has not been independently audited.
           </p>
         </div>
       </div>
@@ -112,7 +112,7 @@
             </div>
           </div>
           <div class="key-box" id="output-public-key">Click "Generate Keypair" to initialize...</div>
-          <button type="button" class="btn-secondary" id="btn-download-public">⤓ Download Public Key (.pub)</button>
+          <button type="button" class="btn-secondary" id="btn-download-public">⤓ Download Public Key</button>
         </div>
 
         <div class="card">
@@ -121,7 +121,7 @@
             <button type="button" class="btn-secondary" id="btn-copy-private" style="padding: 4px 10px; font-size: 11px;">Copy</button>
           </div>
           <div class="key-box" id="output-private-key" style="color: #fca5a5;">Click "Generate Keypair" to initialize...</div>
-          <button type="button" class="btn-secondary" id="btn-download-private">⤓ Download Private Key (.pem)</button>
+          <button type="button" class="btn-secondary" id="btn-download-private">⤓ Download Private Key</button>
         </div>
       </div>
     </section>
@@ -164,7 +164,7 @@
         <div class="card">
           <div class="card-header">
             <label id="cipher-io-label" for="cipher-input-text" style="font-weight:600; cursor:pointer;">Plaintext Message</label>
-            <button type="button" class="btn-secondary" id="btn-cipher-clear" style="padding: 4px 8px; font-size: 11px;">Clear RAM</button>
+            <button type="button" class="btn-secondary" id="btn-cipher-clear" style="padding: 4px 8px; font-size: 11px;">Clear fields</button>
           </div>
           <textarea id="cipher-input-text" placeholder="Type or paste payload here..."></textarea>
           
@@ -188,7 +188,7 @@
         <!-- Air-Gapped Terminal Decryption CLI Command -->
         <div class="cli-box-wrapper" style="margin-top:12px; border-top:1px solid var(--border-color); padding-top:12px;">
           <div class="card-header" style="padding:0; margin-bottom:6px;">
-            <span style="font-size:11px; font-family:var(--font-mono); color:var(--accent-cyan);">Zero-Trust Standalone CLI Decrypt Script (Python 3 / Cryptography)</span>
+            <span style="font-size:11px; font-family:var(--font-mono); color:var(--accent-cyan);">Recovery script (Python 3; requires the cryptography package)</span>
             <button type="button" class="btn-secondary" id="btn-copy-cli" style="padding: 2px 8px; font-size: 10px;">Copy Script</button>
           </div>
           <div id="cli-script-output" style="background:var(--bg-primary); border:1px solid var(--border-color); border-radius:4px; padding:8px; font-family:var(--font-mono); font-size:10px; color:var(--text-muted); overflow-x:auto; white-space:pre-wrap;">// Execute encryption above to generate matching offline CLI decryption command...</div>
@@ -203,12 +203,12 @@
           <label for="hasher-input" style="font-weight:600; cursor:pointer;">Input Payload for Digest Verification</label>
           <span style="color:var(--accent-emerald);">FIPS 180-4 Standard</span>
         </div>
-        <textarea id="hasher-input" placeholder="Type text to hash, or drag and drop any local file..."></textarea>
+        <textarea id="hasher-input" placeholder="Type text to calculate its checksums..."></textarea>
       </div>
 
       <div class="card">
         <div class="card-header">
-          <span>Cryptographic Digests (Hardware Accelerated)</span>
+          <span>Cryptographic Digests</span>
         </div>
 
         <div class="control-group">
@@ -244,7 +244,7 @@
         <span style="color:#00e5ff;">04 / Cipher Workbench</span>
       </div>
       <div style="display:flex; align-items:center; gap:12px;">
-        <span style="color:#a0aec0;">Need bespoke WebGL/WebGPU graphics or 60 FPS hardening?</span>
+        <span style="color:#a0aec0;">Need help with an interactive project?</span>
         <a href="https://lunarparadox.com/#/studio" target="_blank" rel="noopener" style="color:#f5e6c8; border:1px solid rgba(245,230,200,0.35); padding:4px 10px; border-radius:3px; text-decoration:none; font-weight:600;">WORK WITH STUDIO ↗</a>
       </div>
     </div>

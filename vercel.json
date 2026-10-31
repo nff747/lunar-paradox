@@ -41,7 +41,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' blob: 'sha256-1W94YnHxt2+ZOZLy3l1xbwptDD5teMjRqrxPqNATk38=' 'sha256-7m0BZWQini7zeO34nEN3iSXr9cETOvEMhi2bF2L5aeA=' 'sha256-8oczD3UU30+2YLzFyVr6cb2GWgsHettfBhSZ7fyt/iE=' 'sha256-Gsg8xwimAQMp/hWW8p2nrvYPos2AdQwn5tfPVyRb0CQ=' 'sha256-K7b/V2GqKBG4E8i7Hx/51aUL8YRnH/5OaY8JuRZy8MQ=' 'sha256-Ln73pnDDtC115d9gvdprG+kx2qpC6vV1Cma8WNu1ipg=' 'sha256-LnEjGUBnq1RbTID9/Rkb6tBtFyBGeQzLQFot3VVHegg=' 'sha256-Nz7ayCGBH8A/qkoInt7PhAiAkubtvfO+NBEpP9Z5K34=' 'sha256-P49Z8c4RMTwxNWfbWEoZS2mdpKtT08jd3lQs9uHivpA=' 'sha256-QVI29Z7XIqPIn0HJ2xyklduRUMCa8u1UEX2vyQJZcnc=' 'sha256-W5QsmWb6XxfFLqEsBwMDJHyF6fEG73/fdYWwPy0nXwk=' 'sha256-WN5IbwgcQQZ/kSZl+IXJT9jDaS0OWEDO30ok81Nq5Mk=' 'sha256-e+/KyXyuhQkgvYbhFz5Kz0YuUze9lMNpzuJpPWDg2Fc=' 'sha256-gp1ZyHPmcb2+VP0ttzMFDBM4SrqIcSLXbH3i/vh9zzI=' 'sha256-loLdQ8aDy1Ar99sbLQhkpN5GbTuDJoDRWSh6HEwCGQ4=' 'sha256-p2mj79yatZ4ev6i6aKEz7+/4vrmCEdEc53Eyp62B3vs=' 'sha256-pdXx+rVr938y3jzZ2Tl1I7WuK3xATHOUo9/Bu1jj0jU=' 'sha256-t2gUCCbNSlhp2uWSKJ0FIIvsTUHMbXg3BgT7okfE2/c='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self' blob: 'sha256-1W94YnHxt2+ZOZLy3l1xbwptDD5teMjRqrxPqNATk38=' 'sha256-8oczD3UU30+2YLzFyVr6cb2GWgsHettfBhSZ7fyt/iE=' 'sha256-BjH827I4MJFlVV4hzxSjRJl9WbU1UyOm+wW+rx0qiCs=' 'sha256-Ln73pnDDtC115d9gvdprG+kx2qpC6vV1Cma8WNu1ipg=' 'sha256-LnEjGUBnq1RbTID9/Rkb6tBtFyBGeQzLQFot3VVHegg=' 'sha256-MfhFkD0Sg8qhwbzuVP4/pNwb/wYWUP35NG5Z1+hXSnw=' 'sha256-Nz7ayCGBH8A/qkoInt7PhAiAkubtvfO+NBEpP9Z5K34=' 'sha256-QVI29Z7XIqPIn0HJ2xyklduRUMCa8u1UEX2vyQJZcnc=' 'sha256-W5QsmWb6XxfFLqEsBwMDJHyF6fEG73/fdYWwPy0nXwk=' 'sha256-ZjgkDxcQrhtvykU3t9kbt9BJ1mWrI1lol34b1Y3mB1A=' 'sha256-gp1ZyHPmcb2+VP0ttzMFDBM4SrqIcSLXbH3i/vh9zzI=' 'sha256-loLdQ8aDy1Ar99sbLQhkpN5GbTuDJoDRWSh6HEwCGQ4=' 'sha256-nQSgKYIeRMF4+mfpfEUMyDrT9vYSXuKec2I60TRjW/8=' 'sha256-pdXx+rVr938y3jzZ2Tl1I7WuK3xATHOUo9/Bu1jj0jU=' 'sha256-qAG5gRAYPT1Al+SSxq2x2TWcBcyTgkRVe38urnfMzHs=' 'sha256-zaWLOPS9oElm0+mH9mjckU9K1B/3b7/E9l5VIXi7jpQ=' 'sha256-zuZZ8r+E1Gitg5ldW6k0H+v6aalfRh0qOo7CMiGKb9o='; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
         }
       ]
     },
@@ -391,7 +391,7 @@
           "value": "products.lunarparadox.com"
         }
       ],
-      "source": "/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "source": "/(the-lazy-billionaire|hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
       "destination": "/lunar-astrolabe/products/$1/index.html"
     },
     {
@@ -401,7 +401,17 @@
           "value": "products.lunarparadox.com"
         }
       ],
-      "source": "/products/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "source": "/(the-lazy-billionaire)/:path*",
+      "destination": "/lunar-astrolabe/products/the-lazy-billionaire/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/products/(the-lazy-billionaire|hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
       "destination": "/lunar-astrolabe/products/$1/index.html"
     },
     {
@@ -411,7 +421,7 @@
           "value": "products.lunarparadox.com"
         }
       ],
-      "source": "/product/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "source": "/product/(the-lazy-billionaire|hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
       "destination": "/lunar-astrolabe/products/$1/index.html"
     },
     {
@@ -491,6 +501,26 @@
           "value": "products.lunarparadox.com"
         }
       ],
+      "source": "/the-lazy-billionaire",
+      "destination": "/lunar-astrolabe/products/the-lazy-billionaire/index.html"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
+      "source": "/the-lazy-billionaire/:path*",
+      "destination": "/lunar-astrolabe/products/the-lazy-billionaire/:path*"
+    },
+    {
+      "has": [
+        {
+          "type": "host",
+          "value": "products.lunarparadox.com"
+        }
+      ],
       "source": "/:path*",
       "destination": "/lunar-astrolabe/:path*"
     },
@@ -503,16 +533,24 @@
       "destination": "/lunar-syzygy/index.html"
     },
     {
-      "source": "/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "source": "/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl|the-lazy-billionaire)",
       "destination": "/lunar-astrolabe/products/$1/index.html"
     },
     {
-      "source": "/products/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "source": "/products/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl|the-lazy-billionaire)",
       "destination": "/lunar-astrolabe/products/$1/index.html"
     },
     {
-      "source": "/product/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl)",
+      "source": "/product/(hyper-splat-engine|neural-texture-engine|turbo-ring-ipc|spatial-glass-ui|tensor-cloth-wgsl|meshlet-culling-wgsl|the-lazy-billionaire)",
       "destination": "/lunar-astrolabe/products/$1/index.html"
+    },
+    {
+      "source": "/the-lazy-billionaire/:path*",
+      "destination": "/lunar-astrolabe/products/the-lazy-billionaire/:path*"
+    },
+    {
+      "source": "/products/the-lazy-billionaire/:path*",
+      "destination": "/lunar-astrolabe/products/the-lazy-billionaire/:path*"
     },
     {
       "source": "/product/(pbr-synth|optim-compressor|resonance-dsp|cipher-workbench)",
